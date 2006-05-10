@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+<local-tx-datasource>
+    <jndi-name>cabio</jndi-name>
+    <connection-url>jdbc:oracle:thin:@cbiodb2-d.nci.nih.gov:1521:CBDEV9</connection-url>
+    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+    <user-name>cabiodev9</user-name>
+    <password>dev!234</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+
+    <!--pooling parameters-->
+    <min-pool-size>10</min-pool-size>
+    <max-pool-size>20</max-pool-size>
+    <blocking-timeout-millis>5000</blocking-timeout-millis>
+    <idle-timeout-minutes>15</idle-timeout-minutes>
+  </local-tx-datasource>
+
+  <local-tx-datasource>
+<!--
+    <jndi-name>cadsr</jndi-name>
+    <connection-url>jdbc:oracle:thin:@cbiodb2-d.nci.nih.gov:1521:CBTEST</connection-url>
+    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+    <user-name>sbrext</user-name>
+    <password>i1sn0w</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+-->
+
+    <jndi-name>cadsr</jndi-name>
+    <connection-url>jdbc:oracle:thin:@cbiodb20.nci.nih.gov:1521:CBSTG</connection-url>
+    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+    <user-name>sbrext</user-name>
+    <password>rulive01</password>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+
+
+    <!--pooling parameters-->
+    <min-pool-size>10</min-pool-size>
+    <max-pool-size>20</max-pool-size>
+    <blocking-timeout-millis>5000</blocking-timeout-millis>
+    <idle-timeout-minutes>15</idle-timeout-minutes>
+
+  </local-tx-datasource>
+
+</datasources>

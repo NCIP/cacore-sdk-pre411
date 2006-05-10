@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS hilo;
+
+CREATE TABLE hilo(
+	next_value NUMERIC PRIMARY KEY
+);
+
+INSERT INTO hilo (next_value) VALUES (100);

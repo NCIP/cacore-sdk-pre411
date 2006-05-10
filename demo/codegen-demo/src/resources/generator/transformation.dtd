@@ -1,0 +1,24 @@
+<!ELEMENT transformation (model-access, filter-chain, 
+						  transformer-chain, artifact-handler)>
+						  
+<!ELEMENT model-access (#PCDATA)>
+<!ATTLIST model-access
+	className CDATA #REQUIRED
+	xmiURI CDATA #REQUIRED
+	modelName CDATA #REQUIRED>
+
+<!ELEMENT filter-chain (filter+)>
+<!ELEMENT filter (#PCDATA)>
+<!ATTLIST filter
+	name CDATA #REQUIRED
+	className CDATA #REQUIRED>
+
+<!ELEMENT transformer-chain (transformer+)>
+<!ELEMENT transformer (#PCDATA)>
+<!ATTLIST transformer
+	name CDATA #REQUIRED
+	className CDATA #REQUIRED>
+
+<!ELEMENT artifact-handler (#PCDATA)>
+<!ATTLIST artifact-handler
+	className CDATA #REQUIRED>

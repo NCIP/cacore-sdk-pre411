@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="caCOREos" basedir=".">
+
+
+<!--***********************************************************************
+	***  J2SE CONTAINER INSTANTIATION TARGETS (see build.xml#deploy-server)
+	*********************************************************************** -->
+	
+	<target name="start-jboss"> 
+		<exec dir="${j2se_container_home}/bin" executable="cmd" spawn="true">
+			<arg line="/C start ${j2se_container_home}/bin/run.bat -c ${jboss_configuration}"/>
+		</exec>
+	</target>
+
+	<target name="start-tomcat"> 
+		<exec dir="${j2se_container_home}/bin" executable="cmd" spawn="true">
+			<arg line="/C start ${j2se_container_home}/bin/startup.bat"/>
+		</exec>
+	</target>
+	
+	<target name="start-container">
+		<antcall target="start-${container_type}"/>
+	</target>
+
+	<target name="start-mysql">
+		<exec dir="${mysql_home}/bin" executable="cmd" spawn="true">
+			<arg line="/C start ${mysql_home}/bin/mysqld.exe --remove"/>
+		</exec>
+
+		<exec dir="${mysql_home}/bin" executable="cmd" spawn="true">
+			<arg line="/C start ${mysql_home}/bin/mysqld.exe"/>
+		</exec>
+	</target>
+	
+<!--***********************************************************************
+	*** MYSQL DOWNLOAD AND EXTRACTION TARGETS (see install.xml)
+	*********************************************************************** -->
+	<target name="-download-mysql-primary.main">
+		<get src="${mysql.url.primary.windows}" dest="${dir.temp}/${mysql.file.windows}" verbose="yes" ignoreerrors="yes"/>
+		<available file="${dir.temp}/${mysql.file}" property="mysql-downloaded"/>
+	</target>
+
+	<target name="-download-mysql-mirror.main" unless="mysql-downloaded">
+		<get src="${mysql.url.mirror.windows}" dest="${dir.temp}/${mysql.file.windows}" verbose="yes" ignoreerrors="yes"/>
+		<available file="${dir.temp}/${mysql.file.windows}" property="mysql-downloaded"/>
+	</target>
+
+	<target name="-download-mysql-verify.main" unless="mysql-downloaded">
+		<fail>Unable to download MySQL</fail>
+	</target>
+		
+	<target name="-unpack-mysql-extract.main">
+		<mkdir dir="${mysql_home}"/>
+		<unzip src="${dir.temp}/${mysql.file.windows}" dest="${dir.temp}"/>
+		<move todir="${mysql_home}">
+			<fileset dir="${dir.temp}/${mysql.unzip.path.windows}"/>
+		</move>		
+		<delete file="${dir.conf}/my.cnf"/>
+	    <copy file="${dir.conf}/my.cnf.template" tofile="c:/my.cnf" overwrite="yes">
+	    	<filterset>
+	    		<filter token="MYSQL_HOME" value="${mysql_home}"/>
+	    	</filterset>
+	    </copy>
+	</target>
+	
+
+
+</project>

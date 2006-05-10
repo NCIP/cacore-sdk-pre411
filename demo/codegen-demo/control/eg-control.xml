@@ -1,0 +1,209 @@
+<transformation>
+	<model-access className="gov.nih.nci.codegen.core.access.UML13ModelAccess"
+		xmiURI="file:models/xmi/test_fixed.xmi"
+		modelName="EA Model"/>
+
+	<filter-chain>
+		<!-- Selects all model elements -->
+		<filter name="mef"
+			className="gov.nih.nci.codegen.core.filter.UML13ModelElementFilter"/>
+			
+		<!-- Selects every class in package 
+			"Logical View.Logical Model.test"
+			
+			Selects J, K, L, M, N, O, OntClosure, OntNode, and OntRelationship.
+
+		<filter name="Test Package"
+			className="gov.nih.nci.codegen.core.filter.UML13ClassifierFilter">
+			
+			<match-interface value="false"/>
+			
+			<package>
+				<include>Logical\sView\.Logical\sModel\.test</include>
+			</package>
+		</filter>
+		    -->			
+		
+		<!--
+			Select only classifiers with the "Hierarchy" sterotype.
+			
+			Selects N.
+
+		<filter name="Hierarchy Stereotype"
+			className="gov.nih.nci.codegen.core.filter.UML13ClassifierFilter">
+			<stereotype>
+				<include>Hierarchy</include>
+			</stereotype>
+		</filter>
+			-->		
+		
+		<!--
+			Select only classifiers that implement the test.Ontology interface.
+			
+			Selects OntNode.
+
+		<filter name="Implements Ontology"
+			className="gov.nih.nci.codegen.core.filter.UML13ClassifierFilter">
+			<implements>
+				<include>Logical\sView\.Logical\sModel\.test\.Ontology</include>
+			</implements>
+		</filter>
+			-->		
+
+		<!--
+			Select only classifiers that extend test.K.
+			
+			Selects L, M, N.
+
+		<filter name="Extends K"
+			className="gov.nih.nci.codegen.core.filter.UML13ClassifierFilter">
+			<extends>
+				<include>Logical\sView\.Logical\sModel\.test\.K</include>
+			</extends>
+		</filter>
+			-->
+			
+		<!--
+			Select all classes in the "test" package that are not part
+			of the K inheritance hierarchy and do not implement Ontology.
+
+			Selects J, O, OntClosure, and OntRelationship.
+
+		<filter name="Exclude K Hierarchy and Ontologies"
+			className="gov.nih.nci.codegen.core.filter.UML13ClassifierFilter">
+			
+			<match-interface value="false"/>
+			
+			<extends>
+				<exclude>Logical\sView\.Logical\sModel\.test\.K</exclude>
+			</extends>
+			
+			<implements>
+			    <exclude>Logical\sView\.Logical\sModel\.test\.Ontology</exclude>	
+			</implements>
+			
+			<package>
+				<include>Logical\sView\.Logical\sModel\.test</include>
+			</package>
+			
+			<name>
+				<exclude>K</exclude>
+			</name>
+		</filter>
+			-->			
+
+		<!--
+			Select all concrete classes in the "test" package that ARE part
+			of the K inheritance hierarchy but don't have the "Hierarchy"
+			stereotype.
+			
+			Selects L and M.
+			-->
+		<filter name="K Hierarchy and not Hierarchy"
+			className="gov.nih.nci.codegen.core.filter.UML13ClassifierFilter">
+			
+			<match-interface value="false"/>
+			<match-abstract value="false"/>
+			
+			<extends>
+				<include>Logical\sView\.Logical\sModel\.test\.K</include>
+			</extends>
+			<package>
+				<include>Logical\sView\.Logical\sModel\.test</include>
+			</package>
+			<stereotype>
+				<exclude>Hierarchy</exclude>
+			</stereotype>
+						
+		</filter>
+
+
+		
+	</filter-chain>
+	
+
+	
+	<!--
+		Example: Context Dumper
+		
+		Generates simple text files that print out the contents of the 
+		template context.
+		-->	
+	<transformer-chain>
+		<transformer name="Context Dumper"
+			className="gov.nih.nci.codegen.core.transformer.JETTransformer">
+			<param name="templateClassName" value="demo.ContextDumper"/>
+			<param name="basePackage" value="Logical View.Logical Model"/>
+			<param name="greeting" value="Howdy, Pardner!!"/>
+		</transformer>
+	</transformer-chain>
+
+		
+	<!--
+		Example: FreeMarker Example
+
+	<transformer-chain>
+		<transformer name="Bean XML"
+			className="gov.nih.nci.codegen.core.transformer.FreeMarkerTransformer">
+			<object refName="utils" className="gov.nih.nci.codegen.core.util.UML13Utils"/>
+			<param name="templateDir" value="templates"/>
+			<param name="templateName" value="SimpleBeanXML.ftl"/>
+			<param name="basePkg" value="Logical View.Logical Model"/>
+		</transformer>
+		
+	</transformer-chain>
+	-->		
+	
+	<!--
+		Example: Free Marker Chaining Example
+
+	<transformer-chain>
+		<transformer name="Bean XML"
+			className="gov.nih.nci.codegen.core.transformer.FreeMarkerTransformer">
+			<object refName="utils" className="gov.nih.nci.codegen.core.util.UML13Utils"/>
+			<param name="templateDir" value="templates"/>
+			<param name="templateName" value="SimpleBeanXML.ftl"/>
+			<param name="basePkg" value="Logical View.Logical Model"/>
+		</transformer>
+		<transformer name="Special"
+			className="gov.nih.nci.codegen.core.transformer.FreeMarkerTransformer">
+			<object refName="helper" className="gov.nih.nci.codegen.core.util.UML13JavaSourceHelper"/>
+			<param name="templateDir" value="templates"/>
+			<param name="templateName" value="Special.ftl"/>
+		</transformer>
+		<transformer name="JXML2Java"
+			className="gov.nih.nci.codegen.core.transformer.FreeMarkerTransformer">
+			<object refName="helper" className="gov.nih.nci.codegen.core.util.UML13JavaSourceHelper"/>
+			<param name="templateDir" value="templates"/>
+			<param name="templateName" value="jxml2java.ftl"/>
+		</transformer>
+		
+	</transformer-chain>
+	-->		
+	
+   <!--	Generates Hibernate OR mapping configuration files.
+
+	<transformer-chain>
+		<transformer name="hbm"
+			className="gov.nih.nci.codegen.core.transformer.UML13HBMTransformer">
+			<param name="omPackage" value="Logical View.Logical Model"/>
+			<param name="dmPackage" value="Logical View.Data Model"/>
+			<generator class="hilo">
+				<param name="table">hilo</param>
+				<param name="column">next_value</param>
+				<param name="max_lo">100</param>
+			</generator>
+		</transformer>
+		<transformer name="Add Doc"
+			className="gov.nih.nci.codegen.core.transformer.JETTransformer">
+			<param name="templateClassName" value="demo.AddDoc"/>
+		</transformer>		
+	</transformer-chain>	
+	-->	   	
+		
+	<artifact-handler className="gov.nih.nci.codegen.core.handler.ResourceFileHandler">
+		<param name="outputDir" value="output"/>
+		<param name="basePackage" value="Logical View.Logical Model"/>
+		<param name="fileSuffix" value="txt"/>
+	</artifact-handler>
+</transformation>

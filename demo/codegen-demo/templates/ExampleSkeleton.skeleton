@@ -1,0 +1,20 @@
+//import java.util.*;
+
+public class CLASS implements gov.nih.nci.codegen.core.transformer.template.JETTemplate{
+
+
+	/*
+	public String getGreeting(java.util.Map context){
+		return (String)context.get("greeting");
+	}
+	*/
+	
+	public String execute(Map context){
+		return generate(context);
+	}
+	
+	public String generate(Map context){
+		return "";
+	}
+
+}

@@ -1,0 +1,266 @@
+
+
+1. Purpose
+
+Hibernate Criteria API is a very useful tool for querying the persistent layer,
+but Hibernate 2.1 does not provide a detached Criteria API to serialize the Criteria
+between Java Virtual Machines.
+To solve this problem we made the following modifications which are packaged in alteredHibernate2.jar,
+however at the server side unmodified version of Hibernate is being used(hibernate3.jar).
+
+The purpose of this documentation is to record the changes that has been made to the Hibernate 2.1 API.
+
+2. Overview
+
+There are total 17 files listed below in hibernate packages that have been 
+modified.  Since the goal is to detach the Criteria/Criterions from Session, 
+most of the variables/methods used to process the result or query are 
+commented out.
+
+net.sf.hibernate.Criteria.java
+net.sf.hibernate.CriterionEntry.java
+net.sf.hibernate.impl.CriteriaImpl.java
+net.sf.hibernate.expression.AbstractCriterion.java
+net.sf.hibernate.expression.BetweenExpression.java
+net.sf.hibernate.expression.Criterion.java
+net.sf.hibernate.expression.Expression.java
+net.sf.hibernate.expression.IlikeExpression.java
+net.sf.hibernate.expression.InExpression.java
+net.sf.hibernate.expression.Junction.java
+net.sf.hibernate.expression.LogicalExpression.java
+net.sf.hibernate.expression.NotExpression.java
+net.sf.hibernate.expression.NotNullExpression.java
+net.sf.hibernate.expression.NullExpression.java
+net.sf.hibernate.expression.OrExpression.java
+net.sf.hibernate.expression.PropertyExpression.java
+net.sf.hibernate.expression.SimpleExpression.java
+
+
+3.  Package net.sf.hibernate
+
+Criteria.java (Interface)
+
+*  Commented 
+      Variables: ALIAS_TO_ENTITY_MAP(type: ResultTransformer)
+	         ROOT_ENTITY(type: ResultTransformer)
+	         DISTICT_ENTITY(type: ResultTransformer)
+      Methods:   public List list() throws Exception;
+ 	         public Object uniqueResult() throws Exception;
+	         public Criteria returnMaps();
+		 public Criteria returnRootEntities();
+		 public Criteria setResultTransformer(ResultTransformer 
+		 	resultTransformer);
+
+
+*  Modified:
+      Methods:   From: public Class getCriteriaClass(); 
+		 To:   public String getCriteriaClassName();
+
+		 From: public Class getCriteriaClass(String alias);
+		 To:   public String getCriteriaClassName(String alias);
+
+      Reason:	 To decouple Criteria and Session, the Criteria won't able to 
+      		 have the Class information.  It will only store the name of 
+      		 the persistence object
+*  Added:
+      Methods:   public Map getAliasAssPath();
+	 	 public List getCriterions();
+		 public Map getAliasClasses();
+		 public boolean getCacheable();
+		 public String getCacheRegion();
+		 public Integer getFetchSize();
+		 public Integer getFirstResult();
+		 public Integer getMaxResults();
+		 public Integer getTimeout();
+
+      Reason:	 The public getters provide the accessibility to the 
+      		 information that Detached Criteria API contains to the 
+      		 converting software.  It can be used to convert to the other 
+      		 criteria/query language.
+
+CriteriaEntity.java
+
+* This is a new file.
+
+
+4.  Package net.sf.hibernate.impl
+
+CriteriaImpl.java
+
+*  Commented
+      Variables: session(type: Session)
+		 resultTransformer(type: ResultTransformer)
+
+
+      Methods:   public List list() throws HibernateException
+		 public Object uniqueResult() throws HibernateException
+	         public Criteria returnMaps()
+		 public Criteria returnRootEntities()
+		 public ResultTransformer getResultTransformer()
+		 public Criteria setResultTransformer(ResultTransformer 
+		 					tupleMapper) 
+	         private Type getType(PropertyMapping pm, 
+	         		      String associationPath, 
+	         		      SessionFactoryImplementor factory)
+		 public Class getClassForPath(String rootAlias, 
+		 			      String associationPath) 
+		 			      throws HibernateException
+		 
+      Inner Class:  public static final class CriterionEntry
+      		    Reason:  This inner class is taken out as a regular class 
+      		    	     in net.sf.hibernate package to reduce the 
+      		    	     complexicity.
+
+
+*  Modified
+      Variables: classByAlias(type: HashMap) contains
+		 From: (String alias, Class persistentClass)
+		 To:   (String alias, String persistenClassName)
+		 Reason: CriteriaImpl/Criteria is not going to contain 
+		 	 persistentClass information since it is detached 
+		 	 from Session.
+		 
+		 associationPathByAlias(type: Map) 
+		 From: HashMap
+		 To:   LinkedHashMap
+		 
+		 aliasByAssociationPath(type: Map)
+		 From: HashMap
+		 To:   LinkedHashMap
+
+
+
+      Methods:   From: public Class getCriteriaClass() 
+		 To:   public String getCriteriaClassName()
+
+		 From: public Class getCriteriaClass(String alias)
+		 To:   public String getCriteriaClassName(String alias)
+
+		 From: public CriteriaImpl(Class persistentClass, 
+		 			   SessionImpl session) 
+		 To:   public CriteriaImpl(Class persistentClass)
+		 Reason: To Detach Criteria from Session, CriteriaImpl need 
+		 	 to be able to be consturcted without Session.
+
+		 From: public Class getPersistentClass(String alias) 
+		 To:   public String getPersistentClass(String alias)
+		 Reason: see Vaiable classByAlias.
+
+		 private void createAlias(String rootAlias, 
+		 			  String associationPath, 
+		 			  String alias)
+		 Reason:  This is the major change of this class.  The alias 
+		 	  is created and associated with the persistence class 
+		 	  name instead of the Class object.  Then, the 
+		 	  association is put into variable classByAlias. It 
+		 	  (the association) is not validated at this point.   
+		 	  The converting program can use this HashMap to 
+		 	  re-generate the session-coupled Criteria, where the 
+		 	  association can be validated.
+
+*  Added:
+      Methods:   public Map getAliasAssPath()
+	 	 public List getCriterions()
+		 public Map getAliasClasses()
+		 public boolean getCacheable()
+		 public String getCacheRegion()
+		 public Integer getFetchSize()
+		 public Integer getFirstResult()
+		 public Integer getMaxResults()
+		 public Integer getTimeout()
+		 public Map getAliasAssPath()
+		 public List getCriterions()
+
+5.  Package net.sf.hibernate.expression	
+
+#All the following object are changed to implement/extend Serializable object.
+
+#The two methods 
+(1.protected static String[] getColumns(....) throws HibernateException and 
+ 2.protected static TypedValue getTypedValue(....) throws HibernateException) 
+are commented out.
+
+
+AbstractCriterion.java
+
+BetweenExpression.java
+*  Added:
+      Methods:   public String getPropertyName()
+        	 public Object getLoValue()
+		 public Object getHiValue()
+
+Criterion.java
+
+Expression.java
+*  Commented:
+      Methods:   public static Criterion sql(String sql, 
+      					     Object[] values, 
+      					     Type[] types) 
+      		 public static Criterion sql(String sql, 
+      		 			     Object value, 
+      		 			     Type type) 
+		 public static Criterion sql(String sql) 
+
+*  Added:
+      Methods:   public String getPropertyName()
+        	 public Object getLoValue()
+		 public Object getHiValue()
+		 
+IlikeExpression.java
+*  Added:
+      Methods:   public String getPropertyName()
+        	 public Object getValue()
+
+InExpression.java
+*  Added:
+      Methods:   public String getPropertyName()
+		 public Object getValue()
+
+Junction.java
+*  Added:
+      Methods:   public List getCriterion()
+
+LogicalExpression.java
+*  Added:
+      Methods:   public Criterion getLeftCriterion()
+		 public Criterion getRightCriterion()
+
+NotExpression.java
+*  Added:
+      Methods:   public Criterion getCriterion()
+
+NotNullExpression.java
+*  Commented:
+      Variables:  private static final TypedValue[] NO_VALUES = 
+      							new TypedValue[0];
+
+*  Added:
+      Methods:    public String getPropertyName()
+
+NullExpression.java
+*  Commented:
+      Variables:  private static final TypedValue[] NO_VALUES = 
+      							new TypedValue[0];
+
+*  Added:
+      Methods:    public Criterion getCriterion()
+
+
+OrExpression.java
+
+PropertyExpression.java
+*  Commented:
+      Variables:  private static final TypedValue[] NO_VALUES = 
+      							new TypedValue[0];
+
+*  Added:
+      Methods:    public String getPropertyName()
+      		  public String getOtherPropertyName()
+
+SimpleExpression.java
+*  Added:
+      Methods:    public String getPropertyName()
+      		  public Object getValue()
+      		  public boolean getIgnoreCase()
+
+
