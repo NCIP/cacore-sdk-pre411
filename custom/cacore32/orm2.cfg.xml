@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+
+
+    <!-- properties -->
+    <!--<property name="show_sql">true</property>-->
+     <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
+     <property name="connection.datasource">java:cadsr</property>
+     <property name="hibernate.cache.provider_class"> org.hibernate.cache.EhCacheProvider</property>
+    <mapping resource="gov/nih/nci/cadsr/domain/AdministeredComponent.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/AdministeredComponentImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ClassificationSchemeItem.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ClassificationSchemeItemImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/PermissibleValue.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/PermissibleValueImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/Context.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ContextImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ReferenceDocument.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ReferenceDocumentImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/Designation.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DesignationImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/DataElementConceptRelationship.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DataElementConceptRelationshipImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ValueMeaning.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ValueMeaningImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ValueDomainPermissibleValue.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ValueDomainPermissibleValueImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ClassSchemeClassSchemeItem.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ClassSchemeClassSchemeItemImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/DataElementDerivation.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DataElementDerivationImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/DerivedDataElement.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DerivedDataElementImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/DerivationType.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DerivationTypeImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/AdministeredComponentClassSchemeItem.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/AdministeredComponentClassSchemeItemImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/DataElementRelationship.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DataElementRelationshipImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ValueDomainRelationship.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ValueDomainRelationshipImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ClassificationSchemeRelationship.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ClassificationSchemeRelationshipImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ClassificationSchemeItemRelationship.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ClassificationSchemeItemRelationshipImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ComponentConcept.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ComponentConceptImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ConceptDerivationRule.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ConceptDerivationRuleImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/Definition.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DefinitionImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/DesignationClassSchemeItem.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DesignationClassSchemeItemImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/DefinitionClassSchemeItem.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/DefinitionClassSchemeItemImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/AdministeredComponentContact.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/AdministeredComponentContactImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/Person.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/PersonImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/Organization.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/OrganizationImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/Address.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/AddressImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/TriggerAction.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/TriggerActionImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/Function.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/FunctionImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/ComponentLevel.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/domain/impl/ComponentLevelImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/Project.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/ProjectImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/SubProject.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/SubProjectImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/UMLPackageMetadata.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/UMLPackageMetadataImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/UMLClassMetadata.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/UMLClassMetadataImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/UMLAttributeMetadata.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/UMLAttributeMetadataImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/SemanticMetadata.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/SemanticMetadataImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/UMLAssociationMetadata.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/UMLAssociationMetadataImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/UMLGeneralizationMetadata.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/UMLGeneralizationMetadataImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/AttributeTypeMetadata.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/AttributeTypeMetadataImpl.hbm.xml" />
+	    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/TypeEnumerationMetadata.hbm.xml" />
+    <mapping resource="gov/nih/nci/cadsr/umlproject/domain/impl/TypeEnumerationMetadataImpl.hbm.xml" />
+  </session-factory>
+</hibernate-configuration>
+

@@ -9,7 +9,7 @@
 	<property name="url.doc.release" value="ftp://ftp1.nci.nih.gov/pub/cacore/SDK/caCORE_SDK1.1_notes.txt"/>
 	-->
 	<property name="path.doc.readme" value="README.txt"/>
-	
+
 	<property name="dir.temp.download" value="temp/documentation"/>
 	<property name="dir.temp.unzip" value="temp/unzip"/>
 	<property name="dir.output" value="output/sdk_${version}"/>
@@ -18,21 +18,21 @@
 	<property name="file.doc.programmers" value="caCORE_SDK1.1_Programmers_Guide.pdf"/>
 	<property name="file.doc.release" value="caCORE_SDK1.1_notes.txt"/>
 	-->
-	<property name="file.doc.readme" value="README.txt"/>		
-	
+	<property name="file.doc.readme" value="README.txt"/>
+
 	<property name="file.output" value="caCORE_SDK_${version}"/>
 	<property name="file.output.zip" value="caCORE-SDK1-1.zip"/>
 	<property name="file.output.tar" value="caCORE-SDK1-1.tar"/>
 	<property name="file.output.tar.gz" value="caCORE-SDK1-1.tar.gz"/>
-	
+
 	<target name="all">
 		<delete dir="${dir.temp.download}"/>
 		<delete dir="${dir.temp.unzip}"/>
 		<delete file="${dir.output}/${file.output.zip}"/>
-		
+
 		<mkdir dir="${dir.temp.download}"/>
 		<mkdir dir="${dir.output}"/>
-	<!--	
+	<!--
 		<get src="${url.doc.install}" dest="${dir.temp.download}/${file.doc.install}"/>
 		<get src="${url.doc.programmers}" dest="${dir.temp.download}/${file.doc.programmers}"/>
 		<get src="${url.doc.release}" dest="${dir.temp.download}/${file.doc.release}"/>
@@ -118,7 +118,6 @@
 			</zipfileset>
 			<zipfileset dir="conf/xslt" prefix="${project_name}/conf/xslt">
 				<include name="cacoreFormat.xsl"/>
-				<include name="htmlFormat.xsl"/>
 				<include name="styleSheet.css"/>
 				<exclude name="**/CVS/**"/>
 			</zipfileset>
@@ -152,16 +151,16 @@
 		<unzip src="${dir.output}/${file.output.zip}" dest="${dir.temp.unzip}"/>
 		<tar tarfile="${dir.output}/${file.output.tar.gz}" basedir="${dir.temp.unzip}" compression="gzip"/>
 		<delete dir="${dir.temp.unzip}"/>
-		
+
 	</target>
 
 	<target name="help">
 		<echo>
 			This ant script creates a downloadable archive of the caCORE SDK.
-			
-			This file must be edited before use to set the version number 
+
+			This file must be edited before use to set the version number
 			   and provide locations for documentation files.
 		</echo>
 	</target>
-	
+
 </project>

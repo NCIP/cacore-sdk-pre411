@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="gov.nih.nci.cabio.domain">
+  <class name="Location" table="LOCATION_TV" lazy="true" polymorphism="explicit">
+    <cache usage="read-write" />
+    <id name="id" type="java.lang.Long" column="ID">
+      <generator class="assigned" />
+    </id>
+    <many-to-one name="gene" class="gov.nih.nci.cabio.domain.Gene" column="GENE_ID" lazy="true" />
+    <many-to-one name="chromosome" class="gov.nih.nci.cabio.domain.Chromosome" column="CHROMOSOME_ID" lazy="true" />
+    <many-to-one name="SNP" class="gov.nih.nci.cabio.domain.SNP" column="SNP_ID" lazy="true" />
+    <many-to-one name="nucleicAcidSequence" class="gov.nih.nci.cabio.domain.NucleicAcidSequence" column="NUCLEIC_ACID_ID" unique="true" lazy="true" />
+    <joined-subclass name="gov.nih.nci.cabio.domain.CytogeneticLocation" table="CYTOGENIC_LOCATION_CYTOBAND">
+      <key column="CYTOGENIC_LOCATION_ID" />
+      <property name="startCytobandLocId" type="java.lang.Long" column="START_CYTOBAND_LOC_ID" insert="false" update="false"/>
+      <property name="endCytobandLocId" type="java.lang.Long" column="END_CYTOBAND_LOC_ID" insert="false" update="false" />
+      <many-to-one name="endCytoband" class="gov.nih.nci.cabio.domain.Cytoband" column="END_CYTOBAND_LOC_ID" lazy="true" />
+      <many-to-one name="startCytoband" class="gov.nih.nci.cabio.domain.Cytoband" column="START_CYTOBAND_LOC_ID" lazy="true" />
+    </joined-subclass>
+    <joined-subclass name="gov.nih.nci.cabio.domain.PhysicalLocation" table="PHYSICAL_LOCATION">
+      <key column="ID" />
+      <property name="chromosomalStartPosition" type="java.lang.Long" column="CHROMOSOMAL_START_POSITION" />
+      <property name="chromosomalEndPosition" type="java.lang.Long" column="CHROMOSOMAL_END_POSITION" />
+      <set name="cytobandCollection" lazy="true" inverse="true">
+        <cache usage="read-write" />
+        <key column="PHYSICAL_LOCATION_ID" />
+        <one-to-many class="gov.nih.nci.cabio.domain.Cytoband" />
+      </set>
+    </joined-subclass>
+  </class>
+</hibernate-mapping>
+
