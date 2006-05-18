@@ -41,7 +41,10 @@
 	</condition>
 
 	<condition property="create_mysqluser_yes">
-		<istrue value="${create_mysql_user}"/>
+		<and>
+			<contains substring="mysql" casesensitive="no" string="${database_type}"/>
+			<istrue value="${create_mysql_user}"/>
+		</and>
 	</condition>
 
 	<condition property="create_schema_yes">
@@ -79,6 +82,16 @@
 	<condition property="container-deploy-path" value="${j2se_container_home}/webapps">
 		<isset property="tomcat-yes"/>
 	</condition>
+	
+	<condition property="start-mysql-yes">
+		<and>
+			<contains substring="mysql" casesensitive="no" string="${database_type}"/>
+			<istrue value="${start_mysql}"/>
+		</and>
+	</condition>
+	<condition property="start-container-yes">
+		<istrue value="${start_container}"/>
+	</condition>
 
 
 <!--***********************************************************************
@@ -97,8 +110,9 @@
 		<fileset dir="${dir.lib}">
 			<include name="*.jar"/>
 		</fileset>
-		<pathelement location="${dir.framework.build}"/>
 		<pathelement location="${dir.output.project.build}"/>
+		<pathelement location="${dir.output.project.framework.build}"/>
+		<pathelement location="${dir.generator.build}"/>
 		<pathelement location="${dir.conf}"/>
 	</path>
 	<path id="classpath-client">
@@ -207,31 +221,23 @@
 		description="Generates artifacts from model"/>
 
 	<target name="-build-artifacts.main"
-		depends="compile-framework,generate-artifacts"
+		depends="compile-generator,generate-artifacts"
 		unless="build-artifacts.main.ignore"/>
 
 	<target name="build-beans"
 		depends="-build-beans.main,-build-beans.custom"
-		description="Generates beans from model, copies custom beans and compiles all beans"/>
+		description="Generates beans from model, copies custom beans and generates JUnit tests"/>
 
 	<target name="-build-beans.main"
-		depends="compile-framework,generate-beans,copy-custom-beans,generate-junit,compile-beans"
+		depends="compile-generator,generate-beans,copy-custom-beans,generate-junit"
 		unless="build-beans.main.ignore"/>
-
-	<target name="build-framework"
-		depends="-build-framework.main,-build-framework.custom"
-		description="Compiles and packages SDK framework files"/>
-
-	<target name="-build-framework.main"
-		depends="clean-framework,compile-framework,package-framework"
-		unless="build-framework.main.ignore"/>
 
 	<target name="build-orm"
 		depends="-build-orm.main,-build-orm.custom"
 		description="Generates beans from model, copies custom beans and compiles all beans"/>
 
 	<target name="-build-orm.main"
-		depends="compile-framework,generate-OR-mapping,generate-orm-conf,copy-custom-orm"
+		depends="compile-generator,generate-OR-mapping,generate-orm-conf,copy-custom-orm"
 		unless="build-orm.main.ignore"/>
 
 	<target name="build-schema"
@@ -246,7 +252,7 @@
 		depends="-build-system.main,-build-system.custom"
 		description="Runs entire SDK code generation process"/>
 
-	<target name="-build-system.main" depends="install-tomcat,build-schema,compile-framework,build-beans,build-orm,build-artifacts,package-system,deploy-server" unless="build-system.main.ignore"/>
+	<target name="-build-system.main" depends="install-tomcat,build-schema,compile-generator,build-beans,build-orm,build-artifacts,compile-framework,compile-beans,package-system,deploy-server" unless="build-system.main.ignore"/>
 
 	<target name="clean"
 		depends="-clean.main,-clean.custom"
@@ -273,13 +279,13 @@
 		<SDKecho message="All generated code and artifacts have been deleted"/>
 	</target>
 
-	<target name="clean-framework"
-		depends="-clean-framework.main,-clean-framework.custom"
-		description="Removes compiled/packaged SDK framework"/>
+	<target name="clean-generator"
+		depends="-clean-generator.main,-clean-generator.custom"
+		description="Removes compiled/packaged SDK generator"/>
 
-	<target name="-clean-framework.main" unless="clean-framework.main.ignore">
-		<SDKecho message="Deleting SDK framework"/>
-		<delete dir="${dir.framework.build}" quiet="true"/>
+	<target name="-clean-generator.main" unless="clean-generator.main.ignore">
+		<SDKecho message="Deleting SDK generator"/>
+		<delete dir="${dir.generator.build}" quiet="true"/>
 	</target>
 
 	<target name="compile-beans"
@@ -295,16 +301,49 @@
 
 	<target name="compile-framework"
 		depends="-compile-framework.main,-compile-framework.custom"
-		description="Compile SDK framework classes"/>
+		description="Compile application framework classes"/>
 
 	<target name="-compile-framework.main" depends="copy-project-framework,disable-writable-api" unless="compile-framework.main.ignore">
-		<SDKecho message="Compiling SDK framework"/>
-		<mkdir dir="${dir.framework.build}"/>
-		<javac srcdir="${dir.output.project.framework}" destdir="${dir.framework.build}">
+		<SDKecho message="Compiling application framework"/>
+		<javac srcdir="${dir.output.project.framework.src}" destdir="${dir.output.project.framework.build}">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
 
+	<target name="compile-generator"
+		depends="-compile-generator.main,-compile-generator.custom"
+		description="Compile SDK code generation classes"/>
+
+	<target name="-compile-generator.main" unless="compile-generator.main.ignore">
+		<SDKecho message="Compiling SDK code generator"/>
+		<mkdir dir="${dir.generator.build}"/>
+		<javac destdir="${dir.generator.build}">
+			<src path="${dir.generator.src}"/>
+			<include name="gov/nih/nci/codegen/**/*.java"/>
+			<include name="gov/nih/nci/common/exception/*.java"/>
+			<include name="gov/nih/nci/common/util/*marshall*.java"/>
+			<classpath refid="classpath"/>
+		</javac>
+	</target>	
+	
+	<target name="compile-templates"
+		depends="-compile-templates.main,-compile-templates.custom"
+		description="Compile Java JET templates for the project specified in deploy.properties"/>
+
+	<target name="-compile-templates.main" depends="compile-generator,copy-template-files" unless="compile-templates.main.ignore">
+		<SDKecho message="Compiling JET templates"/>
+		<jetc template="${dir.output.project.templates}/Bean.javajet" destdir="${dir.output.project.src}"/>
+		<jetc template="${dir.output.project.templates}/BeanImpl.javajet" destdir="${dir.output.project.src}"/>
+		<jetc template="${dir.output.project.templates}/BeanWS.javajet" destdir="${dir.output.project.src}"/>
+		<jetc template="${dir.output.project.templates}/BeanWSImpl.javajet" destdir="${dir.output.project.src}"/>
+		<jetc template="${dir.output.project.templates}/BeanHBJunit.javajet" destdir="${dir.output.project.src}"/>
+		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}">
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+
+	
+	
 	<target name="copy-custom-beans"
 		depends="-copy-custom-beans.main,-copy-custom-beans.custom"
 		description="Adds custom-written beans to the project src directory"/>
@@ -353,7 +392,7 @@
 				<filter token="PROJECT_NAME" value="${project_name}"/>
 			</filterset>
 		</copy>
-		<copy todir="${dir.output.project.framework}" overwrite="true">
+		<copy todir="${dir.output.project.framework.src}" overwrite="true">
 			<fileset dir="${dir.framework.src}">
 				<include name="gov/nih/nci/common/util/Constant.java"/>
 			</fileset>
@@ -363,8 +402,12 @@
 				<filter token="DEFAULT_SESSION_TIMEOUT" value="${default_session_timeout}"/>
 			</filterset>
 		</copy>
-		<copy todir="${dir.output.project.framework}" overwrite="false">
-			<fileset dir="${dir.framework.src}"/>
+		<copy todir="${dir.output.project.framework.src}" overwrite="false">
+			<fileset dir="${dir.framework.src}">
+				<exclude name="gov/nih/nci/codegen/**/*.java"/>
+				<exclude name="gov/nih/nci/common/exception/*.java"/>
+				<exclude name="gov/nih/nci/common/util/*marshall*.java"/>			
+			</fileset>
 		</copy>
 	</target>
 
@@ -482,12 +525,6 @@
 		<SDKecho message="Creating output directories"/>
 		<mkdir dir="${dir.output}"/>
 		<mkdir dir="${dir.output.doc}"/>
-		<mkdir dir="${dir.output.project.package}"/>
-		<mkdir dir="${dir.output.project.package.server}"/>
-		<mkdir dir="${dir.output.project.package.client}"/>
-
-		<mkdir dir="${dir.framework.package}"/>
-		<mkdir dir="${dir.framework.build}"/>
 
 		<delete dir="${dir.temp}" quiet="true"/>
 		<mkdir dir="${dir.temp}"/>
@@ -506,8 +543,12 @@
 		<mkdir dir="${dir.output.project.client}"/>
 		<mkdir dir="${dir.output.project.conf}"/>
 		<mkdir dir="${dir.output.project.doc}"/>
-		<mkdir dir="${dir.output.project.framework}"/>
+		<mkdir dir="${dir.output.project.framework.src}"/>
+		<mkdir dir="${dir.output.project.framework.build}"/>
 		<mkdir dir="${dir.output.project.orm}"/>
+		<mkdir dir="${dir.output.project.package}"/>
+		<mkdir dir="${dir.output.project.package.server}"/>
+		<mkdir dir="${dir.output.project.package.client}"/>
 		<mkdir dir="${dir.output.project.xmlschema}"/>
 		<mkdir dir="${dir.output.project.src}"/>
 		<mkdir dir="${dir.output.project.templates}"/>
@@ -530,6 +571,7 @@
 
 	<target name="-deployWS.main" unless="deployWS.main.ignore">
 		<SDKecho message="Deploying web services"/>
+		<echo message="Deploying to ${url.project.axisservice}"/>
 		<java classname="org.apache.axis.client.AdminClient" fork="true">
 			<classpath refid="classpath"/>
 			<arg value="-l${url.project.axisservice}"/>
@@ -543,7 +585,7 @@
 
 	<target name="-disable-writable-api.main" if="disable-writable-api-yes" unless="disable-writable-api.main.ignore">
 		<SDKecho message="Disabling writable APIs"/>
-		<copy todir="${dir.output.project.framework}" overwrite="true">
+		<copy todir="${dir.output.project.framework.src}" overwrite="true">
 			<fileset dir="${dir.framework.src}">
 				<include name="gov/nih/nci/system/applicationservice/ApplicationService.java"/>
 				<include name="gov/nih/nci/system/applicationservice/impl/ApplicationServiceImpl.java"/>
@@ -595,7 +637,7 @@
 		description="Pre-processes XMI file to ensure that it can be parsed by NetBeans MDR component">
 	</target>
 
-	<target name="-fix-xmi.main" if="fix-xmi-yes" depends="create-project-dirs,compile-framework" unless="fix-xmi.main.ignore">
+	<target name="-fix-xmi.main" if="fix-xmi-yes" depends="create-project-dirs,compile-generator" unless="fix-xmi.main.ignore">
 		<SDKecho message="Pre-processing XMI file"/>
 		<java classname="gov.nih.nci.codegen.core.util.FixXMI" fork="true">
 			<classpath refid="classpath"/>
@@ -636,7 +678,7 @@
 		depends="-generate-beans.main,-generate-beans.custom"
 		description="Generate beans based on model specified in deploy.properties"/>
 
-	<target name="-generate-beans.main" depends="init-project,jetc" unless="generate-beans.main.ignore">
+	<target name="-generate-beans.main" depends="init-project,compile-templates" unless="generate-beans.main.ignore">
 		<SDKecho message="Generating Java beans from model"/>
 		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.beangeneration}"/>
 		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.beanimplgeneration}"/>
@@ -777,22 +819,6 @@
 	<target name="-init-project.main" depends="create-output-dirs,create-project-dirs,create-control-files,copy-template-files,fix-xmi" unless="init-project.main.ignore">
 	</target>
 
-	<target name="jetc"
-		depends="-jetc.main,-jetc.custom"
-		description="Compile Java JET templates for the project specified in deploy.properties"/>
-
-	<target name="-jetc.main" depends="compile-framework,copy-template-files" unless="jetc.main.ignore">
-		<SDKecho message="Compiling JET templates"/>
-		<jetc template="${dir.output.project.templates}/Bean.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanImpl.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanWS.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanWSImpl.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanHBJunit.javajet" destdir="${dir.output.project.src}"/>
-		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}">
-			<classpath refid="classpath"/>
-		</javac>
-	</target>
-
 	<target name="package-client"
 		depends="-package-client.main,-package-client.custom"
 		description="Creates client.zip file"/>
@@ -842,20 +868,19 @@
 				<attribute name="Model-File" value="${model_filename}"/>
 			</manifest>
 			<fileset dir="${dir.output.project.build}">
-				<exclude name="**/system/*"/>
+				<exclude name="gov/nih/nci/system/**"/>
+				<exclude name="gov/nih/nci/codegen/**"/>
 			</fileset>
-			<fileset dir="${dir.framework.build}">
-				<include name="**/system/applicationservice/*"/>
-				<include name="**/system/delegator/DelegateException.class"/>
-				<include name="**/system/proxy/InterfaceProxy.class"/>
-				<include name="**/system/aspect/**"/>
-				<include name="**/comm/common/ApplicationServiceProxy.class"/>
-				<include name="**/ApplicationServiceClientImpl.class"/>
-				<include name="**/ClientSession.class"/>
-				<include name="**/common/util/**"/>
-				<include name="**/common/net/**"/>
-				<include name="**/common/exception/**"/>
-				<include name="**/evs/**"/>
+			<fileset dir="${dir.output.project.framework.build}">
+				<include name="gov/nih/nci/system/applicationservice/*"/>
+				<include name="gov/nih/nci/system/delegator/DelegateException.class"/>
+				<include name="gov/nih/nci/system/proxy/InterfaceProxy.class"/>
+				<include name="gov/nih/nci/system/comm/common/ApplicationServiceProxy.class"/>
+				<include name="gov/nih/nci/system/comm/client/ApplicationServiceClientImpl.class"/>
+				<include name="gov/nih/nci/system/comm/client/ClientSession.class"/>
+				<include name="gov/nih/nci/common/util/**"/>
+				<include name="gov/nih/nci/common/net/**"/>
+				<include name="gov/nih/nci/common/exception/**"/>
 			</fileset>
 			<fileset dir="${dir.conf}">
 				<include name="mapping.dtd"/>
@@ -915,19 +940,6 @@
 			dest="${dir.output.project.package.client}"/>
 	</target>
 
-	<target name="package-framework"
-		depends="-package-framework.main,-package-framework.custom"
-		description="Package compiled SDK framework classes as a jar"/>
-
-	<target name="-package-framework.main" unless="package-framework.main.ignore">
-		<SDKecho message="Packaging framework classes"/>
-		<jar index="true" jarfile="${dir.framework.package}/${file.framework.package}">
-			<fileset dir="${dir.framework.build}">
-				<include name="**/**"/>
-			</fileset>
-		</jar>
-	</target>
-
 	<target name="package-server"
 		depends="-package-server.main,-package-server.custom"
 		description="Creates .war file for server"/>
@@ -954,17 +966,17 @@
 				<include name="applicationContext.xml"/>
 				<include name="httpinvoker-servlet.xml"/>
 			</webinf>
+			<classes dir="${dir.output.project.framework.build}">
+				<exclude name="gov/nih/nci/system/comm/client/ApplicationServiceClientImpl.class"/>
+				<exclude name="gov/nih/nci/system/comm/client/ClientSession.class"/>			
+			</classes>
 			<classes dir="${dir.output.project.build}">
 				<exclude name="**/impl/test/*.class"/>
-			</classes>
-			<classes dir="${dir.framework.build}">
-				<exclude name="**/ApplicationServiceClientImpl.class"/>
-				<exclude name="**/ClientSession.class"/>
 			</classes>
 			<classes dir="${dir.output.project.orm}"/>
 			<classes dir="${dir.output.project.conf}">
 				<include name="${file.control.systemProperties}"/>
-				<include name="DAOConfig.xml"/>
+				<include name="${file.dao.configuration}"/>
 				<include name="roleLookup.properties"/>
 				<include name="cacoreBeans.properties"/>
 				<include name="log4j.properties"/>
@@ -977,7 +989,7 @@
 			<classes file="${dir.conf}/xml.properties"/>
 			<classes file="${dir.output.project}/log4j.properties"/>
 			<zipfileset dir="${dir.output.project.conf}" prefix="WEB-INF/conf">
-				<include name="DAOConfig.xml"/>
+				<include name="${file.dao.configuration}"/>
 			<!--	<include name="log4j.properties"/>
 				<include name="roleLookup.properties"/>
 				<include name="cacoreBeans.properties"/>

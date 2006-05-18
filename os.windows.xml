@@ -18,11 +18,11 @@
 		</exec>
 	</target>
 	
-	<target name="start-container">
+	<target name="start-container" if="start-container-yes">
 		<antcall target="start-${container_type}"/>
 	</target>
 
-	<target name="start-mysql">
+	<target name="start-mysql" if="start-mysql-yes">
 		<exec dir="${mysql_home}/bin" executable="cmd" spawn="true">
 			<arg line="/C start ${mysql_home}/bin/mysqld.exe --remove"/>
 		</exec>

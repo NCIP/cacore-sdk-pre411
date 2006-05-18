@@ -17,11 +17,11 @@
 		</exec>
 	</target>
 	
-	<target name="start-container">
+	<target name="start-container" if="start-container-yes">
 		<antcall target="start-${container_type}"/>
 	</target>
 	
-	<target name="start-mysql">
+	<target name="start-mysql" if="start-mysql-yes">
 		<chmod dir="${mysql_home}/bin/" includes="*" perm="u+x"/>
 		<chmod dir="${mysql_home}/bin/" includes="*.*" perm="u+x"/>
 		<chmod dir="${mysql_home}/scripts/" includes="*" perm="u+x"/>

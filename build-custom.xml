@@ -3,15 +3,16 @@
 
 	<target name="-build-artifacts.custom" if="build-artifacts.custom.use"/>
 	<target name="-build-beans.custom" if="build-beans.custom.use"/>
-	<target name="-build-framework.custom" if="build-framework.custom.use"/>
 	<target name="-build-orm.custom" if="build-orm.custom.use"/>
 	<target name="-build-schema.custom" if="build-schema.custom.use"/>
 	<target name="-build-system.custom" if="build-system.custom.use"/>
 	<target name="-clean.custom" if="clean.custom.use"/>
 	<target name="-clean-all.custom" if="clean-all.custom.use"/>
-	<target name="-clean-framework.custom" if="clean-framework.custom.use"/>
+	<target name="-clean-generator.custom" if="clean-generator.custom.use"/>
 	<target name="-compile-beans.custom" if="compile-beans.custom.use"/>
 	<target name="-compile-framework.custom" if="compile-framework.custom.use"/>
+	<target name="-compile-generator.custom" if="compile-generator.custom.use"/>
+	<target name="-compile-templates.custom" if="compile-templates.custom.use"/>
 	<target name="-copy-custom-beans.custom" if="copy-custom-beans.custom.use"/>
 	<target name="-copy-custom-orm.custom" if="copy-custom-orm.custom.use"/>
 	<target name="-copy-project-framework.custom" if="copy-project-framework.custom.use"/>
@@ -40,9 +41,7 @@
 	<target name="-generate-wsdd.custom" if="generate-wsdd.custom.use"/>
 	<target name="-generate-xml-mapping.custom" if="generate-xml-mapping.custom.use"/>
 	<target name="-init-project.custom" if="init-project.custom.use"/>
-	<target name="-jetc.custom" if="jetc.custom.use"/>
 	<target name="-package-client.custom" if="package-client.custom.use"/>
-	<target name="-package-framework.custom" if="package-framework.custom.use"/>
 	<target name="-package-server.custom" if="package-server.custom.use"/>
 	<target name="-package-system.custom" if="package-system.custom.use"/>
 	<target name="-rundemo.custom" if="rundemo.custom.use"/>
