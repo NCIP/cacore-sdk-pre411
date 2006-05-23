@@ -113,6 +113,7 @@
 		<pathelement location="${dir.output.project.build}"/>
 		<pathelement location="${dir.output.project.framework.build}"/>
 		<pathelement location="${dir.generator.build}"/>
+		<pathelement location="${dir.output.project.conf}"/>
 		<pathelement location="${dir.conf}"/>
 	</path>
 	<path id="classpath-client">
