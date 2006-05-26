@@ -71,7 +71,7 @@ public <% if (isAbstract.equals("abstract")) {%> <%=isAbstract%><%}%> class <%=k
 			
 			private <%=fullBeanName%> <%=otherEnd.getName()%>;
 			public <%=fullBeanName%> get<%=capFirst(otherEnd.getName())%>(){
-			  return null;			
+			  return <%=otherEnd.getName()%>;
                         }
 		   
 	      <% }else if(UML13Utils.isOne2One(thisEnd, otherEnd)){ %>
