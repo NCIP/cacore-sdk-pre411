@@ -16,11 +16,11 @@ hibernate.query.substitutions true 1, false 0, yes 'Y', no 'N'
 
 #hibernate.dialect org.hibernate.dialect.OracleDialect
 #If the version of Oracle is 9.x uncomment the following and comment the above by a '#'
-#hibernate.dialect org.hibernate.dialect.Oracle9Dialect
-#hibernate.connection.driver_class oracle.jdbc.driver.OracleDriver
-#hibernate.connection.username @DBUSER@
-#hibernate.connection.password @DBPASSWD@
-#hibernate.connection.url jdbc:oracle:thin:@@SERVERNAME@:1521:@DBNAME@
+hibernate.dialect org.hibernate.dialect.Oracle9Dialect
+hibernate.connection.driver_class oracle.jdbc.driver.OracleDriver
+hibernate.connection.username @DBUSER@
+hibernate.connection.password @DBPASSWD@
+hibernate.connection.url jdbc:oracle:thin:@@SERVERNAME@:1521:@DBNAME@
 
 
 
