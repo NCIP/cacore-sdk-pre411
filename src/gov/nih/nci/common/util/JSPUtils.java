@@ -22,8 +22,8 @@ public class JSPUtils
     private static Logger log = Logger.getLogger(JSPUtils.class.getName());
     private static JSPUtils jspUtils = null;
     private static Properties properties = new Properties();    
-    private static List<String> domainNames = new ArrayList<String>();
-    private static Set<String> packages = new HashSet<String>();
+    private static List domainNames = new ArrayList();
+    private static Set packages = new HashSet();
     private static final String SEMICOLON_SEPARATOR = ";";
     private static final String COMMA_SEPARATOR = ",";
        
@@ -39,7 +39,7 @@ public class JSPUtils
         {
             if(jspUtils == null)
             {                
-                List <String>fileList = new ArrayList<String>();
+                List fileList = new ArrayList();
                 ServletContext context = config.getServletContext();
                 String beanFiles = context.getInitParameter ("cacoreBeans.Properties");
                 
@@ -62,7 +62,7 @@ public class JSPUtils
      * Get all the domain names includes package information
      * @return list of domain names
      */
-    public List<String> getDomainNames()
+    public List getDomainNames()
     {      
           
        Collections.sort(domainNames);       
@@ -73,9 +73,9 @@ public class JSPUtils
      * Get all the packages
      * @return all packages
      */
-    public List<String> getPackages()
+    public List getPackages()
     {        
-        List <String>pkg = new ArrayList<String>(packages);        
+        List pkg = new ArrayList(packages);        
         Collections.sort(pkg);        
         return pkg;
     }
@@ -86,7 +86,7 @@ public class JSPUtils
      * @param packageName
      * @return list of domain names
      */
-    public List <String>getClassNames(String packageName)
+    public List getClassNames(String packageName)
     {
         Collections.sort(domainNames);
         if(packageName == null || packageName.equalsIgnoreCase("All"))
@@ -94,7 +94,7 @@ public class JSPUtils
             return domainNames;
         }
         //filter the domainNames to get all classes in this package
-        List <String>packageClasses = new ArrayList<String>();
+        List packageClasses = new ArrayList();
         String ckassName="";
         for(int i=0; i<domainNames.size(); i++)
         {
@@ -114,9 +114,9 @@ public class JSPUtils
      * @param className
      * @return List of all fields for the given class
      */
-    public List<String> getAllFields(String className)
+    public List getAllFields(String className)
     {
-        List <String> fieldNames = new ArrayList<String>();
+        List  fieldNames = new ArrayList();
         
         try
         {
@@ -203,8 +203,8 @@ public class JSPUtils
         }
         
     }
-    static List <String>getFileList(String files){
-        List <String>fileList = new ArrayList<String>();
+    static List getFileList(String files){
+        List fileList = new ArrayList();
         
         if(files.indexOf(SEMICOLON_SEPARATOR)>0){
             StringTokenizer st = new StringTokenizer(files, SEMICOLON_SEPARATOR);
