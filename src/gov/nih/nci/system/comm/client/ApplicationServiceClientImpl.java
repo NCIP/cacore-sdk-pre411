@@ -70,7 +70,7 @@ public class ApplicationServiceClientImpl extends ApplicationService
 		}
 	}
 	
-	@Override
+	//@Override
 	protected ApplicationService getBeanInstance()
 	{
 		applicationServiceProxy = getRemoteServiceFromClassPath();
@@ -78,7 +78,7 @@ public class ApplicationServiceClientImpl extends ApplicationService
 		return applicationService;
 	}
 
-	@Override
+	//@Override
 	protected ApplicationService getBeanInstance(String URL)
 	{
 		applicationServiceProxy = getRemoteServiceFromPath(URL);
@@ -119,7 +119,7 @@ public class ApplicationServiceClientImpl extends ApplicationService
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#setRecordsCount(int)
 	 */
-	@Override
+	//@Override
 	public void setRecordsCount(int recordsCount) throws ApplicationException
 	{
 		if (recordsCount > maxRecordsCount)
