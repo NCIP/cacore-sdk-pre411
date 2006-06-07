@@ -37,7 +37,7 @@ public class ApplicationServiceImpl extends ApplicationService
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#getBeanInstance()
 	 */
-	@Override
+	//@Override
 	protected ApplicationService getBeanInstance()
 	{
 		// TODO Auto-generated method stub
@@ -47,7 +47,7 @@ public class ApplicationServiceImpl extends ApplicationService
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#getBeanInstance(java.lang.String)
 	 */
-	@Override
+	//@Override
 	protected ApplicationService getBeanInstance(String URL)
 	{
 		// TODO Auto-generated method stub
@@ -57,7 +57,7 @@ public class ApplicationServiceImpl extends ApplicationService
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#setRecordsCount(int)
 	 */
-	@Override
+	//@Override
 	public void setRecordsCount(int recordsCount) throws ApplicationException
 	{
 		try
