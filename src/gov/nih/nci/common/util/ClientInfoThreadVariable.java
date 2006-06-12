@@ -31,7 +31,7 @@ public class ClientInfoThreadVariable
 			return 0;
 	}
 
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	public static void setClientInfo(ClientInfo clientInfo)
 	{
 		if (null != clientInfo)
