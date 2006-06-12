@@ -951,7 +951,6 @@
 		<war destfile="${dir.output.project.package.server}/${file.project.server.war}"
 			webxml="${dir.conf}/web.xml" update="yes">
 			<lib dir="${dir.lib}">
-				<exclude name="log4j-1.2.8.jar"/>
 				<exclude name="commons-logging*.*"/>
 				<exclude name="spring-richclient.jar"/>
 			</lib>
