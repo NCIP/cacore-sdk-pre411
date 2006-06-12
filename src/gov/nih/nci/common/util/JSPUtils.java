@@ -98,7 +98,7 @@ public class JSPUtils
         String ckassName="";
         for(int i=0; i<domainNames.size(); i++)
         {
-            ckassName = domainNames.get(i);
+            ckassName = (String)domainNames.get(i);
             if(ckassName.indexOf(packageName, 0) >= 0)
             {      
                 packageClasses.add(ckassName);                
