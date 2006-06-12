@@ -164,7 +164,7 @@ public class UML13EHCacheTransformer implements Transformer, XMLConfigurable {
 	 */
 
 	private String generateConfig(Collection classifiers) {
-		StringBuilder cache = new StringBuilder();
+		StringBuffer cache = new StringBuffer();
 		
 		cache.append("<ehcache>\n");
 		cache.append("<diskStore path=\"");
