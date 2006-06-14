@@ -417,11 +417,11 @@ public org.jdom.Document getXMLDocument(Object[] resultSet, int pageNumber) thro
     int totalNumRecords = results.size();
 
     if(!(startIndex.equals("0") || startIndex == null)){
-        index = Integer.valueOf(startIndex);
+        index = Integer.valueOf(startIndex).intValue();
     }
 
     if(!(resultCounter.equals("0") ||resultCounter == null )){
-        resultCount = Integer.valueOf(resultCounter);
+        resultCount = Integer.valueOf(resultCounter).intValue();
     }
 
     Element xmlElement = new Element("queryResponse");
@@ -727,13 +727,12 @@ private Element getElement(Object result, String recordNum) throws Exception{
                         fieldValue = String.valueOf(value);
                         String temp = null;
                         for(int s=0; s< fieldValue.length(); s++){
-                            int intValue = fieldValue.codePointAt(s);
                             String charValue = String.valueOf(fieldValue.charAt(s));
                             try{
                                 Element tempElement = new Element("Temp").setText(charValue);
                                 temp += charValue;
                             }catch(Exception e){
-                                temp += " &#"+String.valueOf(intValue)+" ";
+                                temp += " ";
                             }
                         }
                         if(temp != null){
