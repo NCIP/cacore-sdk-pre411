@@ -43,9 +43,9 @@ public class SVGManipulator
     private String name;
 
     private String GENE_INFO_STRING=null;
-    
+
     private static Logger log = Logger.getLogger(SVGManipulator.class.getName());
-     
+
      /**
 	 * Constructor
 	 */
@@ -55,13 +55,13 @@ public class SVGManipulator
 	 }
 
 	 /**
-	 * Constructor - accepts pathways as an object, use reflection to get its name and svgString through getName and getDiagram methods respectively. 
+	 * Constructor - accepts pathways as an object, use reflection to get its name and svgString through getName and getDiagram methods respectively.
 	 * It also converts the svgString into svgDiagram document.
 	 * @param pathway Object
 	 */
 	 public SVGManipulator(Object pathway) throws Exception
 	 {
-         
+
 		try
 		{
 			loadProperties();
@@ -75,44 +75,44 @@ public class SVGManipulator
 				 Method getDiagram = cls.getMethod("getDiagram", parameterTypes);
 				 this.svgString = (String)getDiagram.invoke(pathway, arguments);
 				 Method getName = cls.getMethod("getName", parameterTypes);
-				 this.name = (String)getName.invoke(pathway, arguments);				 
+				 this.name = (String)getName.invoke(pathway, arguments);
 				 Document svgDoc = getSvgDiagram();
 			 }
-		 } 
-         catch (NoSuchMethodException e) 
+		 }
+         catch (NoSuchMethodException e)
          {
 	          log.error("SVGManipulator - NoSuchMethodException: " + e.getMessage());
 	          throw new Exception("SVGManipulator - NoSuchMethodException: " + e.getMessage());
-	          
-		 } 
-         catch (IllegalArgumentException e) 
+
+		 }
+         catch (IllegalArgumentException e)
          {
 			log.error("SVGManipulator - IllegalArgumentException: " + e.getMessage());
 			throw new Exception("SVGManipulator - IllegalArgumentException: " + e.getMessage());
-	          
-			
-		 } 
-         catch (IllegalAccessException e) 
+
+
+		 }
+         catch (IllegalAccessException e)
          {
 			log.error("SVGManipulator - IllegalAccessException: " + e.getMessage());
 			throw new Exception("SVGManipulator - IllegalAccessException: " + e.getMessage());
-	          
+
 		 }
-		 catch (InvocationTargetException e) 
+		 catch (InvocationTargetException e)
          {
 	          //System.out.println("InvocationTargetException: " + e.getMessage());
 	          log.error("SVGManipulator - InvocationTargetException: " + e.getMessage());
 	          throw new Exception("SVGManipulator - InvocationTargetException: " + e.getMessage());
-	          
+
          }
 		 catch(Exception e)
 		 {
 		     log.error("SVGManipulator - Exception: " + e.getMessage());
 		     throw new Exception("SVGManipulator - Exception: " + e.getMessage());
-	          
+
 		 }
-	 }     
-    
+	 }
+
 
 	 /**
 	  * setGeneInfoLocation - replaces default GENE_INFO_STRING with geneInfoLocation.
@@ -123,17 +123,17 @@ public class SVGManipulator
 	 public void setGeneInfoLocation(String geneInfoLocation) throws Exception
 	 {
  		// check if svg has been changed
-	 
+
 		 String svgString = getSvgString();
 		 if (svgString==null) return; // nothing to do
 		 this.svgString = replaceString(svgString, GENE_INFO_STRING, geneInfoLocation);
-		 if (svgDiagram!=null) 
+		 if (svgDiagram!=null)
          {
 			// set the current parsed document to null and reparse the string
 			this.svgDiagram=null;
 			this.svgDiagram=getSvgDiagram();
         }
-		
+
 	 }
 
 	 /**
@@ -245,19 +245,19 @@ public class SVGManipulator
 	  * @return Document
 	  */
 	public Document getSvgDiagram() throws Exception
-	{		
-		if (this.svgDiagram==null) 
+	{
+		if (this.svgDiagram==null)
         {
-			if (this.svgString!=null) 
+			if (this.svgString!=null)
             {
-				try 
-                {					
+				try
+                {
 					 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 					 documentBuilderFactory.setNamespaceAware(true);
 					 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 					 StringReader  stringIn = new StringReader(svgString);
 					 svgDiagram = documentBuilder.parse(new InputSource(stringIn));
-					 
+
 					 if(this.originalSvg == null)
 					 {
 						 DocumentBuilderFactory documentBuilderFactory0 = DocumentBuilderFactory.newInstance();
@@ -266,8 +266,8 @@ public class SVGManipulator
 						 StringReader  stringIn0 = new StringReader(svgString);
 					 	 this.originalSvg = documentBuilder0.parse(new InputSource(stringIn0));
 					 }
-				} 
-                catch (Exception e) 
+				}
+                catch (Exception e)
                 {
 					 log.error("getSvgDiagram - Exception: " + e.getMessage());
 					 throw new Exception("getSvgDiagram - Exception: " + e.getMessage());
@@ -287,7 +287,7 @@ public class SVGManipulator
 		 this.svgDiagram = svg;
 		 if(originalSvg == null)
 		 {
-			 try 
+			 try
              {
 				StringWriter  stringOut = new StringWriter();
 				OutputFormat outformat = new OutputFormat();
@@ -301,13 +301,13 @@ public class SVGManipulator
 				documentBuilderFactory0.setNamespaceAware(true);
 				DocumentBuilder documentBuilder0 = documentBuilderFactory0.newDocumentBuilder();
 			 	StringReader  stringIn0 = new StringReader(tempString);
-				this.originalSvg = documentBuilder0.parse(new InputSource(stringIn0));				
-			} 
-             catch (Exception e) 
+				this.originalSvg = documentBuilder0.parse(new InputSource(stringIn0));
+			}
+             catch (Exception e)
              {
                  log.error("Exception: " + e.getMessage());
                  throw new Exception("setSvgDiagram - Exception: " + e.getMessage());
-                 
+
 			 }
 		}
 	 }
@@ -329,10 +329,10 @@ public class SVGManipulator
 	 public String getSvgString() throws Exception
      {
 		 // check if svg has been changed
-		 if (this.svgDiagram!=null) 
+		 if (this.svgDiagram!=null)
          {
 			 // set up xml serialization stuff
-		   try 
+		   try
            {
 				StringWriter  stringOut = new StringWriter();
 			 	OutputFormat outformat = new OutputFormat();
@@ -341,7 +341,7 @@ public class SVGManipulator
 			 	xmlserializer.setOutputCharStream(stringOut);
 			 	xmlserializer.serialize(svgDiagram);
 			  	svgString = stringOut.toString();
-			} catch (Exception e) 
+			} catch (Exception e)
             {
 				log.error("getSvgString - Exception: " + e.getMessage());
 				throw new Exception("getSvgString - Exception: " + e.getMessage());
@@ -352,9 +352,9 @@ public class SVGManipulator
 
 	/**
 	 * Get the current color of the specified gene within the SVG diagram.
-	 * With current cabio domain model, to get bcid for a given gene object: 
+	 * With current cabio domain model, to get bcid for a given gene object:
 	 * <li> call getGeneAliasCollection method of the Gene object
-	 * <li>	iterate through this collection (GeneAlias object), call getType() method, check its value, if it matches “BioCarta” then call getName() method to get bcid. 
+	 * <li>	iterate through this collection (GeneAlias object), call getType() method, check its value, if it matches “BioCarta” then call getName() method to get bcid.
 	 *			Break through the loop when this occurs.<br>
 	 * When bcid value is found, go through svg document, look for the bcid found, if there is a match, return the color for that, if not, return null.
 	 *
@@ -376,7 +376,7 @@ public class SVGManipulator
 		Collection c=null;
 		// use reflection to get gene information and invoke it method
 		// to get GeneAliasCollection. From GeneAlias, get BCID
-		try 
+		try
         {
 			Class cls = gene.getClass();
 			Class[] parameterTypes = new Class[] {};
@@ -385,7 +385,7 @@ public class SVGManipulator
 
 			if(gene != null)
 			{
-				 Method getAlias = cls.getMethod("getGeneAliasCollection", parameterTypes);				 
+				 Method getAlias = cls.getMethod("getGeneAliasCollection", parameterTypes);
 				 c = (Collection)getAlias.invoke(gene, arguments);
 			}
 
@@ -403,37 +403,37 @@ public class SVGManipulator
 					break; // found the first bcid
 				}
 			}
-		 } catch (NoSuchMethodException e) 
+		 } catch (NoSuchMethodException e)
          {
 			log.error("NoSuchMethodException: " + e.getMessage());
 			throw new Exception("getSvgColor - NoSuchMethodException: " + e.getMessage());
-			
-			
-		 } catch (IllegalArgumentException e) 
+
+
+		 } catch (IllegalArgumentException e)
          {
 			// TODO Auto-generated catch block
 			log.error("getSvgColor - IllegalArgumentException: " + e.getMessage());
 			throw new Exception("getSvgColor - IllegalArgumentException: " + e.getMessage());
-			
-			
-		 } catch (IllegalAccessException e) 
+
+
+		 } catch (IllegalAccessException e)
          {
 			log.error("getSvgColor - IllegalAccessException: " + e.getMessage());
 			throw new Exception("getSvgColor - IllegalAccessException: " + e.getMessage());
-			
-			
-		 } catch (InvocationTargetException e) 
-         {			
+
+
+		 } catch (InvocationTargetException e)
+         {
 			log.error("getSvgColor - InvocationTargetException: " + e.getMessage());
 			throw new Exception("getSvgColor - InvocationTargetException: " + e.getMessage());
-			
-			
+
+
          } catch(Exception e)
          {
              log.error("getSvgColor - Exception: " + e.getMessage());
              throw new Exception("getSvgColor - Exception: " + e.getMessage());
- 			
-             
+
+
          }
 
 		// go through svg document, return color for the specified bcid
@@ -488,10 +488,10 @@ public class SVGManipulator
     }
 
 	 /**
-	  * This method goes through the svg document, set the color given for each bcid found in each genes array. 
-	  * For genes[0], set colors[0], etc. To find the bcid for the specified gene, 
+	  * This method goes through the svg document, set the color given for each bcid found in each genes array.
+	  * For genes[0], set colors[0], etc. To find the bcid for the specified gene,
 	  * use the same logic as in getSvgColor(Object gene) method.
-	  * @param genes 
+	  * @param genes
 	  * @param colors
 	 */
 	public void setSvgColors(Object[] genes, String[] colors) throws Exception
@@ -504,7 +504,7 @@ public class SVGManipulator
         try
         {
 			Class[] parameterTypes = new Class[] {};
-			Object[] arguments = new Object[] {};						
+			Object[] arguments = new Object[] {};
             for (int i=0; i<genes.length; i++ )
             {
                 String[] bcids=null, tempbcids=null;
@@ -513,71 +513,71 @@ public class SVGManipulator
                 Class cls = genes[i].getClass();
 
                 Method getAlias = cls.getMethod("getGeneAliasCollection", parameterTypes);
-				Collection c = (Collection)getAlias.invoke(genes[i], arguments);				
+				Collection c = (Collection)getAlias.invoke(genes[i], arguments);
                 tempbcids = new String[c.size()];
-                
+
                 for(Iterator itr = c.iterator(); itr.hasNext();)
 				{
-					Object geneAlias = itr.next();					
+					Object geneAlias = itr.next();
 					Class clsGeneAlias = geneAlias.getClass();
-					Method getType = clsGeneAlias.getMethod("getType", parameterTypes);				
+					Method getType = clsGeneAlias.getMethod("getType", parameterTypes);
 
-					aliasType = (String)getType.invoke(geneAlias, arguments);					
+					aliasType = (String)getType.invoke(geneAlias, arguments);
 					if(aliasType.equals(Constant.BIOCARTA_STRING))
 					{
 						Method getName = clsGeneAlias.getMethod("getName", parameterTypes);
 						bcid = (String)getName.invoke(geneAlias, arguments);
-                        tempbcids[n++] = bcid;											
-						
+                        tempbcids[n++] = bcid;
+
 					}
-				}                
+				}
                 if(tempbcids != null && tempbcids.length > 0)
                 {
                     bcids = new String[tempbcids.length - 1];
                     for (int k=0; k<n; k++)
                     {
                         bcids[k] = tempbcids[k];
-                    }            
-                
+                    }
+
                     for (int j=0; j<bcids.length; j++)
                     {
-                        colortab.put(bcids[j],colors[i]);                        
+                        colortab.put(bcids[j],colors[i]);
                     }
-                }                
+                }
             }
-         } catch (NoSuchMethodException e) 
+         } catch (NoSuchMethodException e)
          {
 			//System.out.println(e);
 			log.error("setSvgColors - NoSuchMethodException: " + e.getMessage());
 			throw new Exception("setSvgColors - NoSuchMethodException: " + e.getMessage());
-			
-		 } catch (IllegalArgumentException e) 
+
+		 } catch (IllegalArgumentException e)
          {
 			// TODO Auto-generated catch block
-			
+
 			log.error("IllegalArgumentException: " + e.getMessage());
 			throw new Exception("setSvgColors - IllegalArgumentException: " + e.getMessage());
-			
-		 } catch (IllegalAccessException e) 
+
+		 } catch (IllegalAccessException e)
          {
-			// TODO Auto-generated catch block			
+			// TODO Auto-generated catch block
 			log.error("IllegalAccessException: " + e.getMessage());
 			throw new Exception("setSvgColors - IllegalAccessException: " + e.getMessage());
-			
-			
-		 } catch (InvocationTargetException e) 
+
+
+		 } catch (InvocationTargetException e)
          {
 		     //System.out.println(e);
 		     log.error("InvocationTargetException: " + e.getMessage());
 		     throw new Exception("setSvgColors - InvocationTargetException: " + e.getMessage());
-				
-		     
+
+
          } catch (Exception e)
          {
 			//System.out.println("exception here" + e.getMessage());
 			log.error("Exception: " + e.getMessage());
 			throw new Exception("setSvgColors - Exception: " + e.getMessage());
-			
+
             //return;
          }
 
@@ -596,14 +596,14 @@ public class SVGManipulator
                 // only interested in node if it's an element
                 if ( node.getNodeType() == Node.ELEMENT_NODE )
                 {
-                    String name=node.getNodeName();                   
+                    String name=node.getNodeName();
                     // get list of nodes for "g" child node
                     NodeList gkids=node.getChildNodes();
                     for ( int k=0; k<gkids.getLength(); k++)
                     {
                         Node gknode=gkids.item(k);
                         if ( gknode.getNodeType() == Node.ELEMENT_NODE )
-                        {                             
+                        {
                              if ( gknode.hasAttributes() ){
                                   // get node attributes
                                   NamedNodeMap gkattrmap=gknode.getAttributes();
@@ -614,7 +614,7 @@ public class SVGManipulator
                                   if ( objref == null ) continue;
                                   String obname=(String)objref.getNodeValue();
                                   // get existing color then update to new color
-                                  Node colref = gkattrmap.getNamedItem("style");                                  
+                                  Node colref = gkattrmap.getNamedItem("style");
                                   if (colortab.containsKey(obname))
                                   {
                                      String newcolor=colorMap(colref.getNodeValue(),(String)colortab.get(obname));
@@ -630,11 +630,11 @@ public class SVGManipulator
 
         return;
 	 }
-    
-  
+
+
 
 	/**
-	 * This is an overloaded method instead the parameter contain a Map with key as bcid and value is color. 
+	 * This is an overloaded method instead the parameter contain a Map with key as bcid and value is color.
 	 * Use this method when bcid(s) are known.
 	 * Hastable key contain BCID, value contain color value
 	 * @param colors
@@ -657,7 +657,7 @@ public class SVGManipulator
 				 // only interested in node if it's an element
 				 if ( node.getNodeType() == Node.ELEMENT_NODE )
                  {
-					 String name=node.getNodeName();					 
+					 String name=node.getNodeName();
 					 // get list of nodes for "g" child node
 					 NodeList gkids=node.getChildNodes();
 					 for ( int k=0; k<gkids.getLength(); k++)
@@ -719,15 +719,15 @@ public class SVGManipulator
 		 this.name = name;
 	 }
 
-	 /** 
-	  * 
+	 /**
+	  *
 	  */
-	 public String toString() 
+	 public String toString()
 	 {
 		 String tempString=null;
-		 if (svgDiagram!=null) 
+		 if (svgDiagram!=null)
          {
-			 try 
+			 try
              {
 				StringWriter  stringOut = new StringWriter();
 				OutputFormat outformat = new OutputFormat();
@@ -736,14 +736,14 @@ public class SVGManipulator
 				xmlserializer.setOutputCharStream(stringOut);
 				xmlserializer.serialize(svgDiagram);
 				tempString = stringOut.toString();
-			 } catch (Exception e) 
+			 } catch (Exception e)
              {
 				log.error("toString - Exception: " + e.getMessage());
 				System.out.println("toString - Exception: " + e.getMessage());
 			 }
 		 }
-		 //StringBuffer buf = new StringBuffer();
-         StringBuilder buf = new StringBuilder();
+		 StringBuffer buf = new StringBuffer();
+         //StringBuilder buf = new StringBuilder();
 	   	 buf.append("PathwayDiagram:\r\n");
 	     buf.append(" Name: [").append(name).append("]\r\n");
 	     buf.append(" svg: [").append(tempString).append("]\r\n");
@@ -755,14 +755,14 @@ public class SVGManipulator
 	  * @return The original SVG document
 	  */
 	 public Document reset() throws Exception
-	 {		
+	 {
 		 this.svgDiagram =null;
 
 		 String tempString=null;
 
 		 if(originalSvg != null)
 		 {
-			 try 
+			 try
              {
 				StringWriter  stringOut = new StringWriter();
 				OutputFormat outformat = new OutputFormat();
@@ -778,7 +778,7 @@ public class SVGManipulator
 				StringReader  stringIn0 = new StringReader(tempString);
 				this.svgDiagram = documentBuilder0.parse(new InputSource(stringIn0));
 
-             } catch (Exception e) 
+             } catch (Exception e)
              {
 				log.error("reset - Exception: " + e.getMessage());
 				throw new Exception("reset - Exception: " + e.getMessage());
@@ -787,21 +787,21 @@ public class SVGManipulator
 		return this.svgDiagram;
 	 }
 	 /**
-	  * save the document in the specified filename. 
+	  * save the document in the specified filename.
 	  * @param fileName
 	  * @param doc
 	  * @return true - document is saved, false otherwise
 	 */
 	public boolean saveXMLDoc(String fileName, Document doc)
-	{		 
+	{
 		 File xmlOutputFile = new File(fileName);
 		 FileOutputStream fos;
 		 Transformer transformer=null;
-		 try 
+		 try
          {
 			 fos = new FileOutputStream(xmlOutputFile);
 		 }
-		 catch (FileNotFoundException e) 
+		 catch (FileNotFoundException e)
          {
 			 //System.out.println("FileNotFoundException: " + e.getMessage());
 			 log.error("saveXMLDoc - FileNotFoundException: " + e.getMessage());
@@ -809,11 +809,11 @@ public class SVGManipulator
 		 }
 		 // Use a Transformer for output
 		 TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		 try 
+		 try
          {
 		     transformer = transformerFactory.newTransformer();
 		 }
-		 catch (TransformerConfigurationException e) 
+		 catch (TransformerConfigurationException e)
          {
 		     //System.out.println("Transformer configuration error: " + e.getMessage());
 		     log.error("saveXMLDoc - TransformerConfigurationException: " + e.getMessage());
@@ -822,11 +822,11 @@ public class SVGManipulator
 
 		 DOMSource source = new DOMSource(doc);
 		 StreamResult result = new StreamResult(fos);
-		 try 
+		 try
          {
 		     transformer.transform(source, result);
 		 }
-		 catch (TransformerException e) 
+		 catch (TransformerException e)
          {
 		     //System.out.println("Error transform: " + e.getMessage());
 		     log.error("saveXMLDoc - TransformerException: " + e.getMessage());
@@ -851,18 +851,18 @@ public class SVGManipulator
 	  */
 	 private String updateFilter(String source, String filterSpec)
      {
-		 //StringBuffer resultbuff=new StringBuffer();
-         StringBuilder resultbuff=new StringBuilder();
+		 StringBuffer resultbuff=new StringBuffer();
+         //StringBuilder resultbuff=new StringBuilder();
 		 if ( source == null )return "filter:url(" + filterSpec + ")";
-		 try 
+		 try
          {
 			 // remove OpaqueFilter and Transparent if they exist
 			 replaceString(source, "filter:url(#OpaqueFilter)", "");
 			 replaceString(source, "filter:url(#TransparentFilter)", "");
-			 if (filterSpec.equals("#TransparentFilter")) 
+			 if (filterSpec.equals("#TransparentFilter"))
              {
 				 resultbuff.append(source).append(";filter:url(#TransparentFilter)");
-			 } else if (filterSpec.equals("#OpaqueFilter")) 
+			 } else if (filterSpec.equals("#OpaqueFilter"))
              {
 				 resultbuff.append(source).append(";filter:url(#OpaqueFilter)");
 			 }
@@ -887,7 +887,7 @@ public class SVGManipulator
     * @return The updated string with the RGB value modified, or the original string if a
     *          substitution was unable to be made.
     */
-	 private String colorMap(String currColor, String newColor) 
+	 private String colorMap(String currColor, String newColor)
 	 {
 		 // return appropriate color directive for the passed in bcid id using the
 		 // passed in currcolor string as the template.
@@ -896,7 +896,7 @@ public class SVGManipulator
 		 // the important part seems to be "rbg(x,x,x)"
 		 String result=null;
 		 if (newColor == null || newColor.equals("null") ) return currColor;
-		 try 
+		 try
          {
 			 int rgbstart=currColor.indexOf("rgb(");
 			 result = currColor.substring(0,rgbstart+4) + newColor;
@@ -913,10 +913,11 @@ public class SVGManipulator
 
 	 private String replaceString(String str, String sep, String rep)
 	 {
-         StringBuilder retVal = new StringBuilder();
+         //StringBuilder retVal = new StringBuilder();
+         StringBuffer retVal = new StringBuffer();
 		 int idx = 0;
 		 int jdx = str.indexOf(sep);
-		 while (jdx >= 0) 
+		 while (jdx >= 0)
          {
 			retVal.append(str.substring(idx, jdx));
 			retVal.append(rep);
@@ -928,22 +929,22 @@ public class SVGManipulator
 	 }
 
      private void loadProperties() throws Exception
-     {   
+     {
         if(GENE_INFO_STRING != null) return;
         try{
             Properties _properties = new Properties();
-    
+
             _properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("CORESystem.properties"));
 
             GENE_INFO_STRING = (String)_properties.getProperty("GENE_INFO_STRING");
-            
+
         }catch(IOException e)
         {
             log.error("loadProperties - IOException: " + e.getMessage());
             throw new IOException("loadProperties - IOException: " + e.getMessage());
             //System.out.println("IOException occured: "+e.getMessage());
         }
-        catch(Exception ex){    
+        catch(Exception ex){
             log.error("loadProperties - Exception: " + ex.getMessage());
             throw new Exception("loadProperties - Exception: " + ex.getMessage());
             //System.out.println("Exception - "+ ex.getMessage());
