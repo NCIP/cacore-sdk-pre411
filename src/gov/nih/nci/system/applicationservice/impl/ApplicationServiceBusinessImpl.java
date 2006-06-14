@@ -634,7 +634,7 @@ public class ApplicationServiceBusinessImpl {
 				String getterMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 				String setterMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 				// orig's getter method
-				Method getterMethod = objKlass.getMethod(getterMethodName);
+				Method getterMethod = objKlass.getMethod(getterMethodName, null);
 				// new object setter method
 				Method setterMethod = newObject.getClass().getMethod(setterMethodName,
 						new Class[] { getterMethod.getReturnType() });
@@ -648,7 +648,7 @@ public class ApplicationServiceBusinessImpl {
 						}
 					}
 				} else {
-					fieldValue = getterMethod.invoke(obj);
+					fieldValue = getterMethod.invoke(obj,null);
 					if (fieldValue instanceof Collection) {
 						Collection oldValue = (Collection) fieldValue;
 						Collection newValue = new ArrayList();
@@ -725,7 +725,7 @@ public class ApplicationServiceBusinessImpl {
 				String getterMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 				String setterMethodName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 				// orig's getter method
-				Method getterMethod = objKlass.getMethod(getterMethodName);
+				Method getterMethod = objKlass.getMethod(getterMethodName,null);
 				// new object setter method
 				Method setterMethod = newObject.getClass().getMethod(setterMethodName,
 						new Class[] { getterMethod.getReturnType() });
@@ -751,7 +751,7 @@ public class ApplicationServiceBusinessImpl {
 
 	private String convertPathName(String oldName) {
 		log.debug("ApplicationService.convertPathName(): oldName = " + oldName);
-		String temp = oldName.replace(".impl.", ".");
+		String temp = oldName.replaceAll(".impl.", ".");
 		if (temp.endsWith("Impl")) {
 			temp = temp.substring(0, temp.length() - 4);
 		}
@@ -762,6 +762,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.1  2006/05/10 19:26:51  connellm
+// Initial check in of code to support the splitting of the SDk from caCORE.
+//
 // Revision 1.5  2006/03/29 21:18:37  masondo
 // Removed HTTPClient
 //
