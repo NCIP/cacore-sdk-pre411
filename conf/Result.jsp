@@ -73,7 +73,11 @@ if(submitValue != null && submitValue.equalsIgnoreCase("Submit"))
    	%>  	  	  
    <br>
 
-<jsp:forward page="<%=query%>" />
+<%
+
+response.sendRedirect(request.getContextPath()+"/"+query);
+
+%>
 <%
 }
 %>
