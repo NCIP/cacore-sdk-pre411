@@ -127,7 +127,7 @@ public class HTTPQuery extends HttpServlet{
             if(httpUtils.getPageNumber()!= null){
                 pageNumber = Integer.parseInt(httpUtils.getPageNumber());
             } 
-            httpUtils.setServletName(request.getRequestURI().toString());
+            httpUtils.setServletName(request.getRequestURL().toString());
             
             if(httpUtils.getPageSize() != null){
                 pageSize = Integer.parseInt(httpUtils.getPageSize());           
