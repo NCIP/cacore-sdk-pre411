@@ -26,7 +26,7 @@
 	<target name="-disable-writable-api.custom" if="disable-writable-api-yes,disable-writable-api.custom.use"/>
 	<target name="-doc.custom" if="doc.custom.use"/>
 	<target name="-doc-framework.custom" if="doc-framework.custom.use"/>
-	<target name="-fix-xmi.custom" if="fix-xmi-yes,fix-xmi.custom.use"/>
+	<target name="-fix-xmi.custom" if="fix-xmi-yes-custom"/>
 	<target name="-format.custom" if="format.custom.use"/>
 	<target name="-generate-artifacts.custom" if="generate-artifacts.custom.use"/>
 	<target name="-generate-beans.custom" if="generate-beans.custom.use"/>

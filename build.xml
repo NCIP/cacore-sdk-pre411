@@ -22,6 +22,14 @@
 	<condition property="fix-xmi-yes">
 		<equals arg1="${fix_xmi}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>
+
+	<condition property="fix-xmi-yes-custom">
+		<and>
+			<istrue value="${fix-xmi-yes}"/>
+			<istrue value="${fix-xmi.custom.use}"/>
+		</and>
+	</condition>
+
 	<condition property="OR-mapping-yes">
 		<not>
 			<istrue value="${manual_datamodel}"/>
