@@ -1,0 +1,20 @@
+Oracle Test Schema
+================
+Server: cbiodb2-d
+Database: CADEV
+Port: 1521
+User: cacoresdk
+Password: sdk1234
+
+MySQL Test Schema
+================
+Server: cbiovdev5004
+Port: 3626 (this is not the standard MySQL port as multiple databases will run here).
+Username: cacoresdk
+Password: cac#476
+
+FTP Server
+================
+ ftp://ncicbftp2.nci.nih.gov/ 
+ Username: sdkftp 
+ Password: FooBar!2 (Password will keep changing. Check with systems team before using)
