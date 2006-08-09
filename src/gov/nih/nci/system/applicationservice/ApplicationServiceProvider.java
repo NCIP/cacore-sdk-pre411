@@ -17,7 +17,7 @@ public class ApplicationServiceProvider
 	private static ApplicationService applicationService = null;
 
 	/**
-	 * Default contructor. Does nothing
+	 * Default constructor. Does nothing
 	 */	
 	public ApplicationServiceProvider()
 	{
