@@ -104,10 +104,7 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
                 mapping = new Mapping();
                 mapping.setEntityResolver(resolver);
                 mapping.loadMapping(mappIS);
-            } catch (MappingException e) {
-            	log.error("XML mapping file invalid: \n " + e.getMessage());
-                throw new XMLUtilityException(e.getMessage(), e);
-            } catch (IOException e) {
+            }catch (IOException e) {
                 log.error("Error reading default xml mapping file " + e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
                 throw new XMLUtilityException("Error reading default xml mapping file " + e.getMessage(), e);
             }
