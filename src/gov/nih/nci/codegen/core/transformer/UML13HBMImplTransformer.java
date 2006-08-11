@@ -45,7 +45,7 @@ import gov.nih.nci.codegen.framework.Transformer;
 
 /**
  * @author <A HREF="mailto:joshua.a.phillips@saic.com">Joshua Phillips </A>
- * @version $Id: UML13HBMImplTransformer.java,v 1.1 2006-05-10 19:26:39 connellm Exp $
+ * @version $Id: UML13HBMImplTransformer.java,v 1.2 2006-08-11 18:52:49 satish79 Exp $
  *
  */
 public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
@@ -539,7 +539,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
             }
             else
             {
-               	m2OneEl.setAttribute("lazy", "true");
+               	m2OneEl.setAttribute("lazy", "proxy");
             }
         }
     }

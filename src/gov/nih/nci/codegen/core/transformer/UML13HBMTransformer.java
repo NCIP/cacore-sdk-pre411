@@ -603,7 +603,7 @@ public class UML13HBMTransformer implements Transformer, XMLConfigurable {
 				m2OneEl.setAttribute("lazy", "false");
 				m2OneEl.setAttribute("fetch", "join");
 			} else {
-				m2OneEl.setAttribute("lazy", "true");
+				m2OneEl.setAttribute("lazy", "proxy");
 			}
 		}
 	}
