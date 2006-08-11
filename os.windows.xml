@@ -8,13 +8,13 @@
 	
 	<target name="start-jboss"> 
 		<exec dir="${j2se_container_home}/bin" executable="cmd" spawn="true">
-			<arg line="/C start ${j2se_container_home}/bin/run.bat -c ${jboss_configuration}"/>
+			<arg line="/C start &quot;${j2se_container_home}/bin/run.bat -c ${jboss_configuration}&quot;"/>
 		</exec>
 	</target>
 
 	<target name="start-tomcat"> 
 		<exec dir="${j2se_container_home}/bin" executable="cmd" spawn="true">
-			<arg line="/C start ${j2se_container_home}/bin/startup.bat"/>
+			<arg line="/C start &quot;${j2se_container_home}/bin/startup.bat&quot;"/>
 		</exec>
 	</target>
 	
@@ -24,11 +24,11 @@
 
 	<target name="start-mysql" if="start-mysql-yes">
 		<exec dir="${mysql_home}/bin" executable="cmd" spawn="true">
-			<arg line="/C start ${mysql_home}/bin/mysqld.exe --remove"/>
+			<arg line="/C start &quot;${mysql_home}/bin/mysqld.exe --remove&quot;"/>
 		</exec>
 
 		<exec dir="${mysql_home}/bin" executable="cmd" spawn="true">
-			<arg line="/C start ${mysql_home}/bin/mysqld.exe"/>
+			<arg line="/C start &quot;${mysql_home}/bin/mysqld.exe&quot;"/>
 		</exec>
 	</target>
 	
