@@ -145,9 +145,9 @@ public class HTTPQuery extends HttpServlet{
             HttpSession session = request.getSession();
             HTTPUtils prop = (HTTPUtils)session.getAttribute("properties");
             
-            if(!session.isNew() && prop != null){
-               match = httpUtils.getMatch(prop);                
-            }
+//            if(!session.isNew() && prop != null){
+//               match = httpUtils.getMatch(prop);                
+//            }
             
          
             try{ 
@@ -196,7 +196,7 @@ public class HTTPQuery extends HttpServlet{
                     }
 
             }catch(Exception ex){
-                log.error(ex.getMessage());               
+                log.error(ex.getMessage()); 
                 throw new Exception(ex.getMessage());
                 }
 
