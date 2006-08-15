@@ -1,19 +1,29 @@
 package gov.nih.nci.common.util;
 
-import gov.nih.nci.system.webservice.WSQuery;
-import gov.nih.nci.system.applicationservice.*;
+import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.ApplicationServiceProvider;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.io.*;
-import java.lang.reflect.*;
-import javax.servlet.http.*;
-import javax.servlet.*;
-import org.jdom.*;
-import org.jdom.output.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
 
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Logger;
+import org.jdom.Element;
+import org.jdom.Namespace;
 
 
 /**
@@ -40,7 +50,7 @@ import org.apache.log4j.*;
  */
 /**
  * HTTPUtils presents various methods to generate search criteria from xquery like syntax.
- * This class also provides funtionality to generate XML result.
+ * This class also provides functionality to generate XML result.
  *
  * @author Shaziya Muhsin
  * @version 1.1
