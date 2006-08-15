@@ -93,7 +93,7 @@ public class StringClobType implements UserType{
     }
 	
     /**
-     * Retrievs an instance of the mapped class from a JDBC resultset
+     * Retrieves an instance of the mapped class from a JDBC resultset
      * @param rs - resultset
      * @param names
      * @param owner
