@@ -6,6 +6,7 @@ import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.AuthorizationException;
 import gov.nih.nci.system.comm.common.ApplicationServiceProxy;
 import gov.nih.nci.system.server.mgmt.SecurityEnabler;
 
@@ -83,7 +84,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				String domainObjectName =  tokenPath.nextToken().trim();
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
-					throw new ApplicationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
 			}
 		}
 		
@@ -110,7 +111,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				String domainObjectName =  tokenPath.nextToken().trim();
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
-					throw new ApplicationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
 			}
 		}
 		return applicationService.search(path, obj);
@@ -136,7 +137,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				String domainObjectName =  tokenPath.nextToken().trim();
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
-					throw new ApplicationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
 			}
 		}
 
@@ -163,7 +164,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				String domainObjectName =  tokenPath.nextToken().trim();
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
-					throw new ApplicationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
 			}
 		}
 
@@ -189,7 +190,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				String domainObjectName =  tokenPath.nextToken().trim();
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
-					throw new ApplicationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
 			}
 		}
 
@@ -215,7 +216,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				String domainObjectName =  tokenPath.nextToken().trim();
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
-					throw new ApplicationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
 			}
 		}
 
@@ -241,7 +242,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				String domainObjectName =  tokenPath.nextToken().trim();
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
-					throw new ApplicationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
 			}
 		}
 
@@ -259,7 +260,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
 			if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),targetClassName, "READ"))
-				throw new ApplicationException("User does not have privilege to perform a READ on " + targetClassName+ " object");
+				throw new AuthorizationException("User does not have privilege to perform a READ on " + targetClassName+ " object");
 		}
 		
 		return applicationService.getQueryRowCount(criteria, targetClassName);
@@ -283,7 +284,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 			{
 				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(), domainObjectName, "CREATE"))
 				{
-					throw new ApplicationException("User does not have privilege to CREATE " + domainObjectName + " object");
+					throw new AuthorizationException("User does not have privilege to CREATE " + domainObjectName + " object");
 				}
 			}
 			catch (ApplicationException e)
@@ -307,17 +308,10 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
-			try
+			String domainObjectName = domainobject.getClass().getName();
+			if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(), domainObjectName, "UPDATE"))
 			{
-				String domainObjectName = domainobject.getClass().getName();
-				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(), domainObjectName, "UPDATE"))
-				{
-					throw new ApplicationException("User does not have privilege to CREATE " + domainObjectName + " object");
-				}
-			}
-			catch (ApplicationException e)
-			{
-				throw new ApplicationException(e.getMessage());
+				throw new AuthorizationException("User does not have privilege to CREATE " + domainObjectName + " object");
 			}
 		}
 

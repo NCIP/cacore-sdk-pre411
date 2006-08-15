@@ -12,6 +12,10 @@ import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.applicationservice.AuthenticationException;
+import gov.nih.nci.system.applicationservice.AuthorizationException;
+
+import org.apache.log4j.Logger;
 
 /**
  * This class is used to inject security into the automated generated
@@ -22,7 +26,7 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
  */
 public class SecurityEnabler
 {
-
+	private static Logger log = Logger.getLogger(SecurityEnabler.class.getName());
 	private String applicationContextName = null;
 	private static AuthorizationManager authorizationManager = null;
 	private static AuthenticationManager authenticationManager = null;
@@ -48,7 +52,7 @@ public class SecurityEnabler
 			}
 			catch (CSException e)
 			{
-				e.printStackTrace();
+				log.error("CSException: ", e);
 			}
 		return authorizationManager;
 	}
@@ -62,7 +66,7 @@ public class SecurityEnabler
 			}
 			catch (CSException e)
 			{
-				e.printStackTrace();
+				log.error("CSException: ", e);
 			}
 		return authenticationManager;
 	}
@@ -104,7 +108,8 @@ public class SecurityEnabler
 		catch (Exception ex)
 		{
 			authenticated = false;
-			throw new ApplicationException("Could not authenticate the user");
+			log.error("Could not authenticate the user: " + ex.getMessage());
+			throw new AuthenticationException("Could not authenticate the user", ex);
 		}
 		if (authenticated)
 		{
@@ -150,19 +155,22 @@ public class SecurityEnabler
 		
 		if (this.isBlank(sessionKey))
 		{
-			throw new ApplicationException("User is not logged in !");
+			log.error("User is not logged in; sessionKey is blank");
+			throw new AuthorizationException("User is not logged in");
 		}
 		if (!this.isUserInSession(sessionKey))
 		{
 			authorized = false;
-			throw new ApplicationException("User is not in session !");
+			log.error("User is not in session");			
+			throw new AuthorizationException("User is not in session");
 		}
 		SessionManager sessionManager = SessionManager.getInstance();
 		UserSession userSession = (UserSession) sessionManager.getSession(sessionKey);
 		if (userSession == null)
 		{
 			authorized = false;
-			throw new ApplicationException("User is not in session !");
+			log.error("User is not in session");
+			throw new AuthorizationException("User is not in session");
 		}
 		String userId = userSession.getUserId();
 		/**
@@ -178,6 +186,7 @@ public class SecurityEnabler
 		}
 		catch (Exception ex)
 		{
+			log.error("User permission check failed: " + ex.getMessage());
 			authorized = false;
 		}
 		return authorized;
@@ -212,6 +221,7 @@ public class SecurityEnabler
 			}
 			catch (Exception ex)
 			{
+				log.error("No Security level found; setting a default security level");
 				securityLevel = Constant.DEFAULT_SECURITY_LEVEL;
 			}
 		}

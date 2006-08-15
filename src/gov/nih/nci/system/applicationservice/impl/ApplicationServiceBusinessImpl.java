@@ -9,10 +9,13 @@ import gov.nih.nci.common.util.ListProxy;
 import gov.nih.nci.common.util.NestedCriteria;
 import gov.nih.nci.common.util.PrintUtils;
 import gov.nih.nci.common.util.SearchUtils;
+import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.dao.QueryException;
 import gov.nih.nci.system.proxy.InterfaceProxy;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,15 +118,14 @@ public class ApplicationServiceBusinessImpl {
 
 	/**
 	 * @param i
-	 * @throws Exception
+	 * @throws ApplicationException
 	 */
-	public void setRecordsCount(int i) throws Exception {
+	public void setRecordsCount(int i) throws ApplicationException {
 		if (i > maxRecordsCount) {
-			log
-					.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
+			log.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ i + " MAXRECORDSPERQUERY = " + maxRecordsCount);
 
-			throw new Exception(
+			throw new QueryException(
 					"Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ i + " MAXRECORDSPERQUERY = " + maxRecordsCount);
 
@@ -155,21 +157,19 @@ public class ApplicationServiceBusinessImpl {
 			}
 
 		} catch (IOException e) {
-			log.error("IOException: " + e.getMessage());
-			System.out.println("IOException occured: " + e.getMessage());
+			log.error("IOException: ", e);
 		} catch (Exception ex) {
-			log.error("Exception: " + ex.getMessage());
-			System.out.println("Exception - " + ex.getMessage());
+			log.error("Exception: ", ex);
 		}
 	}
 
 	/**
 	 * @param criteria
 	 * @return total count for the query
-	 * @throws Exception
+	 * @throws ApplicationException
 	 * 
 	 */
-	public int getQueryRowCount(Object criteria, String targetClassName) throws Exception {
+	public int getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
 		Integer count = null;
 		Response response = new Response();
 		Request request = new Request(criteria);
@@ -182,16 +182,15 @@ public class ApplicationServiceBusinessImpl {
 			count = (Integer) response.getRowCount();
 
 		} catch (LinkageError le) {
-			log.error("LinkageError: " + le.getMessage());
-			throw new Exception("Having problem in instantiating Delegate as LOCAL TYPE \n" + le.getMessage());
+			log.error("LinkageError: ", le);
+			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
 		} catch (ClassNotFoundException cnfe) {
-			log.error("ClassNotFoundException: " + cnfe.getMessage());
-			throw new Exception("Having problem in instantiating Delegate as LOCAL TYPE\n" + cnfe.getMessage());
+			log.error("ClassNotFoundException: ", cnfe);
+			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
 		}
 
 		catch (Exception ex) {
-			log.error("Exception in query: " + ex.getMessage());
-			System.out.println("Exception in query(): " + ex.getMessage());
+			log.error("Exception in query: ", ex);
 		}
 		if (count != null)
 			return count.intValue();
@@ -199,15 +198,15 @@ public class ApplicationServiceBusinessImpl {
 			return 0;
 	}
 
-	public List query(DetachedCriteria detachedCriteria, String targetClassName) throws Exception {
+	public List query(DetachedCriteria detachedCriteria, String targetClassName) throws ApplicationException {
 		return privateQuery((Object) detachedCriteria, targetClassName);
 	}
 
-	private List query(NestedCriteria nestedCriteria, String targetClassName) throws Exception {
+	private List query(NestedCriteria nestedCriteria, String targetClassName) throws ApplicationException {
 		return privateQuery((Object) nestedCriteria, targetClassName);
 	}
 
-	public List query(HQLCriteria hqlCriteria, String targetClassName) throws Exception {
+	public List query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
 		return privateQuery((Object) hqlCriteria, targetClassName);
 	}
 
@@ -218,12 +217,12 @@ public class ApplicationServiceBusinessImpl {
 	 * @param criteria
 	 *            Specified Hibernate criteria
 	 * @return gets the result list
-	 * @throws Exception
+	 * @throws ApplicationException
 	 */
 
 	// public List query(Object criteria, String targetClassName) throws
 	// Exception{
-	private List privateQuery(Object criteria, String targetClassName) throws Exception {
+	private List privateQuery(Object criteria, String targetClassName) throws ApplicationException {
 
 		List results = null;
 		List resultList = new ListProxy();
@@ -237,10 +236,9 @@ public class ApplicationServiceBusinessImpl {
 			localRecordsCount = ClientInfoThreadVariable.getRecordsCount();
 
 		if ((maxRecordsCount > 0) && (localRecordsCount > maxRecordsCount)) {
-			log
-					.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
+			log.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ localRecordsCount + " MAXRECORDSPERQUERY = " + maxRecordsCount);
-			throw new Exception(
+			throw new QueryException(
 					"Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ localRecordsCount + " MAXRECORDSPERQUERY = " + maxRecordsCount);
 		} else if (localRecordsCount <= 0) {
@@ -258,22 +256,19 @@ public class ApplicationServiceBusinessImpl {
 			results = (List) response.getResponse();
 
 		} catch (LinkageError le) {
-			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n" + le.getMessage());
-			throw new Exception("Having problem in instantiating Delegate as LOCAL TYPE \n" + le.getMessage());
+			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n", le);
+			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
 		} catch (ClassNotFoundException cnfe) {
-			log.error("ClassNotFoundException: Having problem in instantiating Delegate as LOCAL TYPE\n"
-					+ cnfe.getMessage());
-			throw new Exception("Having problem in instantiating Delegate as LOCAL TYPE\n" + cnfe.getMessage());
+			log.error("ClassNotFoundException: Having problem in instantiating Delegate as LOCAL TYPE\n" + cnfe);
+			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
 		} catch (Exception ex) {
-			log.error("Exception \n" + ex.getMessage());
-			throw new Exception("Exception " + ex.getMessage());
+			log.error("Exception \n", ex);
+			throw new QueryException("Exception ", ex);
 		}
 
 		resultList.clear();
 		// Set the value for ListProxy
 		if (results != null) {
-			// System.out.println("results not null, add to listProxy.addAll() "
-			// + results.size());
 			resultList.addAll(results);
 		}
 		ListProxy myProxy = (ListProxy) resultList;
@@ -293,9 +288,9 @@ public class ApplicationServiceBusinessImpl {
 	 * @param resultsPerQuery
 	 * @param targetClassName
 	 * @return List
-	 * @throws Exception
+	 * @throws ApplicationException
 	 */
-	public List query(Object criteria, int firstRow, int resultsPerQuery, String targetClassName) throws Exception {
+	public List query(Object criteria, int firstRow, int resultsPerQuery, String targetClassName) throws ApplicationException {
 		// List myList = new ListProxy();
 		List results = null;
 		Response response = new Response();
@@ -307,10 +302,9 @@ public class ApplicationServiceBusinessImpl {
 			request.setRecordsCount(new Integer(resultsPerQuery));
 		}
 		if ((maxRecordsCount > 0) && (resultsPerQuery > maxRecordsCount)) {
-			log
-					.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
+			log.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ resultsPerQuery + " MAXRECORDSPERQUERY = " + maxRecordsCount);
-			throw new Exception(
+			throw new QueryException(
 					"Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ resultsPerQuery + " MAXRECORDSPERQUERY = " + maxRecordsCount);
 		}
@@ -322,13 +316,13 @@ public class ApplicationServiceBusinessImpl {
 			results = (List) response.getResponse();
 
 		} catch (LinkageError le) {
-			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n" + le.getMessage());
-			throw new Exception("Having problem in instantiating Delegate as LOCAL TYPE \n" + le.getMessage());
+			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n", le);
+			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
 		} catch (ClassNotFoundException cnfe) {
-			log.error("Having problem in instantiating Delegate as LOCAL TYPE\n" + cnfe.getMessage());
-			throw new Exception("Having problem in instantiating Delegate as LOCAL TYPE\n" + cnfe.getMessage());
+			log.error("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
+			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
 		} catch (Exception ex) {
-			log.error("Exception in query(Object, int, int, String): " + ex.getMessage());
+			log.error("Exception in query(Object, int, int, String): ", ex);
 		}
 		return results;
 	}
@@ -343,7 +337,7 @@ public class ApplicationServiceBusinessImpl {
 
 	public void printResults(List resultList) {
 		if (resultList.size() < 1) {
-			System.out.println("No records found");
+			log.debug("No records found");
 		} else {
 			PrintUtils printer = new PrintUtils();
 			printer.printResults(resultList);
@@ -375,55 +369,61 @@ public class ApplicationServiceBusinessImpl {
 	 * @param className
 	 *            Specifies the class name
 	 * @return Returns a class
-	 * @throws Exception
+	 * @throws ApplicationException
 	 *             Throws ClassNotFoundException
 	 */
 
-	private Collection getAssociation(Object criterionClassObj, String searchClassName) throws Exception {
-		// Use reflection to find the method in critionClassObject and then get
-		// the result
-		Class objKlass = criterionClassObj.getClass();
-		// Method[] objMethods = objKlass.getDeclaredMethods();
-		Method[] objMethods = objKlass.getMethods();
-
-		String searchBeanName = searchClassName.substring(searchClassName.lastIndexOf(".") + 1, searchClassName
-				.indexOf("Impl"));
-		for (int i = 0; i < objMethods.length; i++) {
-			String methodName = objMethods[i].getName();
-
-			// if (methodName.indexOf(searchBeanName) != -1)
-			String associationName = methodName.substring(3);
-			if (associationName.equals(searchBeanName) || associationName.equals(searchBeanName + "Collection")) {
-				// if the methodName matches the searchBeanName, the method
-				// definitely return Collection or Object type
-				Class returnType = objMethods[i].getReturnType();
-				Object returnObject = objMethods[i].invoke(criterionClassObj, new Object[] {});
-				if (returnObject == null) {
-					return null;
-				} else {
-					if (returnObject instanceof java.util.Collection) {
-						return (java.util.Collection) returnObject;
+	private Collection getAssociation(Object criterionClassObj, String searchClassName) throws ApplicationException {
+		try {
+			// Use reflection to find the method in critionClassObject and then get
+			// the result
+			Class objKlass = criterionClassObj.getClass();
+			// Method[] objMethods = objKlass.getDeclaredMethods();
+			Method[] objMethods = objKlass.getMethods();
+	
+			String searchBeanName = searchClassName.substring(searchClassName.lastIndexOf(".") + 1, searchClassName
+					.indexOf("Impl"));
+			for (int i = 0; i < objMethods.length; i++) {
+				String methodName = objMethods[i].getName();
+	
+				// if (methodName.indexOf(searchBeanName) != -1)
+				String associationName = methodName.substring(3);
+				if (associationName.equals(searchBeanName) || associationName.equals(searchBeanName + "Collection")) {
+					// if the methodName matches the searchBeanName, the method
+					// definitely return Collection or Object type
+					Class returnType = objMethods[i].getReturnType();
+					Object returnObject = objMethods[i].invoke(criterionClassObj, new Object[] {});
+					if (returnObject == null) {
+						return null;
 					} else {
-						java.util.Collection result = new HashSet();
-						result.add(returnObject);
-						return result;
+						if (returnObject instanceof java.util.Collection) {
+							return (java.util.Collection) returnObject;
+						} else {
+							java.util.Collection result = new HashSet();
+							result.add(returnObject);
+							return result;
+						}
 					}
+	
 				}
-
 			}
+		} catch(InvocationTargetException ite){
+			throw new QueryException("InvocationTargetException: ", ite);
+		} catch(IllegalAccessException iae){
+			throw new QueryException("InvocationTargetException: ", iae);
 		}
 		return null;
 	}
 
-	public List search(Class targetClass, Object obj) throws Exception {
+	public List search(Class targetClass, Object obj) throws ApplicationException {
 		return search(targetClass.getName(), obj);
 	}
 
-	public List search(Class targetClass, List objList) throws Exception {
+	public List search(Class targetClass, List objList) throws ApplicationException {
 		return search(targetClass.getName(), objList);
 	}
 
-	public List search(String path, Object obj) throws Exception {
+	public List search(String path, Object obj) throws ApplicationException {
 		// check if it is a nested query
 		List pathList = new ArrayList();
 		// parse path -> arraylist
@@ -453,7 +453,7 @@ public class ApplicationServiceBusinessImpl {
 		return results;
 	}
 
-	public List search(String path, List objList) throws Exception {
+	public List search(String path, List objList) throws ApplicationException {
 		// check if it is a nested query
 		List pathList = new ArrayList();
 		// parse path -> arraylist
@@ -482,86 +482,90 @@ public class ApplicationServiceBusinessImpl {
 		return results;
 	}
 
-	private NestedCriteria createNestedCriteria(List pathList, Object obj) throws Exception {
+	private NestedCriteria createNestedCriteria(List pathList, Object obj) throws ApplicationException {
 		List objList = new ArrayList();
 		objList.add(obj);
 		return createNestedCriteria(pathList, objList);
 	}
 
-	private NestedCriteria createNestedCriteria(List pathList, List objList) throws Exception {
-		SearchUtils searchUtil = new SearchUtils();
-		String target, source;
-
-		List newObjList = new ArrayList();
-		log.debug("ApplicationService.createNestedCriteria(): objList class name = "
-				+ objList.get(0).getClass().getName());
-		if ((objList.get(0)).getClass().getName().indexOf(".impl.") > 0) {
-			for (Iterator iter = objList.iterator(); iter.hasNext();) {
-				Object obj = iter.next();
-				newObjList.add(convertImpl(obj));
-			}
-		} else {
-			newObjList = objList;
-		}
-
-		String sourceName = (newObjList.get(0)).getClass().getName();
-		String targetName = "";
-
+	private NestedCriteria createNestedCriteria(List pathList, List objList) throws ApplicationException {
 		NestedCriteria criteria = null;
-		NestedCriteria internalCriteria = null;
-		for (int i = pathList.size() - 1; i >= 0; i--) {
-			// targetName = getFullQName((String)pathList.get(i));
-			targetName = (String) pathList.get(i);
-			log.debug("ApplicationService.createNestedCriteria(): new targetName = " + targetName);
-			// if the target and the source are the same class, ignore the
-			// association
-			criteria = new NestedCriteria();
-			criteria.setSourceObjectName(sourceName);
-			criteria.setTargetObjectName(targetName);
-			log.debug("ApplicationService.createNestedCriteria(): sourceName = " + sourceName + " | targetName = "
-					+ targetName);
-			if (!targetName.equals(sourceName) && !noInheritent(sourceName, targetName)) {
-				String roleName = searchUtil.getRoleName(Class.forName(sourceName), Class.forName(targetName)
-						.newInstance());
-				if (roleName == null) {
-					log.error("No association found from " + sourceName + " to " + targetName
-							+ ", please double check your query path.");
-					throw new Exception("No association found from " + sourceName + " to " + targetName
-							+ ", please double check your query path.");
+		try {
+			SearchUtils searchUtil = new SearchUtils();
+			String target, source;
+	
+			List newObjList = new ArrayList();
+			log.debug("ApplicationService.createNestedCriteria(): objList class name = "
+					+ objList.get(0).getClass().getName());
+			if ((objList.get(0)).getClass().getName().indexOf(".impl.") > 0) {
+				for (Iterator iter = objList.iterator(); iter.hasNext();) {
+					Object obj = iter.next();
+					newObjList.add(convertImpl(obj));
 				}
-				criteria.setRoleName(roleName);
+			} else {
+				newObjList = objList;
 			}
-			// if the obj is the same type of source(that means it the first
-			// criterion), add Map, otherwise, skip
-			// if (sourceName.equals((objList.get(0)).getClass().getName()))
-			if (sourceName.equals((newObjList.get(0)).getClass().getName())) {
-				// criteria.setSourceObject(obj);
-				criteria.setSourceObjectList(newObjList);
-				criteria.setInternalNestedCriteria(internalCriteria);
-			} else
-			// it is not the
-			{
-				criteria.setInternalNestedCriteria(internalCriteria);
+	
+			String sourceName = (newObjList.get(0)).getClass().getName();
+			String targetName = "";
+	
+			NestedCriteria internalCriteria = null;
+			for (int i = pathList.size() - 1; i >= 0; i--) {
+				// targetName = getFullQName((String)pathList.get(i));
+				targetName = (String) pathList.get(i);
+				log.debug("ApplicationService.createNestedCriteria(): new targetName = " + targetName);
+				// if the target and the source are the same class, ignore the
+				// association
+				criteria = new NestedCriteria();
+				criteria.setSourceObjectName(sourceName);
+				criteria.setTargetObjectName(targetName);
+				log.debug("ApplicationService.createNestedCriteria(): sourceName = " + sourceName + " | targetName = "
+						+ targetName);
+				if (!targetName.equals(sourceName) && !noInheritent(sourceName, targetName)) {
+					String roleName = searchUtil.getRoleName(Class.forName(sourceName), Class.forName(targetName)
+							.newInstance());
+					if (roleName == null) {
+						log.error("No association found from " + sourceName + " to " + targetName
+								+ ", please double check your query path.");
+						throw new QueryException("No association found from " + sourceName + " to " + targetName
+								+ ", please double check your query path.");
+					}
+					criteria.setRoleName(roleName);
+				}
+				// if the obj is the same type of source(that means it the first
+				// criterion), add Map, otherwise, skip
+				// if (sourceName.equals((objList.get(0)).getClass().getName()))
+				if (sourceName.equals((newObjList.get(0)).getClass().getName())) {
+					// criteria.setSourceObject(obj);
+					criteria.setSourceObjectList(newObjList);
+					criteria.setInternalNestedCriteria(internalCriteria);
+				} else
+				// it is not the
+				{
+					criteria.setInternalNestedCriteria(internalCriteria);
+				}
+				internalCriteria = criteria;
+				sourceName = targetName;
 			}
-			internalCriteria = criteria;
-			sourceName = targetName;
-		}
-		if (criteria != null) {
-			if (ClientInfoThreadVariable.isClientRequest())
-				criteria.setSearchCaseSensitivity(ClientInfoThreadVariable.getSearchCaseSensitivity());
-			else
-				criteria.setSearchCaseSensitivity(caseSensitivityFlag);
+			if (criteria != null) {
+				if (ClientInfoThreadVariable.isClientRequest())
+					criteria.setSearchCaseSensitivity(ClientInfoThreadVariable.getSearchCaseSensitivity());
+				else
+					criteria.setSearchCaseSensitivity(caseSensitivityFlag);
+			}
+		} catch(Exception e) {
+			throw new QueryException("Exception: ", e);
 		}
 		return criteria;
 	}
 
 	// Assume the passing name is either Interface or Impl class's name
-	public static String getFullQName(String name) throws Exception {
+	public static String getFullQName(String name) throws ApplicationException {
 		try {
 			Class.forName(name);
 		} catch (ClassNotFoundException e) {
 			log.error("ERROR: Class " + name + " does not exist.  Please check the package and class name.");
-			throw new Exception("ERROR: Class " + name + " does not exist.  Please check the package and class name.");
+			throw new QueryException("ERROR: Class " + name + " does not exist.  Please check the package and class name.");
 		}
 
 		// assume it is already a full qualified name if the name contains
@@ -663,8 +667,7 @@ public class ApplicationServiceBusinessImpl {
 						fieldValue = newValue;
 					}
 				}
-				// System.out.println("ApplicationService.copyValue(): field
-				// name = " + fieldName + " | fieldValue = " + fieldValue);
+				log.debug("ApplicationService.copyValue(): fieldname = " + fieldName + " | fieldValue = " + fieldValue);
 
 				setterMethod.invoke(newObject, new Object[] { fieldValue });
 			}
@@ -677,7 +680,7 @@ public class ApplicationServiceBusinessImpl {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("ApplicationService.copyValue: ApplicationService Error" + e.getMessage());
+			log.error("ApplicationService.copyValue: ApplicationService Error", e);
 			return null;
 		}
 		return newObject;
@@ -743,7 +746,7 @@ public class ApplicationServiceBusinessImpl {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("ApplicationService.copyValue: ApplicationService Error" + e.getMessage());
+			log.error("ApplicationService.copyValue: ApplicationService Error", e);
 			return null;
 		}
 		return newObject;
@@ -762,6 +765,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.2  2006/06/14 14:01:18  connellm
+// Replaced "replace" with "replaceAll" for JDK 1.4 compatability.
+//
 // Revision 1.1  2006/05/10 19:26:51  connellm
 // Initial check in of code to support the splitting of the SDk from caCORE.
 //

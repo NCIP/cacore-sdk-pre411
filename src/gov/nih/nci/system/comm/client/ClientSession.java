@@ -2,6 +2,7 @@ package gov.nih.nci.system.comm.client;
 
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.applicationservice.AuthenticationException;
 import gov.nih.nci.system.comm.common.ApplicationServiceProxy;
 
 import org.springframework.context.ApplicationContext;
@@ -71,7 +72,7 @@ public class ClientSession
 		catch (Exception ex)
 		{
 			authenticated = false;
-			throw new ApplicationException("Error in authenticating user credentials");
+			throw new AuthenticationException("Error in authenticating user credentials");
 		}
 		return authenticated;
 	}
