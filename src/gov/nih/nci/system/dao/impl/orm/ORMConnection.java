@@ -1,13 +1,16 @@
 package gov.nih.nci.system.dao.impl.orm;
 
-import org.hibernate.*;
+import gov.nih.nci.system.servicelocator.ServiceLocator;
+
+import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.apache.log4j.*;
-import gov.nih.nci.system.servicelocator.*;
 
 
 /**
- * ORMConnection is a singleton object that is used to create Hibernate
+ * ORMConnection is a Singleton object that is used to create Hibernate
  * SessionFactory object.
  * 
  * @author caBIO Team

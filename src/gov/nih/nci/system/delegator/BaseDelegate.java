@@ -1,10 +1,13 @@
 package gov.nih.nci.system.delegator;
 
-import gov.nih.nci.system.dao.*;
-import gov.nih.nci.system.servicelocator.*;
+import gov.nih.nci.common.net.Response;
+import gov.nih.nci.system.dao.DAOException;
+import gov.nih.nci.system.dao.DAOFactory;
 import gov.nih.nci.system.proxy.InterfaceProxy;
-import gov.nih.nci.common.net.*;
-import org.apache.log4j.*;
+import gov.nih.nci.system.servicelocator.ServiceLocator;
+import gov.nih.nci.system.servicelocator.ServiceLocatorException;
+
+import org.apache.log4j.Logger;
 
 
  /**
@@ -103,6 +106,9 @@ public class BaseDelegate implements InterfaceProxy
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.1  2006/05/10 19:26:50  connellm
+// Initial check in of code to support the splitting of the SDk from caCORE.
+//
 // Revision 1.12  2006/03/29 21:18:37  masondo
 // Removed HTTPClient
 //
