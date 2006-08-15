@@ -18,32 +18,32 @@ import org.hibernate.criterion.DetachedCriteria;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public abstract class ApplicationService
+public interface ApplicationService
 {
 	
-	public static ApplicationService getRemoteInstance()
-	{
-		return ApplicationServiceProvider.getRemoteInstance();
-	}
+//	public abstract ApplicationService getRemoteInstance();
+//	{
+//		return ApplicationServiceProvider.getRemoteInstance();
+//	}
 	
-	public static ApplicationService getRemoteInstance(String URL)
-	{
-		return ApplicationServiceProvider.getRemoteInstance(URL);
-	}
+//	public abstract ApplicationService getRemoteInstance(String URL);
+//	{
+//		return ApplicationServiceProvider.getRemoteInstance(URL);
+//	}
 	
-	public static ApplicationService getLocalInstance()
-	{
-		return ApplicationServiceProvider.getLocalInstance();
-	}
+//	public abstract ApplicationService getLocalInstance();
+//	{
+//		return ApplicationServiceProvider.getLocalInstance();
+//	}
 
-	public static ApplicationService getInstance()
-	{
-		return ApplicationServiceProvider.getApplicationService();
-	}
+//	public abstract ApplicationService getInstance();
+//	{
+//		return ApplicationServiceProvider.getApplicationService();
+//	}
+//	
+	abstract ApplicationService getBeanInstance();
 	
-	protected abstract ApplicationService getBeanInstance();
-	
-	protected abstract ApplicationService getBeanInstance(String URL);
+	abstract ApplicationService getBeanInstance(String URL);
 	
 	public abstract void setSearchCaseSensitivity(boolean caseSensitivity);
 

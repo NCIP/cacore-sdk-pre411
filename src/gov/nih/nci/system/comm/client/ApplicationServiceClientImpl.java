@@ -20,7 +20,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.InputStreamResource;
 
-public class ApplicationServiceClientImpl extends ApplicationService
+public class ApplicationServiceClientImpl implements ApplicationService
 {
 
 	private static ApplicationServiceProxy	applicationServiceProxy;
@@ -71,7 +71,7 @@ public class ApplicationServiceClientImpl extends ApplicationService
 	}
 	
 	//@Override
-	protected ApplicationService getBeanInstance()
+	public ApplicationService getBeanInstance()
 	{
 		applicationServiceProxy = getRemoteServiceFromClassPath();
 		applicationService = new ApplicationServiceClientImpl();
@@ -79,7 +79,7 @@ public class ApplicationServiceClientImpl extends ApplicationService
 	}
 
 	//@Override
-	protected ApplicationService getBeanInstance(String URL)
+	public ApplicationService getBeanInstance(String URL)
 	{
 		applicationServiceProxy = getRemoteServiceFromPath(URL);
 		ClientSession.getInstance(applicationServiceProxy);
