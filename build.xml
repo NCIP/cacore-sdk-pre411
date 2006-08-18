@@ -307,7 +307,7 @@
 
 	<target name="-compile-beans.main" unless="compile-beans.main.ignore">
 		<SDKecho message="Compiling Java beans"/>
-		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}">
+		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}" debug = "on">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
@@ -318,7 +318,7 @@
 
 	<target name="-compile-framework.main" depends="copy-project-framework,disable-writable-api" unless="compile-framework.main.ignore">
 		<SDKecho message="Compiling application framework"/>
-		<javac srcdir="${dir.output.project.framework.src}" destdir="${dir.output.project.framework.build}">
+		<javac srcdir="${dir.output.project.framework.src}" destdir="${dir.output.project.framework.build}" debug = "on">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
@@ -330,7 +330,7 @@
 	<target name="-compile-generator.main" unless="compile-generator.main.ignore">
 		<SDKecho message="Compiling SDK code generator"/>
 		<mkdir dir="${dir.generator.build}"/>
-		<javac destdir="${dir.generator.build}">
+		<javac destdir="${dir.generator.build}" debug = "on">
 			<src path="${dir.generator.src}"/>
 			<include name="gov/nih/nci/codegen/**/*.java"/>
 			<include name="gov/nih/nci/common/exception/*.java"/>
@@ -350,7 +350,7 @@
 		<jetc template="${dir.output.project.templates}/BeanWS.javajet" destdir="${dir.output.project.src}"/>
 		<jetc template="${dir.output.project.templates}/BeanWSImpl.javajet" destdir="${dir.output.project.src}"/>
 		<jetc template="${dir.output.project.templates}/BeanHBJunit.javajet" destdir="${dir.output.project.src}"/>
-		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}">
+		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}" debug = "on">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
@@ -1039,7 +1039,7 @@
 
 	<target name="-rundemo.main" unless="rundemo.main.ignore">
 		<SDKecho message="Running Java-based client demo"/>
-		<javac srcdir="${dir.output.project.package.client}">
+		<javac srcdir="${dir.output.project.package.client}" debug = "on">
 			<include name="${file.demo.class.source}"/>
 			<classpath refid="classpath-client"/>
 		</javac>
@@ -1079,7 +1079,7 @@
 
 	<target name="-runWSdemo.main" unless="runWSdemo.main.ignore">
 		<SDKecho message="Running Web Services demo"/>
-		<javac srcdir="${dir.output.project.package.client}">
+		<javac srcdir="${dir.output.project.package.client}" debug = "on">
 			<include name="${file.demoWS.class.source}"/>
 			<classpath refid="classpath-client"/>
 		</javac>
@@ -1095,7 +1095,7 @@
 
 	<target name="-runXMLdemo.main" unless="runXMLdemo.main.ignore">
 		<SDKecho message="Running XML conversion utility demo"/>
-		<javac srcdir="${dir.output.project.package.client}">
+		<javac srcdir="${dir.output.project.package.client}" debug = "on">
 			<include name="${file.demoxml.class.source}"/>
 			<classpath refid="classpath-client"/>
 		</javac>
