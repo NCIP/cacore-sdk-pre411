@@ -1,0 +1,339 @@
+<XMI xmlns:UML="omg.org/UML1.3" xmi.version="1.1" timestamp="2006-08-23 11:42:52">
+  <XMI.header>
+    <XMI.documentation>
+      <XMI.exporter>Enterprise Architect</XMI.exporter>
+      <XMI.exporterVersion>4.1RR</XMI.exporterVersion>
+    </XMI.documentation>
+  </XMI.header>
+  <XMI.content>
+    <UML:Model name="EA Model" xmi.id="MX_EAID_6EF65772_15B1_4499_9969_233CA91CA5AE">
+      <UML:Namespace.ownedElement xmi.id="MX_EAID_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_0">
+        <UML:Class name="EARootClass" xmi.id="EAID_11111111_5487_4080_A7F4_41526CB0AA00" isRoot="true" isLeaf="false" isAbstract="false" />
+        <UML:Package name="Logical Model" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+          <UML:Namespace.ownedElement xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_1">
+            <UML:Package name="edu" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+              <UML:Namespace.ownedElement xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_1">
+                <UML:Package name="duke" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+                  <UML:Namespace.ownedElement xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_1">
+                    <UML:Package name="cagrid" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+                      <UML:Namespace.ownedElement xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_1">
+                        <UML:Package name="data" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+                          <UML:Namespace.ownedElement xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_1">
+                            <UML:Class name="Genbank" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" visibility="public" namespace="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+                              <UML:Classifier.feature xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1">
+                                <UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0">
+                                  <UML:StructuralFeature.multiplicity xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_0">
+                                    <UML:Multiplicity xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_0_fix_0">
+                                      <UML:Multiplicity.range xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_0_fix_0_fix_0">
+                                        <UML:MultiplicityRange lower="1" upper="1" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_0_fix_0_fix_0_fix_0" />
+                                      </UML:Multiplicity.range>
+                                    </UML:Multiplicity>
+                                  </UML:StructuralFeature.multiplicity>
+                                  <UML:Attribute.initialValue xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_1">
+                                    <UML:Expression xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_1_fix_0" />
+                                  </UML:Attribute.initialValue>
+                                  <UML:StructuralFeature.type xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_2">
+                                    <Foundation.Core.Classifier xmi.idref="eaxmiid0" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_2_fix_0" />
+                                  </UML:StructuralFeature.type>
+                                </UML:Attribute>
+                                <UML:Attribute name="primaryAccession" changeable="none" visibility="private" ownerScope="instance" targetScope="instance" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1">
+                                  <UML:StructuralFeature.multiplicity xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_0">
+                                    <UML:Multiplicity xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_0_fix_0">
+                                      <UML:Multiplicity.range xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_0_fix_0_fix_0">
+                                        <UML:MultiplicityRange lower="1" upper="1" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_0_fix_0_fix_0_fix_0" />
+                                      </UML:Multiplicity.range>
+                                    </UML:Multiplicity>
+                                  </UML:StructuralFeature.multiplicity>
+                                  <UML:Attribute.initialValue xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_1">
+                                    <UML:Expression xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_1_fix_0" />
+                                  </UML:Attribute.initialValue>
+                                  <UML:StructuralFeature.type xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_2">
+                                    <Foundation.Core.Classifier xmi.idref="eaxmiid1" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_2_fix_0" />
+                                  </UML:StructuralFeature.type>
+                                </UML:Attribute>
+                              </UML:Classifier.feature>
+                            </UML:Class>
+                            <UML:Association xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+                              <UML:Association.connection xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1">
+                                <UML:AssociationEnd visibility="public" name="genbankCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0">
+                                  <UML:AssociationEnd.multiplicity xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0_fix_0">
+                                    <UML:Multiplicity xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0_fix_0_fix_0">
+                                      <UML:Multiplicity.range xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0_fix_0_fix_0_fix_0">
+                                        <UML:MultiplicityRange lower="0" upper="-1" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0_fix_0_fix_0_fix_0_fix_0" />
+                                      </UML:Multiplicity.range>
+                                    </UML:Multiplicity>
+                                  </UML:AssociationEnd.multiplicity>
+                                </UML:AssociationEnd>
+                                <UML:AssociationEnd visibility="public" name="uniProtKBCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1">
+                                  <UML:AssociationEnd.multiplicity xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1_fix_0">
+                                    <UML:Multiplicity xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1_fix_0_fix_0">
+                                      <UML:Multiplicity.range xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1_fix_0_fix_0_fix_0">
+                                        <UML:MultiplicityRange lower="0" upper="-1" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1_fix_0_fix_0_fix_0_fix_0" />
+                                      </UML:Multiplicity.range>
+                                    </UML:Multiplicity>
+                                  </UML:AssociationEnd.multiplicity>
+                                </UML:AssociationEnd>
+                              </UML:Association.connection>
+                            </UML:Association>
+                            <UML:Class name="UniProtKB" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" visibility="public" namespace="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+                              <UML:Classifier.feature xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1">
+                                <UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0">
+                                  <UML:StructuralFeature.multiplicity xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_0">
+                                    <UML:Multiplicity xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_0_fix_0">
+                                      <UML:Multiplicity.range xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_0_fix_0_fix_0">
+                                        <UML:MultiplicityRange lower="1" upper="1" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_0_fix_0_fix_0_fix_0" />
+                                      </UML:Multiplicity.range>
+                                    </UML:Multiplicity>
+                                  </UML:StructuralFeature.multiplicity>
+                                  <UML:Attribute.initialValue xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_1">
+                                    <UML:Expression xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_1_fix_0" />
+                                  </UML:Attribute.initialValue>
+                                  <UML:StructuralFeature.type xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_2">
+                                    <Foundation.Core.Classifier xmi.idref="eaxmiid0" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_2_fix_0" />
+                                  </UML:StructuralFeature.type>
+                                </UML:Attribute>
+                                <UML:Attribute name="primaryAccession" changeable="none" visibility="private" ownerScope="instance" targetScope="instance" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1">
+                                  <UML:StructuralFeature.multiplicity xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_0">
+                                    <UML:Multiplicity xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_0_fix_0">
+                                      <UML:Multiplicity.range xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_0_fix_0_fix_0">
+                                        <UML:MultiplicityRange lower="1" upper="1" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_0_fix_0_fix_0_fix_0" />
+                                      </UML:Multiplicity.range>
+                                    </UML:Multiplicity>
+                                  </UML:StructuralFeature.multiplicity>
+                                  <UML:Attribute.initialValue xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_1">
+                                    <UML:Expression xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_1_fix_0" />
+                                  </UML:Attribute.initialValue>
+                                  <UML:StructuralFeature.type xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_2">
+                                    <Foundation.Core.Classifier xmi.idref="eaxmiid1" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_2_fix_0" />
+                                  </UML:StructuralFeature.type>
+                                </UML:Attribute>
+                              </UML:Classifier.feature>
+                            </UML:Class>
+                          </UML:Namespace.ownedElement>
+                        </UML:Package>
+                      </UML:Namespace.ownedElement>
+                    </UML:Package>
+                  </UML:Namespace.ownedElement>
+                </UML:Package>
+              </UML:Namespace.ownedElement>
+            </UML:Package>
+            <UML:Package name="java" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+              <UML:Namespace.ownedElement xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_1">
+                <UML:Package name="lang" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+                  <UML:Namespace.ownedElement xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_1">
+                    <UML:Class name="String" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" visibility="private" namespace="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" isRoot="false" isLeaf="false" isAbstract="false" isActive="false" />
+                    <UML:Class name="Long" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB" visibility="private" namespace="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" isRoot="false" isLeaf="false" isAbstract="false" isActive="false" />
+                  </UML:Namespace.ownedElement>
+                </UML:Package>
+              </UML:Namespace.ownedElement>
+            </UML:Package>
+          </UML:Namespace.ownedElement>
+        </UML:Package>
+        <UML:DataType xmi.id="eaxmiid0" name="java.lang.Long" visibility="private" isRoot="false" isLeaf="false" isAbstract="false" />
+        <UML:DataType xmi.id="eaxmiid1" name="java.lang.String" visibility="private" isRoot="false" isLeaf="false" isAbstract="false" />
+      </UML:Namespace.ownedElement>
+    </UML:Model>
+    <UML:Stereotype xmi.id="eaxmiid2" visibility="private" isSpecification="false" isRoot="false" isLeaf="false" isAbstract="false" baseClass="Association" extendedElement=" EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8 " />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_0" tag="parent" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="EAID_47A117B0_D456_44c3_AC84_BB96D66E3932" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_1" tag="created" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="2001-02-12 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_2" tag="modified" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="2001-02-12 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_3" tag="iscontrolled" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_4" tag="isprotected" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_5" tag="usedtd" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_6" tag="logxml" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_7" tag="packageFlags" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="CRC=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_8" tag="phase" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_9" tag="status" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_10" tag="complexity" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_11" tag="ea_stype" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="Public" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE_fix_12" tag="tpos" modelElement="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_0" tag="created" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_1" tag="modified" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_2" tag="iscontrolled" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_3" tag="isprotected" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_4" tag="usedtd" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_5" tag="logxml" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_6" tag="phase" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_7" tag="status" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_8" tag="complexity" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5_fix_9" tag="ea_stype" modelElement="EAPK_1599611F_0524_47d8_B91B_8563725912A5" value="Public" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_0" tag="created" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_1" tag="modified" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_2" tag="iscontrolled" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_3" tag="isprotected" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_4" tag="usedtd" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_5" tag="logxml" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_6" tag="phase" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_7" tag="status" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_8" tag="complexity" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110_fix_9" tag="ea_stype" modelElement="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" value="Public" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_0" tag="created" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_1" tag="modified" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_2" tag="iscontrolled" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_3" tag="isprotected" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_4" tag="usedtd" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_5" tag="logxml" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_6" tag="phase" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_7" tag="status" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_8" tag="complexity" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C_fix_9" tag="ea_stype" modelElement="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" value="Public" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_0" tag="created" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_1" tag="modified" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_2" tag="iscontrolled" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_3" tag="isprotected" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_4" tag="usedtd" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_5" tag="logxml" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_6" tag="phase" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_7" tag="status" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_8" tag="complexity" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208_fix_9" tag="ea_stype" modelElement="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" value="Public" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_0" tag="created" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_1" tag="modified" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_2" tag="iscontrolled" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_3" tag="isprotected" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_4" tag="usedtd" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_5" tag="logxml" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_6" tag="phase" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_7" tag="status" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_8" tag="complexity" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA_fix_9" tag="ea_stype" modelElement="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" value="Public" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_0" tag="documentation" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="An expression consisting of a linear sequence of symbols (characters or words or phrases)." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_1" tag="isSpecification" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_2" tag="ea_stype" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="Class" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_3" tag="ea_ntype" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_4" tag="version" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_5" tag="package" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_6" tag="date_created" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="2006-08-21 11:18:24" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_7" tag="date_modified" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="2006-08-21 11:47:08" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_8" tag="gentype" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="Java" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_9" tag="tagged" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_10" tag="package_name" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="lang" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_11" tag="phase" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_12" tag="complexity" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_13" tag="status" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469_fix_14" tag="style" modelElement="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_0" tag="documentation" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="A variable that is stored as a signed 64-bit (8-byte) integer." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_1" tag="isSpecification" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_2" tag="ea_stype" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="Class" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_3" tag="ea_ntype" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_4" tag="version" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_5" tag="package" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_6" tag="date_created" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="2006-08-21 11:16:45" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_7" tag="date_modified" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="2006-08-21 11:47:02" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_8" tag="gentype" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="Java" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_9" tag="tagged" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_10" tag="package_name" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="lang" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_11" tag="phase" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_12" tag="complexity" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_13" tag="status" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB_fix_14" tag="style" modelElement="EAID_975F961F_44B8_4209_B034_07B0E54365DB" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_0" tag="parent" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="EAID_E55E0434_BCBB_4127_8C70_137C9EB2E36F" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_1" tag="created" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_2" tag="modified" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="2006-08-21 00:00:00" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_3" tag="iscontrolled" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_4" tag="isprotected" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_5" tag="usedtd" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_6" tag="logxml" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="FALSE" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_7" tag="phase" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_8" tag="status" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_9" tag="complexity" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC_fix_10" tag="ea_stype" modelElement="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" value="Public" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_0" tag="documentation" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="GenBank is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1" tag="isSpecification" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_2" tag="ea_stype" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="Class" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_3" tag="ea_ntype" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_4" tag="version" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_5" tag="package" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_6" tag="date_created" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="2006-06-22 14:45:25" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_7" tag="date_modified" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="2006-08-23 08:29:10" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_8" tag="gentype" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="Java" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_9" tag="tagged" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_10" tag="package_name" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="data" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_11" tag="phase" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_12" tag="complexity" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_13" tag="status" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_14" tag="eventflags" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="LNK=bd66;ATT=e6e8;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_15" tag="style" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_0" tag="style" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="3" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1" tag="ea_type" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="Association" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_2" tag="direction" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="Bi-Directional" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_3" tag="linemode" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="3" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_4" tag="linecolor" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="-1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_5" tag="linewidth" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_6" tag="seqno" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_7" tag="headStyle" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_8" tag="lineStyle" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_9" tag="virtualInheritance" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_10" tag="correlation-table" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" value="edu.duke.cagrid.data.MAPPING" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_0" tag="documentation" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="UniProtKB is the central access point for extensive curated protein information, including function, classification and cross-references." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1" tag="isSpecification" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_2" tag="ea_stype" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="Class" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_3" tag="ea_ntype" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_4" tag="version" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_5" tag="package" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_6" tag="date_created" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="2006-06-22 14:45:57" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_7" tag="date_modified" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="2006-08-23 08:34:22" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_8" tag="gentype" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="Java" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_9" tag="tagged" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_10" tag="package_name" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="data" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_11" tag="phase" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="1.0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_12" tag="author" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="SM" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_13" tag="complexity" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_14" tag="status" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="Proposed" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_15" tag="eventflags" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="LNK=bd76;ATT=4c6d;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_16" tag="style" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_0" tag="description" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="A unique identifier for a Genbank. This should map to the Primary Key in the associated table." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_1" tag="type" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="java.lang.Long" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_2" tag="derived" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_3" tag="containment" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="Not Specified" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_4" tag="ordered" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_5" tag="collection" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_6" tag="position" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_7" tag="lowerBound" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_8" tag="upperBound" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_9" tag="duplicates" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_10" tag="ea_guid" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="{E82F63EE-24FA-42d1-BFE9-CD5272D81C5D}" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0_fix_11" tag="styleex" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_0" value="volatile=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_0" tag="description" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="An accession number in bioinformatics is a unique identifier given to a DNA or protein sequence record to allow for tracking of different versions of that sequence record and the associated sequence over time in a single data repository. Because of its relative stability, accession numbers can be utilized as foreign keys for referring to a sequence object, but not necessarily to a unique sequence. All sequence information repositories implement the concept of &quot;accession number&quot; but might do so with subtle variations  (from Wikipedia)." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_1" tag="type" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="java.lang.String" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_2" tag="derived" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_3" tag="containment" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="Not Specified" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_4" tag="ordered" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_5" tag="collection" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_6" tag="position" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_7" tag="lowerBound" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_8" tag="upperBound" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_9" tag="duplicates" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_10" tag="ea_guid" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="{7FF14C9B-D158-48e1-AC82-005996732476}" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1_fix_11" tag="styleex" modelElement="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE_fix_1_fix_1" value="volatile=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0_fix_0" tag="description" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0" value="Definition here!" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0_fix_1" tag="containment" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_0" value="Unspecified" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1_fix_0" tag="description" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1" value="Definition here!" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1_fix_1" tag="containment" modelElement="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8_fix_1_fix_1" value="Unspecified" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_0" tag="description" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="A unique identifier for a UniProtKB. This should map to the Primary Key in the associated table." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_1" tag="type" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="java.lang.Long" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_2" tag="derived" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_3" tag="containment" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="Not Specified" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_4" tag="ordered" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_5" tag="collection" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_6" tag="position" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_7" tag="lowerBound" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_8" tag="upperBound" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_9" tag="duplicates" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_10" tag="ea_guid" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="{51C0A8E1-A730-479e-848F-A500C04262D3}" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0_fix_11" tag="styleex" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_0" value="volatile=0;" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_0" tag="description" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="An accession number in bioinformatics is a unique identifier given to a DNA or protein sequence record to allow for tracking of different versions of that sequence record and the associated sequence over time in a single data repository. Because of its relative stability, accession numbers can be utilized as foreign keys for referring to a sequence object, but not necessarily to a unique sequence. All sequence information repositories implement the concept of &quot;accession number&quot; but might do so with subtle variations (from Wikipedia)." />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_1" tag="type" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="java.lang.String" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_2" tag="derived" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_3" tag="containment" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="Not Specified" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_4" tag="ordered" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_5" tag="collection" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="false" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_6" tag="position" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_7" tag="lowerBound" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_8" tag="upperBound" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="1" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_9" tag="duplicates" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="0" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_10" tag="ea_guid" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="{B227C7DF-7644-4ace-A4CE-C7A6804DA3C9}" />
+    <UML:TaggedValue xmlns:UML="href://org.omg/UML" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1_fix_11" tag="styleex" modelElement="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4_fix_1_fix_1" value="volatile=0;" />
+  </XMI.content>
+  <XMI.extensions xmi.extender="Enterprise Architect 2.5" />
+</XMI>

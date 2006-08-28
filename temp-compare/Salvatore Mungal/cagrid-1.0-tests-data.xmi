@@ -1,0 +1,383 @@
+<?xml version="1.0"  encoding="windows-1252"?>
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2006-08-23 11:42:52">
+	<XMI.header>
+		<XMI.documentation>
+			<XMI.exporter>Enterprise Architect</XMI.exporter>
+			<XMI.exporterVersion>4.1RR</XMI.exporterVersion>
+		</XMI.documentation>
+	</XMI.header>
+	<XMI.content>
+		<UML:Model name="EA Model" xmi.id="MX_EAID_6EF65772_15B1_4499_9969_233CA91CA5AE">
+			<UML:Namespace.ownedElement>
+				<UML:Class name="EARootClass" xmi.id="EAID_11111111_5487_4080_A7F4_41526CB0AA00" isRoot="true" isLeaf="false" isAbstract="false"/>
+				<UML:Package name="Logical Model" xmi.id="EAPK_6EF65772_15B1_4499_9969_233CA91CA5AE" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+					<UML:ModelElement.taggedValue>
+						<UML:TaggedValue tag="parent" value="EAID_47A117B0_D456_44c3_AC84_BB96D66E3932"/>
+						<UML:TaggedValue tag="created" value="2001-02-12 00:00:00"/>
+						<UML:TaggedValue tag="modified" value="2001-02-12 00:00:00"/>
+						<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+						<UML:TaggedValue tag="isprotected" value="FALSE"/>
+						<UML:TaggedValue tag="usedtd" value="FALSE"/>
+						<UML:TaggedValue tag="logxml" value="FALSE"/>
+						<UML:TaggedValue tag="packageFlags" value="CRC=0;"/>
+						<UML:TaggedValue tag="phase" value="1.0"/>
+						<UML:TaggedValue tag="status" value="Proposed"/>
+						<UML:TaggedValue tag="complexity" value="1"/>
+						<UML:TaggedValue tag="ea_stype" value="Public"/>
+						<UML:TaggedValue tag="tpos" value="0"/>
+					</UML:ModelElement.taggedValue>
+					<UML:Namespace.ownedElement>
+						<UML:Package name="edu" xmi.id="EAPK_1599611F_0524_47d8_B91B_8563725912A5" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="created" value="2006-08-21 00:00:00"/>
+								<UML:TaggedValue tag="modified" value="2006-08-21 00:00:00"/>
+								<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+								<UML:TaggedValue tag="isprotected" value="FALSE"/>
+								<UML:TaggedValue tag="usedtd" value="FALSE"/>
+								<UML:TaggedValue tag="logxml" value="FALSE"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="ea_stype" value="Public"/>
+							</UML:ModelElement.taggedValue>
+							<UML:Namespace.ownedElement>
+								<UML:Package name="duke" xmi.id="EAPK_4F20CCD2_7E12_458c_A2F2_AF27F560FF4C" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+									<UML:ModelElement.taggedValue>
+										<UML:TaggedValue tag="created" value="2006-08-21 00:00:00"/>
+										<UML:TaggedValue tag="modified" value="2006-08-21 00:00:00"/>
+										<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+										<UML:TaggedValue tag="isprotected" value="FALSE"/>
+										<UML:TaggedValue tag="usedtd" value="FALSE"/>
+										<UML:TaggedValue tag="logxml" value="FALSE"/>
+										<UML:TaggedValue tag="phase" value="1.0"/>
+										<UML:TaggedValue tag="status" value="Proposed"/>
+										<UML:TaggedValue tag="complexity" value="1"/>
+										<UML:TaggedValue tag="ea_stype" value="Public"/>
+									</UML:ModelElement.taggedValue>
+									<UML:Namespace.ownedElement>
+										<UML:Package name="cagrid" xmi.id="EAPK_C1DBE2EA_CB49_43b4_8EFF_5E78AAB013BA" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="created" value="2006-08-21 00:00:00"/>
+												<UML:TaggedValue tag="modified" value="2006-08-21 00:00:00"/>
+												<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+												<UML:TaggedValue tag="isprotected" value="FALSE"/>
+												<UML:TaggedValue tag="usedtd" value="FALSE"/>
+												<UML:TaggedValue tag="logxml" value="FALSE"/>
+												<UML:TaggedValue tag="phase" value="1.0"/>
+												<UML:TaggedValue tag="status" value="Proposed"/>
+												<UML:TaggedValue tag="complexity" value="1"/>
+												<UML:TaggedValue tag="ea_stype" value="Public"/>
+											</UML:ModelElement.taggedValue>
+											<UML:Namespace.ownedElement>
+												<UML:Package name="data" xmi.id="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+													<UML:ModelElement.taggedValue>
+														<UML:TaggedValue tag="parent" value="EAID_E55E0434_BCBB_4127_8C70_137C9EB2E36F"/>
+														<UML:TaggedValue tag="created" value="2006-08-21 00:00:00"/>
+														<UML:TaggedValue tag="modified" value="2006-08-21 00:00:00"/>
+														<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+														<UML:TaggedValue tag="isprotected" value="FALSE"/>
+														<UML:TaggedValue tag="usedtd" value="FALSE"/>
+														<UML:TaggedValue tag="logxml" value="FALSE"/>
+														<UML:TaggedValue tag="phase" value="1.0"/>
+														<UML:TaggedValue tag="status" value="Proposed"/>
+														<UML:TaggedValue tag="complexity" value="1"/>
+														<UML:TaggedValue tag="ea_stype" value="Public"/>
+													</UML:ModelElement.taggedValue>
+													<UML:Namespace.ownedElement>
+														<UML:Class name="Genbank" xmi.id="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE" visibility="public" namespace="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+															<UML:ModelElement.taggedValue>
+																<UML:TaggedValue tag="documentation" value="GenBank is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences."/>
+																<UML:TaggedValue tag="isSpecification" value="false"/>
+																<UML:TaggedValue tag="ea_stype" value="Class"/>
+																<UML:TaggedValue tag="ea_ntype" value="0"/>
+																<UML:TaggedValue tag="version" value="1.0"/>
+																<UML:TaggedValue tag="package" value="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC"/>
+																<UML:TaggedValue tag="date_created" value="2006-06-22 14:45:25"/>
+																<UML:TaggedValue tag="date_modified" value="2006-08-23 08:29:10"/>
+																<UML:TaggedValue tag="gentype" value="Java"/>
+																<UML:TaggedValue tag="tagged" value="0"/>
+																<UML:TaggedValue tag="package_name" value="data"/>
+																<UML:TaggedValue tag="phase" value="1.0"/>
+																<UML:TaggedValue tag="complexity" value="1"/>
+																<UML:TaggedValue tag="status" value="Proposed"/>
+																<UML:TaggedValue tag="eventflags" value="LNK=bd66;ATT=e6e8;"/>
+																<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+															</UML:ModelElement.taggedValue>
+															<UML:Classifier.feature>
+																<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																	<UML:StructuralFeature.multiplicity>
+																		<UML:Multiplicity>
+																			<UML:Multiplicity.range>
+																				<UML:MultiplicityRange lower="1" upper="1"/>
+																			</UML:Multiplicity.range>
+																		</UML:Multiplicity>
+																	</UML:StructuralFeature.multiplicity>
+																	<UML:Attribute.initialValue>
+																		<UML:Expression/>
+																	</UML:Attribute.initialValue>
+																	<UML:StructuralFeature.type>
+																		<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+																	</UML:StructuralFeature.type>
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="description" value="A unique identifier for a Genbank. This should map to the Primary Key in the associated table."/>
+																		<UML:TaggedValue tag="type" value="java.lang.Long"/>
+																		<UML:TaggedValue tag="derived" value="0"/>
+																		<UML:TaggedValue tag="containment" value="Not Specified"/>
+																		<UML:TaggedValue tag="ordered" value="0"/>
+																		<UML:TaggedValue tag="collection" value="false"/>
+																		<UML:TaggedValue tag="position" value="0"/>
+																		<UML:TaggedValue tag="lowerBound" value="1"/>
+																		<UML:TaggedValue tag="upperBound" value="1"/>
+																		<UML:TaggedValue tag="duplicates" value="0"/>
+																		<UML:TaggedValue tag="ea_guid" value="{E82F63EE-24FA-42d1-BFE9-CD5272D81C5D}"/>
+																		<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Attribute>
+																<UML:Attribute name="primaryAccession" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																	<UML:StructuralFeature.multiplicity>
+																		<UML:Multiplicity>
+																			<UML:Multiplicity.range>
+																				<UML:MultiplicityRange lower="1" upper="1"/>
+																			</UML:Multiplicity.range>
+																		</UML:Multiplicity>
+																	</UML:StructuralFeature.multiplicity>
+																	<UML:Attribute.initialValue>
+																		<UML:Expression/>
+																	</UML:Attribute.initialValue>
+																	<UML:StructuralFeature.type>
+																		<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+																	</UML:StructuralFeature.type>
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="description" value="An accession number in bioinformatics is a unique identifier given to a DNA or protein sequence record to allow for tracking of different versions of that sequence record and the associated sequence over time in a single data repository. Because of its relative stability, accession numbers can be utilized as foreign keys for referring to a sequence object, but not necessarily to a unique sequence. All sequence information repositories implement the concept of &quot;accession number&quot; but might do so with subtle variations  (from Wikipedia)."/>
+																		<UML:TaggedValue tag="type" value="java.lang.String"/>
+																		<UML:TaggedValue tag="derived" value="0"/>
+																		<UML:TaggedValue tag="containment" value="Not Specified"/>
+																		<UML:TaggedValue tag="ordered" value="0"/>
+																		<UML:TaggedValue tag="collection" value="false"/>
+																		<UML:TaggedValue tag="position" value="1"/>
+																		<UML:TaggedValue tag="lowerBound" value="1"/>
+																		<UML:TaggedValue tag="upperBound" value="1"/>
+																		<UML:TaggedValue tag="duplicates" value="0"/>
+																		<UML:TaggedValue tag="ea_guid" value="{7FF14C9B-D158-48e1-AC82-005996732476}"/>
+																		<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Attribute>
+															</UML:Classifier.feature>
+														</UML:Class>
+														<UML:Association xmi.id="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+															<UML:ModelElement.taggedValue>
+																<UML:TaggedValue tag="style" value="3"/>
+																<UML:TaggedValue tag="ea_type" value="Association"/>
+																<UML:TaggedValue tag="direction" value="Bi-Directional"/>
+																<UML:TaggedValue tag="linemode" value="3"/>
+																<UML:TaggedValue tag="linecolor" value="-1"/>
+																<UML:TaggedValue tag="linewidth" value="0"/>
+																<UML:TaggedValue tag="seqno" value="0"/>
+																<UML:TaggedValue tag="headStyle" value="0"/>
+																<UML:TaggedValue tag="lineStyle" value="0"/>
+																<UML:TaggedValue tag="virtualInheritance" value="0"/>
+																<UML:TaggedValue tag="correlation-table" value="edu.duke.cagrid.data.MAPPING" xmi.id="EAID_C6EBE4D8_3045_424d_828A_B0633D9EF86B"/>
+															</UML:ModelElement.taggedValue>
+															<UML:Association.connection>
+																<UML:AssociationEnd visibility="public" multiplicity="*" name="genbankCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_4CA6C69F_1B93_4d08_AB43_81ACF72860FE">
+																	<UML:AssociationEnd.multiplicity>
+																		<UML:Multiplicity>
+																			<UML:Multiplicity.range>
+																				<UML:MultiplicityRange lower="0" upper="-1"/>
+																			</UML:Multiplicity.range>
+																		</UML:Multiplicity>
+																	</UML:AssociationEnd.multiplicity>
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="description" value="Definition here!"/>
+																		<UML:TaggedValue tag="containment" value="Unspecified"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:AssociationEnd>
+																<UML:AssociationEnd visibility="public" multiplicity="*" name="uniProtKBCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4">
+																	<UML:AssociationEnd.multiplicity>
+																		<UML:Multiplicity>
+																			<UML:Multiplicity.range>
+																				<UML:MultiplicityRange lower="0" upper="-1"/>
+																			</UML:Multiplicity.range>
+																		</UML:Multiplicity>
+																	</UML:AssociationEnd.multiplicity>
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="description" value="Definition here!"/>
+																		<UML:TaggedValue tag="containment" value="Unspecified"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:AssociationEnd>
+															</UML:Association.connection>
+														</UML:Association>
+														<UML:Class name="UniProtKB" xmi.id="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4" visibility="public" namespace="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+															<UML:ModelElement.taggedValue>
+																<UML:TaggedValue tag="documentation" value="UniProtKB is the central access point for extensive curated protein information, including function, classification and cross-references."/>
+																<UML:TaggedValue tag="isSpecification" value="false"/>
+																<UML:TaggedValue tag="ea_stype" value="Class"/>
+																<UML:TaggedValue tag="ea_ntype" value="0"/>
+																<UML:TaggedValue tag="version" value="1.0"/>
+																<UML:TaggedValue tag="package" value="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC"/>
+																<UML:TaggedValue tag="date_created" value="2006-06-22 14:45:57"/>
+																<UML:TaggedValue tag="date_modified" value="2006-08-23 08:34:22"/>
+																<UML:TaggedValue tag="gentype" value="Java"/>
+																<UML:TaggedValue tag="tagged" value="0"/>
+																<UML:TaggedValue tag="package_name" value="data"/>
+																<UML:TaggedValue tag="phase" value="1.0"/>
+																<UML:TaggedValue tag="author" value="SM"/>
+																<UML:TaggedValue tag="complexity" value="1"/>
+																<UML:TaggedValue tag="status" value="Proposed"/>
+																<UML:TaggedValue tag="eventflags" value="LNK=bd76;ATT=4c6d;"/>
+																<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+															</UML:ModelElement.taggedValue>
+															<UML:Classifier.feature>
+																<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																	<UML:StructuralFeature.multiplicity>
+																		<UML:Multiplicity>
+																			<UML:Multiplicity.range>
+																				<UML:MultiplicityRange lower="1" upper="1"/>
+																			</UML:Multiplicity.range>
+																		</UML:Multiplicity>
+																	</UML:StructuralFeature.multiplicity>
+																	<UML:Attribute.initialValue>
+																		<UML:Expression/>
+																	</UML:Attribute.initialValue>
+																	<UML:StructuralFeature.type>
+																		<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+																	</UML:StructuralFeature.type>
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="description" value="A unique identifier for a UniProtKB. This should map to the Primary Key in the associated table."/>
+																		<UML:TaggedValue tag="type" value="java.lang.Long"/>
+																		<UML:TaggedValue tag="derived" value="0"/>
+																		<UML:TaggedValue tag="containment" value="Not Specified"/>
+																		<UML:TaggedValue tag="ordered" value="0"/>
+																		<UML:TaggedValue tag="collection" value="false"/>
+																		<UML:TaggedValue tag="position" value="0"/>
+																		<UML:TaggedValue tag="lowerBound" value="1"/>
+																		<UML:TaggedValue tag="upperBound" value="1"/>
+																		<UML:TaggedValue tag="duplicates" value="0"/>
+																		<UML:TaggedValue tag="ea_guid" value="{51C0A8E1-A730-479e-848F-A500C04262D3}"/>
+																		<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Attribute>
+																<UML:Attribute name="primaryAccession" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																	<UML:StructuralFeature.multiplicity>
+																		<UML:Multiplicity>
+																			<UML:Multiplicity.range>
+																				<UML:MultiplicityRange lower="1" upper="1"/>
+																			</UML:Multiplicity.range>
+																		</UML:Multiplicity>
+																	</UML:StructuralFeature.multiplicity>
+																	<UML:Attribute.initialValue>
+																		<UML:Expression/>
+																	</UML:Attribute.initialValue>
+																	<UML:StructuralFeature.type>
+																		<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+																	</UML:StructuralFeature.type>
+																	<UML:ModelElement.taggedValue>
+																		<UML:TaggedValue tag="description" value="An accession number in bioinformatics is a unique identifier given to a DNA or protein sequence record to allow for tracking of different versions of that sequence record and the associated sequence over time in a single data repository. Because of its relative stability, accession numbers can be utilized as foreign keys for referring to a sequence object, but not necessarily to a unique sequence. All sequence information repositories implement the concept of &quot;accession number&quot; but might do so with subtle variations (from Wikipedia)."/>
+																		<UML:TaggedValue tag="type" value="java.lang.String"/>
+																		<UML:TaggedValue tag="derived" value="0"/>
+																		<UML:TaggedValue tag="containment" value="Not Specified"/>
+																		<UML:TaggedValue tag="ordered" value="0"/>
+																		<UML:TaggedValue tag="collection" value="false"/>
+																		<UML:TaggedValue tag="position" value="1"/>
+																		<UML:TaggedValue tag="lowerBound" value="1"/>
+																		<UML:TaggedValue tag="upperBound" value="1"/>
+																		<UML:TaggedValue tag="duplicates" value="0"/>
+																		<UML:TaggedValue tag="ea_guid" value="{B227C7DF-7644-4ace-A4CE-C7A6804DA3C9}"/>
+																		<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+																	</UML:ModelElement.taggedValue>
+																</UML:Attribute>
+															</UML:Classifier.feature>
+														</UML:Class>
+													</UML:Namespace.ownedElement>
+												</UML:Package>
+											</UML:Namespace.ownedElement>
+										</UML:Package>
+									</UML:Namespace.ownedElement>
+								</UML:Package>
+							</UML:Namespace.ownedElement>
+						</UML:Package>
+						<UML:Package name="java" xmi.id="EAPK_4D602122_297A_46bd_AB0F_80915C97D110" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+							<UML:ModelElement.taggedValue>
+								<UML:TaggedValue tag="created" value="2006-08-21 00:00:00"/>
+								<UML:TaggedValue tag="modified" value="2006-08-21 00:00:00"/>
+								<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+								<UML:TaggedValue tag="isprotected" value="FALSE"/>
+								<UML:TaggedValue tag="usedtd" value="FALSE"/>
+								<UML:TaggedValue tag="logxml" value="FALSE"/>
+								<UML:TaggedValue tag="phase" value="1.0"/>
+								<UML:TaggedValue tag="status" value="Proposed"/>
+								<UML:TaggedValue tag="complexity" value="1"/>
+								<UML:TaggedValue tag="ea_stype" value="Public"/>
+							</UML:ModelElement.taggedValue>
+							<UML:Namespace.ownedElement>
+								<UML:Package name="lang" xmi.id="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+									<UML:ModelElement.taggedValue>
+										<UML:TaggedValue tag="created" value="2006-08-21 00:00:00"/>
+										<UML:TaggedValue tag="modified" value="2006-08-21 00:00:00"/>
+										<UML:TaggedValue tag="iscontrolled" value="FALSE"/>
+										<UML:TaggedValue tag="isprotected" value="FALSE"/>
+										<UML:TaggedValue tag="usedtd" value="FALSE"/>
+										<UML:TaggedValue tag="logxml" value="FALSE"/>
+										<UML:TaggedValue tag="phase" value="1.0"/>
+										<UML:TaggedValue tag="status" value="Proposed"/>
+										<UML:TaggedValue tag="complexity" value="1"/>
+										<UML:TaggedValue tag="ea_stype" value="Public"/>
+									</UML:ModelElement.taggedValue>
+									<UML:Namespace.ownedElement>
+										<UML:Class name="String" xmi.id="EAID_6EC45217_09F4_4f6c_AAE0_3CAC6C711469" visibility="private" namespace="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="documentation" value="An expression consisting of a linear sequence of symbols (characters or words or phrases)."/>
+												<UML:TaggedValue tag="isSpecification" value="false"/>
+												<UML:TaggedValue tag="ea_stype" value="Class"/>
+												<UML:TaggedValue tag="ea_ntype" value="0"/>
+												<UML:TaggedValue tag="version" value="1.0"/>
+												<UML:TaggedValue tag="package" value="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208"/>
+												<UML:TaggedValue tag="date_created" value="2006-08-21 11:18:24"/>
+												<UML:TaggedValue tag="date_modified" value="2006-08-21 11:47:08"/>
+												<UML:TaggedValue tag="gentype" value="Java"/>
+												<UML:TaggedValue tag="tagged" value="0"/>
+												<UML:TaggedValue tag="package_name" value="lang"/>
+												<UML:TaggedValue tag="phase" value="1.0"/>
+												<UML:TaggedValue tag="complexity" value="1"/>
+												<UML:TaggedValue tag="status" value="Proposed"/>
+												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Class>
+										<UML:Class name="Long" xmi.id="EAID_975F961F_44B8_4209_B034_07B0E54365DB" visibility="private" namespace="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="documentation" value="A variable that is stored as a signed 64-bit (8-byte) integer."/>
+												<UML:TaggedValue tag="isSpecification" value="false"/>
+												<UML:TaggedValue tag="ea_stype" value="Class"/>
+												<UML:TaggedValue tag="ea_ntype" value="0"/>
+												<UML:TaggedValue tag="version" value="1.0"/>
+												<UML:TaggedValue tag="package" value="EAPK_DB86C7C8_39CB_4241_B28B_CF2D7AF77208"/>
+												<UML:TaggedValue tag="date_created" value="2006-08-21 11:16:45"/>
+												<UML:TaggedValue tag="date_modified" value="2006-08-21 11:47:02"/>
+												<UML:TaggedValue tag="gentype" value="Java"/>
+												<UML:TaggedValue tag="tagged" value="0"/>
+												<UML:TaggedValue tag="package_name" value="lang"/>
+												<UML:TaggedValue tag="phase" value="1.0"/>
+												<UML:TaggedValue tag="complexity" value="1"/>
+												<UML:TaggedValue tag="status" value="Proposed"/>
+												<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Class>
+									</UML:Namespace.ownedElement>
+								</UML:Package>
+							</UML:Namespace.ownedElement>
+						</UML:Package>
+					</UML:Namespace.ownedElement>
+				</UML:Package>
+				<UML:DataType xmi.id="eaxmiid0" name="java.lang.Long" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
+				<UML:DataType xmi.id="eaxmiid1" name="java.lang.String" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
+			</UML:Namespace.ownedElement>
+		</UML:Model>
+		<UML:Stereotype xmi.id="eaxmiid2" visibility="private" isSpecification="false" isRoot="false" isLeaf="false" isAbstract="false" baseClass="Association">
+			<UML:Stereotype.extendedElement>
+				<Foundation.Core.ModelElement xmi.idref="EAID_0FEB9ECB_8A7F_41ad_8E49_CAE8B6D6C4A8"/>
+			</UML:Stereotype.extendedElement>
+		</UML:Stereotype>
+	</XMI.content>
+	<XMI.difference/>
+	<XMI.extensions xmi.extender="Enterprise Architect 2.5"/>
+</XMI>
