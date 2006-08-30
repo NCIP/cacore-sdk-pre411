@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2006-08-30 07:51:33">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2006-08-30 08:42:38">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -425,7 +425,7 @@
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="stereotype" value="table"/>
 										<UML:TaggedValue tag="ea_localid" value="63"/>
-										<UML:TaggedValue tag="eventflags" value="OPN=c4b3;LNK=c876;ATT=a49a;"/>
+										<UML:TaggedValue tag="eventflags" value="OPN=c4b3;LNK=c876;ATT=c8a4;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={D22C4298-2CF7-46c8-ABBF-F42BCF2F88A0}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={F3C5E0A4-D80A-4685-B9E9-43C9881C8751}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 									</UML:ModelElement.taggedValue>
@@ -501,7 +501,7 @@
 											<UML:StructuralFeature.multiplicity>
 												<UML:Multiplicity>
 													<UML:Multiplicity.range>
-														<UML:MultiplicityRange lower="1" upper="*"/>
+														<UML:MultiplicityRange lower="1" upper="-1"/>
 													</UML:Multiplicity.range>
 												</UML:Multiplicity>
 											</UML:StructuralFeature.multiplicity>
@@ -522,7 +522,7 @@
 												<UML:TaggedValue tag="collection" value="true"/>
 												<UML:TaggedValue tag="position" value="2"/>
 												<UML:TaggedValue tag="lowerBound" value="1"/>
-												<UML:TaggedValue tag="upperBound" value="*"/>
+												<UML:TaggedValue tag="upperBound" value="-1"/>
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{03B1FAB5-8E8D-4006-A7E5-438EB5A3C7FB}"/>
 												<UML:TaggedValue tag="ea_localid" value="13"/>
@@ -1153,9 +1153,8 @@
 																		<UML:TaggedValue tag="ea_ntype" value="0"/>
 																		<UML:TaggedValue tag="version" value="1.0"/>
 																		<UML:TaggedValue tag="package" value="EAPK_EDC65F97_0F5E_4769_B4F8_2C038FB191AC"/>
-																		<UML:TaggedValue tag="owner" value="EAID_FB0CFE40_3B04_4b15_9620_96F4545298A4"/>
 																		<UML:TaggedValue tag="date_created" value="2006-06-22 14:45:25"/>
-																		<UML:TaggedValue tag="date_modified" value="2006-08-30 07:49:43"/>
+																		<UML:TaggedValue tag="date_modified" value="2006-08-23 08:29:10"/>
 																		<UML:TaggedValue tag="gentype" value="Java"/>
 																		<UML:TaggedValue tag="tagged" value="0"/>
 																		<UML:TaggedValue tag="package_name" value="data"/>
@@ -1163,7 +1162,7 @@
 																		<UML:TaggedValue tag="complexity" value="1"/>
 																		<UML:TaggedValue tag="status" value="Proposed"/>
 																		<UML:TaggedValue tag="ea_localid" value="59"/>
-																		<UML:TaggedValue tag="eventflags" value="LNK=6bd4;ATT=c1c6;"/>
+																		<UML:TaggedValue tag="eventflags" value="LNK=6bd4;ATT=b430;"/>
 																		<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																		<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={21FA8F5A-C2EC-41d0-8A4C-B49DA16C1796}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={4CA6C69F-1B93-4d08-AB43-81ACF72860FE}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																	</UML:ModelElement.taggedValue>
@@ -1300,7 +1299,7 @@
 																		<UML:TaggedValue tag="complexity" value="1"/>
 																		<UML:TaggedValue tag="status" value="Proposed"/>
 																		<UML:TaggedValue tag="ea_localid" value="60"/>
-																		<UML:TaggedValue tag="eventflags" value="LNK=6bd4;ATT=6c05;"/>
+																		<UML:TaggedValue tag="eventflags" value="LNK=6bd4;ATT=6233;"/>
 																		<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																		<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={3D7C2240-4261-4ba1-BCC8-77014C069DF4}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={FB0CFE40-3B04-4b15-9620-96F4545298A4}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																	</UML:ModelElement.taggedValue>
