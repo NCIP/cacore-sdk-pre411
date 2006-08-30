@@ -1,0 +1,415 @@
+Buildfile: build.xml
+
+-install-tomcat.main:
+
+install-tomcat:
+
+-install-mysql.main:
+
+install-mysql:
+
+start-mysql:
+
+create-user:
+
+create-schema:
+
+import-data:
+
+-build-schema.main:
+
+-build-schema.custom:
+
+build-schema:
+
+-create-project-dirs.main:
+     [echo] *****************************************************************
+     [echo] ***  Creating project directories
+     [echo] *****************************************************************
+
+-create-project-dirs.custom:
+
+create-project-dirs:
+
+-copy-project-framework.main:
+     [echo] *****************************************************************
+     [echo] ***  Copying project framework files
+     [echo] *****************************************************************
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\conf
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\framework
+
+-copy-project-framework.custom:
+
+copy-project-framework:
+
+-disable-writable-api.main:
+     [echo] *****************************************************************
+     [echo] ***  Disabling writable APIs
+     [echo] *****************************************************************
+     [copy] Copying 5 files to C:\cacoretoolkit\output\cagrid_test\framework
+
+-disable-writable-api.custom:
+
+disable-writable-api:
+
+-compile-framework.main:
+     [echo] *****************************************************************
+     [echo] ***  Compiling SDK framework
+     [echo] *****************************************************************
+    [javac] Compiling 6 source files to C:\cacoretoolkit\output\framework\build\classes
+
+-compile-framework.custom:
+
+compile-framework:
+
+-create-output-dirs.main:
+     [echo] *****************************************************************
+     [echo] ***  Creating output directories
+     [echo] *****************************************************************
+   [delete] Deleting directory C:\cacoretoolkit\temp
+    [mkdir] Created dir: C:\cacoretoolkit\temp
+    [mkdir] Created dir: C:\cacoretoolkit\temp\zip
+
+-create-output-dirs.custom:
+
+create-output-dirs:
+
+-create-control-files.main:
+     [echo] *****************************************************************
+     [echo] ***  Creating control files
+     [echo] *****************************************************************
+     [copy] Copying 5 files to C:\cacoretoolkit\output\cagrid_test\conf
+     [copy] Copying 10 files to C:\cacoretoolkit\output\cagrid_test\conf
+     [copy] Copying 2 files to C:\cacoretoolkit\output\cagrid_test\conf
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\conf
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\conf
+     [copy] Copying 2 files to C:\cacoretoolkit\output\cagrid_test\conf
+
+-create-control-files.custom:
+
+create-control-files:
+
+-copy-template-files.main:
+     [echo] *****************************************************************
+     [echo] ***  Copying template files
+     [echo] *****************************************************************
+
+-copy-template-files.custom:
+
+copy-template-files:
+
+-fix-xmi.main:
+     [echo] *****************************************************************
+     [echo] ***  Pre-processing XMI file
+     [echo] *****************************************************************
+
+-fix-xmi.custom:
+
+fix-xmi:
+
+-init-project.main:
+
+-init-project.custom:
+
+init-project:
+
+-jetc.main:
+     [echo] *****************************************************************
+     [echo] ***  Compiling JET templates
+     [echo] *****************************************************************
+     [jetc] Compiling 1 JET template(s) to C:\cacoretoolkit\output\cagrid_test\java
+     [jetc] Compiling 1 JET template(s) to C:\cacoretoolkit\output\cagrid_test\java
+     [jetc] Compiling 1 JET template(s) to C:\cacoretoolkit\output\cagrid_test\java
+     [jetc] Compiling 1 JET template(s) to C:\cacoretoolkit\output\cagrid_test\java
+     [jetc] Compiling 1 JET template(s) to C:\cacoretoolkit\output\cagrid_test\java
+    [javac] Compiling 5 source files to C:\cacoretoolkit\output\cagrid_test\classes
+    [javac] Note: Some input files use unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+
+-jetc.custom:
+
+jetc:
+
+-generate-beans.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating Java beans from model
+     [echo] *****************************************************************
+     [java] - Executing filter model-element-filter
+     [java] - 23 elements selected by model-element-filter
+     [java] - Executing filter classifier-filter
+     [java] - 0 elements selected by classifier-filter
+     [java] - Executing filter model-element-filter
+     [java] - 23 elements selected by model-element-filter
+     [java] - Executing filter classifier-filter
+     [java] - 0 elements selected by classifier-filter
+     [java] - Executing filter model-element-filter
+     [java] - 23 elements selected by model-element-filter
+     [java] - Executing filter classifier-filter
+     [java] - 0 elements selected by classifier-filter
+     [java] - Executing filter model-element-filter
+     [java] - 23 elements selected by model-element-filter
+     [java] - Executing filter classifier-filter
+     [java] - 0 elements selected by classifier-filter
+
+-generate-beans.custom:
+
+generate-beans:
+
+-copy-custom-beans.main:
+     [echo] *****************************************************************
+     [echo] ***  Copying custom Java beans
+     [echo] *****************************************************************
+
+-copy-custom-beans.custom:
+
+copy-custom-beans:
+
+-generate-junit.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating JUnit test classes
+     [echo] *****************************************************************
+     [java] - Executing filter model-element-filter
+     [java] - 23 elements selected by model-element-filter
+     [java] - Executing filter classifier-filter
+     [java] - 0 elements selected by classifier-filter
+
+-generate-junit.custom:
+
+generate-junit:
+
+-compile-beans.main:
+     [echo] *****************************************************************
+     [echo] ***  Compiling Java beans
+     [echo] *****************************************************************
+
+-compile-beans.custom:
+
+compile-beans:
+
+-build-beans.main:
+
+-build-beans.custom:
+
+build-beans:
+
+-generate-OR-mapping.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating OR mapping files
+     [echo] *****************************************************************
+     [java] - omPackage: Logical View.Logical Model
+     [java] - dmPackage: Logical View.Data Model
+     [java] - Executing filter mef
+     [java] - 23 elements selected by mef
+     [java] - Executing filter cf
+     [java] - 0 elements selected by cf
+     [java] - omPackage: Logical View.Logical Model
+     [java] - dmPackage: Logical View.Data Model
+     [java] - Executing filter mef
+     [java] - 23 elements selected by mef
+     [java] - Executing filter cf
+     [java] - 0 elements selected by cf
+
+-generate-OR-mapping.custom:
+
+generate-OR-mapping:
+
+-generate-orm-conf.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating ORM configuration files
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer hbc
+     [java] - 1 artifacts produced.
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\conf
+
+-generate-orm-conf.custom:
+
+generate-orm-conf:
+
+-copy-custom-orm.main:
+     [echo] *****************************************************************
+     [echo] ***  Copying custom OR mapping files
+     [echo] *****************************************************************
+
+-copy-custom-orm.custom:
+
+copy-custom-orm:
+
+-build-orm.main:
+
+-build-orm.custom:
+
+build-orm:
+
+-generate-cache.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating cache configuration files
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer ehcacheutil
+     [java] - 1 artifacts produced.
+
+-generate-cache.custom:
+
+generate-cache:
+
+-generate-common-package-util.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating common package utilities
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer commonpackageutil
+     [java] - 1 artifacts produced.
+     [java] - error handling artifactnull
+     [java] - Error generating - error handling artifact
+     [java] Exception in thread "main" gov.nih.nci.codegen.core.GenerationException: Error generating
+     [java] 	at gov.nih.nci.codegen.core.Generator.execute(Unknown Source)
+     [java] 	at gov.nih.nci.codegen.core.GeneratorImpl.main(Unknown Source)
+     [java] Caused by: java.lang.RuntimeException: error handling artifact
+     [java] 	at gov.nih.nci.codegen.core.handler.SimpleFileHandler.execute(Unknown Source)
+     [java] 	... 2 more
+     [java] Caused by: java.lang.NullPointerException
+     [java] 	at java.io.Writer.write(Writer.java:126)
+     [java] 	... 3 more
+
+-generate-common-package-util.custom:
+
+generate-common-package-util:
+
+-generate-common-role-util.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating common role utilities
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer commonroleutil
+     [java] - 1 artifacts produced.
+
+-generate-common-role-util.custom:
+
+generate-common-role-util:
+
+-generate-dao-conf.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating DAO configuration files
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer dao
+     [java] - 1 artifacts produced.
+
+-generate-dao-conf.custom:
+
+generate-dao-conf:
+
+-generate-schemas.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating XML schemas
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer schema
+     [java] - 0 artifacts produced.
+
+-generate-schemas.custom:
+
+generate-schemas:
+
+-generate-wsdd.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating WSDD file
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer wsddutil
+     [java] - 1 artifacts produced.
+
+-generate-wsdd.custom:
+
+generate-wsdd:
+
+-generate-xml-mapping.main:
+     [echo] *****************************************************************
+     [echo] ***  Generating XML mapping files
+     [echo] *****************************************************************
+     [java] - Executing filter model-filter
+     [java] - 1 elements selected by model-filter
+     [java] - Executing transformer mapping
+     [java] - 1 artifacts produced.
+
+-generate-xml-mapping.custom:
+
+generate-xml-mapping:
+
+-generate-artifacts.main:
+
+-generate-artifacts.custom:
+
+generate-artifacts:
+
+-build-artifacts.main:
+
+-build-artifacts.custom:
+
+build-artifacts:
+
+-package-server.main:
+     [echo] *****************************************************************
+     [echo] ***  Creating .war file for server
+     [echo] *****************************************************************
+   [delete] Deleting: C:\cacoretoolkit\output\cagrid_test\package\localhost\cagrid_test.war
+      [war] Building war: C:\cacoretoolkit\output\cagrid_test\package\localhost\cagrid_test.war
+
+-package-server.custom:
+
+package-server:
+
+-package-client.main:
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\client
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\client
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\client
+     [copy] Copying 1 file to C:\cacoretoolkit\output\cagrid_test\conf
+      [jar] Updating jar: C:\cacoretoolkit\output\cagrid_test\package\client\lib\cagrid_test-client.jar
+      [zip] Building zip: C:\cacoretoolkit\output\cagrid_test\package\cagrid_test-client.zip
+    [unzip] Expanding: C:\cacoretoolkit\output\cagrid_test\package\cagrid_test-client.zip into C:\cacoretoolkit\output\cagrid_test\package\client
+
+-package-client.custom:
+
+package-client:
+
+-package-system.main:
+
+-package-system.custom:
+
+package-system:
+
+-copy-server-file.main:
+   [delete] Deleting directory C:\tomcat\webapps\cagrid_test
+   [delete] Deleting: C:\tomcat\webapps\cagrid_test.war
+     [copy] Copying 1 file to C:\tomcat\webapps
+
+-copy-server-file.custom:
+
+copy-server-file:
+
+start-container:
+
+start-tomcat:
+
+-deploy-server.main:
+
+-deploy-server.custom:
+
+deploy-server:
+
+-build-system.main:
+
+-build-system.custom:
+
+build-system:
+
+BUILD SUCCESSFUL
+Total time: 1 minute 45 seconds
