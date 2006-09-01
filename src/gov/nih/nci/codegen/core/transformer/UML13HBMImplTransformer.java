@@ -3,14 +3,23 @@
  */
 package gov.nih.nci.codegen.core.transformer;
 
+import gov.nih.nci.codegen.core.BaseArtifact;
+import gov.nih.nci.codegen.core.ConfigurationException;
+import gov.nih.nci.codegen.core.XMLConfigurable;
+import gov.nih.nci.codegen.core.util.UML13Utils;
+import gov.nih.nci.codegen.core.util.XMLUtils;
+import gov.nih.nci.codegen.framework.TransformationException;
+import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.jmi.reflect.RefObject;
 
@@ -21,11 +30,12 @@ import org.jdom.Element;
 import org.jdom.input.DOMBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.omg.uml.foundation.core.*;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.GeneralizableElement;
+import org.omg.uml.foundation.core.Generalization;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
@@ -35,17 +45,9 @@ import org.omg.uml.foundation.extensionmechanisms.Stereotype;
 import org.omg.uml.foundation.extensionmechanisms.TaggedValue;
 import org.omg.uml.modelmanagement.UmlPackage;
 
-import gov.nih.nci.codegen.core.BaseArtifact;
-import gov.nih.nci.codegen.core.ConfigurationException;
-import gov.nih.nci.codegen.core.XMLConfigurable;
-import gov.nih.nci.codegen.core.util.UML13Utils;
-import gov.nih.nci.codegen.core.util.XMLUtils;
-import gov.nih.nci.codegen.framework.TransformationException;
-import gov.nih.nci.codegen.framework.Transformer;
-
 /**
  * @author <A HREF="mailto:joshua.a.phillips@saic.com">Joshua Phillips </A>
- * @version $Id: UML13HBMImplTransformer.java,v 1.2 2006-08-11 18:52:49 satish79 Exp $
+ * @version $Id: UML13HBMImplTransformer.java,v 1.3 2006-09-01 19:15:40 ddumitru Exp $
  *
  */
 public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
@@ -86,7 +88,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
         UmlClass klass = (UmlClass) modelElement;
         UmlClass superClass = UML13Utils.getSuperClass(klass);
         if (superClass != null) {
-		  // HAS A SUPERCLASS DO NOTHING
+		  ;// HAS A SUPERCLASS DO NOTHING
 	    } else {
           // NO SUPERCLASS - GO AND PROCESS
             Element mappingEl = new Element("hibernate-mapping");
@@ -147,7 +149,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
              Attribute att = (Attribute) i.next();
              Attribute col = getColumn(table, att);
              if (col == null) {
-                 log.warn("No column found for "+ UML13Utils.getQualifiedName(klass) + "."+ att.getName() + ", continuing.");
+                 log.warn("No column found for "+ UML13Utils.getQualifiedName(klass) + Constant.DOT+ att.getName() + ", continuing.");
                  continue;
              }
              if (isPK(col)) {
@@ -258,7 +260,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 			Element join = new Element("joined-subclass");
 			mappingE1.addContent(join);
 			String temp1 = getPackage(subClass) + ".impl." + subClass.getName()+"Impl";
-//			String temp1 = getPackage(subClass) + "." + subClass.getName();
+//			String temp1 = getPackage(subClass) + Constant.DOT + subClass.getName();
 			join.setAttribute("name", temp1);
 			join.setAttribute("table", table1.getName());
 			if (eagerFetchPackages.contains(getPackage(klass)))
@@ -275,10 +277,11 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 			    Attribute col;
 			    col = getColumn(table1, att);
 			    if (col == null) {
-			        log.warn("No column found for "+ UML13Utils.getQualifiedName(subClass) + "."+ att.getName() + ", continuing.");
+			        log.warn("No column found for "+ UML13Utils.getQualifiedName(subClass) + Constant.DOT+ att.getName() + ", continuing.");
 			                continue;
 			    }
 			    if (isPK(col)) {
+			    	; // Do nothing
 			     } else {
 			        Element propEl = new Element("property");
 			        join.addContent(propEl);
@@ -333,7 +336,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
             cacheEl.setAttribute("usage", "read-write");
 
             //Get the FK colum
-            String thisMatch = getQualifiedName(otherEnd.getType()) + "." + thisEnd.getName();
+            String thisMatch = getQualifiedName(otherEnd.getType()) + Constant.DOT + thisEnd.getName();
             Attribute keyCol = getKeyColumn(corrTable, thisMatch);
             if (keyCol == null) {
             	log.error("Couldn't find key column for "
@@ -347,11 +350,11 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
             Element m2nEl = new Element("many-to-many");
             setEl.addContent(m2nEl);
             String temp1 = getPackage((UmlClass)otherEnd.getType()) + ".impl." + otherEnd.getType().getName()+"Impl";
-//            String temp1 = getPackage((UmlClass)otherEnd.getType()) + "." + otherEnd.getType().getName();
+//            String temp1 = getPackage((UmlClass)otherEnd.getType()) + Constant.DOT + otherEnd.getType().getName();
 			m2nEl.setAttribute("class", temp1);
 
             //Get other FK
-            String otherMatch = getQualifiedName(klass) + "." + otherEnd.getName();
+            String otherMatch = getQualifiedName(klass) + Constant.DOT + otherEnd.getName();
             Attribute otherKeyCol = getKeyColumn(corrTable, otherMatch);
             if (otherKeyCol == null) {
             	log.error("Couldn't find other key column for " + otherMatch);
@@ -378,7 +381,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
                      	setEl.addContent(cacheEl);
                      	cacheEl.setAttribute("usage", "read-write");
 			            //Get the FK colum
-			            String thisMatch = getQualifiedName(otherEnd.getType()) + "." + thisEnd.getName();
+			            String thisMatch = getQualifiedName(otherEnd.getType()) + Constant.DOT + thisEnd.getName();
 			            Attribute keyCol = getKeyColumn(corrTable, thisMatch);
 			            if (keyCol == null) {
 			            	log.error("Couldn't find key column for " + thisMatch);
@@ -390,11 +393,11 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 			            Element m2nEl = new Element("many-to-many");
 			            setEl.addContent(m2nEl);
 			            String temp1 = getPackage((UmlClass)otherEnd.getType()) + ".impl." + otherEnd.getType().getName()+"Impl";
-//			            String temp1 = getPackage((UmlClass)otherEnd.getType()) + "." + otherEnd.getType().getName();
+//			            String temp1 = getPackage((UmlClass)otherEnd.getType()) + Constant.DOT + otherEnd.getType().getName();
 						m2nEl.setAttribute("class", temp1);
 
 			            //Get other FK
-			            String otherMatch = getQualifiedName(klass) + "." + otherEnd.getName();
+			            String otherMatch = getQualifiedName(klass) + Constant.DOT + otherEnd.getName();
 			            Attribute otherKeyCol = getKeyColumn(corrTable, otherMatch);
 			            if (otherKeyCol == null) {
 			            	log.error("Couldn't find other key column for " + otherMatch);
@@ -443,7 +446,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
             if (_dmPkg == null) {
                 tableName = tv.getValue();
             } else {
-                tableName = _dmPkg + "." + tv.getValue();
+                tableName = _dmPkg + Constant.DOT + tv.getValue();
             }
             corrTable = UML13Utils.getClass(UML13Utils.getModel(association),
                     tableName);
@@ -466,7 +469,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
             if (thisEnd.isNavigable()) {
                 setEl.setAttribute("inverse", "true");
             }
-            String match = getQualifiedName(otherEnd.getType()) + "." + thisEnd.getName();
+            String match = getQualifiedName(otherEnd.getType()) + Constant.DOT + thisEnd.getName();
             Attribute keyCol = getKeyColumn(otherTable, match);
             if (keyCol == null) {
             	log.error("A Couldn't find key column for " + match);
@@ -481,7 +484,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
             Element one2NEl = new Element("one-to-many");
             setEl.addContent(one2NEl);
             String temp1 = getPackage((UmlClass)otherEnd.getType()) + ".impl." + otherEnd.getType().getName()+"Impl";
-//            String temp1 = getPackage((UmlClass)otherEnd.getType()) + "." + otherEnd.getType().getName();
+//            String temp1 = getPackage((UmlClass)otherEnd.getType()) + Constant.DOT + otherEnd.getType().getName();
 			one2NEl.setAttribute("class", temp1);
         }   else if ((otherEnd.isNavigable()) && (!thisEnd.isNavigable())) {
 			UmlClass otherTable = getTable((UmlClass) otherEnd.getType());
@@ -499,7 +502,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 			Element cacheEl = new Element("cache");
 			setEl.addContent(cacheEl);
             cacheEl.setAttribute("usage", "read-write");
-			String match = getQualifiedName(otherEnd.getType()) + "."+ thisEnd.getName();
+			String match = getQualifiedName(otherEnd.getType()) + Constant.DOT+ thisEnd.getName();
 			Attribute keyCol = getKeyColumn(otherTable, match);
 			if (keyCol == null) {
 				log.error(" B Couldn't find key column for "+ match);
@@ -511,7 +514,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 			Element one2NEl = new Element("one-to-many");
 			setEl.addContent(one2NEl);
 			String temp1 = getPackage((UmlClass)otherEnd.getType()) + ".impl." + otherEnd.getType().getName()+"Impl";
-//			String temp1 = getPackage((UmlClass)otherEnd.getType()) + "." + otherEnd.getType().getName();
+//			String temp1 = getPackage((UmlClass)otherEnd.getType()) + Constant.DOT + otherEnd.getType().getName();
 			one2NEl.setAttribute("class", temp1);
 		}
     }
@@ -523,9 +526,9 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
             classEl.addContent(m2OneEl);
             m2OneEl.setAttribute("name", otherEnd.getName());
             String temp1 = getPackage((UmlClass)otherEnd.getType()) + ".impl." + otherEnd.getType().getName()+"Impl";
-//            String temp1 = getPackage((UmlClass)otherEnd.getType()) + "." + otherEnd.getType().getName();
+//            String temp1 = getPackage((UmlClass)otherEnd.getType()) + Constant.DOT + otherEnd.getType().getName();
 			m2OneEl.setAttribute("class", temp1);
-            String match = getQualifiedName(klass) + "." + otherEnd.getName();
+            String match = getQualifiedName(klass) + Constant.DOT + otherEnd.getName();
             Attribute col = getKeyColumn(table, match);
             if (col == null) {
             	log.error("Couldn't find key columns for " + match);
@@ -546,7 +549,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 
     private void doOne2One(Element classEl, UmlClass klass, UmlClass table,AssociationEnd thisEnd, AssociationEnd otherEnd) {
 		if ((otherEnd.isNavigable()) && (thisEnd.isNavigable())) {
-	        String match = getQualifiedName(klass) + "." + otherEnd.getName();
+	        String match = getQualifiedName(klass) + Constant.DOT + otherEnd.getName();
 	        Attribute keyCol = getKeyColumn(table, match);
 	        if (keyCol == null) {
 	            //then this is the un-constrained side
@@ -584,7 +587,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 						//have to determine where the foreign key column is and then build the appropriate
 						//hbm entry to handle it.
 
-						String match = getQualifiedName(klass) + "." + otherEnd.getName();
+						String match = getQualifiedName(klass) + Constant.DOT + otherEnd.getName();
 
 						UmlClass thisEndClass = (UmlClass)thisEnd.getType();
 						UmlClass thisOtherEndClass = (UmlClass)otherEnd.getType();
@@ -631,14 +634,14 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 	  			   col = getColumn(table, att, getQualifiedName(klass));
 	  		    }
 	              if (col == null) {
-	                  log.warn("No column found for " + UML13Utils.getQualifiedName(klass) + "." + att.getName() + ", continuing.");
+	                  log.warn("No column found for " + UML13Utils.getQualifiedName(klass) + Constant.DOT + att.getName() + ", continuing.");
 	                  continue;
 	              }
 	              if (isPK(col)) {
 	                  primaryKey = col.getName();
 
 	              } else {
-	                  //System.out.println("No primary key found for " + UML13Utils.getQualifiedName(klass) + "\n");
+	                  log.debug("No primary key found for " + UML13Utils.getQualifiedName(klass) + "\n");
 	              }
         }//End iterating through properties
        return primaryKey;
@@ -705,7 +708,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
         } else {
             pkg = UML13Utils.getModel(me);
         }
-        qName = UML13Utils.getNamespaceName(pkg, me) + "." + me.getName();
+        qName = UML13Utils.getNamespaceName(pkg, me) + Constant.DOT + me.getName();
         return qName;
     }
 
@@ -743,8 +746,8 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 
 
     private Attribute getColumn(UmlClass table, Attribute att) {
-        String match = getPackage((UmlClass) att.getOwner()) + "."
-                + att.getOwner().getName() + "." + att.getName();
+        String match = getPackage((UmlClass) att.getOwner()) + Constant.DOT
+                + att.getOwner().getName() + Constant.DOT + att.getName();
         log.debug("Looking for " + match + " on table " + table.getName());
         Attribute theCol = null;
         search: for (Iterator i = UML13Utils.getAttributes(table).iterator(); i
@@ -770,7 +773,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 
     private Attribute getColumn(UmlClass table, Attribute att, String correctPackageName) {
 
-        String match = correctPackageName +  "."+ att.getName();
+        String match = correctPackageName +  Constant.DOT+ att.getName();
         log.debug("Looking for " + match + " on table " + table.getName());
         Attribute theCol = null;
         search: for (Iterator i = UML13Utils.getAttributes(table).iterator(); i.hasNext();) {
@@ -866,7 +869,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 
 			_properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("CORESystem.properties"));
 
-			String eagerPackages = (String)_properties.getProperty("eager_fetch_many2one_packages");
+			String eagerPackages = _properties.getProperty("eager_fetch_many2one_packages");
 			StringTokenizer tokens = new StringTokenizer(eagerPackages, ",");
 			while (tokens.hasMoreTokens())
 			{
@@ -875,12 +878,10 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 			}
 		}catch(IOException e)
 		{
-		    log.error("IOException: " + e.getMessage());
-		    System.out.println("getProperties.IOException occured: "+e.getMessage());
+		    log.error("IOException: ", e);
 		}
 		catch(Exception ex){
-		    log.error("Exception: " + ex.getMessage());
-			System.out.println("getProperties Exception - "+ ex.getMessage());
+		    log.error("Exception: ", ex);
 		}
 
     	return vec;
