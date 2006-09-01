@@ -27,9 +27,9 @@ import org.apache.log4j.Logger;
 public class SecurityEnabler
 {
 	private static Logger log = Logger.getLogger(SecurityEnabler.class.getName());
-	private String applicationContextName = null;
-	private static AuthorizationManager authorizationManager = null;
-	private static AuthenticationManager authenticationManager = null;
+	private String applicationContextName;
+	private static AuthorizationManager authorizationManager;
+	private static AuthenticationManager authenticationManager;
 	private static int securityLevel = 999;
 
 	/**
@@ -165,7 +165,7 @@ public class SecurityEnabler
 			throw new AuthorizationException("User is not in session");
 		}
 		SessionManager sessionManager = SessionManager.getInstance();
-		UserSession userSession = (UserSession) sessionManager.getSession(sessionKey);
+		UserSession userSession = sessionManager.getSession(sessionKey);
 		if (userSession == null)
 		{
 			authorized = false;
