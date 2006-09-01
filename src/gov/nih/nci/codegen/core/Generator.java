@@ -179,6 +179,7 @@ public abstract class Generator {
 					Transformer t = (Transformer) _transformers
 							.get(transformerName);
 					_logger.info("Executing transformer " + transformerName);
+					_logger.info("modelElement Name: " + ((org.omg.uml.foundation.core.ModelElement)modelElement).getName());					
 					artifacts = t.execute(modelElement, artifacts);
 				}
 				_logger.info(artifacts.size() + " artifacts produced.");
@@ -190,7 +191,7 @@ public abstract class Generator {
 			}
 			_modelAccess.commitTransaction();
 		} catch (Exception ex) {
-			_logger.error("Error generating - " + ex.getMessage());
+			_logger.error("Error generating - ", ex);
 			throw new GenerationException("Error generating", ex);
 		}
 	}
