@@ -7,10 +7,12 @@
 package gov.nih.nci.system.server.mgmt;
 
 import gov.nih.nci.common.util.Constant;
+import gov.nih.nci.system.dao.impl.orm.ORMDAOImpl;
 
 import java.util.Hashtable;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.jboss.ejb.plugins.keygenerator.KeyGenerator;
 import org.jboss.ejb.plugins.keygenerator.uuid.UUIDKeyGenerator;
 
@@ -26,10 +28,12 @@ import org.jboss.ejb.plugins.keygenerator.uuid.UUIDKeyGenerator;
  */
 public class SessionManager
 {
-	private static SessionManager sessionManager = null;
+	private static SessionManager sessionManager;
 	private Hashtable sessions;
 	private KeyGenerator keyGenerator;
 	private long timeOut = Constant.DEFAULT_SESSION_TIMEOUT;
+	
+	private static Logger log = Logger.getLogger(SessionManager.class.getName());	
 
 	/**
 	 * This method returns the cachced instance of the {@link SessionManager} 
@@ -61,7 +65,7 @@ public class SessionManager
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			log.error("Exception: ", ex);
 		}
 		try
 		{
