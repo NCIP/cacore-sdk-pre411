@@ -52,8 +52,8 @@ public class ORMDAOImpl
 {
 	private static Logger log = Logger.getLogger(ORMDAOImpl.class.getName());
     public SessionFactory sf;
-    int recordsPerQuery=0;
-	int maxRecordsPerQuery=0;
+    int recordsPerQuery;
+	int maxRecordsPerQuery;
     /**
      * Default Constructor
      */
@@ -92,10 +92,10 @@ public class ORMDAOImpl
 		}
 
 
-		Object obj = (Object)request.getRequest();
-		Integer firstRow = (Integer)request.getFirstRow();
-		Integer resultsPerQuery = (Integer)request.getRecordsCount();
-		Boolean isCount = (Boolean)request.getIsCount();
+		Object obj = request.getRequest();
+		Integer firstRow = request.getFirstRow();
+		Integer resultsPerQuery = request.getRecordsCount();
+		Boolean isCount = request.getIsCount();
 		//System.out.println("boolean iscount = " + isCount.booleanValue());
 		session = ormConn.openSession(counter);
 
@@ -189,7 +189,7 @@ public class ORMDAOImpl
 				Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
 				if(isCount != null && isCount.booleanValue())
 			    {
-					rowCount = new Integer(hqlQuery.list().size());
+					rowCount = Integer.valueOf(hqlQuery.list().size());
 				}
 				else if((isCount != null && !isCount.booleanValue()) || isCount == null)
 			    {	
@@ -220,21 +220,18 @@ public class ORMDAOImpl
 		}
 		catch (JDBCException ex)
 		{
-			ex.printStackTrace();
-			log.error("JDBC Exception in the ORMDAOImpl - " +ex.getMessage());
-			throw new DAOException("JDBC Exception in the ORMDAOImpl" + ex);
+			log.error("JDBC Exception in the ORMDAOImpl - ", ex);
+			throw new DAOException("JDBC Exception in the ORMDAOImpl: ", ex);
 		}
 		catch(org.hibernate.HibernateException hbmEx)
 		{
-			hbmEx.printStackTrace();
 			log.error(hbmEx.getMessage());
-			throw new DAOException("Hibernate problem " +hbmEx);
+			throw new DAOException("Hibernate problem: ", hbmEx);
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			log.error(e.getMessage());
-			throw new DAOException("Exception in the ORMDAOImpl "+e);
+			log.error("Exception: ", e);
+			throw new DAOException("Exception in the ORMDAOImpl: ", e);
 		}
 		finally
 		{
@@ -264,8 +261,8 @@ public class ORMDAOImpl
 			Properties _properties = new Properties();
 
 			_properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("CORESystem.properties"));
-			String resultsPerQuery = (String)_properties.getProperty("RECORDSPERQUERY");
-			String maxResultsPerQuery = (String)_properties.getProperty("MAXRECORDSPERQUERY");
+			String resultsPerQuery = _properties.getProperty("RECORDSPERQUERY");
+			String maxResultsPerQuery = _properties.getProperty("MAXRECORDSPERQUERY");
 
 			if(resultsPerQuery != null)
 			{
@@ -288,8 +285,7 @@ public class ORMDAOImpl
 			
 		}
 		catch(Exception ex){
-			ex.printStackTrace();
-			log.error(ex.getMessage());			
+			log.error("Exception: ", ex);			
 		}
 	}
 }
