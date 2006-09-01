@@ -31,18 +31,18 @@ public class SVGManipulator
     /**
 	* The DOM document represented an SVG Diagram
 	*/
-    private Document svgDiagram = null;
+    private Document svgDiagram;
     /**
 	* The DOM document represented an SVG Diagram
 	*/
-    private Document originalSvg = null;
+    private Document originalSvg;
 
     /**
      * The SVG file name of this pathway diagram SVG.
      */
     private String name;
 
-    private String GENE_INFO_STRING=null;
+    private String GENE_INFO_STRING;
 
     private static Logger log = Logger.getLogger(SVGManipulator.class.getName());
 
@@ -186,7 +186,6 @@ public class SVGManipulator
                 } // end if element node
             } // end for "g" child nodes
         } // end for childnodes
-        return;
 	 }
 
 	 /**
@@ -237,7 +236,6 @@ public class SVGManipulator
                 } // end if element node
             } // end for "g" child nodes
         } // end for childnodes
-        return;
 	 }
 
 	 /**
@@ -468,14 +466,14 @@ public class SVGManipulator
 										"http://www.celebration.saic.com/nci_cmap","objectName");
 								  // ignore node, if no objectName ref
 								  if ( objref == null ) continue;
-								  String obname=(String)objref.getNodeValue();
+								  String obname=objref.getNodeValue();
 								  if ( obname.equals(bcid) )
                                   {
 									  Node colref = gkattrmap.getNamedItem("style");
 									  String colspec=colref.getNodeValue();
 									  int rgbstart=colspec.indexOf("rgb(");
 									  String t=colspec.substring(rgbstart+4);
-									  int reststart=t.indexOf(")");
+									  int reststart=t.indexOf(')');
 									  color=t.substring(0,reststart);
 								  }
 							 }
@@ -612,7 +610,7 @@ public class SVGManipulator
                                         "http://www.celebration.saic.com/nci_cmap","objectName");
                                   // ignore node, if no objectName ref
                                   if ( objref == null ) continue;
-                                  String obname=(String)objref.getNodeValue();
+                                  String obname=objref.getNodeValue();
                                   // get existing color then update to new color
                                   Node colref = gkattrmap.getNamedItem("style");
                                   if (colortab.containsKey(obname))
@@ -628,7 +626,6 @@ public class SVGManipulator
             } // end for "g" child nodes
         } // end for childnodes
 
-        return;
 	 }
 
 
@@ -677,7 +674,7 @@ public class SVGManipulator
 										 "http://www.celebration.saic.com/nci_cmap","objectName");
 								   // ignore node, if no objectName ref
 								   if ( objref == null ) continue;
-								   String obname=(String)objref.getNodeValue();
+								   String obname=objref.getNodeValue();
 								   // get existing color then update to new color
 								   Node colref = gkattrmap.getNamedItem("style");
 								   //System.out.println(" svg=" + svgnodes.item(i).getNodeName()+
@@ -699,7 +696,6 @@ public class SVGManipulator
 			 } // end for "g" child nodes
 		 } // end for childnodes
 
-        return;
 	 }
 
 	 /**
@@ -853,7 +849,7 @@ public class SVGManipulator
      {
 		 StringBuffer resultbuff=new StringBuffer();
          //StringBuilder resultbuff=new StringBuilder();
-		 if ( source == null )return "filter:url(" + filterSpec + ")";
+		 if ( source == null )return "filter:url(" + filterSpec + ')';
 		 try
          {
 			 // remove OpaqueFilter and Transparent if they exist
@@ -901,7 +897,7 @@ public class SVGManipulator
 			 int rgbstart=currColor.indexOf("rgb(");
 			 result = currColor.substring(0,rgbstart+4) + newColor;
 			 String t=currColor.substring(rgbstart+1);
-			 int reststart=t.indexOf(")");
+			 int reststart=t.indexOf(')');
 			 result += t.substring(reststart);
 		 }catch (Exception e)
          {
@@ -936,7 +932,7 @@ public class SVGManipulator
 
             _properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("CORESystem.properties"));
 
-            GENE_INFO_STRING = (String)_properties.getProperty("GENE_INFO_STRING");
+            GENE_INFO_STRING = _properties.getProperty("GENE_INFO_STRING");
 
         }catch(IOException e)
         {
