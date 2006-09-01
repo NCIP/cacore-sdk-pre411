@@ -11,6 +11,7 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,11 +21,9 @@ import java.util.List;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Text;
-
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.omg.uml.foundation.core.Classifier;
@@ -206,12 +205,12 @@ public class UML13DAOTransformer implements Transformer, XMLConfigurable {
             String nn = UML13Utils.getNamespaceName(pkg, klass);
             String implNN = nn + ".impl";
             if (classList.equals("")) {
-            	classList = nn + "." + klass.getName();
-            	classList = classList + "," + implNN + "." + klass.getName()+"Impl";
+            	classList = nn + Constant.DOT + klass.getName();
+            	classList = classList + Constant.COMMA + implNN + Constant.DOT + klass.getName()+"Impl";
             }
             else {
-            	classList = classList + ", " + nn + "." + klass.getName();
-            	classList = classList + "," + implNN + "." + klass.getName()+"Impl";
+            	classList = classList + ", " + nn + Constant.DOT + klass.getName();
+            	classList = classList + Constant.COMMA + implNN + Constant.DOT + klass.getName()+"Impl";
             }
         }
         if (classList.equals("")) { classList="UNKOWEN";}

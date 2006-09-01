@@ -11,6 +11,7 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -173,12 +174,12 @@ public class UML13CommonPackageUtilTransformer implements Transformer , XMLConfi
 			if(basePkg != null){
                 packageName = UML13Utils.getNamespaceName(UML13Utils.getPackage(UML13Utils.getModel(klass), basePkg), klass);
                 }
-            className = packageName+"."+klass.getName();
+            className = packageName+Constant.DOT+klass.getName();
             //log.info("Package - "+ packageName + "\tClass  - "+ klass.getName() );
             if(fileString == null){
-                fileString = className +"="+packageName+"\n";
+                fileString = className + Constant.EQUAL +packageName+"\n";
             }else{
-                fileString += className +"="+packageName +"\n";
+                fileString += className + Constant.EQUAL +packageName +"\n";
             }
         }
 

@@ -11,6 +11,7 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -196,14 +197,14 @@ public class UML13CommonRoleUtilTransformer implements Transformer , XMLConfigur
 				{
 					method = method + otherEnd.getName();
 					method = method + nn;
-					method = method +".";
+					method = method +Constant.DOT;
 //					method = method + ".impl.";
 					method = method + thisEnd.getType().getName();
 //					method = method + "Impl";
-					method = method + "=";
+					method = method + Constant.EQUAL;
 					method = method + temp1;
 //					method = method + ".impl.";
-					method = method + ".";
+					method = method + Constant.DOT;
 					method = method + otherEnd.getType().getName();
 //					method = method + "Impl";
 					method = method + "\n";
@@ -214,7 +215,7 @@ public class UML13CommonRoleUtilTransformer implements Transformer , XMLConfigur
 					method = method + ".impl.";
 					method = method + thisEnd.getType().getName();
 					method = method + "Impl";
-					method = method + "=";
+					method = method + Constant.EQUAL;
 					method = method + temp1;
 					method = method + ".impl.";
 					method = method + otherEnd.getType().getName();

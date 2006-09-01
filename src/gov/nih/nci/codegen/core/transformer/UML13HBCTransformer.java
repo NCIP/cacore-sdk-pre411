@@ -10,6 +10,7 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -189,7 +190,7 @@ public class UML13HBCTransformer
             UmlClass superClass = UML13Utils.getSuperClass((UmlClass)klass);
             if (superClass == null) {
 			   String nn = UML13Utils.getNamespaceName(pkg, klass);
-			   String resourceName = nn.replace('.', '/') + "/" + klass.getName() + fileSuffix;
+			   String resourceName = nn.replace('.', '/') + Constant.FORWARD_SLASH + klass.getName() + fileSuffix;
 //               String implResourceName = resourceName + "/impl";
                Element mappingEl = new Element("mapping");
                sessEl.addContent(mappingEl);

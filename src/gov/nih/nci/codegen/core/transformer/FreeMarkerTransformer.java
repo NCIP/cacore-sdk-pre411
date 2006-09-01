@@ -25,6 +25,7 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.Artifact;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
 
 import org.apache.log4j.*;
 
@@ -178,11 +179,11 @@ public class FreeMarkerTransformer implements Transformer, XMLConfigurable {
         }
         _templateDir = getParameter(config, "templateDir");
         _templateName = getParameter(config, "templateName");
-        File f = new File(_templateDir + "/" + _templateName);
+        File f = new File(_templateDir + Constant.FORWARD_SLASH + _templateName);
         if (!f.exists()) {
-        	log.error("Can't find " + _templateDir + "/"
+        	log.error("Can't find " + _templateDir + Constant.FORWARD_SLASH
                     + _templateName);
-            throw new ConfigurationException("Can't find " + _templateDir + "/"
+            throw new ConfigurationException("Can't find " + _templateDir + Constant.FORWARD_SLASH
                     + _templateName);
         }
 

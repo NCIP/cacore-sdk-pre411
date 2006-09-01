@@ -10,6 +10,7 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,10 +20,8 @@ import java.util.List;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
-
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Classifier;
-
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.UmlPackage;
@@ -190,7 +189,7 @@ public class UML13EHCacheTransformer implements Transformer, XMLConfigurable {
 			}
 			String namespaceName = UML13Utils.getNamespaceName(classPkg, klass);
 			String nn1 = namespaceName;
-			nn1 = nn1 + ".";
+			nn1 = nn1 + Constant.DOT;
 			nn1 = nn1 + klass.getName();
 
 			// fill in fullyqualified object name
@@ -242,9 +241,9 @@ public class UML13EHCacheTransformer implements Transformer, XMLConfigurable {
 						&& otherEnd.isNavigable()) {
 					cache.append("<cache name=\"");
 					cache.append(nn);
-					cache.append(".");
+					cache.append(Constant.DOT);
 					cache.append(thisEnd.getType().getName());
-					cache.append(".");
+					cache.append(Constant.DOT);
 					cache.append(otherEnd.getName());
 					cache.append("\"\n");
 					cache.append("maxElementsInMemory=\"500\"\n");
@@ -258,7 +257,7 @@ public class UML13EHCacheTransformer implements Transformer, XMLConfigurable {
 					cache.append(".impl.");
 					cache.append(thisEnd.getType().getName());
 					cache.append("Impl");
-					cache.append(".");
+					cache.append(Constant.DOT);
 					cache.append(otherEnd.getName());
 					cache.append("\"\n");
 					cache.append("maxElementsInMemory=\"500\"\n");

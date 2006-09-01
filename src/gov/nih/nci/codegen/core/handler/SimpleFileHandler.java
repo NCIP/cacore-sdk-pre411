@@ -100,13 +100,13 @@ public class SimpleFileHandler implements ArtifactHandler, XMLConfigurable {
             String target = (String) artifact.getTarget();
             File f = null;
             if (_fileName != null) {
-                f = new File(_baseDir + "/" + _fileName);
+                f = new File(_baseDir + '/' + _fileName);
             } else {
                 String prefix = (_prefix == null || "".equals(_prefix.trim()) ? ""
                         : _prefix);
                 String suffix = (_suffix == null || "".equals(_suffix.trim()) ? ""
                         : _suffix);
-                f = new File(_baseDir + "/" + prefix + artifact.getName()
+                f = new File(_baseDir + '/' + prefix + artifact.getName()
                         + suffix);
             }
             File p = new File(f.getParent());
