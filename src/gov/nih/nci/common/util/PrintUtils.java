@@ -51,7 +51,7 @@ public class PrintUtils {
 			for(Iterator rList = resultList.iterator(); rList.hasNext();){
 
 					classList = new ArrayList();
-			      	Object result 	= (Object)rList.next();
+			      	Object result 	= rList.next();
 			      	System.out.println("\n("+recordNum+"). Class name = "+ result.getClass().getName() +"\n");
 			      	valid = classList.size();
 			      	classList = addClassToList(result, classList);
@@ -64,7 +64,7 @@ public class PrintUtils {
 			    }
 
 			String beanName = resultList.get(0).getClass().getName();
-			System.out.println("Total number of "+ beanName.substring(beanName.lastIndexOf(".")+1) + " " +resultList.size());
+			System.out.println("Total number of "+ beanName.substring(beanName.lastIndexOf(Constant.DOT)+1) + Constant.SPACE +resultList.size());
 
 			}
 
@@ -111,7 +111,7 @@ public class PrintUtils {
 
 			 						methodForObjects.add(methods[i]);
 			 						String beanName = fieldName.substring(0, fieldName.indexOf("Collection"));
-			 						String beanClassName = resultClass.getPackage().getName() + "."+ beanName.substring(0,1).toUpperCase() + beanName.substring(1);
+			 						String beanClassName = resultClass.getPackage().getName() + Constant.DOT+ beanName.substring(0,1).toUpperCase() + beanName.substring(1);
 
 			 						}
 			 					else{
@@ -126,7 +126,7 @@ public class PrintUtils {
 			   String tab = "\t";
 			   for(int a=1; a<classList.size(); a++){
 
-					   path += "."+ (String)classList.get(a);
+					   path += Constant.DOT+ (String)classList.get(a);
 					   tab += "\t";
 				   }
 
@@ -170,7 +170,7 @@ public class PrintUtils {
 			   		try{
 						java.util.Collection objList = new ArrayList();
 			   			objList = (java.util.Collection)meth.invoke(result,new Object[]{});
-			   			System.out.println(tab+"*" +attribName +"  "+  objList.size()+ " found");
+			   			System.out.println(tab + '*' +attribName + "  " +  objList.size()+ " found");
 			   			Object[] objects = objList.toArray();
 
 			   			List newList = new ArrayList();
@@ -198,7 +198,7 @@ public class PrintUtils {
 
 		boolean add = true;
 		String className = result.getClass().getName();
-		String classBean = className.substring(className.lastIndexOf(".")+1);
+		String classBean = className.substring(className.lastIndexOf(Constant.DOT)+1);
 		if(classList.size()>1){
 			String pathItem = null;
 				for(int x=0; x<classList.size(); x++){
@@ -212,7 +212,7 @@ public class PrintUtils {
 				}
 		}
 		if(add){
-			classList.add(className.substring(className.lastIndexOf(".")+1));
+			classList.add(className.substring(className.lastIndexOf(Constant.DOT)+1));
 			}
 		return classList;
 		}
@@ -228,7 +228,7 @@ public class PrintUtils {
 
 			int recordNum = 1;
 	        for(Iterator rList = resultList.iterator(); rList.hasNext();){
-	            Object result 	= (Object)rList.next();
+	            Object result 	= rList.next();
 	            Class resultClass = result.getClass();
 	            String className = resultClass.getName();
 	            if(className.startsWith("java.lang") || className.equalsIgnoreCase("java.util.Date")){
