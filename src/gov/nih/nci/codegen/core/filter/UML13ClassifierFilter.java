@@ -61,57 +61,57 @@ public class UML13ClassifierFilter implements Filter, XMLConfigurable {
 
     private static Perl5Compiler _compiler = new Perl5Compiler();
 
-    private static XPath _extendsExcludeXPath = null;
+    private static XPath _extendsExcludeXPath;
 
-    private static XPath _extendsIncludeXPath = null;
+    private static XPath _extendsIncludeXPath;
 
-    private static XPath _implementsExcludeXPath = null;
+    private static XPath _implementsExcludeXPath;
 
-    private static XPath _implementsIncludeXPath = null;
+    private static XPath _implementsIncludeXPath;
 
     private static Logger log = Logger.getLogger(UML13ClassifierFilter.class);
 
-    private static XPath _matchAbstractXPath = null;
+    private static XPath _matchAbstractXPath;
 
     private static Perl5Matcher _matcher = new Perl5Matcher();
 
-    private static XPath _matchInterfaceXPath = null;
+    private static XPath _matchInterfaceXPath;
 
-    private static XPath _nameExcludeXPath = null;
+    private static XPath _nameExcludeXPath;
 
-    private static XPath _nameIncludeXPath = null;
+    private static XPath _nameIncludeXPath;
 
-    private static XPath _packageExcludeXPath = null;
+    private static XPath _packageExcludeXPath;
 
-    private static XPath _packageIncludeXPath = null;
+    private static XPath _packageIncludeXPath;
 
-    private static XPath _stereotypeExcludeXPath = null;
+    private static XPath _stereotypeExcludeXPath;
 
-    private static XPath _stereotypeIncludeXPath = null;
+    private static XPath _stereotypeIncludeXPath;
 
-    private Perl5Pattern _extendsExclude = null;
+    private Perl5Pattern _extendsExclude;
 
-    private Perl5Pattern _extendsInclude = null;
+    private Perl5Pattern _extendsInclude;
 
-    private Perl5Pattern _implementsExclude = null;
+    private Perl5Pattern _implementsExclude;
 
-    private Perl5Pattern _implementsInclude = null;
+    private Perl5Pattern _implementsInclude;
 
-    private Boolean _matchAbstract = null;
+    private Boolean _matchAbstract;
 
-    private Boolean _matchInterface = null;
+    private Boolean _matchInterface;
 
-    private Perl5Pattern _nameExclude = null;
+    private Perl5Pattern _nameExclude;
 
-    private Perl5Pattern _nameInclude = null;
+    private Perl5Pattern _nameInclude;
 
-    private Perl5Pattern _packageExclude = null;
+    private Perl5Pattern _packageExclude;
 
-    private Perl5Pattern _packageInclude = null;
+    private Perl5Pattern _packageInclude;
 
-    private Perl5Pattern _stereotypeExclude = null;
+    private Perl5Pattern _stereotypeExclude;
 
-    private Perl5Pattern _stereotypeInclude = null;
+    private Perl5Pattern _stereotypeInclude;
 
     /**
      *  
@@ -263,14 +263,14 @@ public class UML13ClassifierFilter implements Filter, XMLConfigurable {
             throws FilteringException {
         Collection results = new ArrayList();
         for (Iterator i = modelElements.iterator(); i.hasNext();) {
-            Object obj = (Object) i.next();
+            Object obj = i.next();
             if (obj instanceof Classifier) {
                 Classifier c = (Classifier) obj;
 
                 if (matches(c)) {
                     results.add(c);
                 } else {
-                   
+                   ; // Do nothing?
                 }
 
             }
@@ -464,7 +464,7 @@ public class UML13ClassifierFilter implements Filter, XMLConfigurable {
             if (interfaces.size() == 0 && getImplementsInclude() != null) {
                 matches = false;
             } else if (interfaces.size() > 0
-                    && (getImplementsInclude() != null | getImplementsExclude() != null)) {
+                    && (getImplementsInclude() != null || getImplementsExclude() != null)) {
 
                 ArrayList notExcluded = new ArrayList();
                 for (Iterator i = interfaces.iterator(); i.hasNext();) {
@@ -526,11 +526,11 @@ public class UML13ClassifierFilter implements Filter, XMLConfigurable {
     }
 
     private void setMatchAbstract(String b) {
-        _matchAbstract = new Boolean("true".equalsIgnoreCase(b));
+        _matchAbstract = Boolean.valueOf("true".equalsIgnoreCase(b));
     }
 
     private void setMatchInterface(String b) {
-        _matchInterface = new Boolean("true".equalsIgnoreCase(b));
+        _matchInterface = Boolean.valueOf("true".equalsIgnoreCase(b));
     }
 
     private void setNameExclude(String p) throws MalformedPatternException {
