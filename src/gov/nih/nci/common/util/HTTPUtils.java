@@ -60,15 +60,15 @@ public class HTTPUtils implements Serializable{
 
     private static Logger log= Logger.getLogger(HTTPUtils.class.getName());
     private  Properties properties = new Properties();
-    private String query=null;
+    private String query;
     private String startIndex = "0";
     private String resultCounter = "1000";
-    private String pageNumber = null;
-    private String pageSize = null;
-    private String criteria = null;
-    private String targetClassName = null;
-    private String servletName = null;
-    private String targetPackageName = null;
+    private String pageNumber;
+    private String pageSize;
+    private String criteria;
+    private String targetClassName;
+    private String servletName;
+    private String targetPackageName;
     private List results = new ArrayList();
     private Namespace namespace = Namespace.getNamespace("xlink",Constant.XLINK_URL);
 
@@ -133,17 +133,17 @@ public void setQueryArguments(String queryText) throws Exception {
 	this.query = queryText;
     try{
         if (query != null && !"".equals(query.trim())) {
-               if(query.indexOf("&")<0 && query.indexOf("=")>0){
-                   if(query.indexOf("[")>0){
+               if(query.indexOf(Constant.AMPERSAND)<0 && query.indexOf(Constant.EQUAL)>0){
+                   if(query.indexOf(Constant.LEFT_BRACKET)>0){
                        String crit = query.substring(6);
-                       query = query.substring(0,query.indexOf("["))+"&" + crit;
+                       query = query.substring(0,query.indexOf(Constant.LEFT_BRACKET))+ Constant.AMPERSAND + crit;
                    }
                    else{
-                       query += "&"+query.substring(query.indexOf("=")+1);
+                       query += Constant.AMPERSAND + query.substring(query.indexOf(Constant.EQUAL)+1);
                    }
 
                }
-                StringTokenizer st = new StringTokenizer(query, "&");
+                StringTokenizer st = new StringTokenizer(query, Constant.AMPERSAND_STR);
                 while (st.hasMoreTokens()) {
                     String param = st.nextToken();
 
@@ -174,13 +174,13 @@ public void setQueryArguments(String queryText) throws Exception {
                         }
                      String target = targetClassName;
 
-                     if(target.indexOf(",")>0){
-                         target = target.substring(0, target.indexOf(","));
+                     if(target.indexOf(Constant.COMMA)>0){
+                         target = target.substring(0, target.indexOf(Constant.COMMA));
                      }
                      isClassNameValid(target);
-                     if(target.indexOf(".")>0){
-                         if(isPackageNameValid(target.substring(0,target.lastIndexOf(".")))){
-                             targetPackageName = target.substring(0,target.lastIndexOf("."));
+                     if(target.indexOf(Constant.DOT)>0){
+                         if(isPackageNameValid(target.substring(0,target.lastIndexOf(Constant.DOT)))){
+                             targetPackageName = target.substring(0,target.lastIndexOf(Constant.DOT));
                          }
                          }
 
@@ -188,6 +188,7 @@ public void setQueryArguments(String queryText) throws Exception {
                              try{
                                  targetPackageName = getPackageName(target);
                              }catch(Exception ex){
+                            	 log.error("Exception: ", ex);
                                  throw new Exception(ex.getMessage());
                              }
                          }
@@ -197,8 +198,8 @@ public void setQueryArguments(String queryText) throws Exception {
 
             }
     }catch(Exception ex){
-        log.error(ex.getMessage());
-        throw new Exception("Invalid Query - "+ ex.getMessage());
+        log.error("Exception: ", ex);
+        throw new Exception(ex);
     }
 
 }
@@ -295,34 +296,34 @@ private String getSearchClassNames(String searchClasses, String packageName){
     String path = "";
 
     /**
-    if(packageName != null && !(targetClassName.indexOf(".")>0) && (targetClassName.indexOf(",")<0)){
-        targetClassName = packageName +"."+targetClassName;
+    if(packageName != null && !(targetClassName.indexOf(Constant.DOT)>0) && (targetClassName.indexOf(",")<0)){
+        targetClassName = packageName +Constant.DOT+targetClassName;
     }
     **/
         String delimiter = null;
-        if(searchClasses.indexOf("/")>0){
-            delimiter = "/";
+        if(searchClasses.indexOf(Constant.FORWARD_SLASH)>0){
+            delimiter = Constant.FORWARD_SLASH_STR;
             }
         else {
-            delimiter = ",";
+            delimiter = Constant.COMMA_STR;
             }
         StringTokenizer st = new StringTokenizer(searchClasses, delimiter);
         String className = st.nextToken();
-        if(className.indexOf(".")>0){
+        if(className.indexOf(Constant.DOT)>0){
             path = className;
         }
         else{
-            path = packageName +"."+ className;
+            path = packageName + Constant.DOT + className;
         }
 
 
         if(st.countTokens()>0){
             while(st.hasMoreElements()){
                 className = st.nextToken().trim();
-                if(className.indexOf(".")>0){
-                  path += ","+  className;
+                if(className.indexOf(Constant.DOT)>0){
+                  path += Constant.COMMA +  className;
                 }
-                path += ","+ packageName +"."+ className;
+                path += Constant.COMMA + packageName + Constant.DOT + className;
                 }
             }
 
@@ -340,11 +341,11 @@ private String getSearchClassNames(String searchClasses, String packageName){
 public List getSearchCriteriaList(String criteria){
     List criteriaList = new ArrayList();
     String delimiter = null;
-    if(criteria.indexOf("/")>0){
-        delimiter = "/";
+    if(criteria.indexOf(Constant.FORWARD_SLASH)>0){
+        delimiter = Constant.FORWARD_SLASH_STR;
         }
     else {
-        delimiter = "\\";
+        delimiter = Constant.BACK_SLASH;
         }
     for(StringTokenizer st = new StringTokenizer(criteria, delimiter); st.hasMoreElements();){
         String crit = st.nextToken().trim();
@@ -404,11 +405,11 @@ public org.jdom.Document getXMLDocument(Object[] resultSet, int pageNumber) thro
 
         Element queryString = new Element("queryString").setText(query);
         String targetResult = targetClassName;
-        if(targetResult.indexOf(",")>1){
-            targetResult = targetResult.substring(0, targetResult.indexOf(","));
+        if(targetResult.indexOf(Constant.COMMA)>1){
+            targetResult = targetResult.substring(0, targetResult.indexOf(Constant.COMMA));
         }
-        if(targetResult.indexOf(".")<0){
-            targetResult = this.getPackageName(targetResult)+"."+targetResult;
+        if(targetResult.indexOf(Constant.DOT)<0){
+            targetResult = this.getPackageName(targetResult)+ Constant.DOT +targetResult;
         }
 
         Element queryClass = new Element("class").setText(targetResult);
@@ -527,7 +528,7 @@ public org.jdom.Document getXMLDocument(Object[] resultSet, int pageNumber) thro
 
             if((index - resultCount)>=0){
                 nextStartIndex = index - resultCount;
-                String preLink = servletName +"?query="+targetClassName +"&"+criteria +"&startIndex="+nextStartIndex+"&resultCounter="+resultCounter;
+                String preLink = servletName +"?query="+targetClassName + Constant.AMPERSAND + criteria +"&startIndex="+nextStartIndex+"&resultCounter="+resultCounter;
                 String preText = "<<< "+" PREVIOUS "+ resultCount +" RECORDS";
                 Element preElement = new Element("previous").setAttribute("type","simple",namespace).setAttribute("href",preLink,namespace).setText(preText);
                 xmlElement.addContent(preElement);
@@ -536,7 +537,7 @@ public org.jdom.Document getXMLDocument(Object[] resultSet, int pageNumber) thro
             Element pagesElement = new Element("pages").setAttribute("count",pCount);
             if((index + resultCount)< totalNumRecords){
                 nextStartIndex = index + resultCount;
-                String nextLink = servletName +"?query="+targetClassName +"&"+criteria +"&startIndex="+nextStartIndex+"&resultCounter="+resultCounter;
+                String nextLink = servletName +"?query="+targetClassName + Constant.AMPERSAND +criteria +"&startIndex="+nextStartIndex+"&resultCounter="+resultCounter;
                 String nextText = "NEXT "+ resultCount+" RECORDS >>> ";
                 Element nextElement = new Element("next").setAttribute("type","simple",namespace).setAttribute("href",nextLink,namespace).setText(nextText);
                 xmlElement.addContent(nextElement);
@@ -544,9 +545,9 @@ public org.jdom.Document getXMLDocument(Object[] resultSet, int pageNumber) thro
             Element pageNumberElement = new Element("pageNumber").setText(this.pageNumber);
             for(int i=0; i< pageCounter; i++){
                 int p = i + 1;
-                String pageLink = servletName +"?query="+targetClassName+"&"+criteria +"&pageNumber="+p+"&resultCounter="+resultCounter+"&startIndex="+startIndex;
+                String pageLink = servletName +"?query="+targetClassName+Constant.AMPERSAND+criteria +"&pageNumber="+p+"&resultCounter="+resultCounter+"&startIndex="+startIndex;
                 String page = String.valueOf(p);
-                String pageText = " " + page +" ";
+                String pageText = Constant.SPACE + page + Constant.SPACE;
                 Element pElement = new Element("page").setAttribute("number",page).setAttribute("type","simple",namespace).setAttribute("href",pageLink,namespace).setText(pageText);
                 pagesElement.addContent(pElement);
             }
@@ -600,9 +601,9 @@ private String getCriteriaIdValue(Object result) throws Exception{
     Field[] fields = this.getAllFields(result.getClass());
     Field idField = getIdField(fields);
     String id = idField.getName();
-    String criteriaIdValue = "@"+ id + "=";
-    if(idField.getName().indexOf(".")>0){
-        id = id.substring(id.lastIndexOf(".")+1);
+    String criteriaIdValue = Constant.AT + id + Constant.EQUAL;
+    if(idField.getName().indexOf(Constant.DOT)>0){
+        id = id.substring(id.lastIndexOf(Constant.DOT)+1);
     }
     if(getFieldValue(idField, result) != null){
         criteriaIdValue += String.valueOf(getFieldValue(idField, result));
@@ -658,15 +659,15 @@ private Element getElement(Object result, String recordNum) throws Exception{
             if(targetBean != null){
                 if(!isPackageNameAmbiguous(targetBean)){
                     if(result.getClass().getPackage().equals(Class.forName(targetBean).getPackage())){
-                        targetBean = targetBean.substring(targetBean.lastIndexOf(".")+1);
-                        if(criteriaBean.indexOf(".")>0){
-                            criteriaBean = criteriaBean.substring(criteriaBean.lastIndexOf(".")+1);
+                        targetBean = targetBean.substring(targetBean.lastIndexOf(Constant.DOT)+1);
+                        if(criteriaBean.indexOf(Constant.DOT)>0){
+                            criteriaBean = criteriaBean.substring(criteriaBean.lastIndexOf(Constant.DOT)+1);
                         }
                     }
                 }
                 String methodName = "get"+  fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
                 if((fieldName.startsWith("parent")|| fieldName.startsWith("child"))&& fieldName.indexOf("Ontology")>0){
-                    link = servletName + "?" + this.getOntologyLink(methodName, criteriaIdValue, result.getClass().getName());
+                    link = servletName + Constant.QUESTION_MARK + this.getOntologyLink(methodName, criteriaIdValue, result.getClass().getName());
                 }else{
                     //Support getSupplyingSource and getOriginalSource methods
                     if(result.getClass().getName().equals("gov.nih.nci.common.provenance.domain.Provenance")&& (fieldName.equals("supplyingSource")|| fieldName.equals("originalSource") || fieldName.equals("immediateSource"))){
@@ -675,7 +676,7 @@ private Element getElement(Object result, String recordNum) throws Exception{
                             Field targetField = this.getFieldByName(fields, targetFieldName);
                             if(targetField.get(result)!=null){
                                 String targetIdValue = "@id="+ String.valueOf(targetField.get(result));
-                                link =  servletName + "?query=" +  targetBean + "&"+targetBean +"["+ targetIdValue+"]";
+                                link =  servletName + "?query=" +  targetBean + Constant.AMPERSAND + targetBean +Constant.LEFT_BRACKET+ targetIdValue+Constant.RIGHT_BRACKET;
                             }
                         }
                     }
@@ -685,13 +686,13 @@ private Element getElement(Object result, String recordNum) throws Exception{
                             Field targetField = this.getFieldByName(fields, targetFieldName);
                             if(targetField.get(result)!=null){
                                 String targetIdValue = "@id="+ String.valueOf(targetField.get(result));
-                                link =  servletName + "?query=" +  targetBean + "&"+targetBean +"["+ targetIdValue+"]";
+                                link =  servletName + "?query=" +  targetBean + Constant.AMPERSAND +targetBean +Constant.LEFT_BRACKET+ targetIdValue+Constant.RIGHT_BRACKET;
                             }
                         }
 
                     }
                     else{
-                        link =  servletName + "?query=" +  targetBean + "&"+criteriaBean +"["+ criteriaIdValue+"]";
+                        link =  servletName + "?query=" +  targetBean + Constant.AMPERSAND +criteriaBean +Constant.LEFT_BRACKET+ criteriaIdValue+Constant.RIGHT_BRACKET;
                     }
 
                 }
@@ -775,8 +776,8 @@ public String getPackageName(String className) throws Exception{
     className = className.trim();
     String packageName = null;
     String classBeanName = null;
-    if(className.indexOf(".")>1){
-        classBeanName = className.substring(className.lastIndexOf(".")+1);
+    if(className.indexOf(Constant.DOT)>1){
+        classBeanName = className.substring(className.lastIndexOf(Constant.DOT)+1);
     }
     else{
         classBeanName = className;
@@ -792,14 +793,14 @@ public String getPackageName(String className) throws Exception{
             String domainName = null;
 
 
-            if(className.indexOf(".")>1){
+            if(className.indexOf(Constant.DOT)>1){
                 if(key.equalsIgnoreCase(className)){
                     packages.add(value);
                 }
             }
             else{
-                if(key.lastIndexOf(".")>1){
-                    domainName = key.substring(key.lastIndexOf(".")+1);
+                if(key.lastIndexOf(Constant.DOT)>1){
+                    domainName = key.substring(key.lastIndexOf(Constant.DOT)+1);
                     if(domainName.equalsIgnoreCase(classBeanName)){
                         packages.add(value);
                     }
@@ -822,10 +823,8 @@ public String getPackageName(String className) throws Exception{
         packageName = (String)packages.get(0);
     }
     }catch(Exception ex){
-       // ex.printStackTrace();
-        log.error("Error: "+ ex.getMessage());
+        log.error("Error: ", ex);
         throw new Exception(ex.getMessage());
-
     }
 
     return packageName;
@@ -842,14 +841,14 @@ public boolean locateClass(String className){
     if(properties != null){
         for(Iterator i= properties.keySet().iterator(); i.hasNext();){
             String key = (String)i.next();
-             if(className.lastIndexOf(".")>1){
+             if(className.lastIndexOf(Constant.DOT)>1){
                 if(key.equals(className)){
                     found=true;
                     break;
                 }
             }
             else{
-                if(key.substring(key.lastIndexOf(".")+1).equals(className)){
+                if(key.substring(key.lastIndexOf(Constant.DOT)+1).equals(className)){
                     found=true;
                     break;
                 }
@@ -874,8 +873,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
     String term = null;
     String roleName = null;
 
-    if(currentClassName.indexOf(".")>1){
-        currentClassName = currentClassName.substring(currentClassName.lastIndexOf(".")+1);
+    if(currentClassName.indexOf(Constant.DOT)>1){
+        currentClassName = currentClassName.substring(currentClassName.lastIndexOf(Constant.DOT)+1);
     }
 
     if(methodName.endsWith("Collection")){
@@ -897,7 +896,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
         roleName += "Collection";
     }
 
-    link = "query="+ returnClassName +"&" + returnClassName + "["+roleName +"["+ criteriaIdValue +"]]";
+    link = "query="+ returnClassName +Constant.AMPERSAND + returnClassName + Constant.LEFT_BRACKET+roleName +Constant.LEFT_BRACKET+ criteriaIdValue +"]]";
     return link;
 }
 
@@ -1058,8 +1057,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
      boolean ambiguous = true;
      className = className.trim();
      String classBeanName = null;
-     if(className.indexOf(".")>1){
-         classBeanName = className.substring(className.lastIndexOf(".")+1);
+     if(className.indexOf(Constant.DOT)>1){
+         classBeanName = className.substring(className.lastIndexOf(Constant.DOT)+1);
      }
      else{
          classBeanName = className;
@@ -1074,8 +1073,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
              String value = (String)properties.get(key);
              String domainName = null;
 
-               if(key.lastIndexOf(".")>1){
-                     domainName = key.substring(key.lastIndexOf(".")+1);
+               if(key.lastIndexOf(Constant.DOT)>1){
+                     domainName = key.substring(key.lastIndexOf(Constant.DOT)+1);
                      if(domainName.equalsIgnoreCase(classBeanName)){
                          packages.add(value);
                      }
@@ -1089,8 +1088,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          ambiguous = false;
      }
      }catch(Exception ex){
-        // ex.printStackTrace();
-         log.error("Error: "+ ex.getMessage());
+         log.error("Error: ", ex);
          throw new Exception(ex.getMessage());
 
      }
@@ -1121,8 +1119,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          throw new Exception("Invalid package name : "+ packageName);
      }
      }catch(Exception ex){
-        // ex.printStackTrace();
-         log.error("Error: "+ ex.getMessage());
+         log.error("Error: ", ex);
          throw new Exception(ex.getMessage());
 
      }
@@ -1138,8 +1135,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
  private boolean isClassNameValid(String targetClassName) throws Exception{
      boolean valid = false;
      String className = null;
-     if(targetClassName.indexOf(".")>0){
-         className = targetClassName.substring(targetClassName.lastIndexOf(".")+1);
+     if(targetClassName.indexOf(Constant.DOT)>0){
+         className = targetClassName.substring(targetClassName.lastIndexOf(Constant.DOT)+1);
      }
      else{
          className = targetClassName;
@@ -1150,8 +1147,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          for(Iterator i= properties.keySet().iterator(); i.hasNext();){
              String key = (String)i.next();
              String keyClassName = null;
-             if(key.indexOf(".")>0){
-                 keyClassName = key.substring(key.lastIndexOf(".")+1);
+             if(key.indexOf(Constant.DOT)>0){
+                 keyClassName = key.substring(key.lastIndexOf(Constant.DOT)+1);
              }
              else{
                  keyClassName = key;
@@ -1167,8 +1164,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          throw new Exception("Invalid class name : "+ className);
      }
      }catch(Exception ex){
-        // ex.printStackTrace();
-         log.error("Error: "+ ex.getMessage());
+         log.error("Error: ", ex);
          throw new Exception(ex.getMessage());
 
      }
@@ -1205,6 +1201,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
 	         recordNum++;
 	     }
      }catch(Exception ex){
+    	 log.error("Exception: ", ex);
          throw new IOException(ex.getMessage());
      }
 
@@ -1264,7 +1261,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
              if(!idField.getType().getName().endsWith("String")){
                  id = String.valueOf(idValue);
              }
-             criteriaIdValue = "@"+idField.getName()+"="+id;
+             criteriaIdValue = Constant.AT+idField.getName()+Constant.EQUAL+id;
              }catch(Exception ex){
                  throw new IOException(ex.getMessage());
              }
@@ -1290,7 +1287,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          String beanName = null;
 
          if(bean){
-             beanName = fieldType.substring(fieldType.lastIndexOf(".")+1);
+             beanName = fieldType.substring(fieldType.lastIndexOf(Constant.DOT)+1);
          }
 
 
@@ -1310,18 +1307,18 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
         }
         else if(returnObjectName.indexOf("Ontology")>0 &&(returnObjectName.startsWith("parent")|| returnObjectName.startsWith("child"))){
             String link = this.getOntologyLink(methName, criteriaIdValue, result.getClass().getName());
-            out.println("<TD><a href="+ servletName + "?"+ link + ">"+ methName +"</a></TD>");
+            out.println("<TD><a href="+ servletName + Constant.QUESTION_MARK + link + Constant.GREATER_THAN + methName +"</a></TD>");
             }
         else if(returnObjectName.endsWith("Collection")){
 
             String returnClassName = returnObjectName.substring(0,returnObjectName.lastIndexOf("Collection"));
             returnClassName = returnClassName.substring(0,1).toUpperCase() + returnClassName.substring(1);
-            String disp = "<TD><a href="+servletName+"?query="+ returnClassName+"&"+className.substring(className.lastIndexOf(".")+1)+"[@"+idField.getName()+"="+idField.get(result)+"]>" + methName+"</a></TD>";
+            String disp = "<TD><a href="+servletName+"?query="+ returnClassName+ Constant.AMPERSAND +className.substring(className.lastIndexOf(Constant.DOT)+1)+"[@"+idField.getName()+ Constant.EQUAL +idField.get(result)+"]>" + methName+"</a></TD>";
 
             out.println(disp);
         }
         else if(bean){
-            String disp = "<TD><a href="+servletName+"?query="+beanName+"&"+className.substring(className.lastIndexOf(".")+1)+"[@"+idField.getName()+"="+idField.get(result)+"]>"+methName+"</a></TD>";
+            String disp = "<TD><a href="+servletName+"?query="+beanName+Constant.AMPERSAND+className.substring(className.lastIndexOf(Constant.DOT)+1)+"[@"+idField.getName()+ Constant.EQUAL +idField.get(result)+"]>"+methName+"</a></TD>";
 
             out.println(disp);
         }
