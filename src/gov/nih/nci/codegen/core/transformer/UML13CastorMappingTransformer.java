@@ -11,6 +11,7 @@ import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
 import gov.nih.nci.common.exception.XMLUtilityException;
+import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.caCOREMarshaller;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -182,6 +183,7 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
 	            try {
 	            	doMapping(klass, mappingEl);
 	            } catch (XMLUtilityException ex) {
+	            	log.error("XMLUtilityException: ", ex);
 	            }
 	        }
             doc.setRootElement(mappingEl);
@@ -202,11 +204,11 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
     	 String packageName = getPackage(klass);
     	 nsURI.append(nsprefix);
     	 nsURI.append(classification);
-    	 nsURI.append(".");
+    	 nsURI.append(Constant.DOT);
     	 nsURI.append(context);
-    	 nsURI.append("/");
+    	 nsURI.append(Constant.FORWARD_SLASH);
     	 nsURI.append(version);
-    	 nsURI.append("/");
+    	 nsURI.append(Constant.FORWARD_SLASH);
     	 nsURI.append(packageName);
     	 return nsURI.toString();
      }
@@ -215,12 +217,12 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
     	 String superClassName =null;
     	 UmlClass superClass = UML13Utils.getSuperClass(klass);
          if (superClass != null) {
- 		   superClassName = getPackage(superClass)+ "."+superClass.getName();
+ 		   superClassName = getPackage(superClass)+ Constant.DOT+superClass.getName();
          } 	    
          String classElName = "class";
          Element classEl = new Element(classElName);
          mappingEl.addContent(classEl);
-         classEl.setAttribute("name", getPackage(klass)+"."+klass.getName());
+         classEl.setAttribute("name", getPackage(klass)+Constant.DOT+klass.getName());
          if (superClassName!=null){
         	 classEl.setAttribute("extends", superClassName);
          }
@@ -261,11 +263,11 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
               *
               */
         	 if (UML13Utils.isMany2One(thisEnd, otherEnd)) {
-             if (UML13Utils.getLowerBound(thisEnd, otherEnd).toString().equals("1")) {
+             if (UML13Utils.getLowerBound(thisEnd, otherEnd).equals("1")) {
             	 Element field = new Element("field");
             	 field.setAttribute("name", otherEnd.getName());
             	 String associationPackage = getPackage(otherEnd.getType());
-            	 field.setAttribute("type", associationPackage+"." + otherEnd.getType().getName());
+            	 field.setAttribute("type", associationPackage+Constant.DOT + otherEnd.getType().getName());
             	 Element bind = new Element("bind-xml");
                  bind.setAttribute("name", otherEnd.getName());
                  bind.setAttribute("node", "element");
@@ -273,7 +275,7 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
                  mappingEl.addContent(field); 
              }
         	 } else if (UML13Utils.isMany2Many(thisEnd, otherEnd) || UML13Utils.isOne2Many(thisEnd, otherEnd)){
-        		 if (UML13Utils.getLowerBound(thisEnd, otherEnd).toString().equals("1")) {
+        		 if (UML13Utils.getLowerBound(thisEnd, otherEnd).equals("1")) {
                 	 Element field = new Element("field");
                 	 field.setAttribute("name", otherEnd.getName());
                 	 field.setAttribute("type", "java.util.Collection" );
@@ -352,8 +354,8 @@ private String getQualifiedName(ModelElement me) {
         } else {
             pkg = UML13Utils.getModel(me);
         }
-        qName = UML13Utils.getNamespaceName(pkg, me) + "." + me.getName();
-        int i = qName.lastIndexOf(".");
+        qName = UML13Utils.getNamespaceName(pkg, me) + Constant.DOT + me.getName();
+        int i = qName.lastIndexOf(Constant.DOT);
         //System.out.println("Attribute type name: " + qName + "\n");
         if (qName.startsWith(".") || qName.startsWith("java")) {
 			qName = qName.substring(i+1);
