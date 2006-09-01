@@ -18,7 +18,7 @@ public class WSQuery {
     private String version = "3.2";
     private boolean processOntology = true;
     private String beanFileName = "cacoreBeans.properties";
-    private WSTransformer transformer = null;
+    private WSTransformer transformer;
 
     public WSQuery() throws Exception{
         loadProperties();
@@ -94,9 +94,8 @@ public class WSQuery {
           }
           catch(Exception e)
           {
-              log.error("WSQuery caught an exception: "+ e.getMessage());
-              e.printStackTrace();
-              throw new Exception(e.getMessage());
+              log.error("WSQuery caught an exception: ", e);
+              throw e;
           }
           return results;
       }
