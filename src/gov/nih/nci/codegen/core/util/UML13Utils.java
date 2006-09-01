@@ -1,5 +1,7 @@
 package gov.nih.nci.codegen.core.util;
 
+import gov.nih.nci.common.util.Constant;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -156,7 +158,7 @@ public class UML13Utils {
 		} else {
 			pkg = UML13Utils.getModel(me);
 		}
-		qName = UML13Utils.getNamespaceName(pkg, me) + "." + me.getName();
+		qName = UML13Utils.getNamespaceName(pkg, me) + Constant.DOT + me.getName();
 		return qName;
 	}
 
@@ -187,7 +189,7 @@ public class UML13Utils {
 		ModelElement pkg = (ModelElement) me.getNamespace();
 		while (!(pkg instanceof Model) && pkg != container && pkg != null) {
 			if (sb.length() > 0) {
-				sb.insert(0, ".");
+				sb.insert(0, Constant.DOT);
 			}
 			sb.insert(0, pkg.getName());
 			pkg = (ModelElement) pkg.getNamespace();
@@ -197,11 +199,11 @@ public class UML13Utils {
 
 	public static String getTestNamespaceName(UmlPackage container,
 			ModelElement me) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		ModelElement pkg = (ModelElement) me.getNamespace();
 		while (!(pkg instanceof Model) && pkg != container && pkg != null) {
 			if (sb.length() > 0) {
-				sb.insert(0, ".");
+				sb.insert(0, Constant.DOT);
 			}
 			sb.insert(0, pkg.getName());
 			pkg = (ModelElement) pkg.getNamespace();
@@ -226,12 +228,12 @@ public class UML13Utils {
 	}
 
 	public static String getQualifiedName(UmlPackage container, ModelElement me) {
-		return getNamespaceName(container, me) + "." + me.getName();
+		return getNamespaceName(container, me) + Constant.DOT + me.getName();
 	}
 
 	public static String getTestQualifiedName(UmlPackage container,
 			ModelElement me) {
-		return getTestNamespaceName(container, me) + "." + me.getName();
+		return getTestNamespaceName(container, me) + Constant.DOT + me.getName();
 	}
 
 	public static Collection getAssociationEnds(Classifier klass) {
@@ -251,8 +253,8 @@ public class UML13Utils {
 				for (Iterator j = assoc.getConnection().iterator(); j.hasNext();) {
 					AssociationEnd ae = (AssociationEnd) j.next();
 					AssociationEnd otherEnd = getOtherAssociationEnd(ae);
-					String id = otherEnd.getName() + "["
-							+ getQualifiedName(otherEnd.getType()) + "]";
+					String id = otherEnd.getName() + Constant.LEFT_BRACKET
+							+ getQualifiedName(otherEnd.getType()) + Constant.RIGHT_BRACKET;
 					if (ae.getType() == superClass
 							&& assocEndsMap.get(id) == null) {
 						_logger.debug("adding assoc: " + id);
@@ -405,7 +407,7 @@ public class UML13Utils {
 
 	public static UmlClass getClass(UmlPackage pkg, String className) {
 		UmlClass klass = null;
-		int idx = className.indexOf(".");
+		int idx = className.indexOf(Constant.DOT);
 		if (idx == -1) {
 
 			for (Iterator i = pkg.getOwnedElement().iterator(); i.hasNext();) {
@@ -530,7 +532,7 @@ public class UML13Utils {
 
 	public static UmlPackage getPackage(UmlPackage parentPkg, String pkgName) {
 		UmlPackage pkg = null;
-		int idx = pkgName.indexOf(".");
+		int idx = pkgName.indexOf(Constant.DOT);
 		if (idx == -1) {
 
 			pkg = (UmlPackage) getModelElement(parentPkg, UmlPackage.class,
@@ -717,7 +719,7 @@ public class UML13Utils {
 
 		MultiplicityRange otherRange = (MultiplicityRange) otherEnd
 				.getMultiplicity().getRange().iterator().next();
-		Integer x = new Integer(otherRange.getLower());
+		Integer x = Integer.valueOf(otherRange.getLower());
 		return x.toString();
 	}
 
@@ -731,7 +733,7 @@ public class UML13Utils {
 		if (multiplicity == -1) {
 			finalMultiplicity = "unbounded";
 		} else {
-			Integer x = new Integer(multiplicity);
+			Integer x = Integer.valueOf(multiplicity);
 			finalMultiplicity = x.toString();
 		}
 		return finalMultiplicity;
