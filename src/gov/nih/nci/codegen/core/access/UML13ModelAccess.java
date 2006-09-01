@@ -120,7 +120,7 @@ public class UML13ModelAccess implements ModelAccess, XMLConfigurable {
 	private RefPackage getModelExtent() {
 		RefPackage m = null;
 		try{
-			m = (RefPackage)_repository.getExtent(MODEL);
+			m = _repository.getExtent(MODEL);
 		}catch(Exception ex){
 			log.error("Error getting model extent - " + ex.getMessage());
 			throw new RuntimeException("Error getting model extent", ex);
