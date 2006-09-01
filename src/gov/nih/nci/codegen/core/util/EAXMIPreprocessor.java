@@ -2,6 +2,7 @@
 package gov.nih.nci.codegen.core.util;
 
 import gov.nih.nci.codegen.framework.XMIPreprocessor;
+import gov.nih.nci.common.util.Constant;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -211,8 +212,8 @@ public class EAXMIPreprocessor implements XMIPreprocessor {
 					if (v == null) {
 						v = "";
 					}
-					sterEl.setAttribute("extendedElement", v + " "
-							+ e.getAttributeValue("xmi.idref") + " ");
+					sterEl.setAttribute("extendedElement", v + Constant.SPACE
+							+ e.getAttributeValue("xmi.idref") + Constant.SPACE);
 				}
 				Element child = (Element) (new JDOMXPath(
 						"//*[local-name()='Stereotype.extendedElement']"))
@@ -256,10 +257,10 @@ public class EAXMIPreprocessor implements XMIPreprocessor {
 				if (ext == null) {
 					ext = "";
 				}
-				if (ext.indexOf(" " + parentId + " ") == -1) {
+				if (ext.indexOf(Constant.SPACE + parentId + Constant.SPACE) == -1) {
 
-					newSEl.setAttribute("extendedElement", ext + " " + parentId
-							+ " ");
+					newSEl.setAttribute("extendedElement", ext + Constant.SPACE + parentId
+							+ Constant.SPACE);
 				}
 
 			}
@@ -305,7 +306,7 @@ public class EAXMIPreprocessor implements XMIPreprocessor {
 				    log.debug("No value for TaggedValue:");
 				    for(Iterator attIt = tvEl.getAttributes().iterator(); attIt.hasNext();){
 				        Attribute anAtt = (Attribute)attIt.next();
-				        System.err.println("\tAtt: " + anAtt);
+				        log.error("\tAtt: " + anAtt);
 				    }
 				    log.error("'value' is null for " + tvEl);
 				    throw new RuntimeException("'value' is null for " + tvEl);

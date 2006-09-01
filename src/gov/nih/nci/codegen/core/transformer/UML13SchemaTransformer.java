@@ -11,29 +11,33 @@ import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
 import gov.nih.nci.common.exception.XMLUtilityException;
+import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.caCOREMarshaller;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Hashtable;
-import java.util.HashSet;
 import java.util.Vector;
-import java.util.Enumeration;
-import org.jdom.Namespace;
+
 import javax.jmi.reflect.RefObject;
-import org.jdom.Attribute;
+
 import org.apache.log4j.Logger;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Classifier;
-import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.UmlPackage;
 
@@ -175,7 +179,7 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
             try {
                 doc = generateRepository(classifiers, packageNameKey,(Collection)packages.get(packageNameKey));
             } catch (Exception ex) {
-
+            	log.error("Exception: ", ex);
             }
             XMLOutputter p = new XMLOutputter();
             p.setFormat(Format.getPrettyFormat());
@@ -222,11 +226,11 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
         }
         nsURI.append(nsprefix);
         nsURI.append(classification);
-        nsURI.append(".");
+        nsURI.append(Constant.DOT);
         nsURI.append(context);
-        nsURI.append("/");
+        nsURI.append(Constant.FORWARD_SLASH);
         nsURI.append(version);
-        nsURI.append("/");
+        nsURI.append(Constant.FORWARD_SLASH);
         return nsURI.toString();
     }
     private List getRelatedNamespaces(Collection classifiers, String packageName, String caBIGURI) {
@@ -306,7 +310,7 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
            if (klassPackage.equals(superClassPackage)){
         	   superClassName = superClass.getName();
            } else {
-        	   superClassName = getPackage(superClass)+":"+superClass.getName();
+        	   superClassName = getPackage(superClass)+':'+superClass.getName();
            }
         } 	
         Element classEl = new Element("element", w3cNS);
@@ -385,7 +389,7 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
                 associationElement.setAttribute("type", otherEnd.getType().getName());
             }
             else{
-                associationElement.setAttribute("type", associationPackage + ":"+otherEnd.getType().getName());
+                associationElement.setAttribute("type", associationPackage + ':'+otherEnd.getType().getName());
             }
             associationElement.setAttribute("minOccurs","0");   
             associationElement.setAttribute("maxOccurs",UML13Utils.getUpperBound(thisEnd, otherEnd));
@@ -455,9 +459,9 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
         } else {
             pkg = UML13Utils.getModel(me);
         }
-        qName = UML13Utils.getNamespaceName(pkg, me) + "." + me.getName();
+        qName = UML13Utils.getNamespaceName(pkg, me) + Constant.DOT + me.getName();
 
-        int subString = qName.lastIndexOf(".");
+        int subString = qName.lastIndexOf(Constant.DOT);
         String finalType = "xs:";
         if (qName.endsWith("collection")) {
             finalType = finalType + "string";
