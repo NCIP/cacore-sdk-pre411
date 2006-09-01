@@ -49,7 +49,7 @@ public class StringClobType implements UserType{
 	 public Object deepCopy(Object value)
 	    {
 	        if (value == null) return null;
-	        return new String((String) value);
+	        return (String) value;
 	    }
 	 /**
 	  * Transforms an object into it's cacheable representation
