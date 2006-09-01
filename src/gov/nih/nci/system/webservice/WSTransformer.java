@@ -1,5 +1,7 @@
 package gov.nih.nci.system.webservice;
 
+import gov.nih.nci.common.util.Constant;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +24,7 @@ public class WSTransformer {
     private static Logger log = Logger.getLogger(WSTransformer.class);  
     private Properties beanProperties = new Properties();    
     private boolean processOntology = true;
-    private boolean implFlag = false;
+    private boolean implFlag;
     private boolean wsPackage = true;
     
     public WSTransformer(String beanFileName) throws Exception{       
@@ -47,7 +49,7 @@ public class WSTransformer {
     private  void loadClassNames(String beanFileName) throws Exception{       
         List fileList = new ArrayList();
         if(beanFileName != null){
-            if(beanFileName.indexOf(",")>0){
+            if(beanFileName.indexOf(Constant.COMMA)>0){
                 StringTokenizer st = new StringTokenizer(beanFileName,",");
                 while(st.hasMoreTokens()){
                     fileList.add(st.nextToken());
@@ -175,7 +177,7 @@ public class WSTransformer {
                             }
                         }
                         else{
-                            String bean = fieldType.substring(fieldType.lastIndexOf(".")+1);                        
+                            String bean = fieldType.substring(fieldType.lastIndexOf(Constant.DOT)+1);                        
                             String beanClass = getClassName(bean);  
                           
                             if(beanClass != null){                          
@@ -188,7 +190,7 @@ public class WSTransformer {
                                         }                                   
                                     }
                                     catch(Exception ex){                                    
-                                        
+                                        log.error("Exception: ", ex);
                                     }
                                 }
                             }
@@ -197,7 +199,7 @@ public class WSTransformer {
                 }
             }
             catch(Exception ex){
-                ex.printStackTrace();
+            	log.error("Exception: ", ex);
             }
             return newObject;
            }
@@ -211,7 +213,7 @@ public class WSTransformer {
             if(beanProperties != null){
                 for(Iterator i= beanProperties.keySet().iterator(); i.hasNext();){
                     String key = (String)i.next();                 
-                     if(className.lastIndexOf(".")>1){
+                     if(className.lastIndexOf(Constant.DOT)>1){
                         if(key.equals(className)){
                             found=true;
                             cName = key;
@@ -219,7 +221,7 @@ public class WSTransformer {
                         }
                     }
                     else{
-                        if(key.substring(key.lastIndexOf(".")+1).equals(className)){
+                        if(key.substring(key.lastIndexOf(Constant.DOT)+1).equals(className)){
                             found=true;
                             cName = key;
                             break;
@@ -256,7 +258,7 @@ public class WSTransformer {
                       resultClassName = resultClassName+"Impl";                       
                   }
                   if(wsPackage){                      
-                      int index = resultClassName.lastIndexOf(".");
+                      int index = resultClassName.lastIndexOf(Constant.DOT);
                       String className = resultClassName.substring(0, index)+".ws."+ resultClassName.substring(index + 1);
                       newResult = Class.forName(className).newInstance(); 
                   }
