@@ -50,7 +50,7 @@ public class HTTPQuery extends HttpServlet{
 
     private static Logger log= Logger.getLogger(HTTPQuery.class.getName());
     private static Properties properties = new Properties();
-    private String cacoreStyleSheet = null;
+    private String cacoreStyleSheet;
     private int pageSize = 1000;
    
     /**
@@ -69,7 +69,9 @@ public class HTTPQuery extends HttpServlet{
              pageSize = Integer.parseInt(pageCount);
          }
      }
-     catch(Exception ex){}
+     catch(Exception ex){
+    	 log.error("Exception: ", ex);
+     }
      
      try{
          loadProperties(beanFiles);         
@@ -152,7 +154,7 @@ public class HTTPQuery extends HttpServlet{
          
             try{ 
                 if(match){
-                    List results = (List)prop.getResults();
+                    List results = prop.getResults();
                     httpUtils.setResults(results);        
                     resultSet = httpUtils.getCachedResultSet();
                     
@@ -245,13 +247,13 @@ public class HTTPQuery extends HttpServlet{
     public List getFileList(String files){
         List fileList = new ArrayList();
         
-        if(files.indexOf(";")>0){
+        if(files.indexOf(Constant.SEMICOLON)>0){
             StringTokenizer st = new StringTokenizer(files, ";");
             while(st.hasMoreTokens()){
                 fileList.add(st.nextToken());
             }            
         }
-        else if(files.indexOf(",")>0){
+        else if(files.indexOf(Constant.COMMA)>0){
             StringTokenizer st = new StringTokenizer(files, ",");
             while(st.hasMoreTokens()){
                 fileList.add(st.nextToken());
@@ -339,10 +341,10 @@ public class HTTPQuery extends HttpServlet{
                int startIndex =0;
                int endCounter =0;
                for(int i=0; i<query.length(); i++){
-                   if(query.charAt(i)=='['){
+                   if(query.charAt(i)==Constant.LEFT_BRACKET){
                        startCounter++;
                    }
-                   else if(query.charAt(i)==']'){
+                   else if(query.charAt(i)==Constant.RIGHT_BRACKET){
                        endCounter++;
                    }
                }
