@@ -1,19 +1,21 @@
 package gov.nih.nci.codegen.core.ant;
 
 import gov.nih.nci.codegen.core.util.LicenseUpdater;
-import java.lang.StringBuffer;
+import gov.nih.nci.common.util.Constant;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.apache.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
-import org.apache.log4j.*;
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -102,7 +104,7 @@ public class LicenseUpdaterTask extends Task {
 			throw new BuildException("License file doesn't exist");
 		}
 		try {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = null;
 			while ((line = br.readLine()) != null) {
@@ -152,15 +154,14 @@ public class LicenseUpdaterTask extends Task {
 			String[] fileNames = ds.getIncludedFiles();
 			String path = ds.getBasedir().getAbsolutePath();
 			for (int j = 0; j < fileNames.length; j++) {
-				_updater.getFiles().add(new File(path + "/" + fileNames[j]));
+				_updater.getFiles().add(new File(path + Constant.FORWARD_SLASH + fileNames[j]));
 			}
 		}
 
 		try {
 			_updater.run();
 		} catch (Exception ex) {
-			log.error("Error executing license updater: " + ex.getMessage());
-			ex.printStackTrace();
+			log.error("Error executing license updater: ", ex);
 			throw new BuildException("Error executing license updater: "
 					+ ex.getMessage(), ex);
 		}
