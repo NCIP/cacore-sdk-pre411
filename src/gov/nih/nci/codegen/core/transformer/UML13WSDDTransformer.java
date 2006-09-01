@@ -11,17 +11,19 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.StringBuffer;
 import java.util.StringTokenizer;
+import java.util.Vector;
+
 import javax.jmi.reflect.RefObject;
+
 import org.apache.log4j.Logger;
 import org.omg.uml.foundation.core.Classifier;
-import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.UmlPackage;
 
@@ -189,14 +191,14 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
 			nn1 = name;
 			nn1 = nn1 + ".ws.";
 			nn1 = nn1 + klass.getName();
-			nn1 = nn1 + ",";
+			nn1 = nn1 + Constant.COMMA;
 			
 			nn1 = nn1 + name;  //UML13Utils.getNamespaceName(classPkg, klass);
 			nn1 = nn1 + ".ws.";
 			nn1 = nn1 + klass.getName();
 			nn1 = nn1 + "Impl";
 			if (i.hasNext()) {
-				nn1 += ",";
+				nn1 += Constant.COMMA;
 			}
 
 			//fill in fullyqualified object name
@@ -204,10 +206,10 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
 			//cache = cache + "\n";
 
 		}
-		/*StringBuffer tmpStringBuffer = new StringBuffer(nn1);
-		//System.out.println("String before: " + tmpStringBuffer.toString() + "\n");
-		int length = tmpStringBuffer.lastIndexOf(",");
-		String finalString = tmpStringBuffer.substring(0,length-1);
+		/*StringBuilder tmpStringBuilder = new StringBuilder(nn1);
+		//System.out.println("String before: " + tmpStringBuilder.toString() + "\n");
+		int length = tmpStringBuilder.lastIndexOf(",");
+		String finalString = tmpStringBuilder.substring(0,length-1);
         //System.out.println("String before: " + finalString + "\n");
 		*/
 
@@ -318,7 +320,7 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
 
 		StringTokenizer st = new StringTokenizer(s,".");
 		Vector myVector = new Vector();
-		StringBuffer myStringBuffer = new StringBuffer();
+		StringBuilder myStringBuilder = new StringBuilder();
 		while (st.hasMoreTokens()) {
 			     String t = st.nextToken();
 			     myVector.add(t);
@@ -326,12 +328,12 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
 	    }
 
         for (int i = myVector.size(); i>0; i--) {
-			  myStringBuffer.append(myVector.elementAt(i-1));
-			  myStringBuffer.append(".");
+			  myStringBuilder.append(myVector.elementAt(i-1));
+			  myStringBuilder.append(Constant.DOT);
 
 	    }
-	    int length1 = myStringBuffer.length();
-	    String finalString1 = myStringBuffer.substring(0,length1-1);
+	    int length1 = myStringBuilder.length();
+	    String finalString1 = myStringBuilder.substring(0,length1-1);
         return finalString1;
     }
 
