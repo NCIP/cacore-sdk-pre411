@@ -121,7 +121,7 @@ public class ServiceLocator {
 		int indexOfDomainObject = 0;
 		for (int i = 0; i < domainObjects.size(); i++) {
 			String dObject = (domainObjects.get(i).toString());
-			if (dObject == domainObj) {
+			if (dObject.equalsIgnoreCase(domainObj)) {
 				indexOfDomainObject = i;
 			}
 		}
