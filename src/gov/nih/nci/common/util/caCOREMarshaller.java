@@ -28,7 +28,7 @@ public class caCOREMarshaller implements gov.nih.nci.common.util.Marshaller {
     private static Logger log= Logger.getLogger(caCOREMarshaller.class.getName());
 
     /* Validation is turned off by default to improve performance */
-    private boolean validation = false;
+    private boolean validation;
 
     /**
      * Creates and XMLUtility instance

@@ -32,7 +32,7 @@ public class NestedCriteria implements Serializable{
 	
 	private NestedCriteria internalNestedCriteria;
 	
-	protected boolean caseSensitivityFlag = false;
+	protected boolean caseSensitivityFlag;
 	
 	public void setTargetObjectName(String targetName)
 	{

@@ -28,7 +28,7 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
     private static Logger log= Logger.getLogger(caCOREUnmarshaller.class.getName());
 
     /* Validation is turned off by default to improve performance */
-    private boolean validation = false;
+    private boolean validation;
 
     /**
      * Creates and XMLUtility instance

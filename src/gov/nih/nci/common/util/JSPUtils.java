@@ -20,7 +20,7 @@ import org.apache.log4j.*;
 public class JSPUtils 
 {    
     private static Logger log = Logger.getLogger(JSPUtils.class.getName());
-    private static JSPUtils jspUtils = null;
+    private static JSPUtils jspUtils;
     private static Properties properties = new Properties();    
     private static List domainNames = new ArrayList();
     private static Set packages = new HashSet();
