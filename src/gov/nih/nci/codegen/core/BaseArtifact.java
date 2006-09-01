@@ -47,6 +47,7 @@ public class BaseArtifact implements Artifact {
 		_target = target;
 		
 		for (int i = 0; i < 100; i++) {
+			; // TODO :: do something?
 		}
 	}
 
