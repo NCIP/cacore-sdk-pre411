@@ -64,9 +64,9 @@ public class SearchUtils {
     public String getRoleName(Class searchClass, Object criterion) throws Exception{
 
 	   		 		String searchClassName 		= searchClass.getName();
-			        String searchBeanName		= searchClassName.substring(searchClassName.lastIndexOf(".")+1);
+			        String searchBeanName		= searchClassName.substring(searchClassName.lastIndexOf(Constant.DOT)+1);
 			        String criterionClassName 	= criterion.getClass().getName();
-			        String criterionBeanName	= criterionClassName.substring(criterionClassName.lastIndexOf(".")+1);
+			        String criterionBeanName	= criterionClassName.substring(criterionClassName.lastIndexOf(Constant.DOT)+1);
 
 			        String roleName 			= null;
 			        Field[] fields 				= searchClass.getDeclaredFields();
@@ -127,9 +127,8 @@ public class SearchUtils {
 			                    }
 			            }
 			        }catch(Exception ex){
-			            log.error("ERROR: " + ex.getMessage());
-			        	ex.printStackTrace();
-			            throw new Exception(ex.getMessage());
+			            log.error("ERROR: ", ex);
+			            throw ex;
 			        }
 	        return roleName;
         }
@@ -138,8 +137,8 @@ public class SearchUtils {
 //	{
 //		if (targetName.indexOf("impl") < 0)
 //		{
-//			String packageName = targetName.substring(0, targetName.lastIndexOf("."))+".impl.";
-//			String beanName = targetName.substring(targetName.lastIndexOf(".")+1)+"Impl";
+//			String packageName = targetName.substring(0, targetName.lastIndexOf(Constant.DOT))+".impl.";
+//			String beanName = targetName.substring(targetName.lastIndexOf(Constant.DOT)+1)+"Impl";
 //			String newName = packageName + beanName;
 //			return newName;
 //		}
@@ -320,24 +319,24 @@ public class SearchUtils {
         Object critObject = null;
         try{
             String critClassName = null;
-            if(criteriaString.indexOf("[")>0){
-                critClassName = criteriaString.substring(0,criteriaString.indexOf("["));
+            if(criteriaString.indexOf(Constant.LEFT_BRACKET)>0){
+                critClassName = criteriaString.substring(0,criteriaString.indexOf(Constant.LEFT_BRACKET));
             }
             else{
                 critClassName = criteriaString;
             }
             
-            if(critClassName.indexOf(".")>0){
+            if(critClassName.indexOf(Constant.DOT)>0){
                 critObject = Class.forName(critClassName).newInstance();
             }
             else{
-                critObject = Class.forName(packageName +"."+critClassName).newInstance();
+                critObject = Class.forName(packageName +Constant.DOT+critClassName).newInstance();
             }
             
             String attString = null;
             List attList = new ArrayList();
-            if(criteriaString.indexOf("[")>=0){
-                attString = criteriaString.substring(criteriaString.indexOf("["),criteriaString.lastIndexOf("]")+1);
+            if(criteriaString.indexOf(Constant.LEFT_BRACKET)>=0){
+                attString = criteriaString.substring(criteriaString.indexOf(Constant.LEFT_BRACKET),criteriaString.lastIndexOf(Constant.RIGHT_BRACKET)+1);
                 }
 
             if(attString!= null){
@@ -403,10 +402,10 @@ public class SearchUtils {
         int startIndex =0;
         int endCounter =0;
         for(int i=0; i<attString.length(); i++){
-            if(attString.charAt(i)=='['){
+            if(attString.charAt(i)==Constant.LEFT_BRACKET){
                 startCounter++;
             }
-            else if(attString.charAt(i)==']'){
+            else if(attString.charAt(i)==Constant.RIGHT_BRACKET){
                 endCounter++;
             }
         }
@@ -415,11 +414,11 @@ public class SearchUtils {
         }
         try{
             if(attString.indexOf("][")<1){
-                String att = attString.substring(1,attString.lastIndexOf("]"));           
+                String att = attString.substring(1,attString.lastIndexOf(Constant.RIGHT_BRACKET));           
                 attList.add(att);
             }
             else{
-                if(attString.charAt(0)=='['){                
+                if(attString.charAt(0)==Constant.LEFT_BRACKET){                
                     startCounter = 1;
                     endCounter =0;
                     startIndex = 1;
@@ -430,7 +429,7 @@ public class SearchUtils {
 
                 int count = attString.length();
                 for(int i=1; i<count;i++){                
-                    if(attString.charAt(i)==']'){
+                    if(attString.charAt(i)==Constant.RIGHT_BRACKET){
                         endCounter++;
                         if(startCounter == endCounter){                        
                             String att = attString.substring(startIndex,i);
@@ -443,7 +442,7 @@ public class SearchUtils {
 
                         }
                     }
-                    else if(attString.charAt(i)=='['){
+                    else if(attString.charAt(i)==Constant.LEFT_BRACKET){
                         startCounter++;
                     }                
                 }
@@ -467,14 +466,14 @@ public class SearchUtils {
         
         try{
             String attRole = null;
-            if(att.indexOf("[")>1){
-                attRole = att.substring(0,att.indexOf("["));    
+            if(att.indexOf(Constant.LEFT_BRACKET)>1){
+                attRole = att.substring(0,att.indexOf(Constant.LEFT_BRACKET));    
             }
 
             Method critAttMethod = null;
                 if(attRole == null){
-                    String attName = att.substring(att.indexOf("@")+1, att.indexOf("="));
-                    String attValue = att.substring(att.indexOf("=")+1);
+                    String attName = att.substring(att.indexOf(Constant.AT)+1, att.indexOf(Constant.EQUAL));
+                    String attValue = att.substring(att.indexOf(Constant.EQUAL)+1);
                     Field critField = getField(critObject.getClass(), attName);
                     critAttMethod = getAttributeSetMethodName(critObject, attName);                
                     Object value = getFieldValue(critField, attValue);
@@ -503,8 +502,8 @@ public class SearchUtils {
                     else{
                         String roleClassName = getRoleClassName(attRole);
 
-                        if(roleClassName.indexOf(".")<0){
-                            roleClassName = packageName +"." + roleClassName;                            
+                        if(roleClassName.indexOf(Constant.DOT)<0){
+                            roleClassName = packageName +Constant.DOT + roleClassName;                            
                         }                
                         Method roleMethod = null;
                         if(ontologyRole != null){                    
@@ -518,19 +517,19 @@ public class SearchUtils {
                         List roleClassCollection = new ArrayList();
                         int count = 0;
                         for(int i=0; i< att.length(); i++){
-                            if(att.charAt(i)=='['){
+                            if(att.charAt(i)==Constant.LEFT_BRACKET){
                                 count++;
                             }
                         }
                         if(count>1){                    
-                            List attList = getAttributeCollection(att.substring(att.indexOf("[")));
+                            List attList = getAttributeCollection(att.substring(att.indexOf(Constant.LEFT_BRACKET)));
                             for(int i=0; i<attList.size(); i++){
                                 String critAtt = (String)attList.get(i);                        
-                                String attName = critAtt.substring(1, critAtt.indexOf("="));
-                                String attValue = critAtt.substring(critAtt.indexOf("=")+1);
+                                String attName = critAtt.substring(1, critAtt.indexOf(Constant.EQUAL));
+                                String attValue = critAtt.substring(critAtt.indexOf(Constant.EQUAL)+1);
                                 Field roleAttField = getField(Class.forName(roleClassName), attName);
                                 Method roleAttMethod = getAttributeSetMethodName(Class.forName(roleClassName).newInstance(), attName);
-                                if(attValue.indexOf(",")<1){
+                                if(attValue.indexOf(Constant.COMMA)<1){
                                     if(roleMethod != null){
                                         try{
                                         Object value = new Object();
@@ -549,8 +548,8 @@ public class SearchUtils {
                             }
                         }
                         else{
-                            String attName = att.substring(att.indexOf("@")+1, att.indexOf("="));
-                            String attValue = att.substring(att.indexOf("=")+1, att.indexOf("]"));
+                            String attName = att.substring(att.indexOf(Constant.AT)+1, att.indexOf(Constant.EQUAL));
+                            String attValue = att.substring(att.indexOf(Constant.EQUAL)+1, att.indexOf(Constant.RIGHT_BRACKET));
                             Field roleAttField = getField(roleObject.getClass(), attName);
                             Method roleAttMethod = getAttributeSetMethodName(roleObject, attName);
                             if(attRole.indexOf("Collection")>0){
@@ -657,7 +656,7 @@ public class SearchUtils {
 
     
     /**
-    * Converts the specified value to the filed class type
+    * Converts the specified value to the field class type
     * @param field  Specifies the field
     * @param value  Specifies the values that needs to be stored
     * @return  returns an object with the new value
@@ -844,10 +843,10 @@ public class SearchUtils {
      */
     public Object buildOntology(String queryString, String packageName) throws Exception{
         
-        String attName = queryString.substring(queryString.indexOf("@")+1,queryString.indexOf("="));
-        String attValue = queryString.substring(queryString.indexOf("=")+1,queryString.lastIndexOf("]"));
+        String attName = queryString.substring(queryString.indexOf(Constant.AT)+1,queryString.indexOf(Constant.EQUAL));
+        String attValue = queryString.substring(queryString.indexOf(Constant.EQUAL)+1,queryString.lastIndexOf(Constant.RIGHT_BRACKET));
         String setMethodName = "set"+attName.substring(0,1).toUpperCase() + attName.substring(1);
-        String roleName = queryString.substring(0, queryString.indexOf("["));
+        String roleName = queryString.substring(0, queryString.indexOf(Constant.LEFT_BRACKET));
         
         Object ontologyCriteria = null;
         String ontologyClassName = null;
@@ -862,8 +861,8 @@ public class SearchUtils {
             ontologyClassName = ontologyClassName.substring(0,ontologyClassName.indexOf("Collection"));
         }
 
-        if(ontologyClassName.indexOf(".")<1){
-            ontologyClassName = packageName +"."+ontologyClassName;
+        if(ontologyClassName.indexOf(Constant.DOT)<1){
+            ontologyClassName = packageName + Constant.DOT +ontologyClassName;
         }
         
         Field field = getField(Class.forName(ontologyClassName), attName);

@@ -35,8 +35,8 @@ public class NestedCriteria2HQL {
 	private Query query;
 	private Query countQuery;
 	
-	private final String AND = "AND ";
-	private final String OR  = " OR "; // to have an extra space so that it has the same length as AND
+	private final static String AND = "AND ";
+	private final static String OR  = " OR "; // to have an extra space so that it has the same length as AND
 
 	private static Logger log = Logger.getLogger(NestedCriteria.class);
 
@@ -55,29 +55,29 @@ public class NestedCriteria2HQL {
 	public Query translate()
 	{
 		
-		StringBuffer hql = new StringBuffer();
+		StringBuilder hql = new StringBuilder();
 		
 		NestedCriteria temp = crit;
 		int count = 0;
 		
 		hql.append("from ");
-		hql.append(temp.getTargetObjectName()+ " " + getAlias(temp.getTargetObjectName()) + " ");
+		hql.append(temp.getTargetObjectName()+ Constant.SPACE + getAlias(temp.getTargetObjectName()) + Constant.SPACE);
 		hql.append("where ");
 		hql.append(getAlias(temp.getTargetObjectName())+".id in ");
 		while(temp != null)
 		{
 			// if it is the subqueries, need a "("
-			hql.append("(");
+			hql.append('(');
 			hql.append("select ");
 			String sourceAlias = getAlias(temp.getSourceName());
 			// tricky part, append ".id" for subqueries not the main one
 			// if the search is like search("Gene", gene), there is no rolename
-			hql.append((temp.getRoleName() == null)?sourceAlias:sourceAlias+"."+ temp.getRoleName());
+			hql.append((temp.getRoleName() == null)?sourceAlias:sourceAlias+Constant.DOT+ temp.getRoleName());
 			
 			hql.append(".id ");
 			
 			hql.append("from ");
-			hql.append(temp.getSourceName() + " " + sourceAlias + " ");
+			hql.append(temp.getSourceName() + Constant.SPACE + sourceAlias + Constant.SPACE);
 			hql.append("where ");
 			// if innerNestedCriteria is null, use HashMap value to construct criterion
 			// else use source id to ...
@@ -111,7 +111,7 @@ public class NestedCriteria2HQL {
 				// Make up the ")"
 				for(int i=0;i<count;i++)
 				{
-					hql.append(")");
+					hql.append(')');
 				}
 			}
 			else
@@ -122,7 +122,7 @@ public class NestedCriteria2HQL {
 			temp = internal;
 			count++;
 		}
-		hql.append(")");
+		hql.append(')');
 		log.debug("NestedCriteria:translate: final hql = " + hql.toString());
 		query = session.createQuery(hql.toString());
 		countQuery = session.createQuery("select count(*) " + hql.toString());
@@ -130,7 +130,7 @@ public class NestedCriteria2HQL {
 		for (int i=0;i<paramList.size();i++)
 		{
 			Object valueObj = paramList.get(i);
-//			log.debug("NestCriteria2HQL. param list i = " + i + " | value = " + valueObj);				
+			log.debug("NestCriteria2HQL. param list i = " + i + " | value = " + valueObj);				
 			if (valueObj instanceof String)
 			{
 				query.setString(i, (String)valueObj);
@@ -300,7 +300,7 @@ public class NestedCriteria2HQL {
 	
 	public String getAlias(String sourceName)
 	{
-		String alias = sourceName.substring(sourceName.lastIndexOf(".")+1);
+		String alias = sourceName.substring(sourceName.lastIndexOf(Constant.DOT)+1);
 		alias = alias.substring(0,1).toLowerCase() + alias.substring(1);
 		return alias;
 	}
@@ -326,18 +326,18 @@ public class NestedCriteria2HQL {
 					{
 						if (crit.caseSensitivityFlag)
 						{
-							whereClause.append(sourceAlias+"."+ key + getOperator(value)+"? ");	
+							whereClause.append(sourceAlias+Constant.DOT+ key + getOperator(value)+"? ");	
 							paramList.add(((String)value).replaceAll("\\*", "\\%"));
 						}
 						else
 						{
-							whereClause.append("lower(" + sourceAlias+"."+ key + ") "+ getOperator(value)+"? ");
+							whereClause.append("lower(" + sourceAlias+Constant.DOT+ key + ") "+ getOperator(value)+"? ");
 							paramList.add(((String)value).toLowerCase().replaceAll("\\*", "\\%"));
 						}
 					}
 					else
 					{
-						whereClause.append(sourceAlias+"."+ key + getOperator(value)+"? ");					
+						whereClause.append(sourceAlias).append(Constant.DOT).append(key).append(getOperator(value)).append("? ");					
 						paramList.add(value);
 					}
 					whereClause.append(AND);
@@ -362,7 +362,7 @@ public class NestedCriteria2HQL {
 					Object roleValue = associationCritMap.get(roleName);
 					
 					// for object association ,the source Alias is changed 
-					String assoAlias = sourceAlias + "." + roleName;
+					String assoAlias = sourceAlias + Constant.DOT + roleName;
 
 					if (roleValue instanceof Collection )
 					{
@@ -405,7 +405,7 @@ public class NestedCriteria2HQL {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			log.error("Exception: ", e);
 		}
 				if (operatorAtEndFlag == true)
 		{
@@ -419,7 +419,7 @@ public class NestedCriteria2HQL {
 		if (valueObj instanceof java.lang.String)
 		{
 			String value = (String)valueObj;
-			if (value.indexOf("*")>= 0)
+			if (value.indexOf('*')>= 0)
 			{
 				return " like ";
 			}

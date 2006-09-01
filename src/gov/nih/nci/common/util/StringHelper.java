@@ -115,7 +115,7 @@ public final class StringHelper {
 	}
 
 	public static String qualifier(String qualifiedName) {
-		int loc = qualifiedName.lastIndexOf(".");
+		int loc = qualifiedName.lastIndexOf(DOT);
 		if ( loc<0 ) {
 			return EMPTY_STRING;
 		}
@@ -147,7 +147,7 @@ public final class StringHelper {
 	}
 
 	public static String root(String qualifiedName) {
-		int loc = qualifiedName.indexOf(".");
+		int loc = qualifiedName.indexOf(DOT);
 		return (loc<0) ? qualifiedName : qualifiedName.substring(0, loc);
 	}
 
@@ -337,8 +337,7 @@ public final class StringHelper {
 		}
 		catch(Exception e)
 		{
-		    log.error("Exception: " + e.getMessage());
-			e.printStackTrace();
+		    log.error("Exception: ", e);
 			return null;
 		}
 

@@ -59,7 +59,7 @@ public class ListProxy extends ArrayList {
 	// ==================================================================================
 	// make a inner class, there is no telling what we need to do
 	private class ListChunk extends ArrayList {
-		final static public long serialVersionUID = -1;
+		private static final long serialVersionUID = -1;
 	}
 
 	// end of inner class ListChunk
@@ -84,8 +84,7 @@ public class ListProxy extends ArrayList {
 						rowCount = appService.getQueryRowCount(originalCrit_,
 								targetClassName);
 				} catch (Exception ex) {
-					log.error("Exception: " + ex.getMessage());
-					ex.printStackTrace();
+					log.error("Exception: ", ex);
 				}
 				realSize_ = rowCount;
 				if (rowCount < maxRecordsPerQuery_)
@@ -515,7 +514,7 @@ public class ListProxy extends ArrayList {
 				throw new IndexOutOfBoundsException("toIndex = " + toIndex);
 			if (fromIndex > toIndex)
 				throw new IllegalArgumentException("fromIndex(" + fromIndex
-						+ ") > toIndex(" + toIndex + ")");
+						+ ") > toIndex(" + toIndex + ')');
 
 			ApplicationService appService = ApplicationServiceProvider.getApplicationService();
 
