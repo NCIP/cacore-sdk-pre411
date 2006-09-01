@@ -81,20 +81,20 @@ public class UML13ModelElement2JUnitTestSourceHandler implements ArtifactHandler
 		}
 		ModelElement me = (ModelElement) ro;
 		try {
-            StringBuffer nameBuf = new StringBuffer();
+            StringBuilder nameBuf = new StringBuilder();
             if (_prefix != null && _prefix.trim().length() > 0) {
                 nameBuf.append(_prefix.trim());
-                nameBuf.append(".");
+                nameBuf.append('.');
             }
 
             nameBuf.append(UML13Utils.getTestQualifiedName(me));
 
             if (_suffix != null && _suffix.trim().length() > 0) {
-                nameBuf.append(".");
+                nameBuf.append('.');
                 nameBuf.append(_suffix.trim());
             }
 
-            File f = new File(_baseDir + "/"
+            File f = new File(_baseDir + '/'
                     + nameBuf.toString().replace('.', '/') + "TestCase.java");
 
             File p = f.getParentFile();

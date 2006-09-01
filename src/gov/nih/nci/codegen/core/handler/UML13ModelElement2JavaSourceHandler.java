@@ -21,6 +21,7 @@ import gov.nih.nci.codegen.core.util.UML13Utils;
 import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.Artifact;
 import gov.nih.nci.codegen.framework.ArtifactHandler;
+import gov.nih.nci.common.util.Constant;
 
 import org.apache.log4j.*;
 
@@ -109,17 +110,17 @@ public class UML13ModelElement2JavaSourceHandler implements ArtifactHandler,
         }
         ModelElement me = (ModelElement) ro;
         try {
-            StringBuffer nameBuf = new StringBuffer();
+            StringBuilder nameBuf = new StringBuilder();
             if (_prefix != null && _prefix.trim().length() > 0) {
                 nameBuf.append(_prefix.trim());
-                nameBuf.append(".");
+                nameBuf.append(Constant.DOT);
             }
             nameBuf.append(UML13Utils.getQualifiedName(me));
             if (_suffix != null && _suffix.trim().length() > 0) {
-                nameBuf.append(".");
+                nameBuf.append('.');
                 nameBuf.append(_suffix.trim());
             }
-            File f = new File(_baseDir + "/"
+            File f = new File(_baseDir + '/'
                     + nameBuf.toString().replace('.', '/') + ".java");
 
             File p = f.getParentFile();

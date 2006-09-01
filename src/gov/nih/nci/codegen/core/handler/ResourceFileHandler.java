@@ -146,7 +146,7 @@ public class ResourceFileHandler implements ArtifactHandler,
                     }
 		    }
 
-            StringBuffer nameBuf = new StringBuffer();
+            StringBuilder nameBuf = new StringBuilder();
             if (_pkgPrefix != null && _pkgPrefix.trim().length() > 0) {
                 nameBuf.append(_pkgPrefix.trim());
             }
@@ -154,7 +154,7 @@ public class ResourceFileHandler implements ArtifactHandler,
             if(_pkgSuffix != null && _pkgSuffix.trim().length() > 0){
                 nameBuf.append(_pkgSuffix.trim());
             }
-            nameBuf.append(".");
+            nameBuf.append('.');
             if (_classPrefix != null && _classPrefix.trim().length() > 0) {
                 nameBuf.append(_classPrefix.trim());
             }
@@ -164,14 +164,14 @@ public class ResourceFileHandler implements ArtifactHandler,
             }
             if(_classSuffix != null  && _classSuffix.equals("Impl")) {
 				String temp = nameBuf.toString();
-				nameBuf = new StringBuffer(temp);
+				nameBuf = new StringBuilder(temp);
 		    }
             String fileSuffix = _fileSuffix;
             if(fileSuffix == null){
                 fileSuffix = "hbm.xml";
             }
-            File f = new File(_baseDir + "/"
-                    + nameBuf.toString().replace('.', '/') + "." + _fileSuffix.trim());
+            File f = new File(_baseDir + '/'
+                    + nameBuf.toString().replace('.', '/') + '.' + _fileSuffix.trim());
 
             File p = f.getParentFile();
             if (!p.exists()) {
