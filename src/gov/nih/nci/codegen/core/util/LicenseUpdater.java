@@ -1,5 +1,7 @@
 
 package gov.nih.nci.codegen.core.util;
+import gov.nih.nci.common.util.Constant;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -167,7 +169,7 @@ public class LicenseUpdater {
 			String currDir = (new File(".")).getAbsolutePath();
 			String relDir = f.getParentFile().getAbsolutePath().substring(
 					currDir.length() - 1);
-			outFile = new File(outputDirName + "/" + relDir + "/" + f.getName());
+			outFile = new File(outputDirName + Constant.FORWARD_SLASH + relDir + Constant.FORWARD_SLASH + f.getName());
 			if (!outFile.getParentFile().exists()) {
 				outFile.getParentFile().mkdirs();
 			}
@@ -211,7 +213,7 @@ public class LicenseUpdater {
 	 */
 	private void insertText(File inFile, File outFile, int beginLineNum,
 			int endLineNum, String text) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		StringBuffer upToInc = getUpToIncluding(inFile, beginLineNum);
 		StringBuffer afterInc = getAfterIncluding(inFile, endLineNum);
 
@@ -288,12 +290,11 @@ public class LicenseUpdater {
 				_log.write(msg + "\n");
 				_log.flush();
 			} catch (IOException e) {
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.error("IOException: ", e);
 			}
 
 		} else {
-
+			logger.error("_log is null");
 		}
 	}
 
@@ -302,8 +303,7 @@ public class LicenseUpdater {
 			try {
 				_log.close();
 			} catch (IOException e) {
-				logger.error(e.getMessage());
-				e.printStackTrace();
+				logger.error("IOExcepiont: ", e);
 			}
 		}
 	}
@@ -320,7 +320,7 @@ public class LicenseUpdater {
 			lu.run();
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.error("Exception: ", ex);
 		}
 
 	}

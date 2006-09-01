@@ -11,6 +11,7 @@ import gov.nih.nci.codegen.core.util.XMLUtils;
 import gov.nih.nci.codegen.framework.FilteringException;
 import gov.nih.nci.codegen.framework.TransformationException;
 import gov.nih.nci.codegen.framework.Transformer;
+import gov.nih.nci.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +23,6 @@ import javax.jmi.reflect.RefObject;
 import org.apache.log4j.Logger;
 import org.jaxen.JaxenException;
 import org.jaxen.jdom.JDOMXPath;
-
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -228,19 +228,19 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
                 String attName = getAttributeName(klass, column);
                 if (attName == null) {
                     log.debug("no value for att name found for "
-                            + klass.getName() + " -> " + table.getName() + "."
+                            + klass.getName() + " -> " + table.getName() + Constant.DOT
                             + column.getName() + ", continuing...");
                     continue;
                 }
                 log.debug("creating field-descriptor for "
-                        + klass.getName() + "." + attName);
+                        + klass.getName() + Constant.DOT + attName);
                 String colName = column.getName();
                 String dbType = column.getType().getName();
                 if (dbType == null) {
                 	log.error("no db type for "
-                            + table.getName() + "." + column.getName());
+                            + table.getName() + Constant.DOT + column.getName());
                     throw new RuntimeException("no db type for "
-                            + table.getName() + "." + column.getName());
+                            + table.getName() + Constant.DOT + column.getName());
                 }
                 String jdbcType = getJDBCType(dbType);
 
@@ -288,11 +288,11 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
             for (Iterator j = UML13Utils.getAssociationEnds(klass, true)
                     .iterator(); j.hasNext();) {
                 AssociationEnd thisEnd = (AssociationEnd) j.next();
-                AssociationEnd otherEnd = (AssociationEnd) UML13Utils
+                AssociationEnd otherEnd = UML13Utils
                         .getOtherAssociationEnd(thisEnd);
                 Classifier otherEndTable = getTable(otherEnd.getType());
                 if (otherEndTable == null) {
-                    log.warn(klass.getName() + "." + otherEnd.getName()
+                    log.warn(klass.getName() + Constant.DOT + otherEnd.getName()
                             + " -> " + otherEnd.getType().getName()
                             + " is not persistent, continuing...");
                     continue;
@@ -303,7 +303,7 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
                         || UML13Utils.isMany2One(thisEnd, otherEnd)) {
                    
                     log.debug("creating reference-descriptor "
-                            + klass.getName() + "." + otherEnd.getName());
+                            + klass.getName() + Constant.DOT + otherEnd.getName());
                
                     Attribute fkColumn = getFKColumn(klass, table, otherEnd
                             .getName());
@@ -316,7 +316,7 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
                     String fieldRefName = getAttributeName(klass, fkColumn);
                     if (fieldRefName == null) {
                         log.warn("no field ref name found for "
-                                + klass.getName() + "." + thisEnd.getName()
+                                + klass.getName() + Constant.DOT + thisEnd.getName()
                                 + "<->" + otherEnd.getName());
                         continue;
                     }
@@ -332,17 +332,17 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
                 } else if (UML13Utils.isOne2Many(thisEnd, otherEnd)) {
                    
                     log.debug("creating 1:n collection-descriptor "
-                            + klass.getName() + "." + otherEnd.getName());
+                            + klass.getName() + Constant.DOT + otherEnd.getName());
                     String invFKFieldRef = getInvFKFieldRef(otherEnd.getType(),
                             otherEndTable, thisEnd.getName());
                     if (invFKFieldRef == null) {
                     	log.error( "couldn't find inv fk field ref for "
-                                        + klass.getName() + "."
+                                        + klass.getName() + Constant.DOT
                                         + thisEnd.getName() + "<->"
                                         + otherEnd.getName());
                         throw new RuntimeException(
                                 "couldn't find inv fk field ref for "
-                                        + klass.getName() + "."
+                                        + klass.getName() + Constant.DOT
                                         + thisEnd.getName() + "<->"
                                         + otherEnd.getName());
                     }
@@ -357,14 +357,14 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
                     invFKEl.setAttribute("field-ref", invFKFieldRef);
                 } else if (UML13Utils.isMany2Many(thisEnd, otherEnd)) {
                     log.debug("creating m:n collection-descriptor "
-                            + klass.getName() + "." + otherEnd.getName());
+                            + klass.getName() + Constant.DOT + otherEnd.getName());
                     Classifier indirTable = getCorrelationTable(table, thisEnd,
                             otherEnd);
 
                     if (indirTable == null) {
-                        System.err.println("no indirection table found for "
-                                + klass.getName() + "." + thisEnd.getName()
-                                + "<->" + otherEnd.getName() + "."
+                        log.error("no indirection table found for "
+                                + klass.getName() + Constant.DOT + thisEnd.getName()
+                                + "<->" + otherEnd.getName() + Constant.DOT
                                 + otherEnd.getType().getName());
                         continue;
                     }
@@ -392,11 +392,11 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
                             .getName());
                 } else {
                 	log.error("unknown assoc multiplicity for " + klass.getName()
-                            + "." + thisEnd.getName() + "<->"
+                            + Constant.DOT + thisEnd.getName() + "<->"
                             + otherEnd.getName());
                     throw new RuntimeException(
                             "unknown assoc multiplicity for " + klass.getName()
-                                    + "." + thisEnd.getName() + "<->"
+                                    + Constant.DOT + thisEnd.getName() + "<->"
                                     + otherEnd.getName());
                 }
 
@@ -560,13 +560,13 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
         search: while (superClass != null) {
             for (Iterator i = tvs.iterator(); i.hasNext();) {
                 TaggedValue tv = (TaggedValue) i.next();
-                log.debug("checking " + tv.getTag() + "=" + tv.getValue()
-                        + " against " + superClass.getName() + "." + attName);
+                log.debug("checking " + tv.getTag() + Constant.EQUAL + tv.getValue()
+                        + " against " + superClass.getName() + Constant.DOT + attName);
                 if ("implements-association".equals(tv.getTag())
                         && tv.getValue().equals(
-                                superClass.getName() + "." + attName)) {
+                                superClass.getName() + Constant.DOT + attName)) {
                     assocName = tv.getValue().substring(
-                            tv.getValue().indexOf(".") + 1);
+                            tv.getValue().indexOf(Constant.DOT) + 1);
                     break search;
                 }
             }
@@ -635,11 +635,11 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
         search: while (superClass != null) {
             for (Iterator i = tvs.iterator(); i.hasNext();) {
                 TaggedValue tv = (TaggedValue) i.next();
-                log.debug("checking " + tv.getTag() + "=" + tv.getValue());
+                log.debug("checking " + tv.getTag() + Constant.EQUAL + tv.getValue());
                 if ("maps-to-attribute".equals(tv.getTag())
                         && tv.getValue().startsWith(superClass.getName())) {
                     attName = tv.getValue().substring(
-                            tv.getValue().indexOf(".") + 1);
+                            tv.getValue().indexOf(Constant.DOT) + 1);
                     break search;
                 }
             }
@@ -722,7 +722,7 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
             }
         }
         if (clients.size() != 1) {
-            System.err.println(clients.size() + " data sources found for "
+            log.error(clients.size() + " data sources found for "
                     + klass.getName());
         } else {
             table = (Classifier) clients.iterator().next();
@@ -770,7 +770,7 @@ public class UML13OJBRepTransformer implements Transformer, XMLConfigurable {
         if (_pkgName == null) {
             _pkgName = "";
         } else {
-            _pkgName = _pkgName + ".";
+            _pkgName = _pkgName + Constant.DOT;
         }
         try {
             _classifierFilt = (UML13ClassifierFilter) Class.forName(className)
