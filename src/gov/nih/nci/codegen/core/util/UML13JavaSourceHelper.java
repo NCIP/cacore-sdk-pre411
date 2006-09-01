@@ -1,13 +1,13 @@
 package gov.nih.nci.codegen.core.util;
 
-import gov.nih.nci.codegen.core.util.UML13Utils;
+import gov.nih.nci.common.util.Constant;
 
 import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.lang.StringBuffer;
 
+import org.apache.log4j.Logger;
 import org.jaxen.JaxenException;
 import org.jaxen.jdom.JDOMXPath;
 import org.jdom.Element;
@@ -19,8 +19,6 @@ import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.foundation.extensionmechanisms.TaggedValue;
-
-import org.apache.log4j.*;
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -129,7 +127,7 @@ public class UML13JavaSourceHelper {
 
 			return javadocOut.toString();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.error("Exception: ", ex);
 		}
 		return "";
 	}
@@ -168,7 +166,7 @@ public class UML13JavaSourceHelper {
 			}
 			javadocOut.append("   * @param ");
 			javadocOut.append(p.getName());
-			javadocOut.append(" ");
+			javadocOut.append(Constant.SPACE);
 			javadocOut.append(pDocStr);
 			javadocOut.append("\n");
 		}
@@ -230,18 +228,18 @@ public class UML13JavaSourceHelper {
 			val.replaceAll(">", "&gt;");
 			if (val.length() > 80) {
 				javadocOut.append("   * ");
-				StringBuffer line = new StringBuffer();
+				StringBuilder line = new StringBuilder();
 				int lineLength = 0;
 				StringTokenizer st = new StringTokenizer(val);
 				while (st.hasMoreTokens()) {
 					String t = st.nextToken();
 					lineLength += t.length();
 					line.append(t);
-					line.append(" ");
+					line.append(Constant.SPACE);
 					if (lineLength > 80) {
 						javadocOut.append(line.toString());
 						javadocOut.append("\n   * ");
-						line = new StringBuffer();
+						line = new StringBuilder();
 						lineLength = 0;
 					}
 				}
@@ -267,6 +265,7 @@ public class UML13JavaSourceHelper {
 			throw new RuntimeException(e);
 		}
 		if (result == null) {
+			log.debug("Couldn't find element for path " + exp);
 			/*
 			 * throw new RuntimeException("Couldn't find element for path " +
 			 * exp);
@@ -280,12 +279,8 @@ public class UML13JavaSourceHelper {
 		List result = null;
 		try {
 			JDOMXPath xpath = new JDOMXPath(exp);
-			result = (List) xpath.selectNodes(context);
-			if (result != null) {
+			result = xpath.selectNodes(context);
 
-			} else {
-
-			}
 		} catch (JaxenException e) {
 			log.error(e.getMessage());
 			throw new RuntimeException(e);
@@ -299,9 +294,8 @@ public class UML13JavaSourceHelper {
 			root = (new SAXBuilder(false)).build(new StringReader(xml))
 					.getRootElement();
 		} catch (Exception ex) {
-			log.error("Coulnd't build XML doc " + ex.getMessage());
-			ex.printStackTrace();
-			throw new RuntimeException("Coulnd't build XML doc", ex);
+			log.error("Couldn't build XML doc: ", ex);
+			throw new RuntimeException("Couldn't build XML doc", ex);
 		}
 		return root;
 	}
