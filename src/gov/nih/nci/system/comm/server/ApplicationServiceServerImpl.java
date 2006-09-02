@@ -74,9 +74,9 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
-			String newPath = new String(path);
+			String newPath = path;
 			if (objList.size() != 0)
-				newPath = newPath.concat("," + objList.get(0).getClass().getName());
+				newPath = newPath.concat(Constant.COMMA + objList.get(0).getClass().getName());
 			newPath = newPath.replaceAll("Impl","");
 			newPath = newPath.replaceAll("impl.","");
 			StringTokenizer tokenPath = new StringTokenizer(newPath, ",");
@@ -101,9 +101,9 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
-			String newPath = new String(path);
+			String newPath = path;
 			if (obj != null)
-				newPath = newPath.concat("," + obj.getClass().getName());
+				newPath = newPath.concat(Constant.COMMA + obj.getClass().getName());
 			newPath = newPath.replaceAll("Impl","");
 			newPath = newPath.replaceAll("impl.","");
 			StringTokenizer tokenPath = new StringTokenizer(newPath, ",");
@@ -127,9 +127,9 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
-			String newPath = new String(targetClass.getName());
+			String newPath = targetClass.getName();
 			if (objList.size() != 0)
-				newPath = newPath.concat("," + objList.get(0).getClass().getName());
+				newPath = newPath.concat(Constant.COMMA + objList.get(0).getClass().getName());
 			newPath = newPath.replaceAll("Impl","");
 			newPath = newPath.replaceAll("impl.","");
 			StringTokenizer tokenPath = new StringTokenizer(newPath, ",");
@@ -154,9 +154,9 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
-			String newPath = new String(targetClass.getName());
+			String newPath = targetClass.getName();
 			if (obj != null)
-				newPath = newPath.concat("," + obj.getClass().getName());
+				newPath = newPath.concat(Constant.COMMA + obj.getClass().getName());
 			newPath = newPath.replaceAll("Impl","");
 			newPath = newPath.replaceAll("impl.","");
 			StringTokenizer tokenPath = new StringTokenizer(newPath, ",");
@@ -184,7 +184,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
 			if (list.size() != 0)
-				targetClassName.concat("," + list.get(0).getClass().getName());
+				targetClassName.concat(Constant.COMMA + list.get(0).getClass().getName());
 			StringTokenizer tokenPath = new StringTokenizer(targetClassName, ",");
 			while (tokenPath.hasMoreTokens())
 			{
@@ -210,7 +210,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
 			if (list.size() != 0)
-				targetClassName.concat("," + list.get(0).getClass().getName());
+				targetClassName.concat(Constant.COMMA + list.get(0).getClass().getName());
 			StringTokenizer tokenPath = new StringTokenizer(targetClassName, ",");
 			while (tokenPath.hasMoreTokens())
 			{
@@ -236,7 +236,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		if (securityEnabler.getSecurityLevel() > 0)
 		{
 			if (list.size() != 0)
-				targetClassName.concat("," + list.get(0).getClass().getName());
+				targetClassName.concat(Constant.COMMA + list.get(0).getClass().getName());
 			StringTokenizer tokenPath = new StringTokenizer(targetClassName, ",");
 			while (tokenPath.hasMoreTokens())
 			{
