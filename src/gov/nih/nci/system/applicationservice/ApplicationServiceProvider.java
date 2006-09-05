@@ -14,7 +14,7 @@ public class ApplicationServiceProvider
 {
 
 	private static Logger log= Logger.getLogger(ApplicationServiceProvider.class.getName());
-	private static ApplicationService applicationService = null;
+	private static ApplicationService applicationService;
 
 	/**
 	 * Default constructor. Does nothing
