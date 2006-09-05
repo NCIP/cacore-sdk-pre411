@@ -127,6 +127,7 @@ public class NestedCriteria2HQL {
 		query = session.createQuery(hql.toString());
 		countQuery = session.createQuery("select count(*) " + hql.toString());
 		// add all parameters
+		log.debug("paramList.size(): " + paramList.size());
 		for (int i=0;i<paramList.size();i++)
 		{
 			Object valueObj = paramList.get(i);
@@ -168,6 +169,7 @@ public class NestedCriteria2HQL {
 			}
 			else
 			{
+				log.debug("Converting valueObj (paramList.get(" + i + ")) to String" );
 				query.setString(i, valueObj.toString());
 				countQuery.setString(i, valueObj.toString());
 			}
@@ -321,22 +323,26 @@ public class NestedCriteria2HQL {
 				{
 					String key = (String)keys.next();
 					Object value = criterionMap.get(key);
+					log.debug(" Object value (criterionMap.get(key)): " + value);
 					// TODO: need to base on the object type using different operator 
 					if (!key.equals("id") && (value instanceof String))
 					{
 						if (crit.caseSensitivityFlag)
 						{
+							log.debug("caseSensitivityFlag is true");
 							whereClause.append(sourceAlias+Constant.DOT+ key + getOperator(value)+"? ");	
 							paramList.add(((String)value).replaceAll("\\*", "\\%"));
 						}
 						else
 						{
+							log.debug("caseSensitivityFlag is false; coverting to lowercase");
 							whereClause.append("lower(" + sourceAlias+Constant.DOT+ key + ") "+ getOperator(value)+"? ");
 							paramList.add(((String)value).toLowerCase().replaceAll("\\*", "\\%"));
 						}
 					}
 					else
 					{
+						log.debug("value key is id, or value is not an instance of String");
 						whereClause.append(sourceAlias).append(Constant.DOT).append(key).append(getOperator(value)).append("? ");					
 						paramList.add(value);
 					}
