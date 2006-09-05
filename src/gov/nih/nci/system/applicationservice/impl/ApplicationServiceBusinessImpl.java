@@ -60,21 +60,21 @@ import org.hibernate.criterion.DetachedCriteria;
 
 public class ApplicationServiceBusinessImpl {
 
-	private static String httpAddress = null;
+	private static String httpAddress;
 
 	private static ApplicationServiceBusinessImpl applicationService = new ApplicationServiceBusinessImpl();
 
-	private static int firstRow = 0;
+	private static int firstRow;
 
-	private static int maxRecordsCount = 0;
+	private static int maxRecordsCount;
 
-	private static int recordsCount = 0;
+	private static int recordsCount;
 
-	private boolean inputImplFlag = false;
+	private boolean inputImplFlag;
 
 	private static Logger log = Logger.getLogger(ApplicationServiceBusinessImpl.class.getName());
 
-	private boolean caseSensitivityFlag = false; // by default it is case
+	private boolean caseSensitivityFlag; // by default it is case
 
 	/**
 	 * Creates a new ApplicationService instance with the HTTP server address
@@ -141,8 +141,8 @@ public class ApplicationServiceBusinessImpl {
 			_properties.load(Thread.currentThread().getContextClassLoader()
 					.getResourceAsStream("CORESystem.properties"));
 
-			String rsPerQuery = (String) _properties.getProperty("RECORDSPERQUERY");
-			String maxRsPerQuery = (String) _properties.getProperty("MAXRECORDSPERQUERY");
+			String rsPerQuery = _properties.getProperty("RECORDSPERQUERY");
+			String maxRsPerQuery = _properties.getProperty("MAXRECORDSPERQUERY");
 			if (rsPerQuery != null) {
 				recordsCount = new Integer(rsPerQuery).intValue();
 			} else {
@@ -173,13 +173,13 @@ public class ApplicationServiceBusinessImpl {
 		Integer count = null;
 		Response response = new Response();
 		Request request = new Request(criteria);
-		request.setIsCount(new Boolean(true));
+		request.setIsCount(Boolean.TRUE);
 		request.setDomainObjectName(targetClassName);
 		try {
 			InterfaceProxy client = (InterfaceProxy) Class.forName(gov.nih.nci.common.util.Constant.DELEGATE_NAME)
 					.newInstance();
-			response = (Response) client.query(request);
-			count = (Integer) response.getRowCount();
+			response = client.query(request);
+			count = response.getRowCount();
 
 		} catch (LinkageError le) {
 			log.error("LinkageError: ", le);
@@ -228,8 +228,8 @@ public class ApplicationServiceBusinessImpl {
 		List resultList = new ListProxy();
 		Response response = new Response();
 		Request request = new Request(criteria);
-		request.setIsCount(new Boolean(false));
-		request.setFirstRow(new Integer(firstRow));
+		request.setIsCount(Boolean.FALSE);
+		request.setFirstRow(Integer.valueOf(firstRow));
 
 		int localRecordsCount = recordsCount;
 		if (ClientInfoThreadVariable.isClientRequest())
@@ -242,17 +242,17 @@ public class ApplicationServiceBusinessImpl {
 					"Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ localRecordsCount + " MAXRECORDSPERQUERY = " + maxRecordsCount);
 		} else if (localRecordsCount <= 0) {
-			request.setRecordsCount(new Integer(Constant.RESULT_COUNT_PER_QUERY));
+			request.setRecordsCount(Integer.valueOf(Constant.RESULT_COUNT_PER_QUERY));
 			recordsCount = Constant.RESULT_COUNT_PER_QUERY;
 		} else if (localRecordsCount > 0) {
-			request.setRecordsCount(new Integer(localRecordsCount));
+			request.setRecordsCount(Integer.valueOf(localRecordsCount));
 		}
 		request.setDomainObjectName(targetClassName);
 		try {
 			InterfaceProxy client = (InterfaceProxy) Class.forName(gov.nih.nci.common.util.Constant.DELEGATE_NAME)
 					.newInstance();
 
-			response = (Response) client.query(request);
+			response = client.query(request);
 			results = (List) response.getResponse();
 
 		} catch (LinkageError le) {
@@ -291,15 +291,14 @@ public class ApplicationServiceBusinessImpl {
 	 * @throws ApplicationException
 	 */
 	public List query(Object criteria, int firstRow, int resultsPerQuery, String targetClassName) throws ApplicationException {
-		// List myList = new ListProxy();
 		List results = null;
 		Response response = new Response();
 		Request request = new Request(criteria);
-		request.setIsCount(new Boolean(false));
-		request.setFirstRow(new Integer(firstRow));
+		request.setIsCount(Boolean.valueOf(false));
+		request.setFirstRow(Integer.valueOf(firstRow));
 
 		if (resultsPerQuery > 0 && resultsPerQuery < maxRecordsCount) {
-			request.setRecordsCount(new Integer(resultsPerQuery));
+			request.setRecordsCount(Integer.valueOf(resultsPerQuery));
 		}
 		if ((maxRecordsCount > 0) && (resultsPerQuery > maxRecordsCount)) {
 			log.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
@@ -312,7 +311,7 @@ public class ApplicationServiceBusinessImpl {
 		try {
 			InterfaceProxy client = (InterfaceProxy) Class.forName(gov.nih.nci.common.util.Constant.DELEGATE_NAME)
 					.newInstance();
-			response = (Response) client.query(request);
+			response = client.query(request);
 			results = (List) response.getResponse();
 
 		} catch (LinkageError le) {
@@ -354,6 +353,7 @@ public class ApplicationServiceBusinessImpl {
 	 */
 	public void printTree(List resultList) {
 		if (resultList.size() < 1) {
+			log.debug("resultList.size < 1");
 		} else {
 			PrintUtils printer = new PrintUtils();
 			printer.printTree(resultList);
@@ -381,7 +381,7 @@ public class ApplicationServiceBusinessImpl {
 			// Method[] objMethods = objKlass.getDeclaredMethods();
 			Method[] objMethods = objKlass.getMethods();
 	
-			String searchBeanName = searchClassName.substring(searchClassName.lastIndexOf(".") + 1, searchClassName
+			String searchBeanName = searchClassName.substring(searchClassName.lastIndexOf(Constant.DOT) + 1, searchClassName
 					.indexOf("Impl"));
 			for (int i = 0; i < objMethods.length; i++) {
 				String methodName = objMethods[i].getName();
@@ -519,8 +519,7 @@ public class ApplicationServiceBusinessImpl {
 				criteria = new NestedCriteria();
 				criteria.setSourceObjectName(sourceName);
 				criteria.setTargetObjectName(targetName);
-				log.debug("ApplicationService.createNestedCriteria(): sourceName = " + sourceName + " | targetName = "
-						+ targetName);
+				log.debug(new StringBuilder("ApplicationService.createNestedCriteria(): sourceName = ").append(sourceName).append(" | targetName = ").append(targetName));
 				if (!targetName.equals(sourceName) && !noInheritent(sourceName, targetName)) {
 					String roleName = searchUtil.getRoleName(Class.forName(sourceName), Class.forName(targetName)
 							.newInstance());
@@ -573,8 +572,8 @@ public class ApplicationServiceBusinessImpl {
 		if ((name.indexOf(".impl.") > 0) && (name.indexOf("Impl") > 0)) {
 			return name;
 		} else {
-			String full = name.substring(0, name.lastIndexOf(".")) + ".impl."
-					+ name.substring(name.lastIndexOf(".") + 1) + "Impl";
+			String full = name.substring(0, name.lastIndexOf(Constant.DOT)) + ".impl."
+					+ name.substring(name.lastIndexOf(Constant.DOT) + 1) + "Impl";
 			return full;
 		}
 	}
@@ -590,7 +589,7 @@ public class ApplicationServiceBusinessImpl {
 				return true;
 			return false;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception: ", e);
 			return false;
 		}
 	}
@@ -609,7 +608,7 @@ public class ApplicationServiceBusinessImpl {
 			copyValue(newObject, implObject, objKlass.getSuperclass());
 			return newObject;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception: ", e);
 			return null;
 		}
 
@@ -679,7 +678,6 @@ public class ApplicationServiceBusinessImpl {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			log.error("ApplicationService.copyValue: ApplicationService Error", e);
 			return null;
 		}
@@ -696,8 +694,8 @@ public class ApplicationServiceBusinessImpl {
 				log.debug("ApplicationService.copyValue: objKlass.getName = " + objKlass.getName());
 				String resultObjName = objKlass.getName();
 				log.debug("ApplicationService.convertToImpl(): resultObjName = " + resultObjName);
-				String newImplObjName = resultObjName.substring(0, resultObjName.lastIndexOf(".")) + ".impl."
-						+ resultObjName.substring(resultObjName.lastIndexOf(".") + 1) + "Impl";
+				String newImplObjName = resultObjName.substring(0, resultObjName.lastIndexOf(Constant.DOT)) + ".impl."
+						+ resultObjName.substring(resultObjName.lastIndexOf(Constant.DOT) + 1) + "Impl";
 				Class newObjClass = Class.forName(newImplObjName);
 				log.debug("ApplicationService.copyValue(): new object name = " + newObjClass.getName());
 
@@ -707,7 +705,7 @@ public class ApplicationServiceBusinessImpl {
 				copyValueToImpl(newObject, resultObj, objKlass);
 				newList.add(newObject);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("Exception: ", e);
 			}
 		}
 		return newList;
@@ -745,7 +743,6 @@ public class ApplicationServiceBusinessImpl {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			log.error("ApplicationService.copyValue: ApplicationService Error", e);
 			return null;
 		}
@@ -765,6 +762,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.3  2006/08/15 07:13:11  ddumitru
+// Exception Handling Changes
+//
 // Revision 1.2  2006/06/14 14:01:18  connellm
 // Replaced "replace" with "replaceAll" for JDK 1.4 compatability.
 //
