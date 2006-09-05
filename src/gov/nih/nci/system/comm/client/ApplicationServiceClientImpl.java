@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
@@ -20,14 +21,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.InputStreamResource;
 
-public class ApplicationServiceClientImpl implements ApplicationService
+public class ApplicationServiceClientImpl extends ApplicationService
 {
 
 	private static ApplicationServiceProxy	applicationServiceProxy;
 	private static ApplicationService applicationService;
-	private static int recordsCount = 0;
-	private static int maxRecordsCount = 0;
-	private static boolean caseSensitivity = false;	
+	private static int recordsCount;
+	private static int maxRecordsCount;
+	private static boolean caseSensitivity;	
+	
+	private static Logger log= Logger.getLogger(ApplicationServiceClientImpl.class.getName());	
 
 	/**
 	 * Default Constructor. Obtains the Remote instance of {@link 
@@ -39,8 +42,8 @@ public class ApplicationServiceClientImpl implements ApplicationService
 		{
 			Properties _properties = new Properties();
 			_properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("CORESystem.properties"));
-			String rsPerQuery = (String) _properties.getProperty("RECORDSPERQUERY");
-			String maxRsPerQuery = (String) _properties.getProperty("MAXRECORDSPERQUERY");
+			String rsPerQuery = _properties.getProperty("RECORDSPERQUERY");
+			String maxRsPerQuery = _properties.getProperty("MAXRECORDSPERQUERY");
 			
 			if (rsPerQuery != null)
 			{
@@ -62,16 +65,16 @@ public class ApplicationServiceClientImpl implements ApplicationService
 		}
 		catch (IOException e)
 		{
-			System.out.println("IOException occured: " + e.getMessage());
+			log.error("IOException: ", e);
 		}
 		catch (Exception ex)
 		{
-			System.out.println("Exception - " + ex.getMessage());
+			log.error("Exception: ", ex);
 		}
 	}
 	
 	//@Override
-	public ApplicationService getBeanInstance()
+	protected ApplicationService getBeanInstance()
 	{
 		applicationServiceProxy = getRemoteServiceFromClassPath();
 		applicationService = new ApplicationServiceClientImpl();
@@ -79,7 +82,7 @@ public class ApplicationServiceClientImpl implements ApplicationService
 	}
 
 	//@Override
-	public ApplicationService getBeanInstance(String URL)
+	protected ApplicationService getBeanInstance(String URL)
 	{
 		applicationServiceProxy = getRemoteServiceFromPath(URL);
 		ClientSession.getInstance(applicationServiceProxy);
@@ -88,7 +91,7 @@ public class ApplicationServiceClientImpl implements ApplicationService
 	
 	private static ApplicationServiceProxy getRemoteServiceFromPath(String URL)
 	{
-		String xmlFileString = new String("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE beans PUBLIC \"-//SPRING//DTD BEAN//EN\" \"http://www.springframework.org/dtd/spring-beans.dtd\"><beans><bean id=\"remoteService\" class=\"org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean\"><property name=\"serviceUrl\"><value>" + URL + "</value></property><property name=\"serviceInterface\"><value>gov.nih.nci.system.comm.common.ApplicationServiceProxy</value></property></bean></beans>");
+		String xmlFileString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE beans PUBLIC \"-//SPRING//DTD BEAN//EN\" \"http://www.springframework.org/dtd/spring-beans.dtd\"><beans><bean id=\"remoteService\" class=\"org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean\"><property name=\"serviceUrl\"><value>" + URL + "</value></property><property name=\"serviceInterface\"><value>gov.nih.nci.system.comm.common.ApplicationServiceProxy</value></property></bean></beans>";
 		GenericApplicationContext ctx = new GenericApplicationContext();
 		XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ctx);
 		InputStream inputStream = new ByteArrayInputStream(xmlFileString.getBytes());
