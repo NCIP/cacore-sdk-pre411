@@ -94,9 +94,11 @@ public class ORMDAOImpl
 
 		Object obj = request.getRequest();
 		Integer firstRow = request.getFirstRow();
+		log.debug("Integer firstRow = " + firstRow);		
 		Integer resultsPerQuery = request.getRecordsCount();
+		log.debug("Integer resultsPerQuery = " + resultsPerQuery);		
 		Boolean isCount = request.getIsCount();
-		//System.out.println("boolean iscount = " + isCount.booleanValue());
+		log.debug("boolean iscount = " + isCount.booleanValue());
 		session = ormConn.openSession(counter);
 
 		try
@@ -145,21 +147,22 @@ public class ORMDAOImpl
 			}
 			else if (obj instanceof NestedCriteria)
 			{
-//System.out.println("ORMDAOImpl.query: it is a NestedCriteria Object ....");		
+				log.debug("ORMDAOImpl.query: it is a NestedCriteria Object ....");		
 				NestedCriteria2HQL converter = new NestedCriteria2HQL((NestedCriteria)obj, ormConn.getConfiguration(counter), session);
 				query = converter.translate();
 				if (query != null)
 				{
 					if(isCount != null && isCount.booleanValue())
 				    {			
-//						System.out.println("ORMDAOImpl.  isCount .... .... | converter.getCountQuery() = " + converter.getCountQuery().getQueryString());
+						log.debug("ORMDAOImpl.  isCount .... .... | converter.getCountQuery() = " + converter.getCountQuery().getQueryString());
 						rowCount = (Integer)converter.getCountQuery().uniqueResult();
-						//System.out.println("ORMDAOImpl HQL ===== count = " + rowCount);					
+						log.debug("ORMDAOImpl HQL ===== count = " + rowCount);					
 					}
 					else if((isCount != null && !isCount.booleanValue()) || isCount == null)
 				    {	
 				    	if(firstRow != null)
 				    	{
+				    		log.debug("Setting First Row to " + firstRow);
 					        query.setFirstResult(firstRow.intValue());				    		
 				    	}
 				    	if(resultsPerQuery != null)
@@ -172,11 +175,13 @@ public class ORMDAOImpl
 					        }
 					        else
 					        {
+					        	log.debug("Setting Max Results to " + resultsPerQuery.intValue());
 					            query.setMaxResults(resultsPerQuery.intValue());
 					        }				    		
 				    	}
 				        else
 				        {
+				        	log.debug("Setting Max Results to " + recordsPerQuery);
 				            query.setMaxResults(recordsPerQuery);
 
 				        }
