@@ -34,15 +34,10 @@ import gov.nih.nci.common.net.*;
 public abstract class DAOFactory {
 
 	/**
-	 * Abstract method for querying
-	 * 
-	 * @param request -
-	 *            Request object passed from Delegator
-	 * @return
-	 * @throws DAOException
+	 * Return a specific DAO instance object for a particular DAO Factory implementation
 	 */
-	public abstract Response query(Request request) throws DAOException;
-
+	public abstract DAO getDaoInstance();
+	
 	/**
 	 * Return a specific DAOFactory object based on the datasource
 	 * 
@@ -50,14 +45,12 @@ public abstract class DAOFactory {
 	 * @return a specific DAOFactory object
 	 * @throws DAOException
 	 */
-	public static DAOFactory getFactory(int whichFactory) throws DAOException {
-		switch (whichFactory) {
-			case gov.nih.nci.common.util.Constant.ORM_DAO:
-	
-				return new ORMDAOFactory();
-			default: {
-				throw new DAOException("NO EQUIVALENT DAO FACTORY FOUND");
-			}
+	public static DAOFactory getFactory(String dataSource) throws DAOException {
+		
+		if (dataSource.indexOf("ORM") != -1) {
+			return new ORMDAOFactory();
+		} else {
+			throw new DAOException("NO EQUIVALENT DAO FACTORY FOUND");
 		}
 	}
 }
