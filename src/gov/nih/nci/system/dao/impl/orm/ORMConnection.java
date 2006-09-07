@@ -20,9 +20,9 @@ public class ORMConnection {
 
 	private static Logger log = Logger.getLogger(ORMConnection.class.getName());
 
-	static private ORMConnection orm_instance;
+	private static ORMConnection orm_instance;
 
-	private SessionFactory[] sessionFactories;
+	private static SessionFactory[] sessionFactories;
 
 	private Configuration[] configurations;
 
@@ -31,10 +31,8 @@ public class ORMConnection {
 	 * 
 	 */
 	private ORMConnection() {
-		// Get ServiceLocator
-		ServiceLocator serviceLocator = new ServiceLocator();
 		// Get the total number of ORM datasource from ServiceLocator
-		int count = serviceLocator.getORMCount();
+		int count = ServiceLocator.getORMCount();
 		sessionFactories = new SessionFactory[count];
 		configurations = new Configuration[count];
 		try {
@@ -50,12 +48,12 @@ public class ORMConnection {
 	}
 
 	/**
-	 * Return an ORMConnection object. This method ganrantees there are only one
+	 * Return an ORMConnection object. This method guarantees there are only one
 	 * object of ORMConnection in the server.
 	 * 
 	 * @return an object of ORMConnection
 	 */
-	synchronized static public ORMConnection getInstance() {
+	synchronized public static ORMConnection getInstance() {
 		if (orm_instance == null) {
 			return getNewInstance();
 		} else {
@@ -80,7 +78,8 @@ public class ORMConnection {
 	 * 
 	 * @throws HibernateException
 	 */
-	public Session openSession(int counter) throws HibernateException {
+	public static Session openSession(String domainObjectName) throws HibernateException, Exception {
+		int counter = ServiceLocator.getORMCounter(domainObjectName);		
 		if (sessionFactories != null) {
 			return sessionFactories[counter - 1].openSession();
 		} else {
