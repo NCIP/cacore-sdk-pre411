@@ -7,7 +7,6 @@
 package gov.nih.nci.system.dao;
 
 import gov.nih.nci.system.dao.impl.orm.ORMConnection;
-import gov.nih.nci.system.servicelocator.ServiceLocator;
 
 import java.util.List;
 
@@ -27,13 +26,12 @@ public class WritableDAO {
 	public Object createObject(Object obj) throws DAOException {
 		Session session = null;
 		Transaction transaction = null;
+		String objName = obj.getClass().getName();		
 		try {
-			session = this.getSession(obj);
+			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
-			log.error("Could not obtain a session! Could not create "
-							+ obj.getClass().getName());
-			throw new SessionException("Could not obtain a session! Could not create "
-							+ obj.getClass().getName(), ex);
+			log.error("Could not obtain a session! Could not create " + objName);
+			throw new SessionException("Could not obtain a session! Could not create " + objName, ex);
 		}
 		if (session == null) {
 			log.error("Could not obtain a session");
@@ -54,10 +52,8 @@ public class WritableDAO {
 						"Error while rolling back transaction", ex);
 			}
 
-			log.error("Error while creating object "
-					+ obj.getClass().getName() + ": " + ex.getMessage());
-			throw new CreateException("An error occured while creating object "
-					+ obj.getClass().getName(), ex);
+			log.error("Error while creating object " + objName + ": " + ex.getMessage());
+			throw new CreateException("An error occured while creating object "	+ objName, ex);
 		} finally {
 			try {
 				session.close();
@@ -68,7 +64,7 @@ public class WritableDAO {
 						ex2);
 			}
 		}
-		log.debug("Successful in creating " + obj.getClass().getName());
+		log.debug("Successful in creating " + objName);
 
 		return obj;
 
@@ -77,19 +73,18 @@ public class WritableDAO {
 	public Object updateObject(Object obj) throws DAOException {
 		Session session = null;
 		Transaction transaction = null;
+		String objName = obj.getClass().getName();
 		try {
-			session = this.getSession(obj);
+			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
 			log.error("Could not obtain a session");
 			throw new SessionException(
-					"Could not obtain a session! Could not update "
-							+ obj.getClass().getName(), ex);
+					"Could not obtain a session! Could not update "	+ objName, ex);
 		}
 		if (session == null) {
 			log.error("Could not obtain a session");
 			throw new SessionException(
-					"Could not obtain a session! Could not update "
-							+ obj.getClass().getName());
+					"Could not obtain a session! Could not update "	+ objName);
 		}
 		try {
 			transaction = session.beginTransaction();
@@ -109,9 +104,8 @@ public class WritableDAO {
 						ex3);
 			}
 
-			log.error("Error while updating " + obj.getClass().getName());
-			throw new UpdateException("An error occured while updating "
-					+ obj.getClass().getName(), ex);
+			log.error("Error while updating " + objName);
+			throw new UpdateException("An error occured while updating " + objName, ex);
 		} finally {
 			try {
 				session.close();
@@ -123,29 +117,26 @@ public class WritableDAO {
 			}
 		}
 
-		log.debug("Successful in updating " + obj.getClass().getName());
+		log.debug("Successful in updating " + objName);
 		return obj;
 	}
 
 	public void removeObject(Object obj) throws DAOException {
 		Session session = null;
 		Transaction transaction = null;
+		String objName = obj.getClass().getName();
 		try {
-			session = this.getSession(obj);
+			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
-			log.error("Could not obtain a session! Could not delete "
-					+ obj.getClass().getName());
+			log.error("Could not obtain a session! Could not delete " + objName);
 			throw new SessionException(
-					"Could not obtain a session! Could not delete "
-							+ obj.getClass().getName(), ex);
+					"Could not obtain a session! Could not delete " + objName, ex);
 		}
 
 		if (session == null) {
-			log.error("Could not obtain a session! Could not delete "
-					+ obj.getClass().getName());
+			log.error("Could not obtain a session! Could not delete " + objName);
 			throw new SessionException(
-					"Could not obtain a session! Could not delete "
-							+ obj.getClass().getName());
+					"Could not obtain a session! Could not delete " + objName);
 		}
 		try {
 			transaction = session.beginTransaction();
@@ -158,47 +149,40 @@ public class WritableDAO {
 				log.error("Error while rolling back transaction: "
 						+ ex3.getMessage());
 				throw new RollbackException(
-						"An error occured rolling back transaction while deleting "
-								+ obj.getClass().getName(), ex);
+						"An error occured rolling back transaction while deleting " + objName, ex);
 			}
 
-			log.error("Error while deleting " + obj.getClass().getName() + ": "
-					+ ex.getMessage());
-			throw new DeleteException("An error occured while deleting "
-					+ obj.getClass().getName(), ex);
+			log.error("Error while deleting " + objName + ": " + ex.getMessage());
+			throw new DeleteException("An error occured while deleting " + objName, ex);
 		} finally {
 			try {
 				session.close();
 			} catch (Exception ex2) {
-				log.error("Error closing the session while deleting "
-						+ obj.getClass().getName() + ex2.getMessage());
+				log.error("Error closing the session while deleting " + objName + ex2.getMessage());
 				throw new SessionException(
-						"Error while closing the Session while removing object "
-								+ obj.getClass().getName(), ex2);
+						"Error while closing the Session while removing object " + objName, ex2);
 			}
 		}
-		log.debug("Successful in deleting " + obj.getClass().getName());
+		log.debug("Successful in deleting " + objName);
 
 	}
 
 	public List getObjects(Object obj) throws DAOException {
 		Session session = null;
-
+		String objName = obj.getClass().getName();
+		log.debug("objName: " + objName);
+		
 		try {
-			session = this.getSession(obj);
+			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
-			log.error("Could not obtain a session! Could not get "
-					+ obj.getClass().getName() + " objects");
+			log.error("Could not obtain a session! Could not get " + objName + " objects");
 			throw new QueryException(
-					"Could not obtain a session! Could not get "
-							+ obj.getClass().getName() + " objects", ex);
+					"Could not obtain a session! Could not get " + objName + " objects", ex);
 		}
 		if (session == null) {
-			log.error("Could not obtain a session! Could not get "
-					+ obj.getClass().getName() + " objects");
+			log.error("Could not obtain a session! Could not get " + objName + " objects");
 			throw new QueryException(
-					"Could not obtain a session! Could not get "
-							+ obj.getClass().getName() + " objects");
+					"Could not obtain a session! Could not get " + objName + " objects");
 		}
 		List list = null;
 		try {
@@ -219,18 +203,9 @@ public class WritableDAO {
 						ex2);
 			}
 		}
-		log.debug("Successful in getting " + obj.getClass().getName()
-				+ " objects");
+		log.debug("Successful in getting " + objName + " objects");
 
 		return list;
 	}
 
-	private Session getSession(Object object) throws Exception {
-		ServiceLocator serviceLocator = new ServiceLocator();
-		int oRMCounter = serviceLocator.getORMCounter(object.getClass()
-				.getName());
-		ORMConnection oRMConnection = ORMConnection.getInstance();
-		Session session = oRMConnection.openSession(oRMCounter);
-		return session;
-	}
 }
