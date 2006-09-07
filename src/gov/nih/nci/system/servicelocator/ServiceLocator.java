@@ -43,18 +43,19 @@ public class ServiceLocator {
 
 	private static Logger log = Logger.getLogger(ServiceLocator.class.getName());
 
-	public Document document;
+	private static Document document;
 
-	static public Parser parser;
+	private static Parser parser;
 
-	static public Vector domainObjects;
+	private static Vector domainObjects;
 
-	public Hashtable dataSource;
+	private static Hashtable dataSources;
 	
 	static {
 		parser = new Parser("../conf/DAOConfig.xml");
 		List list = parser.getList("/DAOConfiguration/domainObjects/@name");
 		domainObjects = parser.listAttributes(list);
+		dataSources = new Hashtable();
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class ServiceLocator {
 	/**
 	 * Returns the configuration document return Returns a document
 	 */
-	public Document getDocument() {
+	public static Document getDocument() {
 		return document;
 	}
 
@@ -78,7 +79,7 @@ public class ServiceLocator {
 	 * @param key
 	 *            Specified key of the hashtable
 	 */
-	public String getDataSourceCollectionValue(Hashtable dataSource, String key) {
+	public static String getDataSourceCollectionValue(Hashtable dataSource, String key) {
 		return dataSource.get(key).toString();
 	}
 
@@ -89,25 +90,34 @@ public class ServiceLocator {
 	 * @return
 	 * @throws ServiceLocatorException
 	 */
-	public Hashtable getDataSourceCollection(String objectName)
+	public static Hashtable getDataSourceCollection(String objectName)
 			throws ServiceLocatorException {
-		Hashtable dataSource = new Hashtable();
-		try {
-			for (int i = 0; i < domainObjects.size(); i++) {
-				String dObject = (domainObjects.get(i).toString());
-
-				if (dObject.indexOf(objectName) >= 0) {
-
-					String xPathExp = "/DAOConfiguration/domainObjects[@name='"
-							+ dObject + "']";
-					dataSource = parser.listElements(parser.getList(xPathExp));
+		
+		Hashtable dataSource = (Hashtable)dataSources.get(objectName);
+		
+		log.debug("dataSource for objectName: " + objectName + " == null: " + (dataSource == null));
+		
+		if (dataSource == null){
+			try {
+				for (int i = 0; i < domainObjects.size(); i++) {
+					String dObject = (domainObjects.get(i).toString());
+	
+					if (dObject.indexOf(objectName) >= 0) {
+	
+						String xPathExp = "/DAOConfiguration/domainObjects[@name='"
+								+ dObject + "']";
+						dataSource = parser.listElements(parser.getList(xPathExp));
+					}
 				}
+			} catch (Exception ex) {
+				log.error(ex.getMessage());
+				throw new ServiceLocatorException(ex.getMessage());
 			}
-		} catch (Exception ex) {
-			log.error(ex.getMessage());
-			throw new ServiceLocatorException(ex.getMessage());
+			
+			dataSources.put(objectName, dataSource);
 		}
-		return dataSource;
+		
+		return dataSource;		
 	}
 
 	/**
@@ -116,7 +126,7 @@ public class ServiceLocator {
 	 * @param domainObj
 	 * @param updateTable
 	 */
-	public void updateDataSourceCollection(String domainObj,
+	public static void updateDataSourceCollection(String domainObj,
 			String[][] updateTable) {
 		int indexOfDomainObject = 0;
 		for (int i = 0; i < domainObjects.size(); i++) {
@@ -128,7 +138,7 @@ public class ServiceLocator {
 		parser.updateElements(indexOfDomainObject, updateTable);
 	}
 
-	public int getORMCount() {
+	public static int getORMCount() {
 		Iterator allDataSource = parser.getElements("DataSource");
 		int count = 0;
 
@@ -141,11 +151,11 @@ public class ServiceLocator {
 		return count;
 	}
 
-	public int getORMCounter(String domainObjectName) throws Exception {
+	public static int getORMCounter(String domainObjectName) throws Exception {
 		String dsName;
 		try {
-			dsName = getDataSourceCollectionValue(
-					getDataSourceCollection(domainObjectName), "DataSource");
+			dsName = getDataSourceCollectionValue(getDataSourceCollection(domainObjectName), "DataSource");
+			log.debug("dsName: " + dsName);
 			String index = dsName.substring(3);
 			return Integer.parseInt(index);
 		} catch (Exception e) {
