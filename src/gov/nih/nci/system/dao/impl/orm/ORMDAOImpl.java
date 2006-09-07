@@ -6,6 +6,7 @@ import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.common.util.NestedCriteria;
 import gov.nih.nci.common.util.NestedCriteria2HQL;
+import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.servicelocator.ServiceLocator;
 
@@ -48,7 +49,7 @@ import org.hibernate.criterion.Projections;
   * @author caBIO Team
   * @version 1.0
  */
-public class ORMDAOImpl
+public class ORMDAOImpl implements DAO
 {
 	private static Logger log = Logger.getLogger(ORMDAOImpl.class.getName());
     public SessionFactory sf;
@@ -68,7 +69,7 @@ public class ORMDAOImpl
 	 * @return an object of gov.nih.nci.common.net.Response that contains the query resultset
 	 * @throws DAOException
 	 */
-	public Response query(Request request) throws DAOException, Exception
+	public Response query(Request request) throws DAOException
 	{
 		List rs = null;
 		int counter = 0;
@@ -78,12 +79,11 @@ public class ORMDAOImpl
 		Integer rowCount = null;
 		Query query = null;
 
-		// Get the ORM counter from ServiceLocator
-		ServiceLocator serviceLocator = new ServiceLocator();
 		String entityName = request.getDomainObjectName();
 
 		try{
-			counter = serviceLocator.getORMCounter(entityName);
+			counter = ServiceLocator.getORMCounter(entityName);
+			session = ORMConnection.openSession(entityName);			
 		}
 		catch(Exception e)
 		{
@@ -91,16 +91,14 @@ public class ORMDAOImpl
 			throw new DAOException("Could not retrieve proper datasource:  " + e);
 		}
 
-
 		Object obj = request.getRequest();
 		Integer firstRow = request.getFirstRow();
 		log.debug("Integer firstRow = " + firstRow);		
 		Integer resultsPerQuery = request.getRecordsCount();
 		log.debug("Integer resultsPerQuery = " + resultsPerQuery);		
 		Boolean isCount = request.getIsCount();
-		log.debug("boolean iscount = " + isCount.booleanValue());
-		session = ormConn.openSession(counter);
-
+		log.debug("boolean isCount = " + isCount.booleanValue());
+	
 		try
 		{
 			if (obj instanceof DetachedCriteria) 
@@ -112,7 +110,7 @@ public class ORMDAOImpl
 				    if(isCount != null && isCount.booleanValue())
 				    {
 				        rowCount = (Integer)hCriteria.setProjection(Projections.rowCount()).uniqueResult();
-						//System.out.println("DetachedCriteria ORMDAOImpl ===== count = " + rowCount);
+						log.debug("DetachedCriteria ORMDAOImpl ===== count = " + rowCount);
 						hCriteria.setResultTransformer( Criteria.ROOT_ENTITY );
 						hCriteria.setProjection( null );
 				    }
