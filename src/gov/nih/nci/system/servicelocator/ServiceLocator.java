@@ -52,7 +52,7 @@ public class ServiceLocator {
 	private static Hashtable dataSources;
 	
 	static {
-		parser = new Parser("../conf/DAOConfig.xml");
+		parser = new Parser("DAOConfig.xml");
 		List list = parser.getList("/DAOConfiguration/domainObjects/@name");
 		domainObjects = parser.listAttributes(list);
 		dataSources = new Hashtable();
