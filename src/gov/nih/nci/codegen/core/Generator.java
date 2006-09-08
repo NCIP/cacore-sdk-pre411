@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jmi.model.Classifier;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -178,8 +179,9 @@ public abstract class Generator {
 					String transformerName = (String) j.next();
 					Transformer t = (Transformer) _transformers
 							.get(transformerName);
-					_logger.info("Executing transformer " + transformerName);
-					_logger.info("modelElement Name: " + ((org.omg.uml.foundation.core.ModelElement)modelElement).getName());					
+					String classifierName = modelElement instanceof Classifier? " for " + ((Classifier)modelElement).getName():"";
+					_logger.info("Executing transformer " + transformerName + classifierName);
+					
 					artifacts = t.execute(modelElement, artifacts);
 				}
 				_logger.info(artifacts.size() + " artifacts produced.");
