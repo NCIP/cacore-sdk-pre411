@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ****************************************************************************************************-->
+<!--                                     caCORE ToolKit Demo Build Script					                 -->
+<!-- ****************************************************************************************************-->
+
+
+<project name="caCORE SDK Thick Client Demo" default="rundemo" basedir=".">
+
+	<property name="lib.dir" value="lib" />
+	<property name="src.dir" value="." />
+
+	<path id="classpath">
+		<pathelement location="${src.dir}"/>
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                             Run Java Client Demo                                -->
+	<!-- ************************************************************************************************-->
+
+	<target name="rundemo">
+		<echo>${java.class.path}</echo>
+		<java classname="TestClient" fork="true">
+			<classpath refid="classpath"/>
+		</java>
+
+	</target>
+
+</project>
