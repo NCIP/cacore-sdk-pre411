@@ -14,12 +14,14 @@ String query=null;
 String submitValue = request.getParameter("BtnSearch");
 //System.out.println("submitValue: "+ submitValue);
 String className = (String)session.getAttribute("selectedDomain");
+//System.out.println("className: "+ className);
 if(submitValue != null && submitValue.equalsIgnoreCase("Submit"))
 {
    
     query = "/GetHTML?query=";
    	
    	selectedSearchDomain = request.getParameter("searchObj");
+   	//System.out.println("selectedSearchDomain: "+ selectedSearchDomain);
    	   	
    	if(selectedSearchDomain != null && !selectedSearchDomain.equals("Please choose"))
    	{ query +=selectedSearchDomain + "&";
@@ -74,6 +76,7 @@ if(submitValue != null && submitValue.equalsIgnoreCase("Submit"))
    <br>
 
 <%
+//System.out.println("contextPath= " + request.getContextPath()); 
 
 response.sendRedirect(request.getContextPath()+"/"+query);
 
