@@ -1,0 +1,365 @@
+                           Release Notes
+    
+             caCORE Software Development Toolkit (SDK)
+                          Version 1.1
+                         March 27, 2006
+
+       National Cancer Institute Center for Bioinformatics
+
+
+================================================================
+                            Contents
+================================================================
+    
+    1.0 caCORE SDK Introduction
+        1.1 Description
+        1.2 History
+    2.0 Features
+    3.0 Known Issues
+    4.0 Bug fixes since last release
+    5.0 Bug Reports and Support
+    6.0 caCORE Open Development
+    7.0 Documentation
+    8.0 NCICB Web Pages
+
+
+================================================================
+                1.0 caCORE SDK Introduction and History
+================================================================
+
+----------------------------------------------------------------
+                        1.1  Description
+----------------------------------------------------------------
+
+
+The caCORE Software Development Kit (SDK) is a set of tools that 
+can be used by an intermediate Java developer to create a 
+'caCORE-like' system. Such systems are constructed using certain 
+design principles:
+
+     * UML Modeling
+     * n-tier architecture with open APIs
+     * controlled vocabularies
+     * registered metadata
+
+A system built along these lines is said to be 'semantically 
+integrated', that is, there exists runtime metadata that describes 
+every class and class attribute in the API.
+
+http://nci.nih.gov/pub/cacore/SDK/caCORE_SDK1.1_Programmers_Guide.pdf
+
+
+----------------------------------------------------------------
+                           1.2  History
+----------------------------------------------------------------
+
+Version 1.1 (March 27, 2006)
+
+    *  Added native CSM capability 
+        o  CSM-SDK Adapter is no longer required
+        o  Build script and properties files modified accordingly
+    *  Updated architecture
+        o  Changed application service layer (for compatibility with CSM)
+        o  Deprecated Impl classes
+        o  Added XML-HTTP interface
+	o  New utility class HQLCriteria.  The utility class will provide
+	    strong typed wrapper for the Hibernate Query Language (HQL) string.
+      o  Expanded functionality of Happy.jsp page
+	    (see caCORE Technical Guide for more information)
+	o  Added "case-sensitive" search for attributes of "String" type.
+        o  Improved the logging infrastructure by replacing the console (or standard out)
+            logging with Log4j.  This allows better debugging and control of the application
+            at runtime.
+	o  Improved handling of the Hibernate inheritance mapping.  Now supports joined-subclasses
+    *  Removed Semantic Connector 
+           (replaced by Semantic Integration Workbench)
+    *  Refactored Ant build script (build.xml)
+        o  Added properties file to manage all path/file names
+        o  Added ability to customize portions of build script
+        o  Organized output directories better
+        o  Added more granular targets for code/artifact generation
+        o  Added option to deploy to JBoss instead of Tomcat
+    *  New utility class XMLUtility.  The XMLUtility class that provides the ability to serialize and deserialize domain objects using Castor API with an SDK generated castor mapping file. 
+    *  ORM generation now supports "Eager" fetching of the associated objects.
+            This should improve performance for objects especially with many-to-one.
+    * Writable API's now optional by setting build parameter
+    * XML Schema generator - SDK will generate XML schemas for uml packages which can be used to validate serialized domain objects. 
+
+
+
+Version 1.0.3 (July 28, 2005)
+
+    *  Added cache generation module
+
+
+Version 1.0.2  (April 12, 2005)
+
+    *  Enabled Semantic Connector component
+    *  Updated Programmer's Guide
+        o  Removed references to winmysqladmin.exe (no longer shipped
+           with MySql)
+        o  Corrected errors referring to UML/XMI versions required by
+           the SDK
+        o  Added Getting Started instructions to verify that environment
+           variables are set
+
+Version 1.0.1  (February 16, 2005)
+
+    *  Added apache-ant-1.6.2-bin.zip (missing from 1.0)
+    *  Fixed bug that caused Happy.jsp not to be deployed
+
+Version 1.0    (January 31, 2005)
+
+
+================================================================
+                           2.0 Features
+================================================================
+caCORE SDK Components
+The caCORE SDK includes the following components:
+     *  Sample UML object/data model to use with the development kit
+         o  cabio.eap
+     *  XML Metadata Interchange (XMI) Version of the sample model
+         o  cabioExampleModel.xmi
+     *  Framework packages
+         o  gov.nih.nci.system
+         o  gov.nih.nci.common
+         o  org.hibernate
+     *  Configuration files to enable you to customize your 
+        installation to meet your specific database, server,
+        and other network needs
+         o  deploy.properties
+         o  download.properties
+     *  Ant buildfile
+     *  EVS package
+         o  gov.nih.nci.evs.domain
+         o  gov.nih.nci.evs.query
+     *  Code generator package
+         o  gov.nih.nci.codegen.core
+         o  gov.nih.nci.codegen.framework
+         o  Java JET templates for generating caCORE like APIs
+     *  MySQL database
+     *  Demo package with examples of how to leverage the code 
+          generation framework (for advanced users)
+
+Please read the caCORE SDK Programmer's Guide before downloading 
+the SDK.  
+
+http://nci.nih.gov/pub/cacore/SDK/caCORE_SDK1.1_Programmers_Guide.pdf
+
+
+
+================================================================
+                         3.0 Known Issues
+================================================================
+1. caCORE SDK has XML compatibility issues with Tomcat 5.0/5.5. 
+In order to use Tomcat 5.0, users have to replace the included 
+XML parser (under tomcat_home/common/endorsed) with the version 
+that comes with Tomcat 4.1.31.
+
+2. caCORE SDK does not support ordered collections.
+
+3. The UML Loader is not included in the caCORE SDK Version 1.1.  
+The NCICB will load properly semantically annotated XMI files 
+for users (see the Developers Guide for details).
+
+4. The SDK will generate java beans and Hibernate mapping files
+correctly for primitive data types.  However if the database 
+column has null (no data) value then Hibernate will throw an 
+exception. To avoid this make sure the database column is not 
+nullable. For further clarification please consult 
+Hibernate's documentation if you experience any problems.
+In the application service layer if a value is not found for a 
+primitive, the java primitive default value for that primitive will
+be set.
+
+5. The automated download of Tomcat and MySQL can fail if the download 
+mirror sites and backup sites change or are down. In the event of 
+this happening you may need to modify the relevant properties in 
+/conf/download.properties
+
+6. When building a system, an error will be generated if Java keywords are used as
+class and attribute names in the UML logical model.  Similarly, SQL keywords in the
+data model will generate errors.
+    
+7. If you use multiple datasources from different datbase servers the toolkit
+will not be able to generate multiple orm*.cfg.xml files automatically. You will
+need to generate a single orm then manually split that file into however many
+orms you are using.
+
+8. The HTTP interface has reserved characters like % # are reserved characters. 
+If the reserved characters are part of the query, the http parse will not work 
+correctly.  Example, "test%122".  Workaround use wild card
+
+	Example: "test*122"
+
+9. If you want to enable security, then the hibernate jar file in the lib directory should 
+be upgraded to v3.0.5. This is because CSM uses features provided by hibernate v3.0.5 for 
+its internal logging purpose. However, we have seen that upgrading to v3.0.5 enable the 
+pre-fetching of the childs object even when lazy initialization is enabled. This may cause 
+some performance issues in case there is a huge amount of data.
+
+10. Web Services generates queries based on the attribute values of the criteria object.
+If the attribute is an association the value for the association is ignored. This could be
+one-one, one-many, many-many or many-one association type. 
+
+	Example: 
+		Gene gene = new Gene(); 
+		Taxon taxon = new Taxon(); 
+		taxon.setId(new Long(5)); 
+		gene.setTaxon(taxon); 
+		Object[] resultList = (Object[])call.invoke(new Object[] { "gov.nih.nci.cabio.domain.ws.Gene", gene }); 
+
+This method will return all the Genes from the database. Taxon value of the Gene will be ignored.
+
+11. The HBM files generated using the caCORE SDK does not have any casade properties set.
+As the result writeable operations are only performed on the the parent object and are not
+propagated to the child objects. However the child objects can be created separately and 
+linked to the parent objects while saving the parent object. Also the child objects can be
+updated seperately. In case of delete the child object needs to be deleted separetly. 
+At the same time the association with the parent object needs to removed and the parent
+object needs to be updated to reflect the same.
+
+12. Those developers who do not wish have the SDK generate Hibernate OR mapping files
+should uncomment the following line in the build-custom.properties file contained 
+within the base directory of the SDK. These file can be used to turn of any ant target
+contained within the build file.
+
+	 #generate-OR-mapping.main.ignore=yes
+
+13. HTTP Interface throws an Exception when queried for a DescLogicConcept with a Property 
+or Role value. 
+
+	Example: 
+		http://cbioqa101.nci.nih.gov:49080/cacore31/GetHTML?query=DescLogicConcept&DescLogicConcept[roleCollection[@name=EO_Disease_Has_Associated_EO_Anatomy][@value=heart*]]
+
+
+
+
+Please read more detailed information on the caCORE Software Development 
+Programmer's Guide in the following url:
+
+http://nci.nih.gov/pub/cacore/SDK/caCORE_SDK1.1_Programmers_Guide.pdf
+
+================================================================
+                         4.0 Bug fixes
+================================================================
+
+1. Performance problems encountered when dealing with large datasets have been
+resolved using a ListProxy to throttle large result sets.
+
+2. The include_package and exclude_package property in the deploy.properties
+file works as expected if you use a | symbol rather than a comma. For example,
+if you wish to include objects from multiple packages like domain and toys 
+you would use a Perl regular expression as shown below:
+
+include_package=.*domain.*|.*toys.*
+
+3. Previously, the Semantic Connector had some issues breaking class and attributes
+names based on underscores and case changes. This has been fixed and implemented in 
+the new Semantic Integration Workbench (SIW).
+
+4. The code generator no longer requires the package name "domain" be contained 
+within overall package name.
+
+
+================================================================
+                  5.0 Bug Reports and Support
+================================================================
+    
+    Send email to ncicb@pop.nci.nih.gov to request support or
+    report a bug.  
+
+    In addition, mailing lists are used by the caCORE developer
+    and user community to exchange ideas and make announcements.
+    You can subscribe at these addresses:
+
+    caBIO users
+
+    --  http://list.nih.gov/archives/cabio_users.html
+    
+    caBIO developers
+
+    --  http://list.nih.gov/archives/cabio_devel.html
+
+    caDSR users
+
+    --  http://list.nih.gov/archives/sbr_users.html
+
+    EVS users
+
+    --  http://list.nih.gov/archives/ncievs-l.html
+
+
+================================================================
+                        6.0 caCORE Open Development
+================================================================
+
+    cacoretoolkit - The NCICB caCORE Software Development Kit is a set of tools 
+                     designed to aid in the design and creation of a 
+			   'caCORE-like' software system.
+     
+    -- http://gforge.nci.nih.gov/projects/cacoretoolkit/
+     
+    caBIO DB - Schema and related data for the caBIO database
+     
+    -- http://gforge.nci.nih.gov/projects/cabiodb/
+      
+    CaCORE Perl API - The purpose of this project is to develop a Perl-based interface to caCORE
+     
+    -- http://gforge.nci.nih.gov/projects/cabioperl/
+
+
+================================================================
+                        7.0 Documentation
+================================================================
+
+    
+    The caCORE SDK Programmer's Guide can be downloaded via FTP:
+
+    http://nci.nih.gov/pub/cacore/SDK/caCORE_SDK1.1_Programmers_Guide.pdf
+
+
+================================================================
+                        8.0 NCICB Web Pages
+================================================================
+    
+    The NCI Center for Bioinformatics
+
+    --  http://ncicb.nci.nih.gov/
+    
+    NCICB Application Support
+     
+    --  http://ncicbsupport.nci.nih.gov/sw/
+
+    NCICB Download Center
+
+    --  http://ncicb.nci.nih.gov/download/
+
+    caCORE SDK
+
+    -- http://ncicb.nci.nih.gov/NCICB/infrastructure/cacoresdk
+    -- http://gforge.nci.nih.gov/projects/cacoretoolkit/
+
+    caCORE
+
+    --  http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview
+    
+    caBIO
+
+    --  http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/caBIO
+    --  http://gforge.nci.nih.gov/projects/cabiodb/
+    
+    caDSR
+
+    --  http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/cadsr 
+    --  http://ncicb.nci.nih.gov/xml 
+    
+    EVS
+
+    --  http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/vocabulary
+    
+    Common Security Module (CSM)
+    
+    --  http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/csm
+
+//end
