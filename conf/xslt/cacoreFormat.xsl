@@ -8,7 +8,7 @@
 	
 	<html>
 		<head>  
-		   <link rel="stylesheet" type="text/css" href="/@XSLT_PATH@/styleSheet.css"/>		  
+		   <link rel="stylesheet" type="text/css" href="styleSheet.css"/>		  
 		</head>  
 
 		<body>
@@ -17,10 +17,10 @@
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="hdrBG">
         <tr>
           <td width="283" height="37" align="left">
-          <a href="http://www.cancer.gov"><img alt="National Cancer Institute" src="/@XSLT_PATH@/images/logotype.gif" width="283" height="37" border="0"/></a>
+          <a href="http://www.cancer.gov"><img alt="National Cancer Institute" src="images/logotype.gif" width="283" height="37" border="0"/></a>
           </td>          
           <td width="295" height="37" align="right">
-          <a href="http://www.cancer.gov"><img alt="U.S. National Institutes of Health | www.cancer.gov" src="/@XSLT_PATH@/images/tagline.gif" width="295" height="37" border="0"/></a>
+          <a href="http://www.cancer.gov"><img alt="U.S. National Institutes of Health | www.cancer.gov" src="images/tagline.gif" width="295" height="37" border="0"/></a>
           </td>
         </tr>
       </table>
