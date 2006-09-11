@@ -17,12 +17,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.jmi.model.Classifier;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
+import org.omg.uml.foundation.core.Classifier;
 import org.w3c.dom.Element;
 
 /**
