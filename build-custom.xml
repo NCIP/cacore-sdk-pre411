@@ -38,9 +38,18 @@
 	<target name="-copy-custom-beans.custom" if="copy-custom-beans.custom.use"/>
 	<target name="-copy-custom-orm.custom" if="copy-custom-orm.custom.use"/>
 	<target name="-copy-custom-lib.custom" if="copy-custom-lib.custom.use"/>
+	
+	<target name="-copy-server-file.custom" if="copy-server-file.custom.use"/>
+	<target name="-deploy-server.custom" if="deploy-server.custom.use"/>
+	<target name="-deployWS.custom" if="deployWS.custom.use"/>
+	<target name="-undeployWS.custom" if="undeployWS.custom.use"/>
+	<target name="-build-schema.custom" if="build-schema.custom.use"/>
 
 	
-	
+	<target name="-rundemo.custom" if="rundemo.custom.use"/>
+	<target name="-runtest.custom" if="runtest.custom.use"/>
+	<target name="-runXMLdemo.custom" if="runXMLdemo.custom.use"/>
+	<target name="-runWSdemo.custom" if="runWSdemo.custom.use"/>
 	
 <!--	
 	<target name="-clean.custom" if="clean.custom.use"/>
@@ -49,7 +58,6 @@
 	<target name="-compile-framework.custom" if="compile-framework.custom.use"/>
 	<target name="-compile-templates.custom" if="compile-templates.custom.use"/>
 	<target name="-copy-project-framework.custom" if="copy-project-framework.custom.use"/>
-	<target name="-copy-server-file.custom" if="copy-server-file.custom.use"/>
 	<target name="-copy-template-files.custom" if="copy-template-files.custom.use"/>
 	<target name="-create-output-dirs.custom" if="create-output-dirs.custom.use"/>
 	<target name="-create-project-dirs.custom" if="create-project-dirs.custom.use"/>
@@ -61,14 +69,6 @@
 	<target name="-package-client.custom" if="package-client.custom.use"/>
 	<target name="-package-server.custom" if="package-server.custom.use"/>
 	<target name="-package-system.custom" if="package-system.custom.use"/>
-	<target name="-rundemo.custom" if="rundemo.custom.use"/>
-	<target name="-runtest.custom" if="runtest.custom.use"/>
-	<target name="-runXMLdemo.custom" if="runXMLdemo.custom.use"/>
-	<target name="-runWSdemo.custom" if="runWSdemo.custom.use"/>
-	<target name="-undeployWS.custom" if="undeployWS.custom.use"/>
-	<target name="-deploy-server.custom" if="deploy-server.custom.use"/>
-	<target name="-deployWS.custom" if="deployWS.custom.use"/>
-	<target name="-build-schema.custom" if="build-schema.custom.use"/>
 -->
 
 </project>

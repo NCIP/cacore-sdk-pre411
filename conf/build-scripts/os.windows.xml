@@ -8,13 +8,13 @@
 	
 	<target name="start-jboss"> 
 		<exec dir="${j2se_container_home}/bin" executable="cmd" spawn="true">
-			<arg line="/C start &quot;${j2se_container_home}/bin/run.bat -c ${jboss_configuration}&quot;"/>
+			<arg line="/C start ${j2se_container_home}/bin/run.bat -c ${jboss_configuration}"/>
 		</exec>
 	</target>
 
 	<target name="start-tomcat"> 
 		<exec dir="${j2se_container_home}/bin" executable="cmd" spawn="true">
-			<arg line="/C start &quot;${j2se_container_home}/bin/startup.bat&quot;"/>
+			<arg line="/C start ${j2se_container_home}/bin/startup.bat"/>
 		</exec>
 	</target>
 	
