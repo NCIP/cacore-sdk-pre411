@@ -12,7 +12,7 @@
 	*********************************************************************** -->
 	<property file="conf/deploy.properties" />
 	<property file="build.codegen.properties" />
-	<property file="${dir.conf.scripts}}/${file.properties.custom}" />
+	<property file="${dir.conf.scripts}/${file.properties.custom}" />
 
 	<!--***********************************************************************
 	*** CONDITIONAL PROPERTIES
