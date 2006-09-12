@@ -10,8 +10,11 @@ import gov.nih.nci.common.util.NestedCriteria;
 import gov.nih.nci.common.util.PrintUtils;
 import gov.nih.nci.common.util.SearchUtils;
 import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.dao.DAO;
+import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.QueryException;
-import gov.nih.nci.system.proxy.InterfaceProxy;
+import gov.nih.nci.system.servicelocator.ServiceLocator;
+import gov.nih.nci.system.servicelocator.ServiceLocatorException;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -27,6 +30,8 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -176,11 +181,8 @@ public class ApplicationServiceBusinessImpl {
 		request.setIsCount(Boolean.TRUE);
 		request.setDomainObjectName(targetClassName);
 		try {
-			InterfaceProxy client = (InterfaceProxy) Class.forName(gov.nih.nci.common.util.Constant.DELEGATE_NAME)
-					.newInstance();
-			response = client.query(request);
+			response = query(request);
 			count = response.getRowCount();
-
 		} catch (LinkageError le) {
 			log.error("LinkageError: ", le);
 			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
@@ -249,12 +251,8 @@ public class ApplicationServiceBusinessImpl {
 		}
 		request.setDomainObjectName(targetClassName);
 		try {
-			InterfaceProxy client = (InterfaceProxy) Class.forName(gov.nih.nci.common.util.Constant.DELEGATE_NAME)
-					.newInstance();
-
-			response = client.query(request);
+			response = query(request);
 			results = (List) response.getResponse();
-
 		} catch (LinkageError le) {
 			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n", le);
 			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
@@ -309,11 +307,8 @@ public class ApplicationServiceBusinessImpl {
 		}
 		request.setDomainObjectName(targetClassName);
 		try {
-			InterfaceProxy client = (InterfaceProxy) Class.forName(gov.nih.nci.common.util.Constant.DELEGATE_NAME)
-					.newInstance();
-			response = client.query(request);
+			response = query(request);
 			results = (List) response.getResponse();
-
 		} catch (LinkageError le) {
 			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n", le);
 			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
@@ -759,9 +754,81 @@ public class ApplicationServiceBusinessImpl {
 		return temp;
 
 	}
+	
+	private Response query(gov.nih.nci.common.net.Request request) throws Exception
+	{
+
+		String dataSource;
+		String domainObjectName = request.getDomainObjectName();
+		Response response;
+		try{
+			request.setConfig(ServiceLocator.getDataSourceCollection(domainObjectName));
+			dataSource = ServiceLocator.getDataSourceCollectionValue(ServiceLocator.getDataSourceCollection(domainObjectName), "DataSource");
+		
+		}
+		catch(ServiceLocatorException slEx)
+		{
+			log.error("No data source found");
+			throw new Exception(" No data source was found " + slEx.getMessage());
+		}
+		catch(Exception exception)
+		{
+			log.error("Exception while getting datasource information "+ exception.getMessage());
+			throw new Exception("Exception in Base Delegate while getting datasource information: " + exception);
+		}
+
+		if (dataSource == null)
+		{
+			log.error("No Data Source could be found for the specified domain object");
+			throw new Exception("No Data Source could be found for the specified domain object");
+		}
+		
+		try
+		{
+
+			DAO dao;
+			
+			if (dataSource.indexOf("ORM") != -1) {
+				ApplicationContext ctx = new ClassPathXmlApplicationContext(Constant.ORM1_DAO_FILE_NAME);
+				dao = (DAO) ctx.getBean(Constant.ORM1_DAO);
+				
+				log.debug("DAO found");
+				response = dao.query(request);
+			} else {
+				throw new DAOException("NO EQUIVALENT DAO FACTORY FOUND");
+			}
+			
+			response = dao.query(request);
+			
+		}
+		catch(DAOException daoException)
+		{
+			log.error(daoException.getMessage());
+			throw new Exception(daoException.getMessage());
+		}
+		catch(Exception exception)
+		{
+			log.error(exception.getMessage());
+			throw new Exception("Exception in the Base Delegate:  " + exception.getMessage());
+		}
+
+		return response;
+	}
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.4  2006/09/11 17:10:30  ddumitru
+// Replaced calls to InterfaceProxy (BaseDelegate), which was deleted along with 
+// DAO Factory related classes in order to simplify interaction between the Application
+// Service and Persistence layers.
+//
+// Revision 1.4  2006/09/05 23:01:30  ddumitru
+// Performance Enhancements:
+// 	Removed unnecessary casting.
+// 	Removed unnecessary field initialization.
+// 	Removed unnecessary object creation.
+// 	Used char vs. String where appropriate, as char is more efficient.
+//
 // Revision 1.3  2006/08/15 07:13:11  ddumitru
 // Exception Handling Changes
 //

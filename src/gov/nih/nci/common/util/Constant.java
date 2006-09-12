@@ -70,6 +70,8 @@ public class Constant {
 	public static final String APPLICATION_SERVICE_FILE_NAME = "applicationService.xml";
 	public static final String REMOTE_APPLICATION_SERVICE = "remoteService";
 	public static final String APPLICATION_SERVICE = "applicationService";
+	public static final String ORM1_DAO_FILE_NAME = "orm1Dao.xml";
+	public static final String ORM1_DAO = "orm1";	
 	
 	public static final String CSM_SECURITY_LEVEL = ".CSM.Security.Level";
 	public static final String CSM_SECURITY_SESSION_TIMEOUT = "CSM.Security.Session.Timeout";
