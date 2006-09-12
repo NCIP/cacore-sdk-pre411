@@ -55,7 +55,7 @@ public class NestedCriteria2HQL {
 	public Query translate()
 	{
 		
-		StringBuilder hql = new StringBuilder();
+		StringBuffer hql = new StringBuffer();
 		
 		NestedCriteria temp = crit;
 		int count = 0;

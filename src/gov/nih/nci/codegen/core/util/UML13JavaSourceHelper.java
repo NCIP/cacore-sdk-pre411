@@ -228,7 +228,7 @@ public class UML13JavaSourceHelper {
 			val.replaceAll(">", "&gt;");
 			if (val.length() > 80) {
 				javadocOut.append("   * ");
-				StringBuilder line = new StringBuilder();
+				StringBuffer line = new StringBuffer();
 				int lineLength = 0;
 				StringTokenizer st = new StringTokenizer(val);
 				while (st.hasMoreTokens()) {
@@ -239,7 +239,7 @@ public class UML13JavaSourceHelper {
 					if (lineLength > 80) {
 						javadocOut.append(line.toString());
 						javadocOut.append("\n   * ");
-						line = new StringBuilder();
+						line = new StringBuffer();
 						lineLength = 0;
 					}
 				}

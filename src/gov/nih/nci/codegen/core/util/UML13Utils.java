@@ -199,7 +199,7 @@ public class UML13Utils {
 
 	public static String getTestNamespaceName(UmlPackage container,
 			ModelElement me) {
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		ModelElement pkg = (ModelElement) me.getNamespace();
 		while (!(pkg instanceof Model) && pkg != container && pkg != null) {
 			if (sb.length() > 0) {

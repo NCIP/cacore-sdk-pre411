@@ -110,7 +110,7 @@ public class UML13ModelElement2JavaSourceHandler implements ArtifactHandler,
         }
         ModelElement me = (ModelElement) ro;
         try {
-            StringBuilder nameBuf = new StringBuilder();
+            StringBuffer nameBuf = new StringBuffer();
             if (_prefix != null && _prefix.trim().length() > 0) {
                 nameBuf.append(_prefix.trim());
                 nameBuf.append(Constant.DOT);

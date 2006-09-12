@@ -213,7 +213,7 @@ public class LicenseUpdater {
 	 */
 	private void insertText(File inFile, File outFile, int beginLineNum,
 			int endLineNum, String text) {
-		StringBuilder sb = new StringBuilder();
+		StringBuffer sb = new StringBuffer();
 		StringBuffer upToInc = getUpToIncluding(inFile, beginLineNum);
 		StringBuffer afterInc = getAfterIncluding(inFile, endLineNum);
 

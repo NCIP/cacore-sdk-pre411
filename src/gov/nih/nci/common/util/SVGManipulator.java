@@ -739,7 +739,6 @@ public class SVGManipulator
 			 }
 		 }
 		 StringBuffer buf = new StringBuffer();
-         //StringBuilder buf = new StringBuilder();
 	   	 buf.append("PathwayDiagram:\r\n");
 	     buf.append(" Name: [").append(name).append("]\r\n");
 	     buf.append(" svg: [").append(tempString).append("]\r\n");
@@ -848,7 +847,6 @@ public class SVGManipulator
 	 private String updateFilter(String source, String filterSpec)
      {
 		 StringBuffer resultbuff=new StringBuffer();
-         //StringBuilder resultbuff=new StringBuilder();
 		 if ( source == null )return "filter:url(" + filterSpec + ')';
 		 try
          {
@@ -909,7 +907,6 @@ public class SVGManipulator
 
 	 private String replaceString(String str, String sep, String rep)
 	 {
-         //StringBuilder retVal = new StringBuilder();
          StringBuffer retVal = new StringBuffer();
 		 int idx = 0;
 		 int jdx = str.indexOf(sep);

@@ -146,7 +146,7 @@ public class ResourceFileHandler implements ArtifactHandler,
                     }
 		    }
 
-            StringBuilder nameBuf = new StringBuilder();
+            StringBuffer nameBuf = new StringBuffer();
             if (_pkgPrefix != null && _pkgPrefix.trim().length() > 0) {
                 nameBuf.append(_pkgPrefix.trim());
             }
@@ -164,7 +164,7 @@ public class ResourceFileHandler implements ArtifactHandler,
             }
             if(_classSuffix != null  && _classSuffix.equals("Impl")) {
 				String temp = nameBuf.toString();
-				nameBuf = new StringBuilder(temp);
+				nameBuf = new StringBuffer(temp);
 		    }
             String fileSuffix = _fileSuffix;
             if(fileSuffix == null){

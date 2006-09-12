@@ -104,7 +104,7 @@ public class LicenseUpdaterTask extends Task {
 			throw new BuildException("License file doesn't exist");
 		}
 		try {
-			StringBuilder sb = new StringBuilder();
+			StringBuffer sb = new StringBuffer();
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = null;
 			while ((line = br.readLine()) != null) {

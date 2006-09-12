@@ -206,10 +206,10 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
 			//cache = cache + "\n";
 
 		}
-		/*StringBuilder tmpStringBuilder = new StringBuilder(nn1);
-		//System.out.println("String before: " + tmpStringBuilder.toString() + "\n");
-		int length = tmpStringBuilder.lastIndexOf(",");
-		String finalString = tmpStringBuilder.substring(0,length-1);
+		/*StringBuffer tmpStringBuffer = new StringBuffer(nn1);
+		//System.out.println("String before: " + tmpStringBuffer.toString() + "\n");
+		int length = tmpStringBuffer.lastIndexOf(",");
+		String finalString = tmpStringBuffer.substring(0,length-1);
         //System.out.println("String before: " + finalString + "\n");
 		*/
 
@@ -320,7 +320,7 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
 
 		StringTokenizer st = new StringTokenizer(s,".");
 		Vector myVector = new Vector();
-		StringBuilder myStringBuilder = new StringBuilder();
+		StringBuffer myStringBuffer = new StringBuffer();
 		while (st.hasMoreTokens()) {
 			     String t = st.nextToken();
 			     myVector.add(t);
@@ -328,12 +328,12 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
 	    }
 
         for (int i = myVector.size(); i>0; i--) {
-			  myStringBuilder.append(myVector.elementAt(i-1));
-			  myStringBuilder.append(Constant.DOT);
+			  myStringBuffer.append(myVector.elementAt(i-1));
+			  myStringBuffer.append(Constant.DOT);
 
 	    }
-	    int length1 = myStringBuilder.length();
-	    String finalString1 = myStringBuilder.substring(0,length1-1);
+	    int length1 = myStringBuffer.length();
+	    String finalString1 = myStringBuffer.substring(0,length1-1);
         return finalString1;
     }
 
