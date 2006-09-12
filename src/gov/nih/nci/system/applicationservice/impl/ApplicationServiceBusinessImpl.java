@@ -7,6 +7,7 @@ import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.common.util.ListProxy;
 import gov.nih.nci.common.util.NestedCriteria;
+import gov.nih.nci.common.util.ObjectFactory;
 import gov.nih.nci.common.util.PrintUtils;
 import gov.nih.nci.common.util.SearchUtils;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -231,7 +232,7 @@ public class ApplicationServiceBusinessImpl {
 		Response response = new Response();
 		Request request = new Request(criteria);
 		request.setIsCount(Boolean.FALSE);
-		request.setFirstRow(Integer.valueOf(firstRow));
+		request.setFirstRow(new Integer(firstRow));
 
 		int localRecordsCount = recordsCount;
 		if (ClientInfoThreadVariable.isClientRequest())
@@ -244,10 +245,10 @@ public class ApplicationServiceBusinessImpl {
 					"Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
 							+ localRecordsCount + " MAXRECORDSPERQUERY = " + maxRecordsCount);
 		} else if (localRecordsCount <= 0) {
-			request.setRecordsCount(Integer.valueOf(Constant.RESULT_COUNT_PER_QUERY));
+			request.setRecordsCount(new Integer(Constant.RESULT_COUNT_PER_QUERY));
 			recordsCount = Constant.RESULT_COUNT_PER_QUERY;
 		} else if (localRecordsCount > 0) {
-			request.setRecordsCount(Integer.valueOf(localRecordsCount));
+			request.setRecordsCount(new Integer(localRecordsCount));
 		}
 		request.setDomainObjectName(targetClassName);
 		try {
@@ -293,10 +294,10 @@ public class ApplicationServiceBusinessImpl {
 		Response response = new Response();
 		Request request = new Request(criteria);
 		request.setIsCount(Boolean.valueOf(false));
-		request.setFirstRow(Integer.valueOf(firstRow));
+		request.setFirstRow(new Integer(firstRow));
 
 		if (resultsPerQuery > 0 && resultsPerQuery < maxRecordsCount) {
-			request.setRecordsCount(Integer.valueOf(resultsPerQuery));
+			request.setRecordsCount(new Integer(resultsPerQuery));
 		}
 		if ((maxRecordsCount > 0) && (resultsPerQuery > maxRecordsCount)) {
 			log.error("Illegal Value for RecordsCount: RECORDSPERQUERY cannot be greater than MAXRECORDSPERQUERY. RECORDSPERQUERY = "
@@ -514,7 +515,7 @@ public class ApplicationServiceBusinessImpl {
 				criteria = new NestedCriteria();
 				criteria.setSourceObjectName(sourceName);
 				criteria.setTargetObjectName(targetName);
-				log.debug(new StringBuilder("ApplicationService.createNestedCriteria(): sourceName = ").append(sourceName).append(" | targetName = ").append(targetName));
+				log.debug(new StringBuffer("ApplicationService.createNestedCriteria(): sourceName = ").append(sourceName).append(" | targetName = ").append(targetName));
 				if (!targetName.equals(sourceName) && !noInheritent(sourceName, targetName)) {
 					String roleName = searchUtil.getRoleName(Class.forName(sourceName), Class.forName(targetName)
 							.newInstance());
@@ -764,7 +765,6 @@ public class ApplicationServiceBusinessImpl {
 		try{
 			request.setConfig(ServiceLocator.getDataSourceCollection(domainObjectName));
 			dataSource = ServiceLocator.getDataSourceCollectionValue(ServiceLocator.getDataSourceCollection(domainObjectName), "DataSource");
-		
 		}
 		catch(ServiceLocatorException slEx)
 		{
@@ -785,21 +785,11 @@ public class ApplicationServiceBusinessImpl {
 		
 		try
 		{
-
-			DAO dao;
-			
-			if (dataSource.indexOf("ORM") != -1) {
-				ApplicationContext ctx = new ClassPathXmlApplicationContext(Constant.ORM1_DAO_FILE_NAME);
-				dao = (DAO) ctx.getBean(Constant.ORM1_DAO);
+			DAO dao = null;
+			dao = (DAO) ObjectFactory.getObject(dataSource);
 				
-				log.debug("DAO found");
-				response = dao.query(request);
-			} else {
-				throw new DAOException("NO EQUIVALENT DAO FACTORY FOUND");
-			}
-			
+			log.debug("DAO found");
 			response = dao.query(request);
-			
 		}
 		catch(DAOException daoException)
 		{
@@ -809,7 +799,7 @@ public class ApplicationServiceBusinessImpl {
 		catch(Exception exception)
 		{
 			log.error(exception.getMessage());
-			throw new Exception("Exception in the Base Delegate:  " + exception.getMessage());
+			throw new Exception("Exception in the query:  " + exception.getMessage());
 		}
 
 		return response;
@@ -817,6 +807,19 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.5  2006/09/12 00:25:27  ddumitru
+// Simplified interaction between Application Service and Persistence layers.
+//
+// The following files were deleted:
+//
+// DAOFactory
+// ORMDAOFactory
+// BaseDelegate
+// DelegateException
+// InterfaceProxy
+//
+// The ApplicationServiceBusinessImpl now gets a handle to the appropriate DAO implementation using the Spring Framework.
+//
 // Revision 1.4  2006/09/11 17:10:30  ddumitru
 // Replaced calls to InterfaceProxy (BaseDelegate), which was deleted along with 
 // DAO Factory related classes in order to simplify interaction between the Application

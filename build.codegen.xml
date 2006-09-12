@@ -248,14 +248,15 @@
 			<fileset dir="${dir.src}" excludes="gov/nih/nci/codegen/**"/>
 			<fileset dir="${dir.output.conf.hibernate}" excludes="**/*.dtd"/>
 			<fileset dir="${dir.output.conf.resources.server}" includes="**/*.*"/>
-			<fileset dir="${dir.output.conf.remoting}" includes="applicationService.xml"/>
+			<fileset dir="${dir.output.conf.spring}" includes="applicationService.xml"/>
+			<fileset dir="${dir.output.conf.spring}" includes="SDKSpringBeanConfig.xml"/>
 		</copy>
 		<copy todir="${dir.output.project.web}">
 			<fileset dir="${dir.output.conf.web}" includes="**/*"/>
 		</copy>
 		<copy todir="${dir.output.project.webinf}">
 			<fileset dir="${dir.output.conf.hibernate}" includes="**/*.dtd"/>
-			<fileset dir="${dir.output.conf.remoting}">
+			<fileset dir="${dir.output.conf.spring}">
 				<include name="httpinvoker-servlet.xml"/>
 				<include name="applicationContext.xml"/>
 			</fileset>
@@ -297,6 +298,7 @@
 		<war destfile="${dir.output.project.package}/${project_name}.war" webxml="${dir.output.project.webinf}/web.xml" update="false">
 			<lib dir="${dir.lib}" excludes="${server-exclude-list}"/>
 			<classes dir="${dir.output.project.classes}"/>
+			<classes dir="${dir.output.conf}" includes="**/xslt/**/*"/>
 			<classes dir="${dir.output.project.src}" excludes="**/*.java"/>
 			<zipfileset dir="${dir.output.project.web}" excludes="**/web.xml"/>
 		</war>
@@ -331,7 +333,7 @@
 				<include name="CORESystem.properties"/>
 				<include name="ehcache.xml"/>
 			</fileset>
-			<fileset dir="${dir.output.conf.remoting}">
+			<fileset dir="${dir.output.conf.spring}">
 				<include name="remoteService.xml"/>
 			</fileset>
 		</jar>
@@ -391,6 +393,7 @@
 				<include name="roleLookup.properties"/>
 				<include name="xml-mapping.xml"/>
 				<include name="**/*.hbm.xml"/>
+				<include name="SDKSpringBeanConfig.xml"/>
 			</fileset>
 		</jar>
 	</target>

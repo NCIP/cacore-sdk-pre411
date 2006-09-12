@@ -192,7 +192,7 @@ public class ORMDAOImpl implements DAO
 				Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
 				if(isCount != null && isCount.booleanValue())
 			    {
-					rowCount = Integer.valueOf(hqlQuery.list().size());
+					rowCount = new Integer(hqlQuery.list().size());
 				}
 				else if((isCount != null && !isCount.booleanValue()) || isCount == null)
 			    {	

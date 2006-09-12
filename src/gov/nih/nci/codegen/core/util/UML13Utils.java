@@ -719,7 +719,7 @@ public class UML13Utils {
 
 		MultiplicityRange otherRange = (MultiplicityRange) otherEnd
 				.getMultiplicity().getRange().iterator().next();
-		Integer x = Integer.valueOf(otherRange.getLower());
+		Integer x = new Integer(otherRange.getLower());
 		return x.toString();
 	}
 
@@ -733,7 +733,7 @@ public class UML13Utils {
 		if (multiplicity == -1) {
 			finalMultiplicity = "unbounded";
 		} else {
-			Integer x = Integer.valueOf(multiplicity);
+			Integer x = new Integer(multiplicity);
 			finalMultiplicity = x.toString();
 		}
 		return finalMultiplicity;
