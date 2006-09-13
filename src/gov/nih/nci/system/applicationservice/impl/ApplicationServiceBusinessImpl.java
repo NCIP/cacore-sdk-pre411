@@ -181,20 +181,10 @@ public class ApplicationServiceBusinessImpl {
 		Request request = new Request(criteria);
 		request.setIsCount(Boolean.TRUE);
 		request.setDomainObjectName(targetClassName);
-		try {
-			response = query(request);
-			count = response.getRowCount();
-		} catch (LinkageError le) {
-			log.error("LinkageError: ", le);
-			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
-		} catch (ClassNotFoundException cnfe) {
-			log.error("ClassNotFoundException: ", cnfe);
-			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
-		}
 
-		catch (Exception ex) {
-			log.error("Exception in query: ", ex);
-		}
+		response = query(request);
+		count = response.getRowCount();
+
 		if (count != null)
 			return count.intValue();
 		else
@@ -251,19 +241,9 @@ public class ApplicationServiceBusinessImpl {
 			request.setRecordsCount(new Integer(localRecordsCount));
 		}
 		request.setDomainObjectName(targetClassName);
-		try {
-			response = query(request);
-			results = (List) response.getResponse();
-		} catch (LinkageError le) {
-			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n", le);
-			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
-		} catch (ClassNotFoundException cnfe) {
-			log.error("ClassNotFoundException: Having problem in instantiating Delegate as LOCAL TYPE\n" + cnfe);
-			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
-		} catch (Exception ex) {
-			log.error("Exception \n", ex);
-			throw new QueryException("Exception ", ex);
-		}
+		
+		response = query(request);
+		results = (List) response.getResponse();
 
 		resultList.clear();
 		// Set the value for ListProxy
@@ -307,18 +287,10 @@ public class ApplicationServiceBusinessImpl {
 							+ resultsPerQuery + " MAXRECORDSPERQUERY = " + maxRecordsCount);
 		}
 		request.setDomainObjectName(targetClassName);
-		try {
-			response = query(request);
-			results = (List) response.getResponse();
-		} catch (LinkageError le) {
-			log.error("LinkageError: Having problem in instantiating Delegate as LOCAL TYPE \n", le);
-			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE \n", le);
-		} catch (ClassNotFoundException cnfe) {
-			log.error("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
-			throw new QueryException("Having problem in instantiating Delegate as LOCAL TYPE\n", cnfe);
-		} catch (Exception ex) {
-			log.error("Exception in query(Object, int, int, String): ", ex);
-		}
+
+		response = query(request);
+		results = (List) response.getResponse();
+
 		return results;
 	}
 
@@ -756,7 +728,7 @@ public class ApplicationServiceBusinessImpl {
 
 	}
 	
-	private Response query(gov.nih.nci.common.net.Request request) throws Exception
+	private Response query(gov.nih.nci.common.net.Request request) throws ApplicationException
 	{
 
 		String dataSource;
@@ -769,18 +741,18 @@ public class ApplicationServiceBusinessImpl {
 		catch(ServiceLocatorException slEx)
 		{
 			log.error("No data source found");
-			throw new Exception(" No data source was found " + slEx.getMessage());
+			throw new ApplicationException(" No data source was found " , slEx);
 		}
 		catch(Exception exception)
 		{
 			log.error("Exception while getting datasource information "+ exception.getMessage());
-			throw new Exception("Exception in Base Delegate while getting datasource information: " + exception);
+			throw new ApplicationException("Exception in Base Delegate while getting datasource information: ", exception);
 		}
 
 		if (dataSource == null)
 		{
 			log.error("No Data Source could be found for the specified domain object");
-			throw new Exception("No Data Source could be found for the specified domain object");
+			throw new ApplicationException("No Data Source could be found for the specified domain object");
 		}
 		
 		try
@@ -793,12 +765,12 @@ public class ApplicationServiceBusinessImpl {
 		catch(DAOException daoException)
 		{
 			log.error(daoException.getMessage());
-			throw new Exception(daoException.getMessage());
+			throw daoException;
 		}
 		catch(Exception exception)
 		{
 			log.error(exception.getMessage());
-			throw new Exception("Exception in the query:  " + exception.getMessage());
+			throw new ApplicationException("Exception in the query:  " + exception.getMessage());
 		}
 
 		return response;
@@ -806,6 +778,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.7  2006/09/13 05:19:45  ddumitru
+// *** empty log message ***
+//
 // Revision 1.6  2006/09/12 18:35:26  satish79
 // Changes made for Removing BaseDelegate and Introducing Spring
 //
