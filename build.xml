@@ -1024,6 +1024,7 @@
 			<zipfileset dir="${dir.output.project.conf}" prefix="WEB-INF/classes/xslt">
 				<include name="*.xsl"/>
 			</zipfileset>
+			<classes file="${dir.conf}/spring/SDKSpringBeanConfig.xml"/>
 		</war>
 	</target>
 
