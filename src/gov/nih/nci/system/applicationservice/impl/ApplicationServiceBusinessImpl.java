@@ -785,8 +785,7 @@ public class ApplicationServiceBusinessImpl {
 		
 		try
 		{
-			DAO dao = null;
-			dao = (DAO) ObjectFactory.getObject(dataSource);
+			DAO dao = (DAO) ObjectFactory.getObject(dataSource);
 				
 			log.debug("DAO found");
 			response = dao.query(request);
@@ -807,6 +806,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.6  2006/09/12 18:35:26  satish79
+// Changes made for Removing BaseDelegate and Introducing Spring
+//
 // Revision 1.5  2006/09/12 00:25:27  ddumitru
 // Simplified interaction between Application Service and Persistence layers.
 //
