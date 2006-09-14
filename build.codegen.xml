@@ -304,7 +304,7 @@
 		</war>
 	</target>
 
-	<target name="package-client" depends="package-client-jar,package-client-lib"/>
+	<target name="package-client" depends="package-client-jar,package-client-resources"/>
 	
 	<target name="package-client-jar" depends="compile-source">
 		<delete file="${dir.output.project.package.client}/lib/${project_name}-client.jar"/>
@@ -333,13 +333,10 @@
 				<include name="CORESystem.properties"/>
 				<include name="ehcache.xml"/>
 			</fileset>
-			<fileset dir="${dir.output.conf.spring}">
-				<include name="remoteService.xml"/>
-			</fileset>
 		</jar>
 	</target>
 	
-	<target name="package-client-lib">
+	<target name="package-client-resources">
 		<copy todir="${dir.output.project.package.client}/lib">
 			<fileset dir="${dir.lib}">
 				<include name="axis.jar"/>
@@ -365,6 +362,10 @@
 		<copy todir="${dir.output.project.package.client}">
 			<fileset dir="${dir.output.conf.demo.client}" includes="**/*"/>
 		</copy>	
+		<copy todir="${dir.output.project.package.client}/conf">
+			<fileset dir="${dir.output.conf.resources.client}" includes="log4j.properties"/>
+			<fileset dir="${dir.output.conf.spring}" includes="remoteService.xml"/>
+		</copy>
 	</target>
 
 	<target name="package-thickclient" depends="package-thickclient-jar,package-thickclient-resources"/>
