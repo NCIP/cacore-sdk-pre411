@@ -274,6 +274,8 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 			<replacefilter token="@DBTYPE_DB2@" value="${dbtype_db2}" />
 			<replacefilter token="@DBTYPE_MYSQL@" value="${dbtype_mysql}" />
 			<replacefilter token="@DBTYPE_ORACLE@" value="${dbtype_oracle}" />
+			<replacefilter token="@CLIENT_DIR@" value="${basedir.unix}/${dir.output.project.package.client}"/>
+			<replacefilter token="@SCHEMA_DIR@" value="${basedir.unix}/${dir.output.project.package.client}/conf"/>
 		</replace>
 	</target>
 
