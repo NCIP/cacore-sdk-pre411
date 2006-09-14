@@ -47,19 +47,22 @@ public class ApplicationServiceClientImpl extends ApplicationService
 			
 			if (rsPerQuery != null)
 			{
+				log.info("RECORDSPERQUERY property found : "+rsPerQuery);
 				recordsCount = new Integer(rsPerQuery).intValue();
 			}
 			else
 			{
+				log.error("RECORDSPERQUERY property not found. Using default");
 				recordsCount = Constant.RESULT_COUNT_PER_QUERY;
 			}
 			if (maxRsPerQuery != null)
 			{
+				log.info("MAXRECORDSPERQUERY property found : "+maxRsPerQuery);
 				maxRecordsCount = new Integer(maxRsPerQuery).intValue();
-
 			}
 			else
 			{
+				log.error("MAXRECORDSPERQUERY property not found. Using default");
 				maxRecordsCount = Constant.MAX_RESULT_COUNT_PER_QUERY;
 			}
 		}
