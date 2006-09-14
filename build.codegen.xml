@@ -333,6 +333,7 @@
 				<include name="CORESystem.properties"/>
 				<include name="ehcache.xml"/>
 			</fileset>
+			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
 		</jar>
 	</target>
 	
@@ -365,6 +366,7 @@
 		<copy todir="${dir.output.project.package.client}/conf">
 			<fileset dir="${dir.output.conf.resources.client}" includes="log4j.properties"/>
 			<fileset dir="${dir.output.conf.spring}" includes="remoteService.xml"/>
+			<fileset dir="${dir.output.project.src}" includes="*.xsd"/>
 		</copy>
 	</target>
 
@@ -396,6 +398,7 @@
 				<include name="**/*.hbm.xml"/>
 				<include name="SDKSpringBeanConfig.xml"/>
 			</fileset>
+			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
 		</jar>
 	</target>
 	
@@ -405,7 +408,13 @@
 				<include name="hibernate.properties"/>
 				<include name="log4j.properties"/>
 				<include name="ehcache.xml"/>
+				<include name="*.xsd"/>
 			</fileset>
+			<fileset dir="${dir.output.conf.resources.client}">
+				<include name="log4j.properties"/>
+			</fileset>
+		</copy>
+		<copy todir="${dir.output.project.package.thickclient}">
 			<fileset dir="${dir.output.conf.demo.thickclient}" includes="**/*"/>
 		</copy>
 		<copy todir="${dir.output.project.package.thickclient}/lib">
