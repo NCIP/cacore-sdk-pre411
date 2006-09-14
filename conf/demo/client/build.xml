@@ -35,7 +35,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/client_log4j.properties"/>
+						value="${conf.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -57,7 +57,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/client_log4j.properties"/>
+						value="${conf.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -80,7 +80,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/client_log4j.properties"/>
+						value="${conf.dir}/log4j.properties"/>
 		</java>
 
 	</target>
