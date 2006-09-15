@@ -644,7 +644,7 @@ public class UML13HBMTransformer implements Transformer, XMLConfigurable {
 					m2oneEl.setAttribute("lazy", "false");
 					m2oneEl.setAttribute("fetch", "join");
 				} else {
-					m2oneEl.setAttribute("lazy", "true");
+					m2oneEl.setAttribute("lazy", "proxy");
 				}
 			}
 		} else if ((otherEnd.isNavigable()) && (!thisEnd.isNavigable())) {

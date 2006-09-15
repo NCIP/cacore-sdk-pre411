@@ -47,7 +47,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * @author <A HREF="mailto:joshua.a.phillips@saic.com">Joshua Phillips </A>
- * @version $Id: UML13HBMImplTransformer.java,v 1.3 2006-09-01 19:15:40 ddumitru Exp $
+ * @version $Id: UML13HBMImplTransformer.java,v 1.4 2006-09-15 15:23:48 satish79 Exp $
  *
  */
 public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
@@ -577,7 +577,7 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 	            }
 	            else
 	            {
-	            	m2oneEl.setAttribute("lazy", "true");
+	            	m2oneEl.setAttribute("lazy", "proxy");
 	            }
 	        }
 	    } else if ((otherEnd.isNavigable()) && (!thisEnd.isNavigable())) {
