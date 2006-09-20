@@ -87,8 +87,8 @@ public class ORMDAOImpl implements DAO
 		}
 		catch(Exception e)
 		{
-			log.error("Could not retrieve proper datasource: \n " + e.getMessage());
-			throw new DAOException("Could not retrieve proper datasource:  " + e);
+			log.error("Could not retrieve proper datasource \n " + e.getMessage());
+			throw new DAOException("Could not retrieve proper datasource  " + e);
 		}
 
 		Object obj = request.getRequest();
@@ -223,18 +223,18 @@ public class ORMDAOImpl implements DAO
 		}
 		catch (JDBCException ex)
 		{
-			log.error("JDBC Exception in the ORMDAOImpl - ", ex);
-			throw new DAOException("JDBC Exception in the ORMDAOImpl: ", ex);
+			log.error("JDBC Exception in ORMDAOImpl ", ex);
+			throw new DAOException("JDBC Exception in ORMDAOImpl ", ex);
 		}
 		catch(org.hibernate.HibernateException hbmEx)
 		{
 			log.error(hbmEx.getMessage());
-			throw new DAOException("Hibernate problem: ", hbmEx);
+			throw new DAOException("Hibernate problem ", hbmEx);
 		}
 		catch(Exception e)
 		{
-			log.error("Exception: ", e);
-			throw new DAOException("Exception in the ORMDAOImpl: ", e);
+			log.error("Exception ", e);
+			throw new DAOException("Exception in the ORMDAOImpl ", e);
 		}
 		finally
 		{
@@ -246,7 +246,7 @@ public class ORMDAOImpl implements DAO
 			catch (Exception eSession)
 			{
 				log.error("Could not close the session - "+ eSession.getMessage());
-				throw new DAOException("Could not close the session:  " + eSession);
+				throw new DAOException("Could not close the session  " + eSession);
 			}
 		}
 
@@ -258,7 +258,7 @@ public class ORMDAOImpl implements DAO
 		return rsp;
 	}
 
-	private  void loadProperties(){
+	private void loadProperties(){
 
 		try{
 			Properties _properties = new Properties();
@@ -283,12 +283,10 @@ public class ORMDAOImpl implements DAO
 
 		}catch(IOException e)
 		{
-			log.error(e.getMessage());
-			
-			
+			log.error("IOException ", e);
 		}
 		catch(Exception ex){
-			log.error("Exception: ", ex);			
+			log.error("Exception ", ex);			
 		}
 	}
 }
