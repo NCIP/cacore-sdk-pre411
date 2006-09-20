@@ -189,7 +189,7 @@ public void setQueryArguments(String queryText) throws Exception {
                                  targetPackageName = getPackageName(target);
                              }catch(Exception ex){
                             	 log.error("Exception: ", ex);
-                                 throw new Exception(ex.getMessage());
+                                 throw ex;
                              }
                          }
 
@@ -199,7 +199,7 @@ public void setQueryArguments(String queryText) throws Exception {
             }
     }catch(Exception ex){
         log.error("Exception: ", ex);
-        throw new Exception(ex);
+        throw ex;
     }
 
 }
@@ -379,9 +379,7 @@ public Field[] getAllFields(Class resultClass){
 
         }
     }catch(Exception ex){
-        if(ex.getMessage() != null){
-            log.error("ERROR: " + ex.getMessage());
-       }
+    	log.error("Exception: ", ex);
     }
 
     Field[] fields = new Field[fieldList.size()];
@@ -823,8 +821,8 @@ public String getPackageName(String className) throws Exception{
         packageName = (String)packages.get(0);
     }
     }catch(Exception ex){
-        log.error("Error: ", ex);
-        throw new Exception(ex.getMessage());
+        log.error("Exception: ", ex);
+        throw ex;
     }
 
     return packageName;
@@ -985,8 +983,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
        ApplicationService appService =  ApplicationServiceProvider.getApplicationService();
        results = appService.search(searchPath, criteria);
    }catch(Exception ex){
-       log.error(ex.getMessage());
-       throw new Exception(ex.getMessage());
+       log.error("Exception: ", ex);
+       throw ex;
     }
 
 
@@ -1088,8 +1086,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          ambiguous = false;
      }
      }catch(Exception ex){
-         log.error("Error: ", ex);
-         throw new Exception(ex.getMessage());
+         log.error("Exception: ", ex);
+         throw ex;
 
      }
      return ambiguous;
@@ -1119,8 +1117,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          throw new Exception("Invalid package name : "+ packageName);
      }
      }catch(Exception ex){
-         log.error("Error: ", ex);
-         throw new Exception(ex.getMessage());
+         log.error("Exception: ", ex);
+         throw ex;
 
      }
      return valid;
@@ -1164,8 +1162,8 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
          throw new Exception("Invalid class name : "+ className);
      }
      }catch(Exception ex){
-         log.error("Error: ", ex);
-         throw new Exception(ex.getMessage());
+         log.error("Exception: ", ex);
+         throw ex;
 
      }
      return valid;
