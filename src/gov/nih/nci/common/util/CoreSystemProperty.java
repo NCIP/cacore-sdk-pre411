@@ -52,6 +52,6 @@ public class CoreSystemProperty {
 		}
 	}
 	
-	public static boolean DEBUG_STACKTRACE = Boolean.valueOf((String)_properties.getProperty("DEBUG_STACKTRACE"));
+	public static boolean DEBUG_STACKTRACE = Boolean.valueOf((String)_properties.getProperty("DEBUG_STACKTRACE")).booleanValue();
 	
 }
