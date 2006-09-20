@@ -76,6 +76,7 @@ public class HTTPQuery extends HttpServlet{
      try{
          loadProperties(beanFiles);         
      }catch (Exception ex){
+    	 log.error("Exception: ", ex);
          throw new ServletException(ex.getMessage());
      }
   }
@@ -165,8 +166,8 @@ public class HTTPQuery extends HttpServlet{
                  
                                     
             }catch(Exception ex){
-                log.error(ex.getMessage());
-                throw new ServletException(ex.getMessage());
+                log.error("Get ResultSet Exception: " + ex.getMessage());
+                throw ex;
             }
            try{
                              
@@ -198,15 +199,45 @@ public class HTTPQuery extends HttpServlet{
                     }
 
             }catch(Exception ex){
-                log.error(ex.getMessage()); 
-                throw new Exception(ex.getMessage());
+                log.error("Print Results Exception: " + ex.getMessage()); 
+                throw ex;
                 }
 
         }catch(Exception ex){
-            log.error(ex.getMessage());
-            String msg = "<b><font size=6>"+"caCORE HTTP Servlet Error:<hr> <br><br><font size=4 color=red>" + ex.getMessage() +"</b></font>";
-            //throw new ServletException("Error: "+ ex.getMessage());
+            log.error("Exception: ", ex);
+            String msg = "<font size=6><b>caCORE HTTP Servlet Error:<hr></font>";
+
             out.println(msg);
+            
+    		out.println("<pre class=\"autoOverflow\">");
+    	    out.println("<br><br><font size=4 color=red>");        		
+    		
+    		msg = ex.getMessage();
+    		Throwable tempEx = ex.getCause();
+    		while (tempEx != null) {
+    			msg += "<br><br>Caused by: " + tempEx.getMessage(); 
+    			tempEx = tempEx.getCause();
+    		}
+    		
+    		out.println(msg);
+
+    	    out.println("</b></font><br><br>");
+    	    
+    	    log.debug("CoreSystemProperty.DEBUG_STACKTRACE: " + CoreSystemProperty.DEBUG_STACKTRACE);
+    	    
+    	    if (CoreSystemProperty.DEBUG_STACKTRACE){
+	    	    out.println("<br><br><font size=4 color=black>");
+	    	    out.println("########################  BEGIN StackTrace Debugging #########################");
+	    	    out.println("<br><br>");
+	
+	    	    ByteArrayOutputStream ostr = new ByteArrayOutputStream();
+	    	    ex.printStackTrace(new PrintStream(ostr));
+	    	    out.println(ostr.toString());
+	    	    
+	    	    out.println("</font>"); 
+    	    }
+    	    out.println("</pre>");        	    
+        	    
         }
         
             }
