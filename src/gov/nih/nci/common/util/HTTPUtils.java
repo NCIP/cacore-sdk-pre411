@@ -997,8 +997,7 @@ private String getOntologyLink(String methodName, String criteriaIdValue, String
 
    Object[] resultSet = new Object[counter];
    for(int i = index, s=0; i< counter; i++,s++){
-       resultSet[s]= new Object();
-       resultSet[s]= results.get(i);
+        resultSet[s]= results.get(i);
    }
 
    return resultSet;
