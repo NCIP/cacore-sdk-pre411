@@ -319,7 +319,7 @@
 				<exclude name="**/webservice/*"/>
 				<exclude name="**/servicelocator/*"/>
 				<exclude name="**/delegator/*"/>
-				<exclude name="**/dao/**/*"/>
+				<exclude name="**/dao/impl/**/*"/>
 				<exclude name="**/comm/server/*"/>
 				<exclude name="**/mgmt/**/*"/>
 				<include name="**/*"/>
@@ -340,6 +340,7 @@
 	<target name="package-client-resources">
 		<copy todir="${dir.output.project.package.client}/lib">
 			<fileset dir="${dir.lib}">
+				<include name="antlr*.jar"/>
 				<include name="axis.jar"/>
 				<include name="saaj.jar"/>
 				<include name="mail.jar"/>
