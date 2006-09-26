@@ -531,8 +531,8 @@ public class ApplicationServiceBusinessImpl {
 		try {
 			Class.forName(name);
 		} catch (ClassNotFoundException e) {
-			log.error("ERROR: Class " + name + " does not exist.  Please check the package and class name.");
-			throw new QueryException("ERROR: Class " + name + " does not exist.  Please check the package and class name.");
+			log.error("ERROR: Class " + name + " does not exist.  Please check the package and class name.",e);
+			throw new QueryException("ERROR: Class " + name + " does not exist.  Please check the package and class name.",e);
 		}
 
 		// assume it is already a full qualified name if the name contains
@@ -740,7 +740,7 @@ public class ApplicationServiceBusinessImpl {
 		}
 		catch(ServiceLocatorException slEx)
 		{
-			log.error("No data source found");
+			log.error("No data source found",slEx);
 			throw new ApplicationException(" No data source was found " , slEx);
 		}
 		catch(Exception exception)
@@ -764,13 +764,13 @@ public class ApplicationServiceBusinessImpl {
 		}
 		catch(DAOException daoException)
 		{
-			log.error(daoException.getMessage());
+			log.error("Error while getting and querying DAO",daoException);
 			throw daoException;
 		}
 		catch(Exception exception)
 		{
 			log.error(exception.getMessage());
-			throw new ApplicationException("Exception in the query:  " + exception.getMessage());
+			throw new ApplicationException("Exception in the query:  ", exception);
 		}
 
 		return response;
@@ -778,6 +778,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.8  2006/09/13 20:26:06  satish79
+// Modified exception handling mechanism
+//
 // Revision 1.7  2006/09/13 05:19:45  ddumitru
 // *** empty log message ***
 //
