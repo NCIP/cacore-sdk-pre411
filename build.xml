@@ -77,6 +77,10 @@
 		<contains substring="unix" casesensitive="no" string="${os.name}"/>
 	</condition>
 
+	<condition property="os_flavor" value="unix">
+		<contains substring="sun" casesensitive="no" string="${os.name}"/>
+	</condition>
+	
 	<condition property="jboss-yes">
 		<contains substring="jboss" casesensitive="no" string="${container_type}"/>
 	</condition>
