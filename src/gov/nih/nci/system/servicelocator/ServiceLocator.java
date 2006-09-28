@@ -1,166 +1,106 @@
 package gov.nih.nci.system.servicelocator;
 
-import gov.nih.nci.common.util.*;
+
+
+import gov.nih.nci.common.util.Parser;
+
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
+import java.util.StringTokenizer;
 
-import org.jdom.*;
-import org.apache.log4j.*;
-
-/**
- * <!-- LICENSE_TEXT_START -->
- * Copyright 2001-2004 SAIC. Copyright 2001-2003 SAIC. This software was developed in conjunction with the National Cancer Institute,
- * and so to the extent government employees are co-authors, any rights in such works shall be subject to Title 17 of the United States Code, section 105.
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the disclaimer of Article 3, below. Redistributions
- * in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other
- * materials provided with the distribution.
- * 2. The end-user documentation included with the redistribution, if any, must include the following acknowledgment:
- * "This product includes software developed by the SAIC and the National Cancer Institute."
- * If no such end-user documentation is to be included, this acknowledgment shall appear in the software itself,
- * wherever such third-party acknowledgments normally appear.
- * 3. The names "The National Cancer Institute", "NCI" and "SAIC" must not be used to endorse or promote products derived from this software.
- * 4. This license does not authorize the incorporation of this software into any third party proprietary programs. This license does not authorize
- * the recipient to use any trademarks owned by either NCI or SAIC-Frederick.
- * 5. THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO EVENT SHALL THE NATIONAL CANCER INSTITUTE,
- * SAIC, OR THEIR AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * <!-- LICENSE_TEXT_END -->
- */
+import org.apache.log4j.Logger;
+import org.jdom.Attribute;
+import org.jdom.Element;
 
 /**
  * ServiceLocator provides methods to retrieve information from an XML
  * configuration file
  * 
- * @author caBIO Team
+ * @author Satish Patel
  * @version 1.0
  */
 public class ServiceLocator {
 
 	private static Logger log = Logger.getLogger(ServiceLocator.class.getName());
+	private Map domainObjectToDataSourceMap = null;
+	private Map dataSourceConfigMap = null;
+	private int ormCount = 0;
 
-	private static Document document;
-
-	private static Parser parser;
-
-	private static Vector domainObjects;
-
-	private static Hashtable dataSources;
-	
-	static {
-		parser = new Parser("DAOConfig.xml");
-		List list = parser.getList("/DAOConfiguration/domainObjects/@name");
-		domainObjects = parser.listAttributes(list);
-		dataSources = new Hashtable();
-	}
 
 	/**
 	 * Creates a ServiceLocator instance
 	 */
 	public ServiceLocator() {
+		loadConfiguration();
 	}
 
-	/**
-	 * Returns the configuration document return Returns a document
-	 */
-	public static Document getDocument() {
-		return document;
+	private void loadConfiguration()
+	{
+		Parser parser = new Parser("DAOConfig.xml");
+		List list = parser.getList("/DAOConfiguration/domainObjects");
+		domainObjectToDataSourceMap = new Hashtable();
+		dataSourceConfigMap = new Hashtable();
+		
+		for (Iterator i = list.iterator(); i.hasNext();) {
+			Element element = (Element) i.next();
+			Attribute attribute = element.getAttribute("name");
+			String names = attribute.getValue();
+			Element dsElement = element.getChild("DataSource");
+			String dataSource = dsElement.getValue();
+			log.info("Domain Object Mapping "+names+"====="+dataSource);
+
+			StringTokenizer tokenizer = new StringTokenizer(names,",");
+			if (dataSource.indexOf("ORM") != -1)
+				ormCount++;
+			
+			while(tokenizer.hasMoreElements())
+			{
+				String token = (String)tokenizer.nextElement();
+				if(domainObjectToDataSourceMap.get(token.trim())!=null)
+					log.error("Duplicate Entry in DAO config file for: "+token);
+				domainObjectToDataSourceMap.put(token.trim(),dataSource.trim());
+				log.info("Mapping "+token+" to "+dataSource);
+			}
+			
+			dataSourceConfigMap.put(dataSource.trim(),parser.listElement(element));
+		}
+	}
+	
+
+	public int getORMCount() {
+		return ormCount;
 	}
 
-	/**
-	 * Returns the datasource value
-	 * 
-	 * @param dataSource
-	 *            Specified dataSource information
-	 * @param key
-	 *            Specified key of the hashtable
-	 */
-	public static String getDataSourceCollectionValue(Hashtable dataSource, String key) {
-		return dataSource.get(key).toString();
+	public int getORMCounter(String domainObjectName) throws ServiceLocatorException {
+		String dsName = getDataSource(domainObjectName);
+		try {
+			String index = dsName.substring(3);
+			return Integer.parseInt(index);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw new ServiceLocatorException(e.getMessage(),e);
+		}
 	}
 
+	public String getDataSource(String domainObjectName) throws ServiceLocatorException {
+		String dsName = (String)domainObjectToDataSourceMap.get(domainObjectName.trim());
+			if(dsName==null)
+				log.error("No entry in DAO config file for: "+domainObjectName);
+		return dsName;
+	}
+	
 	/**
 	 * Gets the datasource configuration values
 	 * 
 	 * @param objectName
 	 * @return
+	 * @throws ServiceLocatorException 
 	 * @throws ServiceLocatorException
 	 */
-	public static Hashtable getDataSourceCollection(String objectName)
-			throws ServiceLocatorException {
-		
-		Hashtable dataSource = (Hashtable)dataSources.get(objectName);
-		
-		log.debug("dataSource for objectName: " + objectName + " == null: " + (dataSource == null));
-		
-		if (dataSource == null){
-			try {
-				for (int i = 0; i < domainObjects.size(); i++) {
-					String dObject = (domainObjects.get(i).toString());
-	
-					if (dObject.indexOf(objectName) >= 0) {
-	
-						String xPathExp = "/DAOConfiguration/domainObjects[@name='"
-								+ dObject + "']";
-						dataSource = parser.listElements(parser.getList(xPathExp));
-					}
-				}
-			} catch (Exception ex) {
-				log.error(ex.getMessage());
-				throw new ServiceLocatorException(ex.getMessage());
-			}
-			
-			dataSources.put(objectName, dataSource);
-		}
-		
-		return dataSource;		
-	}
-
-	/**
-	 * Updates the data source configuration values sent by the user
-	 * 
-	 * @param domainObj
-	 * @param updateTable
-	 */
-	public static void updateDataSourceCollection(String domainObj,
-			String[][] updateTable) {
-		int indexOfDomainObject = 0;
-		for (int i = 0; i < domainObjects.size(); i++) {
-			String dObject = (domainObjects.get(i).toString());
-			if (dObject.equalsIgnoreCase(domainObj)) {
-				indexOfDomainObject = i;
-			}
-		}
-		parser.updateElements(indexOfDomainObject, updateTable);
-	}
-
-	public static int getORMCount() {
-		Iterator allDataSource = parser.getElements("DataSource");
-		int count = 0;
-
-		while (allDataSource.hasNext()) {
-			Element temp = (Element) allDataSource.next();
-			if (temp.getText().indexOf("ORM") != -1) {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public static int getORMCounter(String domainObjectName) throws Exception {
-		String dsName;
-		try {
-			dsName = getDataSourceCollectionValue(getDataSourceCollection(domainObjectName), "DataSource");
-			log.debug("dsName: " + dsName);
-			String index = dsName.substring(3);
-			return Integer.parseInt(index);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new Exception(e.getMessage());
-		}
+	public Hashtable getDataSourceCollection(String domainObjectName) throws ServiceLocatorException{
+		String dsName = getDataSource(domainObjectName);
+		return (Hashtable)dataSourceConfigMap.get(dsName);
 	}
 }
