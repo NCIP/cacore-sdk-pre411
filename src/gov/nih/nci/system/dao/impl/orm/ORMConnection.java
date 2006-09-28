@@ -1,5 +1,8 @@
 package gov.nih.nci.system.dao.impl.orm;
 
+import gov.nih.nci.common.util.ObjectFactory;
+import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.servicelocator.ServiceLocator;
 
 import org.apache.log4j.Logger;
@@ -30,9 +33,18 @@ public class ORMConnection {
 	 * Private Constructor, Hibernate SessionFactory is instantiated here.
 	 * 
 	 */
-	private ORMConnection() {
+	private ORMConnection() throws ApplicationException{
 		// Get the total number of ORM datasource from ServiceLocator
-		int count = ServiceLocator.getORMCount();
+		ServiceLocator serviceLocator = null;
+		try
+		{
+			serviceLocator = (ServiceLocator)ObjectFactory.getObject("ServiceLocator");
+		} catch (ApplicationException e1)
+		{
+			log.fatal("Unable to locate Service Locator :",e1);
+			throw new ApplicationException("Unable to locate Service Locator :",e1);
+		}
+		int count = serviceLocator.getORMCount();
 		sessionFactories = new SessionFactory[count];
 		configurations = new Configuration[count];
 		try {
@@ -52,8 +64,11 @@ public class ORMConnection {
 	 * object of ORMConnection in the server.
 	 * 
 	 * @return an object of ORMConnection
+	 * @throws DAOException 
+	 * @throws ApplicationException 
 	 */
-	synchronized public static ORMConnection getInstance() {
+	synchronized public static ORMConnection getInstance() throws DAOException  {
+		
 		if (orm_instance == null) {
 			return getNewInstance();
 		} else {
@@ -65,9 +80,17 @@ public class ORMConnection {
 	 * Return an new ORMConnection object.
 	 * 
 	 * @return an object of ORMConnection
+	 * @throws DAOException 
+	 * @throws ApplicationException 
 	 */
-	static private ORMConnection getNewInstance() {
-		orm_instance = new ORMConnection();
+	static private ORMConnection getNewInstance() throws DAOException {
+		try
+		{
+			orm_instance = new ORMConnection();
+		} catch (ApplicationException e)
+		{
+			throw new DAOException(e);
+		}
 		return orm_instance;
 	}
 
@@ -79,7 +102,17 @@ public class ORMConnection {
 	 * @throws HibernateException
 	 */
 	public static Session openSession(String domainObjectName) throws HibernateException, Exception {
-		int counter = ServiceLocator.getORMCounter(domainObjectName);		
+		ServiceLocator serviceLocator = null;
+		int counter = 0;
+		try
+		{
+			serviceLocator = (ServiceLocator)ObjectFactory.getObject("ServiceLocator");
+			counter = serviceLocator.getORMCounter(domainObjectName);		
+		} catch (ApplicationException e1)
+		{
+			log.fatal("Unable to locate Service Locator :",e1);
+			throw new ApplicationException("Unable to locate Service Locator :",e1);
+		}
 		if (sessionFactories != null) {
 			return sessionFactories[counter - 1].openSession();
 		} else {

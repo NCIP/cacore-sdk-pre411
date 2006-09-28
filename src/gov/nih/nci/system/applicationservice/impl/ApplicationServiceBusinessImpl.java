@@ -734,9 +734,20 @@ public class ApplicationServiceBusinessImpl {
 		String dataSource;
 		String domainObjectName = request.getDomainObjectName();
 		Response response;
+
+		ServiceLocator serviceLocator = null;
+		try
+		{
+			serviceLocator = (ServiceLocator)ObjectFactory.getObject("ServiceLocator");
+		} catch (ApplicationException e1)
+		{
+			log.fatal("Unable to locate Service Locator :",e1);
+			throw new ApplicationException("Unable to locate Service Locator :",e1);
+		}
+		
 		try{
-			request.setConfig(ServiceLocator.getDataSourceCollection(domainObjectName));
-			dataSource = ServiceLocator.getDataSourceCollectionValue(ServiceLocator.getDataSourceCollection(domainObjectName), "DataSource");
+			request.setConfig(serviceLocator.getDataSourceCollection(domainObjectName));
+			dataSource = serviceLocator.getDataSource(domainObjectName);
 		}
 		catch(ServiceLocatorException slEx)
 		{
@@ -758,7 +769,6 @@ public class ApplicationServiceBusinessImpl {
 		try
 		{
 			DAO dao = (DAO) ObjectFactory.getObject(dataSource);
-				
 			log.debug("DAO found");
 			response = dao.query(request);
 		}
@@ -778,6 +788,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.9  2006/09/26 14:22:58  satish79
+// changes in the log statements
+//
 // Revision 1.8  2006/09/13 20:26:06  satish79
 // Modified exception handling mechanism
 //

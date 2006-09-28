@@ -6,6 +6,8 @@ import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.common.util.NestedCriteria;
 import gov.nih.nci.common.util.NestedCriteria2HQL;
+import gov.nih.nci.common.util.ObjectFactory;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.servicelocator.ServiceLocator;
@@ -81,8 +83,11 @@ public class ORMDAOImpl implements DAO
 
 		String entityName = request.getDomainObjectName();
 
+		ServiceLocator serviceLocator = null;
+
 		try{
-			counter = ServiceLocator.getORMCounter(entityName);
+			serviceLocator = (ServiceLocator)ObjectFactory.getObject("ServiceLocator");
+			counter = serviceLocator.getORMCounter(entityName);
 			session = ORMConnection.openSession(entityName);			
 		}
 		catch(Exception e)
