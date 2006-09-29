@@ -5,9 +5,13 @@
 
 
 <project name="caCORE SDK Thick Client Demo" default="rundemo" basedir=".">
-
+	
+	<property name="conf.dir" value="conf" />
 	<property name="lib.dir" value="lib" />
 	<property name="src.dir" value="." />
+	<property name="classes.dir" value="./../../classes" />
+	<property name="orm.dir" value="./../../src" />
+	<property name="junit.dir" value="./../../junit" />
 
 	<path id="classpath">
 		<pathelement location="${src.dir}"/>
@@ -15,20 +19,71 @@
 			<include name="**/*.jar"/>
 		</fileset>
 	</path>
+		
+	<macrodef name="SDKecho">
+		<attribute name="message" default="..."/>
+		<sequential>
+			<echo>*****************************************************************</echo>
+			<echo>***  @{message}</echo>
+			<echo>*****************************************************************</echo>
+		</sequential>
+	</macrodef>	
 	
 	<!-- ************************************************************************************************-->
 	<!--                                             Run Java Client Demo                                -->
 	<!-- ************************************************************************************************-->
 
 	<target name="rundemo">
-		<javac srcdir="." >
-			<include name="TestClient.java"/>
-			<classpath refid="classpath"/>
-		</javac>
+		<echo>${java.class.path}</echo>
 		<java classname="TestClient" fork="true">
 			<classpath refid="classpath"/>
 		</java>
 
 	</target>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnit Tests and Report                                       -->
+	<!-- ************************************************************************************************-->
 
+	<target name="runtest">
+		<SDKecho message="Running JUnit test"/>
+		<mkdir dir="${junit.dir}"/>
+
+		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="true">
+			<classpath>
+				<pathelement location="${conf.dir}"/>
+				<pathelement location="${classes.dir}"/>
+				<pathelement location="${orm.dir}"/>
+				<path refid="classpath"/>
+			</classpath>
+			<formatter type="xml"/>			
+			<sysproperty key="log4j.configuration"
+						value="${conf.dir}/client_log4j.properties"/>
+			
+			<!-- Sample single test
+			
+			<test name="gov.nih.nci.cabio.domain.impl.test.GeneTest" todir="${junit.dir}" />
+			<test name="gov.nih.nci.cabio.domain.impl.test.CloneTest" todir="${junit.dir}" />
+			
+			 -->
+			
+			<batchtest haltonfailure="no" todir="${junit.dir}">
+				<fileset dir="${classes.dir}">
+				<!-- fileset dir="${dir.output.project.src}" -->
+					<!-- include name="**/*Test.class"/ -->
+					<include name="**/*Test.class"/>
+
+				</fileset>
+			</batchtest>			
+		</junit>
+		
+		
+		<SDKecho message="Generating JUnit HTML Reports" />
+		<junitreport todir="${junit.dir}">
+			<fileset dir="${junit.dir}" includes="TEST-*.xml" />
+			<report format="frames" todir="${junit.dir}" />
+		</junitreport>	
+		<SDKecho message="Refer to index.html in ${junit.dir} for results" />		
+	</target>
+	
 </project>
