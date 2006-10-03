@@ -1,10 +1,5 @@
-/*
- * Created on May 17, 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package gov.nih.nci.common.util;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +18,9 @@ public class NestedCriteria implements Serializable{
 	private String targetObjectName;
 	private String sourceObjectName;
 	private String roleName;
+	private boolean targetCollection;
+	
+	
 	
 //	private HashMap criterionMap;
 	
@@ -101,5 +99,28 @@ public class NestedCriteria implements Serializable{
 	{
 		this.caseSensitivityFlag = caseSensitivity;
 	}
+
+	public boolean isTargetCollection()
+	{
+		return targetCollection;
+	}
+
+	public void setTargetCollection(boolean targetCollection)
+	{
+		this.targetCollection = targetCollection;
+	}
+
+	public NestedCriteria(String sourceObjectName, String targetObjectName, String roleName, NestedCriteria internalNestedCriteria)
+	{
+		super();
+		this.sourceObjectName = sourceObjectName;
+		this.targetObjectName = targetObjectName;
+		this.roleName = roleName;
+		this.internalNestedCriteria = internalNestedCriteria;
+	}
+	public NestedCriteria()
+	{
+	}
+	
 }
 
