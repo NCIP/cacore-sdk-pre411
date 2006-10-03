@@ -521,7 +521,7 @@ public class ApplicationServiceBusinessImpl {
 					criteria.setSearchCaseSensitivity(caseSensitivityFlag);
 			}
 		} catch(Exception e) {
-			throw new QueryException("Exception: ", e);
+			throw new QueryException("Create Nested Criteria Exception: ", e);
 		}
 		return criteria;
 	}
@@ -788,6 +788,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.10  2006/09/28 22:02:57  satish79
+// Changes for new service locator
+//
 // Revision 1.9  2006/09/26 14:22:58  satish79
 // changes in the log statements
 //
