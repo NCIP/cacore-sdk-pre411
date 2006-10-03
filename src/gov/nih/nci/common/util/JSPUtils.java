@@ -166,6 +166,31 @@ public class JSPUtils
         return fieldNames;
     
     }
+    
+    /**
+     * Get the list of all Fields for the class
+     * @param className
+     * @return Field[] of all fields for the given class
+     */
+    public Field[] getFields(String className)
+    {
+        Field[] fields = null;
+        
+        try
+        {
+            Class ckass = Class.forName(className);
+                        
+            HTTPUtils httpUtils = new HTTPUtils();
+            fields = httpUtils.getAllFields(ckass);
+        }
+        catch(Exception e)
+        {
+            log.error(e.getMessage());
+            
+        }
+        return fields;
+    
+    }    
      
     
    
