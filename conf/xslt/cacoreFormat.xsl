@@ -86,7 +86,7 @@
 						<b>
 							<u>Results:  <xsl:value-of select="$recordCounter"/> records found</u>
 						</b>
-						<b> (Records <xsl:value-of select="$start"/> - <xsl:value-of select="$end"/> per page.)</b>
+						<b> (Displaying record(s) #<xsl:value-of select="$start"/>-<xsl:value-of select="$end"/>)</b>
 					</xsl:when>
 					<xsl:otherwise>
 						<b>

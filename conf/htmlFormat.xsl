@@ -56,7 +56,7 @@
 		<xsl:choose>
 			<xsl:when test="$recordCounter > 0">
 				<b><u>Results:  <xsl:value-of select="$recordCounter"/> records found</u></b>		
-				<b> (<xsl:value-of select="$start"/> - <xsl:value-of select="$end"/> records per page.)</b>
+				<b> (Displaying record(s) #<xsl:value-of select="$start"/>-<xsl:value-of select="$end"/>)</b>				
 			</xsl:when>
 			<xsl:otherwise>
 				<b><u>Results:  zero records found</u></b>		
