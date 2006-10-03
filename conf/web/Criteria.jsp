@@ -20,11 +20,12 @@
 				 java.util.*" %>
 <br>
 <font size="4" color="#737CA1"><center>Click on the class name link on the bottom left menu to start your search.
-<br>For each search criteria, at least one field is required for the search.
 <br>For date attribute, please use this syntax: <b>mm-dd-yyyy</b></center></font>
 <br><br>
 <% JSPUtils jspUtils= null;
-List fieldNames = null, domainNames=new ArrayList();
+List fieldNames=new ArrayList();
+Field fields[] = null;
+List domainNames=new ArrayList();
 String message = null, selectedSearchDomain=null;
 String className = request.getParameter("klassName");
 session.setAttribute("selectedDomain", className);
@@ -35,6 +36,7 @@ if(className != null)
 	{	
 		jspUtils = JSPUtils.getJSPUtils(config);
 		fieldNames = jspUtils.getAllFields(className);
+		fields = jspUtils.getFields(className);	
 		domainNames = jspUtils.getDomainNames();
 		
 	}
@@ -51,13 +53,25 @@ if(className != null)
 		</tr>
 			
 		<% if(fieldNames != null)
-		{%>
-		<% for(int i=0; i<fieldNames.size(); i++)
-		   {%>
-			<%String attrName = (String)fieldNames.get(i);%>
+		{  
+			String attrName;
+		   	String attrType;
+		   
+		   	for(int i=0; i<fieldNames.size(); i++)
+		   	{	attrName = fields[i].getName();
+			   	attrType = fields[i].getType().getName(); %>
+			   	
 		<tr align="left" valign="top">
 			<td><%=attrName%></td>
+		<% if ( attrType.equalsIgnoreCase("java.Lang.Boolean") ) {%>
+			<td><SELECT NAME=<%=attrName%> > 
+			   		<OPTION SELECTED></OPTION>
+			   		<OPTION >true</OPTION>
+			   		<OPTION >false</OPTION>
+			</SELECT></td>
+		<%} else {%>
 			<td><input type=text name=<%=attrName%> > </td>
+		<%}%>
 		</tr>
 		  <%}%>
 		<tr align="left" valign="top">
