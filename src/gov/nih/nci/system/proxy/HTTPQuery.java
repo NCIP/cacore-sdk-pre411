@@ -148,9 +148,12 @@ public class HTTPQuery extends HttpServlet{
             HttpSession session = request.getSession();
             HTTPUtils prop = (HTTPUtils)session.getAttribute("properties");
             
-//            if(!session.isNew() && prop != null){
-//               match = httpUtils.getMatch(prop);                
-//            }
+			// The following lines causes results to be cached, which can cause a query
+			// to be out of sync with the database if the database is modified directly
+			// (external to the application)
+//          if(!session.isNew() && prop != null){
+//             match = httpUtils.getMatch(prop);                
+//          }
             
          
             try{ 
