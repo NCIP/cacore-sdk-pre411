@@ -66,8 +66,8 @@ if(className != null)
 		<% if ( attrType.equalsIgnoreCase("java.Lang.Boolean") ) {%>
 			<td><SELECT NAME=<%=attrName%> > 
 			   		<OPTION SELECTED></OPTION>
-			   		<OPTION >true</OPTION>
-			   		<OPTION >false</OPTION>
+			   		<OPTION >True</OPTION>
+			   		<OPTION >False</OPTION>
 			</SELECT></td>
 		<%} else {%>
 			<td><input type=text name=<%=attrName%> > </td>
