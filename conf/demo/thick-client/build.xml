@@ -34,6 +34,13 @@
 	<!-- ************************************************************************************************-->
 
 	<target name="rundemo">
+		<javac srcdir="." >
+			<include name="TestClient.java"/>
+			<classpath refid="classpath"/>
+			<classpath>
+				<pathelement location="${src.dir}"/>
+			</classpath>
+		</javac>		
 		<echo>${java.class.path}</echo>
 		<java classname="TestClient" fork="true">
 			<classpath refid="classpath"/>
