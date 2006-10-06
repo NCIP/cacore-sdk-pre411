@@ -48,7 +48,7 @@
 	<target name="-compile-generator.main" unless="compile-generator.main.ignore"
 		depends="generate-templates" description="Compile SDK code generation classes">
 		<SDKecho message="Compiling SDK code generator"/>
-		<javac destdir="${dir.codegen.temp.build}">
+		<javac destdir="${dir.codegen.temp.build}" debug="${sdk.debug}">
 			<src path="${dir.codegen.src}:${dir.codegen.temp.src}"/>
 			<include name="gov/nih/nci/codegen/**/*.java"/>
 			<classpath refid="classpath"/>
@@ -289,7 +289,7 @@
 	*********************************************************************** -->
 	
 	<target name="compile-source" depends="create-output-dirs">
-		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.classes}" classpathref="classpath" />
+		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.classes}" classpathref="classpath" debug="${sdk.debug}"/>
 	</target>
 	
 	<target name="package-system" depends="compile-source,package-war,package-client,package-thickclient" description="Creates a packages for system"/>
