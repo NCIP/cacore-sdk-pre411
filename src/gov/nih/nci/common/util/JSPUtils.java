@@ -124,38 +124,16 @@ public class JSPUtils
                         
             HTTPUtils httpUtils = new HTTPUtils();
             Field[] fields = httpUtils.getAllFields(ckass);
+            String fieldType;
             for(int i=0; i< fields.length; i++)
             {
                 fields[i].setAccessible(true);
-                String fieldType = fields[i].getType().getName();
-                if(fieldType.equals("java.lang.Long"))
+                fieldType = fields[i].getType().getName();
+                
+                if (isSearchable(fieldType))
                 {
-                    fieldNames.add(fields[i].getName());    
+                	fieldNames.add(fields[i].getName());    
                 }
-                else if(fieldType.equals("java.lang.String"))
-                {
-                    fieldNames.add(fields[i].getName()); 
-                }
-                else if(fieldType.equals("java.lang.Integer"))
-                {
-                    fieldNames.add(fields[i].getName());
-                }
-                else if(fieldType.equals("java.lang.Float"))
-                {
-                    fieldNames.add(fields[i].getName());   
-                }
-                else if(fieldType.equals("java.lang.Double"))
-                {
-                    fieldNames.add(fields[i].getName());         
-                }
-                else if(fieldType.equals("java.lang.Boolean"))
-                {
-                    fieldNames.add(fields[i].getName());      
-                }
-                else if(fieldType.equals("java.util.Date"))
-                {
-                    fieldNames.add(fields[i].getName());                  
-                }   
             }
         }
         catch(Exception e)
@@ -172,9 +150,10 @@ public class JSPUtils
      * @param className
      * @return Field[] of all fields for the given class
      */
-    public Field[] getFields(String className)
+    public List getSearchableFields(String className)
     {
         Field[] fields = null;
+        List searchableFields = new ArrayList();
         
         try
         {
@@ -182,17 +161,45 @@ public class JSPUtils
                         
             HTTPUtils httpUtils = new HTTPUtils();
             fields = httpUtils.getAllFields(ckass);
+            String fieldType;
+            
+            for(int i=0; i< fields.length; i++)
+            {
+                fields[i].setAccessible(true);
+                fieldType = fields[i].getType().getName();
+                
+                if (isSearchable(fieldType))
+                {
+                	searchableFields.add(fields[i]);    
+                }
+               
+            }            
         }
         catch(Exception e)
         {
             log.error(e.getMessage());
             
         }
-        return fields;
+        return searchableFields;
     
     }    
      
-    
+    private boolean isSearchable(String fieldType){
+    	boolean isSearchable=false;
+    	
+    	if(fieldType.equals("java.lang.Long") || 
+        		fieldType.equals("java.lang.String") || 
+        		fieldType.equals("java.lang.Integer") || 
+        		fieldType.equals("java.lang.Float") || 
+        		fieldType.equals("java.lang.Double") || 
+        		fieldType.equals("java.lang.Boolean") || 
+        		fieldType.equals("java.util.Date")
+        		){
+    		isSearchable = true;
+    	}
+    	
+    	return isSearchable;
+    }
    
     private static void loadProperties(List fileList) throws Exception
     {     

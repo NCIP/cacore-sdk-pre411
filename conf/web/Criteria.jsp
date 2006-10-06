@@ -24,7 +24,6 @@
 <br><br>
 <% JSPUtils jspUtils= null;
 List fieldNames=new ArrayList();
-Field fields[] = null;
 List domainNames=new ArrayList();
 String message = null, selectedSearchDomain=null;
 String className = request.getParameter("klassName");
@@ -35,8 +34,7 @@ if(className != null)
 	try
 	{	
 		jspUtils = JSPUtils.getJSPUtils(config);
-		fieldNames = jspUtils.getAllFields(className);
-		fields = jspUtils.getFields(className);	
+		fieldNames = jspUtils.getSearchableFields(className);
 		domainNames = jspUtils.getDomainNames();
 		
 	}
@@ -57,9 +55,9 @@ if(className != null)
 			String attrName;
 		   	String attrType;
 		   
-		   	for(int i=0; i<fieldNames.size(); i++)
-		   	{	attrName = fields[i].getName();
-			   	attrType = fields[i].getType().getName(); %>
+		   	for(int i=0; i < fieldNames.size(); i++)
+		   	{	attrName = ((Field)fieldNames.get(i)).getName();
+			   	attrType = ((Field)fieldNames.get(i)).getType().getName(); %>
 			   	
 		<tr align="left" valign="top">
 			<td><%=attrName%></td>
