@@ -33,6 +33,8 @@ import org.apache.log4j.*;
  * @version 1.0
  */
 public class ListProxy extends ArrayList {
+	private static final long serialVersionUID = 1L;
+	
 	// the real size of actual list if competely materialized, the record count
 	// from hibernate query
 	private int realSize_ = -1;
