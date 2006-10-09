@@ -15,6 +15,7 @@ import <%=pkgName%>.*;
 import gov.nih.nci.system.applicationservice.*;
 import gov.nih.nci.common.util.HQLCriteria;
 import java.util.*;
+import org.apache.log4j.Logger;
 
 /**
  * <!-- LICENSE_TEXT_START -->
@@ -26,6 +27,7 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 <% if(superClass != null){ %> extends <%=superClass.getName()%> <% } %>	implements java.io.Serializable 
 {
 	private static final long serialVersionUID = 1234567890L;
+	
 <%//Iterate through all the attributes and generate getters and setters for the simple attributes%>
 <% for(Iterator i = UML13Utils.getAttributes((UmlClass)klass).iterator(); i.hasNext();){ %>
 	<% Attribute att = (Attribute)i.next(); %>
@@ -69,8 +71,8 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 			}
 			catch(Exception ex) 
 			{
-				System.out.println("<%=klass.getName()%>:get<%=capFirst(otherEnd.getName())%> throws exception ... ...");
-				ex.printStackTrace(); 
+				Logger log = Logger.getLogger(<%=klass.getName()%>.class.getName());
+				log.error("<%=klass.getName()%>:get<%=capFirst(otherEnd.getName())%> throws exception ... ...",ex);
 			}
 		}	
 		return <%=otherEnd.getName()%>;
@@ -88,20 +90,23 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 			<% if (eagerFetchPackages.contains(pkgName)) {%>
 		return <%=otherEnd.getName()%>;			
 			<% } else { %>
-		try
-		{
-			String idString = (Class.forName("java.lang.String").isInstance(this.id))? "'"+ this.id + "'" : ""+this.id; 
-			String hql = "select child from <%=fullyQualifiedTargetClassName%> as child, <%=fullyQualifiedClassName%> as parent  where child=parent.<%=otherEnd.getName()%> and parent.id="+idString;
-			HQLCriteria hqlCriteria = new HQLCriteria(hql);
-			ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
-			java.util.List resultList = applicationService.query(hqlCriteria,"<%=fullyQualifiedTargetClassName%>");				 
-			if (resultList!=null && resultList.size()>0) 
-				<%=otherEnd.getName()%> = (<%=fullyQualifiedTargetClassName%>)resultList.get(0);
-		}
-		catch(Exception ex) 
-		{ 
-			System.out.println("<%=klass.getName()%>:get<%=capFirst(otherEnd.getName())%> throws exception ... ...");
-			ex.printStackTrace(); 
+		if(<%=otherEnd.getName()%>!=null ||  <%=otherEnd.getName()%>.getClass().getName().contains("$"))
+		{			
+			try
+			{
+				String idString = (Class.forName("java.lang.String").isInstance(this.id))? "'"+ this.id + "'" : ""+this.id; 
+				String hql = "select child from <%=fullyQualifiedTargetClassName%> as child, <%=fullyQualifiedClassName%> as parent  where child=parent.<%=otherEnd.getName()%> and parent.id="+idString;
+				HQLCriteria hqlCriteria = new HQLCriteria(hql);
+				ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
+				java.util.List resultList = applicationService.query(hqlCriteria,"<%=fullyQualifiedTargetClassName%>");				 
+				if (resultList!=null && resultList.size()>0) 
+					<%=otherEnd.getName()%> = (<%=fullyQualifiedTargetClassName%>)resultList.get(0);
+			}
+			catch(Exception ex) 
+			{ 
+				Logger log = Logger.getLogger(<%=klass.getName()%>.class.getName());
+				log.error("<%=klass.getName()%>:get<%=capFirst(otherEnd.getName())%> throws exception ... ...",ex);
+			}
 		}
 		return <%=otherEnd.getName()%>;	
 			<% } %>		
