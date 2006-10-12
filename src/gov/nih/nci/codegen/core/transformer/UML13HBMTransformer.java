@@ -625,10 +625,8 @@ public class UML13HBMTransformer implements Transformer, XMLConfigurable {
 				String temp1 = getPackage((UmlClass) otherEnd.getType()) + Constant.DOT
 						+ otherEnd.getType().getName();
 				one2oneEl.setAttribute("class", temp1);
-				String temp2 = thisEnd.getType().getName();
-				one2oneEl.setAttribute("property-ref", temp2.substring(0, 1)
-						.toLowerCase()
-						+ temp2.substring(1));
+				String temp2 = thisEnd.getName();
+				one2oneEl.setAttribute("property-ref", temp2);
 
 			} else {
 				// then this is the constrained side

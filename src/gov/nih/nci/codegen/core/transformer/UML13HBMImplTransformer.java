@@ -47,7 +47,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * @author <A HREF="mailto:joshua.a.phillips@saic.com">Joshua Phillips </A>
- * @version $Id: UML13HBMImplTransformer.java,v 1.4 2006-09-15 15:23:48 satish79 Exp $
+ * @version $Id: UML13HBMImplTransformer.java,v 1.5 2006-10-12 00:02:34 satish79 Exp $
  *
  */
 public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
@@ -558,8 +558,8 @@ public class UML13HBMImplTransformer implements Transformer, XMLConfigurable {
 	            one2oneEl.setAttribute("name", otherEnd.getName());
 	            String temp1 = getPackage((UmlClass)otherEnd.getType()) + ".impl." + otherEnd.getType().getName()+"Impl";
 				one2oneEl.setAttribute("class", temp1);
-	    		String temp2 = thisEnd.getType().getName();
-	    		one2oneEl.setAttribute("property-ref",temp2.substring(0,1).toLowerCase()+temp2.substring(1));
+	    		String temp2 = thisEnd.getName();
+	    		one2oneEl.setAttribute("property-ref",temp2);
 
 	        } else {
 	            //then this is the constrained side
