@@ -16,6 +16,10 @@ package gov.nih.nci.system.applicationservice;
 public class ApplicationException extends Exception
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Default constructor. Constructs the (@link ApplicationException) object 
 	 */
 	public ApplicationException()

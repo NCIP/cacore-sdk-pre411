@@ -16,6 +16,10 @@ package gov.nih.nci.system.dao;
 public class SessionException extends DAOException
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Default constructor. Constructs the (@link SessionException) object 
 	 */
 	public SessionException()

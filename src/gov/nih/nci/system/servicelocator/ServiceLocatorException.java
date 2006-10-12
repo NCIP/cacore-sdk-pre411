@@ -30,6 +30,11 @@ package gov.nih.nci.system.servicelocator;
 public class ServiceLocatorException extends Exception {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Creates a ServiceLocatedException instance
 	 * @param message
 	 */

@@ -16,6 +16,10 @@ package gov.nih.nci.system.dao;
 public class CreateException extends DAOException
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Default constructor. Constructs the (@link CreateException) object 
 	 */
 	public CreateException()

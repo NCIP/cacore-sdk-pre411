@@ -16,6 +16,10 @@ package gov.nih.nci.system.applicationservice;
 public class AuthorizationException extends SecurityException
 {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Default constructor. Constructs the (@link AuthorizationException) object 
 	 */
 	public AuthorizationException()

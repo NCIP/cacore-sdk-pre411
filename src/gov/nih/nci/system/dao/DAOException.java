@@ -33,6 +33,11 @@ import gov.nih.nci.system.applicationservice.ApplicationException;
 
 public class DAOException extends ApplicationException {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Default constructor. Constructs the (@link RollbackException) object
 	 */
 	public DAOException() {
