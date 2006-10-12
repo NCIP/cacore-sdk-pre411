@@ -94,6 +94,7 @@ public class NestedCriteria2HQL
 		while (!closingStack.empty())
 			hql.append(closingStack.pop());
 
+		log.debug("HQL Query :"+query.getQueryString());
 		return prepareQuery(hql);
 	}
 	
@@ -281,6 +282,8 @@ public class NestedCriteria2HQL
 						hql.append(alias).append(" in elements(").append(srcAlias).append(".").append(roleName).append(")");
 						hql.append(" and ");
 						hql.append(alias).append(".id in (").append(getObjectCriterion(objs[i], cfg)).append(") ");
+						if (i < objs.length-1)
+							hql.append(" and ");
 					}
 				} else
 				{
