@@ -1,7 +1,6 @@
 package gov.nih.nci.common.util;
 
 import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.applicationservice.impl.ApplicationServiceBusinessImpl;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
@@ -37,7 +36,7 @@ public class ObjectFactory
 		}
 		catch(Exception e)
 		{
-			log.error("No bean found for key = "+classname +"\n",e);
+			log.info("No bean found for key = "+classname +"\n");
 			throw new ApplicationException("No bean found for key = "+classname +"\n",e);
 		}
 	}
