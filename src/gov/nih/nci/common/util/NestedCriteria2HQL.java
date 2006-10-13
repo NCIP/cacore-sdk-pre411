@@ -94,8 +94,9 @@ public class NestedCriteria2HQL
 		while (!closingStack.empty())
 			hql.append(closingStack.pop());
 
+		query = prepareQuery(hql);
 		log.debug("HQL Query :"+query.getQueryString());
-		return prepareQuery(hql);
+		return query;
 	}
 	
 	private Query prepareQuery(StringBuffer hql)
