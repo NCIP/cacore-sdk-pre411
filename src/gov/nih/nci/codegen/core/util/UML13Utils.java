@@ -776,4 +776,16 @@ public class UML13Utils {
 		}
 		return retType;
 	}
+	
+	public static boolean isStatic(ModelElement me){
+		
+		TaggedValue tValue = UML13Utils.getTaggedValue(me, "static");
+		
+		if (tValue == null) {
+			return false;
+		}
+		
+		return ("1".equalsIgnoreCase(tValue.getValue()));
+		
+	}
 }

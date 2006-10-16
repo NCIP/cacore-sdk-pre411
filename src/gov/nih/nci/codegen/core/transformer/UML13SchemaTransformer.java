@@ -333,15 +333,22 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
 
             //Do properties
             for (Iterator i = UML13Utils.getAttributes(klass).iterator(); i.hasNext();) {
+
                 org.omg.uml.foundation.core.Attribute att = (org.omg.uml.foundation.core.Attribute) i.next();
-                Element attributeElement = new Element("attribute", w3cNS);
-                attributeElement.setAttribute("name", att.getName());
-                if (getName(att.getType()).equals("xs:collection")) {
-                    attributeElement.setAttribute("type","xs:string");
-                } else {
-                    attributeElement.setAttribute("type", getName(att.getType()));
+                log.debug("att.getName(): " + att.getName()); 
+                
+                // Only process non-static attributes
+            	log.debug("isStatic: " + UML13Utils.isStatic(att));
+                if (!UML13Utils.isStatic(att)){
+	                Element attributeElement = new Element("attribute", w3cNS);
+	                attributeElement.setAttribute("name", att.getName());
+	                if (getName(att.getType()).equals("xs:collection")) {
+	                    attributeElement.setAttribute("type","xs:string");
+	                } else {
+	                    attributeElement.setAttribute("type", getName(att.getType()));
+	                }
+	                extension.addContent(attributeElement);
                 }
-                extension.addContent(attributeElement);
             }
             
             for (Iterator i = UML13Utils.getAssociationEnds(klass).iterator(); i.hasNext();) {
@@ -356,14 +363,22 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
         //Do properties
         for (Iterator i = UML13Utils.getAttributes(klass).iterator(); i.hasNext();) {
             org.omg.uml.foundation.core.Attribute att = (org.omg.uml.foundation.core.Attribute) i.next();
-            Element attributeElement = new Element("attribute", w3cNS);
-            attributeElement.setAttribute("name", att.getName());
-            if (getName(att.getType()).equals("xs:collection")) {
-                attributeElement.setAttribute("type","xs:string");
-            } else {
-                attributeElement.setAttribute("type", getName(att.getType()));
+            log.debug("att.getName(): " + att.getName());
+            
+            // Only process non-static attributes
+        	log.debug("isStatic: " + UML13Utils.isStatic(att));
+            if (!UML13Utils.isStatic(att)){
+
+	            Element attributeElement = new Element("attribute", w3cNS);
+	            attributeElement.setAttribute("name", att.getName());
+	
+	            if (getName(att.getType()).equals("xs:collection")) {
+	                attributeElement.setAttribute("type","xs:string");
+	            } else {
+	                attributeElement.setAttribute("type", getName(att.getType()));
+	            }
+	            classE2.addContent(attributeElement);
             }
-            classE2.addContent(attributeElement);
         }
         
         for (Iterator i = UML13Utils.getAssociationEnds(klass).iterator(); i.hasNext();) {
@@ -373,26 +388,57 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
         }
        }
     }
-  
+    
     private void addSequenceAssociationElement(Element sequence, UmlClass klass, AssociationEnd thisEnd, AssociationEnd otherEnd,Namespace w3cNS) {
         if (otherEnd.isNavigable()) {
 
+            log.debug("sequence name: " + sequence.getName());
+            log.debug("otherEnd name: " + otherEnd.getName());
+            log.debug("otherEnd type: " + otherEnd.getType().getName());
+            
             Element associationElement = new Element("element", w3cNS);
             sequence.addContent(associationElement);
+
             associationElement.setAttribute("name", otherEnd.getName());
 
-            /** If classes belong to the same package then do not qualify the association
-             *
-             */
             String associationPackage = getPackage(otherEnd.getType());
-            if(associationPackage.equals(getPackage(klass))){
-                associationElement.setAttribute("type", otherEnd.getType().getName());
+            
+            String maxOccurs = UML13Utils.getUpperBound(thisEnd, otherEnd);
+            log.debug("maxOccurs: " + maxOccurs);
+            
+            if ("1".equalsIgnoreCase(maxOccurs)){ // not a collection
+            	
+            	// If classes belong to the same package then do not qualify the association
+                log.debug("associationPackage: " + associationPackage);
+                log.debug("getPackage(klass): " + getPackage(klass));
+                if(associationPackage.equals(getPackage(klass))){
+                    associationElement.setAttribute("type", otherEnd.getType().getName());
+                }
+                else{
+                    associationElement.setAttribute("type", associationPackage + ':'+otherEnd.getType().getName());
+                }
+                associationElement.setAttribute("minOccurs","0");   
+                associationElement.setAttribute("maxOccurs",maxOccurs);
+            } else { 
+            	// A collection - model association as an element with the association name that 
+            	// has a sequence of the associated type.  See GForge #1311.
+                associationElement.setAttribute("minOccurs","0");   
+                associationElement.setAttribute("maxOccurs","1");
+                
+                Element complexType = new Element("complexType",w3cNS);
+                Element innerSequence = new Element("sequence", w3cNS);
+                Element associatedObjElement = new Element("element", w3cNS);
+                
+                associatedObjElement.setAttribute("ref", otherEnd.getType().getName());
+                associatedObjElement.setAttribute("minOccurs","0");   
+                associatedObjElement.setAttribute("maxOccurs",maxOccurs);  
+                
+                innerSequence.addContent(associatedObjElement);
+                complexType.addContent(innerSequence);
+                associationElement.addContent(complexType);           	
             }
-            else{
-                associationElement.setAttribute("type", associationPackage + ':'+otherEnd.getType().getName());
-            }
-            associationElement.setAttribute("minOccurs","0");   
-            associationElement.setAttribute("maxOccurs",UML13Utils.getUpperBound(thisEnd, otherEnd));
+            
+
         }
     }
 

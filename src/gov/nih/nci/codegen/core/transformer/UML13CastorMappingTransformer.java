@@ -13,23 +13,27 @@ import gov.nih.nci.codegen.framework.Transformer;
 import gov.nih.nci.common.exception.XMLUtilityException;
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.caCOREMarshaller;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Properties;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
+
 import javax.jmi.reflect.RefObject;
+
 import org.apache.log4j.Logger;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Classifier;
-import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.UmlPackage;
 
@@ -236,25 +240,37 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
              org.omg.uml.foundation.core.Attribute att = (org.omg.uml.foundation.core.Attribute) i.next();
              Element field = new Element("field");
              field.setAttribute("name", att.getName());
-             if (getQualifiedName(att.getType()).equals("collection")) {
+             log.debug("Field name: " + att.getName());
+             
+             String qName = getQualifiedName(att.getType());
+             if (qName.equalsIgnoreCase("collection")) {
+            	 log.debug("Handling type 'collection' - qName: " + qName);            	 
             	 field.setAttribute("type", "string");
-            	 field.setAttribute("collection", "collection");
+            	 field.setAttribute("collection", qName);
+            	 Namespace namespace = Namespace.getNamespace(qName,nsURI);
+            	 
+                 Element bind = new Element("bind-xml");
+            	 bind.setAttribute("name", qName + ":" + att.getName());
+            	 bind.setAttribute("QName-prefix",qName,namespace);
+                 bind.setAttribute("node", "attribute");
+                 field.addContent(bind);
              } else {
-             field.setAttribute("type", getQualifiedName(att.getType()));
+            	 field.setAttribute("type", getQualifiedName(att.getType()));
+                 Element bind = new Element("bind-xml");
+                 bind.setAttribute("name", att.getName());
+                 bind.setAttribute("node", "attribute");
+                 field.addContent(bind);         	 
              }
-             Element bind = new Element("bind-xml");
-             bind.setAttribute("name", att.getName());
-             bind.setAttribute("node", "attribute");
-             field.addContent(bind);
+
              classEl.addContent(field);
 	      }
-         /*
-         for (Iterator i = UML13Utils.getAssociationEnds(klass).iterator(); i.hasNext();) {
-             AssociationEnd thisEnd = (AssociationEnd) i.next();
-             AssociationEnd otherEnd = UML13Utils.getOtherAssociationEnd(thisEnd);
-             addSequenceAssociationElement(classEl, klass,thisEnd, otherEnd);
-         }
-         */
+         
+//         for (Iterator i = UML13Utils.getAssociationEnds(klass).iterator(); i.hasNext();) {
+//             AssociationEnd thisEnd = (AssociationEnd) i.next();
+//             AssociationEnd otherEnd = UML13Utils.getOtherAssociationEnd(thisEnd);
+//             addSequenceAssociationElement(classEl, klass,thisEnd, otherEnd);
+//         }
+         
      }
 
      private void addSequenceAssociationElement(Element mappingEl, UmlClass klass, AssociationEnd thisEnd, AssociationEnd otherEnd) {
@@ -360,6 +376,16 @@ private String getQualifiedName(ModelElement me) {
         if (qName.startsWith(".") || qName.startsWith("java")) {
 			qName = qName.substring(i+1);
 		}
+        
+        if ("HashSet".equalsIgnoreCase(qName)) {
+        	return "set";
+        }
+        
+        if ("HashMap".equalsIgnoreCase(qName)){
+        	return "map";
+        }
+        
+        log.debug("*** qName: " + qName);
         return qName.toLowerCase();
     }
 
