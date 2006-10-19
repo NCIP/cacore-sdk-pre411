@@ -10,6 +10,7 @@ import gov.nih.nci.common.util.NestedCriteria;
 import gov.nih.nci.common.util.ObjectFactory;
 import gov.nih.nci.common.util.Path2NestedCriteria;
 import gov.nih.nci.common.util.PrintUtils;
+import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
@@ -199,6 +200,9 @@ public class ApplicationServiceBusinessImpl {
 		return privateQuery((Object) hqlCriteria, targetClassName);
 	}
 
+	public List query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
+		return privateQuery((Object) cqlQuery, targetClassName);
+	}
 	/**
 	 * Gets the result list for the specified Hibernate Criteria from the
 	 * HTTPClient.
@@ -610,6 +614,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.12  2006/10/03 20:11:11  satish79
+// Integrated new NestedCriteria2HQL to support Hibernate version 3.1.3
+//
 // Revision 1.10  2006/09/28 22:02:57  satish79
 // Changes for new service locator
 //

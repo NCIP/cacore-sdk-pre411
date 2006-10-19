@@ -317,8 +317,7 @@
 			<fileset dir="${dir.output.project.classes}">
 				<exclude name="**/applicationservice/impl/**/*"/>
 				<exclude name="**/webservice/*"/>
-				<exclude name="**/servicelocator/*"/>
-				<exclude name="**/delegator/*"/>
+				<exclude name="**/proxy/*"/>
 				<exclude name="**/dao/impl/**/*"/>
 				<exclude name="**/comm/server/*"/>
 				<exclude name="**/mgmt/**/*"/>
@@ -382,6 +381,7 @@
 				<attribute name="Model-File" value="${model_filename}"/>
 			</manifest>
 			<fileset dir="${dir.output.project.classes}">
+				<exclude name="**/proxy/**/*"/>
 				<exclude name="**/webservice/**/*"/>
 				<exclude name="**/ws/**/*"/>
 				<exclude name="**/mgmt/**/*"/>

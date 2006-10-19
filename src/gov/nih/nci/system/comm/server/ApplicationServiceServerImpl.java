@@ -4,6 +4,7 @@ import gov.nih.nci.common.util.ClientInfo;
 import gov.nih.nci.common.util.ClientInfoThreadVariable;
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
+import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.applicationservice.AuthorizationException;
@@ -232,6 +233,32 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 		ClientInfoThreadVariable.setClientInfo(clientInfo);
 		
 		List list = applicationService.query(hqlCriteria, targetClassName);
+		
+		if (securityEnabler.getSecurityLevel() > 0)
+		{
+			if (list.size() != 0)
+				targetClassName.concat(Constant.COMMA + list.get(0).getClass().getName());
+			StringTokenizer tokenPath = new StringTokenizer(targetClassName, ",");
+			while (tokenPath.hasMoreTokens())
+			{
+				String domainObjectName =  tokenPath.nextToken().trim();
+				if (!securityEnabler.hasAuthorization(clientInfo.getSessionKey(),domainObjectName, "READ"))
+					throw new AuthorizationException("User does not have privilege to perform a READ on " + domainObjectName+ " object");
+			}
+		}
+
+		return list;
+
+	}
+
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.system.comm.common.ApplicationServiceProxy#query(gov.nih.nci.common.util.ClientInfo, gov.nih.nci.query.cql.CQLQuery, java.lang.String)
+	 */
+	public List query(ClientInfo clientInfo, CQLQuery cqlQuery, String targetClassName) throws ApplicationException
+	{
+		ClientInfoThreadVariable.setClientInfo(clientInfo);
+		
+		List list = applicationService.query(cqlQuery, targetClassName);
 		
 		if (securityEnabler.getSecurityLevel() > 0)
 		{

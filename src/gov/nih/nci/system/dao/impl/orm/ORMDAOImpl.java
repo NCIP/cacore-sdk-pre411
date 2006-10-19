@@ -2,14 +2,15 @@ package gov.nih.nci.system.dao.impl.orm;
 
 import gov.nih.nci.common.net.Request;
 import gov.nih.nci.common.net.Response;
+import gov.nih.nci.common.util.CQL2HQL;
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.common.util.NestedCriteria;
 import gov.nih.nci.common.util.NestedCriteria2HQL;
 import gov.nih.nci.common.util.ObjectFactory;
-import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
+import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.servicelocator.ServiceLocator;
 
 import java.io.IOException;
@@ -195,6 +196,41 @@ public class ORMDAOImpl implements DAO
 			else if (obj instanceof HQLCriteria)
 			{
 				Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
+				if(isCount != null && isCount.booleanValue())
+			    {
+					rowCount = new Integer(hqlQuery.list().size());
+				}
+				else if((isCount != null && !isCount.booleanValue()) || isCount == null)
+			    {	
+			    	if(firstRow != null)
+			    	{
+			    		hqlQuery.setFirstResult(firstRow.intValue());				    		
+			    	}
+			    	if(resultsPerQuery != null)
+			    	{
+				        if(resultsPerQuery.intValue() > maxRecordsPerQuery)
+				        {
+				        	String msg = "Illegal Value for RecordsPerQuery: recordsPerQuery cannot be greater than maxRecordsPerQuery. RecordsPerQuery = " + recordsPerQuery + " maxRecordsPerQuery = " + maxRecordsPerQuery ;
+				        	log.error(msg);
+				            throw new Exception(msg);
+				        }
+				        else
+				        {
+				        	hqlQuery.setMaxResults(resultsPerQuery.intValue());
+				        }				    		
+			    	}
+			        else
+			        {
+			        	hqlQuery.setMaxResults(recordsPerQuery);
+			        }
+			    	rs = hqlQuery.list();
+			    }				
+			}
+			else if (obj instanceof CQLQuery)
+			{
+				String hql = CQL2HQL.translate((CQLQuery)obj, false);
+				log.info("CQL Query :"+hql);
+				Query hqlQuery = session.createQuery(hql);
 				if(isCount != null && isCount.booleanValue())
 			    {
 					rowCount = new Integer(hqlQuery.list().size());

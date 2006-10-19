@@ -2,6 +2,7 @@ package gov.nih.nci.system.comm.common;
 
 import gov.nih.nci.common.util.ClientInfo;
 import gov.nih.nci.common.util.HQLCriteria;
+import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 
 import java.util.List;
@@ -35,6 +36,8 @@ public interface ApplicationServiceProxy
 
 	public abstract List query(ClientInfo clientInfo, HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException;
 
+	public abstract List query(ClientInfo clientInfo, CQLQuery cqlQuery, String targetClassName) throws ApplicationException;
+	
 	/*@WRITABLE_API_START@*/
 	public abstract Object createObject(ClientInfo clientInfo, Object domainobject) throws ApplicationException;
 	/*@WRITABLE_API_END@*/

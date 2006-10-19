@@ -3,14 +3,13 @@ package gov.nih.nci.system.applicationservice.impl;
 import gov.nih.nci.common.util.HQLCriteria;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
-import gov.nih.nci.system.applicationservice.ApplicationServiceProvider;
 import gov.nih.nci.system.dao.WritableDAO;
+import gov.nih.nci.system.query.cql.CQLQuery;
 
 import java.util.List;
 
-import org.hibernate.criterion.DetachedCriteria;
-
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
 
 /**
  * @author Kunal Modi (Ekagra Software Technologies Ltd.)
@@ -138,6 +137,23 @@ public class ApplicationServiceImpl extends ApplicationService
 		}
 	}	
 
+	
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.query.cql.CQLQuery, java.lang.String)
+	 */
+	public List query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException
+	{
+		try
+		{
+			return this.applicationServiceBusinessImpl.query(cqlQuery, targetClassName);
+		}
+		catch (Exception e)
+		{
+			log.error("Exception: ", e);
+			throw new ApplicationException(e.getMessage(), e);
+		}
+	}	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
