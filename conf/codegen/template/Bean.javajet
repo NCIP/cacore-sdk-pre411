@@ -93,7 +93,7 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 			<% if (eagerFetchPackages.contains(pkgName)) {%>
 		return <%=otherEnd.getName()%>;			
 			<% } else { %>
-		if(<%=otherEnd.getName()%>==null ||  <%=otherEnd.getName()%>.getClass().getName().contains("$"))
+		if(<%=otherEnd.getName()%>==null ||  <%=otherEnd.getName()%>.getClass().getName().indexOf('$')>0)
 		{			
 			try
 			{
