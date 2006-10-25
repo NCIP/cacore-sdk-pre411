@@ -104,6 +104,8 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 				java.util.List resultList = applicationService.query(hqlCriteria,"<%=fullyQualifiedTargetClassName%>");				 
 				if (resultList!=null && resultList.size()>0) 
 					<%=otherEnd.getName()%> = (<%=fullyQualifiedTargetClassName%>)resultList.get(0);
+				else
+					<%=otherEnd.getName()%> = null;
 			}
 			catch(Exception ex) 
 			{ 
