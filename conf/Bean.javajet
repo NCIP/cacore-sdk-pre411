@@ -7,6 +7,9 @@
 	UmlClass superClass = UML13Utils.getSuperClass((UmlClass)klass);
 	String pkgName = UML13Utils.getNamespaceName(UML13Utils.getPackage(UML13Utils.getModel(klass), basePkg), klass);
 	String fullyQualifiedClassName = pkgName + "." + klass.getName();
+	String superPkgName = null;
+	if(superClass != null)
+		superPkgName = UML13Utils.getNamespaceName(UML13Utils.getPackage(UML13Utils.getModel(superClass), basePkg), superClass);
 	
 %>
 package <%=pkgName%>;
@@ -24,7 +27,7 @@ import org.apache.log4j.Logger;
  
 <%=UML13JavaSourceHelper.getClassJavadoc(klass)%>
 public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%> 
-<% if(superClass != null){ %> extends <%=superClass.getName()%> <% } %>	implements java.io.Serializable 
+<% if(superClass != null){ %> extends <%=superPkgName%>.<%=superClass.getName()%> <% } %>	implements java.io.Serializable 
 {
 	private static final long serialVersionUID = 1234567890L;
 	
@@ -62,7 +65,7 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 		{
 	      try 
 			{
-				String idString = (Class.forName("java.lang.String").isInstance(this.id))? "'"+ this.id + "'" : ""+this.id; 
+				String idString = (Class.forName("java.lang.String").isInstance(getId()))? "'"+ getId() + "'" : ""+getId(); 
 				String hql = "select child from <%=fullyQualifiedTargetClassName%> as child, <%=fullyQualifiedClassName%> as parent  where child in elements(parent.<%=otherEnd.getName()%>) and parent.id="+idString;
 				HQLCriteria hqlCriteria = new HQLCriteria(hql);
 				ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
@@ -94,13 +97,15 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 		{			
 			try
 			{
-				String idString = (Class.forName("java.lang.String").isInstance(this.id))? "'"+ this.id + "'" : ""+this.id; 
+				String idString = (Class.forName("java.lang.String").isInstance(getId()))? "'"+ getId() + "'" : ""+getId(); 
 				String hql = "select child from <%=fullyQualifiedTargetClassName%> as child, <%=fullyQualifiedClassName%> as parent  where child=parent.<%=otherEnd.getName()%> and parent.id="+idString;
 				HQLCriteria hqlCriteria = new HQLCriteria(hql);
 				ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
 				java.util.List resultList = applicationService.query(hqlCriteria,"<%=fullyQualifiedTargetClassName%>");				 
 				if (resultList!=null && resultList.size()>0) 
 					<%=otherEnd.getName()%> = (<%=fullyQualifiedTargetClassName%>)resultList.get(0);
+				else
+					<%=otherEnd.getName()%> = null;
 			}
 			catch(Exception ex) 
 			{ 
