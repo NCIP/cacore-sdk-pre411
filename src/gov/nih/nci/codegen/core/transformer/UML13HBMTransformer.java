@@ -656,11 +656,12 @@ public class UML13HBMTransformer implements Transformer, XMLConfigurable {
 			// the appropriate
 			// hbm entry to handle it.
 
-			String match = getQualifiedName(klass) + Constant.DOT + otherEnd.getName();
 
 			UmlClass thisEndClass = (UmlClass) thisEnd.getType();
 			UmlClass thisOtherEndClass = (UmlClass) otherEnd.getType();
 
+			String match = getQualifiedName(klass) + Constant.DOT + otherEnd.getName();
+			
 			UmlClass table1 = getTable(thisEndClass);
 			UmlClass table2 = getTable(thisOtherEndClass);
 
@@ -689,6 +690,11 @@ public class UML13HBMTransformer implements Transformer, XMLConfigurable {
 				many2oneEl.setAttribute("column", keyCol2.getName());
 				many2oneEl.setAttribute("lazy", "false");
 				many2oneEl.setAttribute("fetch", "join");
+			}
+			else
+			{
+				throw new RuntimeException("Couldn't find key columns for "
+						+ match);
 			}
 		}
 	}
