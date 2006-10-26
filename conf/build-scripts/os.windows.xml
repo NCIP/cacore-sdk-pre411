@@ -19,10 +19,12 @@
 	</target>
 	
 	<target name="start-container" if="start-container-yes">
+		<SDKecho message="Starting container"/>
 		<antcall target="start-${container_type}"/>
 	</target>
 
 	<target name="start-mysql" if="start-mysql-yes">
+		<SDKecho message="Starting MySQL"/>
 		<exec dir="${mysql_home}/bin" executable="cmd" spawn="true">
 			<arg line="/C start &quot;${mysql_home}/bin/mysqld.exe --remove&quot;"/>
 		</exec>
@@ -36,6 +38,7 @@
 	*** MYSQL DOWNLOAD AND EXTRACTION TARGETS (see install.xml)
 	*********************************************************************** -->
 	<target name="-download-mysql-primary.main">
+		<SDKecho message="Downloading MySQL"/>
 		<get src="${mysql.url.primary.windows}" dest="${dir.temp}/${mysql.file.windows}" verbose="yes" ignoreerrors="yes"/>
 		<available file="${dir.temp}/${mysql.file}" property="mysql-downloaded"/>
 	</target>
@@ -50,6 +53,7 @@
 	</target>
 		
 	<target name="-unpack-mysql-extract.main">
+		<SDKecho message="Unpacking MySQL"/>
 		<mkdir dir="${mysql_home}"/>
 		<unzip src="${dir.temp}/${mysql.file.windows}" dest="${dir.temp}"/>
 		<move todir="${mysql_home}">
