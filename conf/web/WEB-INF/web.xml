@@ -64,12 +64,10 @@
 	</servlet-mapping>
     
     
-    
     <servlet-mapping>
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>/ws/AxisServlet</url-pattern>
     </servlet-mapping>
-    
     
     <servlet-mapping>
         <servlet-name>AxisServlet</servlet-name>
@@ -94,5 +92,22 @@
     	<servlet-name>Happy</servlet-name>
       	<url-pattern>/Happy</url-pattern>
     </servlet-mapping>
+
+	<filter>
+		<filter-name>CSMHTTPFilter</filter-name>
+		<display-name>CSMHTTPFilter</display-name>
+		<description></description>
+		<filter-class>gov.nih.nci.system.proxy.CSMHTTPFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CSMHTTPFilter</filter-name>
+		<url-pattern>/GetXML</url-pattern>
+	</filter-mapping>
+    
+	<filter-mapping>
+		<filter-name>CSMHTTPFilter</filter-name>
+		<url-pattern>/GetHTML</url-pattern>
+	</filter-mapping>
 
 </web-app>

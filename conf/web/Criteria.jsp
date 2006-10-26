@@ -3,6 +3,19 @@
 <HEAD>
 <title>Criteria Page</title>
 <link href="styleSheet.css" type="text/css" rel="stylesheet" />
+<SCRIPT> 
+<!--
+    function setValues()
+	{
+		<%gov.nih.nci.system.server.mgmt.SecurityEnabler securityEnabler =  new gov.nih.nci.system.server.mgmt.SecurityEnabler(Constant.APPLICATION_NAME);
+		  if (securityEnabler.getSecurityLevel() > 0)
+		  {%>
+		document.form1.username.value=prompt("Please Enter the User Name", "");
+		document.form1.password.value=prompt("Please Enter the Password", "");
+		<%}%>
+	}
+//-->
+</SCRIPT>
 </HEAD>
 <BODY>
 <!-- begin the logo for the application --> 
@@ -86,8 +99,10 @@ if(className != null)
 			   		<%}%>
 			   <%}%></SELECT></td>
 		</tr>
+		<INPUT TYPE=HIDDEN NAME=username value="">
+		<INPUT TYPE=HIDDEN NAME=password value="">
 		<tr><td></td>
-			<td><INPUT TYPE=SUBMIT NAME=BtnSearch VALUE=Submit ></td>
+			<td><INPUT TYPE=SUBMIT NAME=BtnSearch ONCLICK="setValues();" VALUE=Submit ></td>
 		</tr>
 		<%}// end if statement%>
 		

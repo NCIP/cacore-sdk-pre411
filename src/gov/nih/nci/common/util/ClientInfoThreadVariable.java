@@ -20,6 +20,12 @@ public class ClientInfoThreadVariable
 
 	private static ThreadLocal clientInfoThreadLocal = new ThreadLocal();
 
+	public static void setClientInfo(ClientInfo clientInfo)
+	{
+		if (null != clientInfo)
+			clientInfoThreadLocal.set(clientInfo);
+	}
+
 	public static int getRecordsCount()
 	{
 		ClientInfo clientInfo = (ClientInfo)clientInfoThreadLocal.get();
@@ -31,13 +37,6 @@ public class ClientInfoThreadVariable
 			return 0;
 	}
 
-	//@SuppressWarnings("unchecked")
-	public static void setClientInfo(ClientInfo clientInfo)
-	{
-		if (null != clientInfo)
-			clientInfoThreadLocal.set(clientInfo);
-	}
-
 	public static boolean getSearchCaseSensitivity()
 	{
 		ClientInfo clientInfo = (ClientInfo)clientInfoThreadLocal.get();
@@ -47,7 +46,7 @@ public class ClientInfoThreadVariable
 		}
 		else
 			return false;
-		}
+	}
 	
 	public static boolean isClientRequest()
 	{
@@ -57,4 +56,27 @@ public class ClientInfoThreadVariable
 		else
 			return false;
 	}
+	
+	public static String getUserName()
+	{
+		ClientInfo clientInfo = (ClientInfo)clientInfoThreadLocal.get();
+		if (clientInfo != null)
+		{
+			return clientInfo.getUserName();
+		}
+		else
+			return null;
+	}
+
+	public static String getPassword()
+	{
+		ClientInfo clientInfo = (ClientInfo)clientInfoThreadLocal.get();
+		if (clientInfo != null)
+		{
+			return clientInfo.getPassword();
+		}
+		else
+			return null;
+	}
+
 }

@@ -6,6 +6,7 @@
  */
 package gov.nih.nci.system.server.mgmt;
 
+import gov.nih.nci.common.util.ClientInfoThreadVariable;
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
@@ -87,13 +88,13 @@ public class SecurityEnabler
 	 */
 	public String authenticate(String userId, String password) throws ApplicationException
 	{
-		String sessionKey = null;
+		String userName = null;
 		/**
 		 * Call Authentication Manager here.
 		 */
 		if (this.getSecurityLevel() == 0)
 		{
-			return sessionKey;
+			return userName;
 		}
 
 		boolean authenticated = false;
@@ -114,23 +115,23 @@ public class SecurityEnabler
 		if (authenticated)
 		{
 			SessionManager sm = SessionManager.getInstance();
-			sessionKey = sm.initSession(userId);
+			userName = sm.initSession(userId);
 		}
-		return sessionKey;
+		return userName;
 	}
 
 	/**
-	 * This methods checks whether the user session associated with the session key
-	 * passed is active or not. It returns a <code>true</code> if the user is 
-	 * in session or returns a <code>false</code>. If the user is in session then 
+	 * This methods checks whether the user session associated with the User Name 
+	 * session key passed is active or not. It returns a <code>true</code> if the 
+	 * user is in session or returns a <code>false</code>. If the user is in session then 
 	 * the last accessed property is set to current, thereby extending the session.
-	 * @param sessionKey the session key associated with the user session
+	 * @param userName the User Name session key associated with the user session
 	 * @return true if user session is active else returns a false
 	 */
-	public boolean isUserInSession(String sessionKey)
+	public boolean isUserInSession(String userName)
 	{
 		SessionManager sessionManager = SessionManager.getInstance();
-		return sessionManager.isUserInSession(sessionKey);
+		return sessionManager.isUserInSession(userName);
 	}
 
 	/**
@@ -139,33 +140,45 @@ public class SecurityEnabler
 	 * CSM's AuthorizationManager</code>. The <code>AuthorizationManager</code> uses
 	 * the configured hibernate file to connect to the <code>Authorization Schema</code>
 	 * for that application. It retrieves the user name from the user session objects
-	 * for the session key passed. It then calls the <code>checkPermission</code> method 
+	 * from the Tread Local Variable. It then calls the <code>checkPermission</code> method 
 	 * of the <code>AuthorizationMananger</code> passing the user name, object and the 
 	 * privilege. This method returns <code>true</code> if the user has authorization
 	 * 
-	 * @param sessionKey The session id of the associated user session
 	 * @param protectionElementName The object name which the user is trying to access
 	 * @param privilege the operation that the user is trying to perform on the object
 	 * @return true if the user has access to perform operation on the object
 	 * @throws ApplicationException If there was an error in user authorization
 	 */
-	public boolean hasAuthorization(String sessionKey, String protectionElementName, String privilege) throws ApplicationException
+	public boolean hasAuthorization(String protectionElementName, String privilege) throws ApplicationException
 	{
 		boolean authorized = false;
 		
-		if (this.isBlank(sessionKey))
+		String userName = ClientInfoThreadVariable.getUserName();
+		String password = ClientInfoThreadVariable.getPassword();
+		
+		if (this.isBlank(userName))
 		{
 			log.error("User is not logged in; sessionKey is blank");
 			throw new AuthorizationException("User is not logged in");
 		}
-		if (!this.isUserInSession(sessionKey))
+		if (!this.isUserInSession(userName))
 		{
-			authorized = false;
-			log.error("User is not in session");			
-			throw new AuthorizationException("User is not in session");
+			String userId = null;
+			if(!isBlank(password))
+				userId = this.authenticate(userName,password);
+			if (userId == null)
+			{
+				authorized = false;
+				log.error("User is not in session");
+				throw new AuthorizationException("User is not in session");
+			}
+			else
+			{
+				log.warn("User session renewed on expiration");
+			}	
 		}
 		SessionManager sessionManager = SessionManager.getInstance();
-		UserSession userSession = sessionManager.getSession(sessionKey);
+		UserSession userSession = sessionManager.getSession(userName);
 		if (userSession == null)
 		{
 			authorized = false;
@@ -233,10 +246,10 @@ public class SecurityEnabler
 	 * and logs off the user from the server
 	 * @param sessionKey The key associated with the user session
 	 */
-	public void logOut(String sessionKey)
+	public void logOut(String userName)
 	{
 		SessionManager sessionManager = SessionManager.getInstance();
-		sessionManager.killSession(sessionKey);
+		sessionManager.killSession(userName);
 	}
 
 	private boolean isBlank(String string)

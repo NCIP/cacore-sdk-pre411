@@ -8,7 +8,8 @@ public class ClientInfo implements Serializable
 
 	private static final long serialVersionUID = 1L;
 
-	private String sessionKey;
+	private String userName;
+	private String password;
 	private int recordsCount;
 	private boolean caseSensitivity;
 	
@@ -32,14 +33,24 @@ public class ClientInfo implements Serializable
 		this.recordsCount = recordsCount;
 	}
 	
-	public String getSessionKey()
+	public String getUserName()
 	{
-		return sessionKey;
+		return userName;
 	}
 	
-	public void setSessionKey(String sessionKey)
+	public void setUserName(String userName)
 	{
-		this.sessionKey = sessionKey;
+		this.userName = userName;
 	}
 
+	public String getPassword()
+	{
+		return password;
+	}
+	
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+	
 }

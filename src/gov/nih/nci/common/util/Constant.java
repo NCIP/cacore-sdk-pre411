@@ -80,4 +80,6 @@ public class Constant {
 	public static final int DEFAULT_SECURITY_LEVEL = Integer.parseInt("@DEFAULT_SECURITY_LEVEL@");
 	public static final long DEFAULT_SESSION_TIMEOUT = Long.parseLong("@DEFAULT_SESSION_TIMEOUT@");
 	
+	public static final String USER_NAME = "username";
+	public static final String PASSWORD = "password";
 }

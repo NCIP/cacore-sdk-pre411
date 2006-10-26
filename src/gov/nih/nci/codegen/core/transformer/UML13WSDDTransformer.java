@@ -167,7 +167,15 @@ public class UML13WSDDTransformer implements Transformer , XMLConfigurable {
         cache = cache + "\n";
 		cache = cache + "	xmlns:java=\"http://xml.apache.org/axis/wsdd/providers/java\">";
 		cache = cache + "\n";
-  		cache = cache + "	<service name=\"" + _svcName + "\" style=\"java:RPC\" use=\"literal\">";
+  		cache = cache + "<handler name=\"CSMSOAPHandler\" type=\"java:gov.nih.nci.system.webservice.CSMSOAPHandler\"/>";
+		cache = cache + "\n";
+  		cache = cache + "<service name=\"" + _svcName + "\" style=\"java:RPC\" use=\"literal\">";
+  		cache = cache + "\n";
+		cache = cache + "	<requestFlow>";
+  		cache = cache + "\n";
+		cache = cache + "		<handler name=\"CSMSOAPHandler\" type=\"java:gov.nih.nci.system.webservice.CSMSOAPHandler\"/>";
+  		cache = cache + "\n";
+		cache = cache + "	</requestFlow>";
   		cache = cache + "\n";
     	cache = cache + "	<parameter name=\"className\" value=\"gov.nih.nci.system.webservice.WSQuery\"/>";
     	cache = cache + "\n";

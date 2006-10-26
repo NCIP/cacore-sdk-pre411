@@ -34,7 +34,7 @@ if(submitValue != null && submitValue.equalsIgnoreCase("Submit"))
      		{
          		String parameterName = (String)parameters.nextElement();
          		//System.out.println("param = " + parameterName);
-         		if(!parameterName.equals("klassName") && !parameterName.equals("searchObj") && !parameterName.equals("BtnSearch"))
+         		if(!parameterName.equals("klassName") && !parameterName.equals("searchObj") && !parameterName.equals("BtnSearch") && !parameterName.equals("username") && !parameterName.equals("password"))
          		{
          			String parameterValue = (request.getParameter(parameterName)).trim();
          			if(parameterValue.length() > 0)
@@ -57,7 +57,7 @@ if(submitValue != null && submitValue.equalsIgnoreCase("Submit"))
      		{
          		String parameterName = (String)parameters.nextElement();
          		//System.out.println("param = " + parameterName);
-         		if(!parameterName.equals("klassName") && !parameterName.equals("searchObj") && !parameterName.equals("BtnSearch"))
+         		if(!parameterName.equals("klassName") && !parameterName.equals("searchObj") && !parameterName.equals("BtnSearch")&& !parameterName.equals("username") && !parameterName.equals("password"))
          		{
          			String parameterValue = (request.getParameter(parameterName)).trim();
          			if(parameterValue.length() > 0)
@@ -70,8 +70,12 @@ if(submitValue != null && submitValue.equalsIgnoreCase("Submit"))
 	   	
 	   	 }
    	
-   	} 
-   	System.out.println("query: " + query); 	
+   	}
+   	if ((request.getParameter("username") != null) && ((String)request.getParameter("username").trim()).length() > 0)
+   		query = query + "&username=" + request.getParameter("username");
+   	if ((request.getParameter("password") != null) && ((String)request.getParameter("password").trim()).length() > 0)
+   		query = query + "&password=" + request.getParameter("password");
+   	//System.out.println("query: " + query);
    	%>  	  	  
    <br>
 

@@ -225,7 +225,7 @@ public class ApplicationServiceBusinessImpl {
 		request.setFirstRow(new Integer(firstRow));
 
 		int localRecordsCount = recordsCount;
-		if (ClientInfoThreadVariable.isClientRequest())
+		if (ClientInfoThreadVariable.getRecordsCount() > 0)
 			localRecordsCount = ClientInfoThreadVariable.getRecordsCount();
 
 		if ((maxRecordsCount > 0) && (localRecordsCount > maxRecordsCount)) {
@@ -614,6 +614,9 @@ public class ApplicationServiceBusinessImpl {
 }
 
 // $Log: not supported by cvs2svn $
+// Revision 1.14  2006/10/26 14:22:37  satish79
+// type casted null parameters to avoid any warnings
+//
 // Revision 1.13  2006/10/19 14:53:10  satish79
 // Implemented CQL enhancement
 //

@@ -117,7 +117,7 @@ public class ApplicationServiceClientImpl extends ApplicationService
 	{
 		ClientSession cs = ClientSession.getInstance();
 		ClientInfo clientInfo = new ClientInfo();
-		clientInfo.setSessionKey(cs.getSessionKey());
+		clientInfo.setUserName(cs.getSessionKey());
 		clientInfo.setRecordsCount(ApplicationServiceClientImpl.recordsCount);
 		clientInfo.setCaseSensitivity(ApplicationServiceClientImpl.caseSensitivity);
 		return clientInfo;

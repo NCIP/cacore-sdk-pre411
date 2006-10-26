@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import gov.nih.nci.common.util.*;
+import gov.nih.nci.system.server.mgmt.SecurityEnabler;
 import gov.nih.nci.system.webservice.*;
 import gov.nih.nci.common.util.*;
 
@@ -52,7 +53,7 @@ public class HTTPQuery extends HttpServlet{
     private static Properties properties = new Properties();
     private String cacoreStyleSheet;
     private int pageSize = 1000;
-   
+    private SecurityEnabler securityEnabler = new SecurityEnabler(Constant.APPLICATION_NAME);
     /**
      * Initialize the servlet
      */
@@ -118,7 +119,9 @@ public class HTTPQuery extends HttpServlet{
             else{
                 throw new Exception("Query not defined"+ getQuerySyntax());
             }
-             
+
+            query = query.substring(0,query.indexOf("&username"));
+
             HTTPUtils httpUtils = new HTTPUtils(); 
             if(properties != null){
                 httpUtils.setProperties(properties);
@@ -205,7 +208,11 @@ public class HTTPQuery extends HttpServlet{
                 log.error("Print Results Exception: " + ex.getMessage()); 
                 throw ex;
                 }
-
+            if (securityEnabler.getSecurityLevel() > 0)
+            {
+            	session = request.getSession(true);
+            	session.setAttribute(Constant.USER_NAME,ClientInfoThreadVariable.getUserName());
+            }
         }catch(Exception ex){
             log.error("Exception: ", ex);
             String msg = "<font size=6><b>caCORE HTTP Servlet Error:<hr></font>";
