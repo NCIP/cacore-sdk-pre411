@@ -9,7 +9,7 @@
 
 	<!-- Code Generation Targets -->
 	<target name="-generate-system.custom" if="generate-system.custom.use"/>
-	<target name="-create-control-files.custom" if="create-control-files.custom.use"/>
+	<target name="-copy-control-files.custom" if="copy-control-files.custom.use"/>
 	<target name="-compile-generator.custom" if="compile-generator.custom.use"/>
 	<target name="-generate-templates.custom" if="generate-templates.custom.use"/>
 

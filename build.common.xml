@@ -219,7 +219,7 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 	<target name="init-project" depends="-init-project.main,-init-project.custom" description="Initialize project build by creating output directories and necessary files" />
 
-	<target name="-init-project.main" unless="init-project.main.ignore" depends="create-output-dirs,create-control-files" />
+	<target name="-init-project.main" unless="init-project.main.ignore" depends="create-output-dirs,copy-control-files,replace-tokens-in-files" />
 
 	<target name="create-output-dirs" description="Create output directories for the SDK framework" depends="-create-output-dirs.main,-create-output-dirs.custom" />
 
@@ -239,15 +239,19 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 	</target>
 
 	<!-- Control File //Revisit this section -->
-	<target name="create-control-files" description="Create control files required by code transformers for the project specified in deploy.properties" depends="-create-control-files.main,-create-control-files.custom" />
+	<target name="copy-control-files" description="Create control files required by code transformers for the project specified in deploy.properties" depends="-copy-control-files.main,-copy-control-files.custom" />
 
-	<target name="-create-control-files.main" unless="create-control-files.main.ignore" description="Create control files required by code transformers for the project specified in deploy.properties">
+	<target name="-copy-control-files.main" unless="copy-control-files.main.ignore" description="Copy control files required by code transformers for the project specified in deploy.properties">
+		<SDKecho message="Copying configuration files" />
 		<copy todir="${dir.output.project}" overwrite="true">
 			<fileset dir="${basedir}">
 				<include name="${dir.conf}/**/*" />
 			</fileset>
 		</copy>
-
+	</target>
+		
+	<target name="replace-tokens-in-files">
+		<SDKecho message="Replacing tokens in configuration files" />
 		<replace dir="${dir.output.conf}">
 			<replacefilter token="@OUTPUTDIR@" value="${dir.output.project.src}" />
 			<replacefilter token="@LOGICAL_MODEL@" value="${dir.model}/${fixed_filename}" />

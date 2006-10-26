@@ -17,7 +17,7 @@
 	*** 2.	Run Fix-XMI 
 	*** 3.	Generate Beans and JUnit Test cases
 	*** 4.	Generate ORM Layer
-	*** 5.	Generate Related Artifacts (like cache, XSD, wsdd file etc
+	*** 5.	Generate Related Artifacts (like cache, XSD, wsdd file etc)
 	*** 6.	Copy framework code into the output directory
 	*** 7.	Move files around
 	*********************************************************************** -->	
@@ -35,7 +35,7 @@
 	</target>
 	
 	<target name="-generate-system.main" unless="generate-system.main.ignore"
-		depends="init-project,fix-xmi,compile-generator,build-beans,build-orm,build-artifacts" />
+		depends="init-project,compile-generator,fix-xmi,build-beans,build-orm,build-artifacts" />
 	
 
 <!--***********************************************************************
@@ -63,7 +63,7 @@
 		description="Generates Java code for JET templates for the project specified in deploy.properties">
 		<SDKecho message="Compiling JET templates"/>
 		<jetc destDir="${dir.codegen.temp.src}">
-			<fileset dir="${dir.conf.template}" includes="**/*.javajet" excludes="**/hqlBeanImpl.javajet"/>
+			<fileset dir="${dir.output.conf.template}" includes="**/*.javajet" excludes="**/hqlBeanImpl.javajet"/>
 		</jetc>
 	</target>
 
@@ -95,7 +95,7 @@
 		description="Generates beans from model, copies custom beans and generates JUnit tests"/>
 
 	<target name="-build-beans.main" unless="build-beans.main.ignore"
-		depends="init-project,compile-generator,generate-beans,generate-junit"
+		depends="init-project,compile-generator,fix-xmi,generate-beans,generate-junit"
 		description="Generates beans from model, copies custom beans and generates JUnit tests"/>
 
 	<target name="generate-beans"
@@ -103,7 +103,7 @@
 		description="Generate beans based on model specified in deploy.properties"/>
 	
 	<target name="-generate-beans.main" unless="generate-beans.main.ignore"
-		depends="init-project" description="Generate beans based on model specified in deploy.properties">
+		depends="init-project,compile-generator,fix-xmi" description="Generate beans based on model specified in deploy.properties">
 		<SDKecho message="Generating Java beans from model"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beangeneration}"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beanimplgeneration}"/>
@@ -116,7 +116,7 @@
 		description="Generate JUnit test classes from model"/>
 
 	<target name="-generate-junit.main" unless="generate-junit.main.ignore"
-		depends="init-project" description="Generate JUnit test classes from model">
+		depends="init-project,compile-generator,fix-xmi" description="Generate JUnit test classes from model">
 		<SDKecho message="Generating JUnit test classes"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.junitgeneration}"/>
 	</target>
@@ -129,14 +129,14 @@
 		description="Generates beans from model, copies custom beans and compiles all beans"/>
 
 	<target name="-build-orm.main" unless="build-orm.main.ignore"
-		depends="compile-generator,generate-OR-mapping,generate-orm-conf,generate-dao-conf,generate-cache"
+		depends="init-project,compile-generator,fix-xmi,generate-OR-mapping,generate-orm-conf,generate-dao-conf,generate-cache"
 		description="Generates beans from model, copies custom beans and compiles all beans"/>
 	
 	<target name="generate-OR-mapping"  
 		depends="-generate-OR-mapping.main,-generate-OR-mapping.custom" 
 		description="Generate OR mapping from model"/>
 
-	<target name="-generate-OR-mapping.main" if="OR-mapping-yes" depends="init-project" description="Generate OR mapping from model">
+	<target name="-generate-OR-mapping.main" if="OR-mapping-yes" depends="init-project,compile-generator,fix-xmi" description="Generate OR mapping from model">
 		<SDKecho message="Generating OR mapping files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.ormgeneration}"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.ormimplgeneration}"/>
@@ -147,7 +147,7 @@
 		description="Generate ORM configuration files from model"/>
 	
 	<target name="-generate-orm-conf.main" unless="generate-orm-conf.main.ignore"
-		depends="init-project" description="Generate ORM configuration files from model">
+		depends="init-project,compile-generator,fix-xmi" description="Generate ORM configuration files from model">
 		<SDKecho message="Generating ORM configuration files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.hbcgeneration}"/>
 	</target>
@@ -157,7 +157,7 @@
 		description="Generate DAO configuration files from model"/>
 	
 	<target name="-generate-dao-conf.main" unless="generate-dao-conf.main.ignore"
-		depends="init-project" description="Generate DAO configuration files from model">
+		depends="init-project,compile-generator,fix-xmi" description="Generate DAO configuration files from model">
 		<SDKecho message="Generating DAO configuration files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.daogeneration}"/>
 	</target>
@@ -166,7 +166,7 @@
 		depends="-generate-cache.main,-generate-cache.custom"/>
 	
 	<target name="-generate-cache.main" unless="generate-cache.main.ignore"
-		depends="init-project">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating cache configuration files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.cacheUtil}"/>
 	</target>
@@ -180,7 +180,7 @@
 	 	description="Generate configuration and other required system files from model"/>
 	
 	<target name="-build-artifacts.main" unless="build-artifacts.main.ignore"
-		depends="compile-generator,generate-common-package-util,generate-common-role-util,
+		depends="init-project,compile-generator,fix-xmi,generate-common-package-util,generate-common-role-util,
 				 generate-schemas,generate-wsdd,
 				 generate-xml-mapping"
 	 	description="Generate configuration and other required system files from model"/>
@@ -190,7 +190,7 @@
 		description="Generate common package utility class"/>
 
 	<target name="-generate-common-package-util.main" unless="generate-common-package-util.main.ignore"
-		depends="init-project" description="Generate common package utility class">
+		depends="init-project,compile-generator,fix-xmi" description="Generate common package utility class">
 		<SDKecho message="Generating common package utilities"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.commonPackageUtil}"/>
 	</target>
@@ -200,7 +200,7 @@
 		description="Generate common role utility class"/>
 	
 	<target name="-generate-common-role-util.main" unless="generate-common-role-util.main.ignore"
-		depends="init-project" description="Generate common role utility class">
+		depends="init-project,compile-generator,fix-xmi" description="Generate common role utility class">
 		<SDKecho message="Generating common role utilities"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.commonRoleUtil}"/>
 	</target>
@@ -210,7 +210,7 @@
 		description="Generate XML schemas from model"/>
 	
 	<target name="-generate-schemas.main" unless="generate-schemas.main.ignore"
-		depends="init-project" description="Generate XML schemas from model">
+		depends="init-project,compile-generator,fix-xmi" description="Generate XML schemas from model">
 		<SDKecho message="Generating XML schemas"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.schemageneration}"/>
 	</target>
@@ -220,7 +220,7 @@
 		description="Generate web services deployment descriptor"/>
 	
 	<target name="-generate-wsdd.main" unless="generate-wsdd.main.ignore"
-		depends="init-project" description="Generate web services deployment descriptor">
+		depends="init-project,compile-generator,fix-xmi" description="Generate web services deployment descriptor">
 		<SDKecho message="Generating WSDD file"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.wsdd}"/>
 	</target>
@@ -230,7 +230,7 @@
 		description="Generate XML mapping files"/>
 
 	<target name="-generate-xml-mapping.main" unless="generate-xml-mapping.main.ignore"
-		depends="init-project" description="Generate XML mapping files">
+		depends="init-project,compile-generator,fix-xmi" description="Generate XML mapping files">
 		<SDKecho message="Generating XML mapping files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.xmlmappinggeneration}"/>
 	</target>
@@ -243,18 +243,19 @@
 		description="Copies source code of generated system to output folder"/>
 
 	<target name="-copy-framework.main" unless="copy-framework.main.ignore" 
-		depends="create-control-files" description="Copies source code of generated system to output folder">
+		depends="init-project" description="Copies source code of generated system to output folder">
+		<SDKecho message="Copying framework files"/>
 		<copy todir="${dir.output.project.src}" overwrite="true">
 			<fileset dir="${dir.src}" excludes="gov/nih/nci/codegen/**"/>
 			<fileset dir="${dir.output.conf.hibernate}" excludes="**/*.dtd"/>
 			<fileset dir="${dir.output.conf.resources.server}" includes="**/*.*"/>
 			<fileset dir="${dir.output.conf.spring}" includes="applicationService.xml"/>
-			<fileset dir="${dir.output.conf.spring}" includes="SDKSpringBeanConfig.xml"/>
+			<fileset dir="${dir.output.conf.spring}" includes="${file.spring.configuration}"/>
 		</copy>
-		<copy todir="${dir.output.project.web}">
+		<copy todir="${dir.output.project.web}" overwrite="true">
 			<fileset dir="${dir.output.conf.web}" includes="**/*"/>
 		</copy>
-		<copy todir="${dir.output.project.webinf}">
+		<copy todir="${dir.output.project.webinf}" overwrite="true">
 			<fileset dir="${dir.output.conf.hibernate}" includes="**/*.dtd"/>
 			<fileset dir="${dir.output.conf.spring}">
 				<include name="httpinvoker-servlet.xml"/>
@@ -288,13 +289,16 @@
 	*** Package Generated Application Code after compiling
 	*********************************************************************** -->
 	
+	<target name="package-system" depends="compile-source,package-war,package-client,package-thickclient" description="Creates a packages for system"/>
+
 	<target name="compile-source" depends="create-output-dirs">
+		<SDKecho message="Compiling Source"/>
 		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.classes}" classpathref="classpath" debug="${sdk.debug}"/>
 	</target>
 	
-	<target name="package-system" depends="compile-source,package-war,package-client,package-thickclient" description="Creates a packages for system"/>
 	
 	<target name="package-war" depends="compile-source" description="Creates a war file for server">
+		<SDKecho message="Packaging .war file"/>
 		<war destfile="${dir.output.project.package}/${project_name}.war" webxml="${dir.output.project.webinf}/web.xml" update="false">
 			<lib dir="${dir.lib}" excludes="${server-exclude-list}"/>
 			<classes dir="${dir.output.project.classes}"/>
@@ -307,6 +311,7 @@
 	<target name="package-client" depends="package-client-jar,package-client-resources"/>
 	
 	<target name="package-client-jar" depends="compile-source">
+		<SDKecho message="Packaging client jar file"/>
 		<delete file="${dir.output.project.package.client}/lib/${project_name}-client.jar"/>
 		<jar destfile="${dir.output.project.package.client}/lib/${project_name}-client.jar" update="false">
 			<manifest>
@@ -329,14 +334,15 @@
 				<include name="xml-mapping.xml"/>
 				<include name="roleLookup.properties"/>
 				<include name="cacoreBeans.properties"/>
-				<include name="CORESystem.properties"/>
-				<include name="ehcache.xml"/>
+				<include name="${file.control.systemProperties}"/>
+				<include name="${file.cache.properties}"/>
 			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
 		</jar>
 	</target>
 	
 	<target name="package-client-resources">
+		<SDKecho message="Packaging client resources"/>
 		<copy todir="${dir.output.project.package.client}/lib">
 			<fileset dir="${dir.lib}">
 				<include name="antlr*.jar"/>
@@ -360,11 +366,11 @@
 				<include name="asm-attrs.jar"/>
 			</fileset>
 		</copy>
-		<copy todir="${dir.output.project.package.client}">
+		<copy todir="${dir.output.project.package.client}" overwrite="true">
 			<fileset dir="${dir.output.conf.demo.client}" includes="**/*"/>
 		</copy>	
-		<copy todir="${dir.output.project.package.client}/conf">
-			<fileset dir="${dir.output.conf.resources.client}" includes="log4j.properties"/>
+		<copy todir="${dir.output.project.package.client}/conf" overwrite="true">
+			<fileset dir="${dir.output.conf.resources.client}" includes="${file.logger.properties}"/>
 			<fileset dir="${dir.output.conf.spring}" includes="remoteService.xml"/>
 			<fileset dir="${dir.output.project.src}" includes="*.xsd"/>
 		</copy>
@@ -373,6 +379,7 @@
 	<target name="package-thickclient" depends="package-thickclient-jar,package-thickclient-resources"/>
 	
 	<target name="package-thickclient-jar" depends="compile-source">
+		<SDKecho message="Packaging thick-client jar file"/>
 		<delete file="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient.jar"/>
 		<jar destfile="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient.jar" update="false">
 			<manifest>
@@ -391,31 +398,32 @@
 			</fileset>
 			<fileset dir="${dir.output.project.src}">
 				<include name="cacoreBeans.properties"/>
-				<include name="CORESystem.properties"/>
-				<include name="DAOConfig.xml"/>
+				<include name="${file.control.systemProperties}"/>
+				<include name="${file.dao.configuration}"/>
 				<include name="orm*.xml"/>
 				<include name="roleLookup.properties"/>
 				<include name="xml-mapping.xml"/>
 				<include name="**/*.hbm.xml"/>
-				<include name="SDKSpringBeanConfig.xml"/>
+				<include name="${file.spring.configuration}"/>
 			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
 		</jar>
 	</target>
 	
 	<target name="package-thickclient-resources">
-		<copy todir="${dir.output.project.package.thickclient}">
+		<SDKecho message="Packaging thick-client resources"/>
+		<copy todir="${dir.output.project.package.thickclient}" overwrite="true">
 			<fileset dir="${dir.output.project.src}">
-				<include name="hibernate.properties"/>
-				<include name="log4j.properties"/>
-				<include name="ehcache.xml"/>
+				<include name="${file.orm.properties}"/>
+				<include name="${file.logger.properties}"/>
+				<include name="${file.cache.properties}"/>
 				<include name="*.xsd"/>
 			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}">
-				<include name="log4j.properties"/>
+				<include name="${file.logger.properties}"/>
 			</fileset>
 		</copy>
-		<copy todir="${dir.output.project.package.thickclient}">
+		<copy todir="${dir.output.project.package.thickclient}" overwrite="true">
 			<fileset dir="${dir.output.conf.demo.thickclient}" includes="**/*"/>
 		</copy>
 		<copy todir="${dir.output.project.package.thickclient}/lib">
@@ -448,7 +456,7 @@
 
 	<target name="-copy-custom-orm.main" unless="copy-custom-orm.main.ignore">
 		<SDKecho message="Copying custom OR mapping files"/>
-		<copy todir="${dir.output.project.orm}" overwrite="yes" failonerror="false">
+		<copy todir="${dir.output.project.src}" overwrite="yes" failonerror="false">
 			<fileset dir="${dir.src.custom.orm}">
 				<include name="**/*.hbm.xml" />
 			</fileset>
