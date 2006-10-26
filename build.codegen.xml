@@ -27,7 +27,7 @@
 		description="Runs entire SDK code generation process"/>
 
 	<target name="-build-system.main" unless="build-system.main.ignore"
-		depends="title,generate-system,copy-framework,package-system"/> 
+		depends="title,generate-system,copy-framework,package-system,deploy-server"/> 
 
 	<target name="generate-system" 
 		depends="-generate-system.main,-generate-system.custom" 
@@ -35,7 +35,7 @@
 	</target>
 	
 	<target name="-generate-system.main" unless="generate-system.main.ignore"
-		depends="init-project,compile-generator,fix-xmi,build-beans,build-orm,build-artifacts" />
+		depends="init-project,copy-custom-lib,compile-generator,fix-xmi,build-orm,copy-custom-orm,build-beans,copy-custom-beans,build-artifacts" />
 	
 
 <!--***********************************************************************
@@ -286,7 +286,7 @@
 
 	
 <!--***********************************************************************
-	*** Package Generated Application Code after compiling
+	*** COMPILE AND PACKAGE GENERATED APPLICATION 
 	*********************************************************************** -->
 	
 	<target name="package-system" depends="compile-source,package-war,package-client,package-thickclient" description="Creates a packages for system"/>
@@ -434,7 +434,7 @@
 	</target>
 
 <!--***********************************************************************
-	*** Copy Custom Code to SDK
+	*** COPY CUSTOM CODE TO SDK
 	*********************************************************************** -->
 	
 	<target name="copy-custom-beans"
@@ -479,6 +479,79 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</copy>
-	</target>	
+	</target>
+	
+<!--***********************************************************************
+	*** THE APPLICATION DEPLOYMENT TARGETS
+	*********************************************************************** -->
+	<target name="deploy-server"
+		depends="-deploy-server.main,-deploy-server.custom"
+		description="Deploys system to J2EE container"/>
+
+	<target name="-deploy-server.main" depends="copy-server-file,start-container" unless="deploy-server.main.ignore"/>
+	
+	<target name="copy-server-file"
+		depends="-copy-server-file.main,-copy-server-file.custom"
+		description="Copy .war file to J2EE container deployment directory"/>
+
+	<target name="-copy-server-file.main" unless="copy-server-file.main.ignore">
+		<SDKecho message="Copying .war file to the server container"/>
+		<delete dir="${container-deploy-path}/${project_name}.war" quiet="true"/>
+		<delete file="${container-deploy-path}/${project_name}.war" quiet="true"/>
+		<copy tofile="${container-deploy-path}/${project_name}.war">
+			<fileset dir="${dir.output.project.package}">
+				<filename name="${project_name}.war"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deployWS"
+		depends="-deployWS.main,-deployWS.custom"
+		description="Deploy Web services to system described in deploy.properties"/>
+
+	<target name="-deployWS.main" unless="deployWS.main.ignore">
+		<SDKecho message="Deploying web services"/>
+		<echo message="Deploying to ${url.project.axisservice}"/>
+		<java classname="org.apache.axis.client.AdminClient" fork="true">
+			<classpath refid="classpath"/>
+			<arg value="-l${url.project.axisservice}"/>
+			<arg value="${dir.output.project.src}/${file.wsdd.deploy}"/>
+		</java>
+	</target>
+
+	<target name="undeployWS"
+		depends="-undeployWS.main,-undeployWS.custom"
+		description="Un-deploy Web services to system described in deploy.properties"/>
+
+	<target name="-undeployWS.main" unless="undeployWS.main.ignore">
+		<SDKecho message="Undeploying web services"/>
+		<java classname="org.apache.axis.client.AdminClient" fork="true">
+			<classpath refid="classpath"/>
+			<arg value="-l${url.project.axisservice}"/>
+			<arg value="${dir.output.conf.webservice}/${file.wsdd.undeploy}"/>
+		</java>
+	</target>
+
+<!--***********************************************************************
+	*** CREATE SDK DISTRIBUTION PACKAGE
+	*********************************************************************** -->
+		
+	<target name="package-sdk"
+		depends="create-output-dirs"
+		description="Creates a distribution of the caCORE SDK">
+		<SDKecho message="Creating SDK distribution package"/>
+		<delete file="${dir.output.project.package}/${file.output.zip}" quiet="true"/>
+		<zip destfile="${dir.output.project.package}/${file.output.zip}">
+			<zipfileset dir="${basedir}" prefix="cacoresdk">
+				<include name="conf/**/*"/>
+				<include name="lib/**/*"/>
+				<include name="models/**/*"/>
+				<include name="src/**/*"/>
+				<include name="*.xml"/>
+				<include name="*.properties"/>
+				<exclude name="**/CVS/**"/>
+			</zipfileset>
+		</zip>
+	</target>
 	
 </project>
