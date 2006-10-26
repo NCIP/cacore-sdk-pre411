@@ -182,7 +182,7 @@ public class UML13ModelAccess implements ModelAccess, XMLConfigurable {
 			_metaModel = getMofPackage(mm, META_MODEL);
 			if (_metaModel == null) {
 				
-				URL url = ClassLoader.getSystemResource(_metaModelXmiFileName);
+				URL url = Thread.currentThread().getContextClassLoader().getResource(_metaModelXmiFileName);
 				if(url == null){
 					log.error("Couldn't get resource " + _metaModelXmiFileName);
 					throw new RuntimeException("Couldn't get resource " + _metaModelXmiFileName);
