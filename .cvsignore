@@ -1,1 +1,4 @@
 output
+bin
+.classpath
+.project
