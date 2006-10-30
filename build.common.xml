@@ -233,6 +233,7 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 		<mkdir dir="${dir.output.project.src}" />
 		<mkdir dir="${dir.output.project.web}" />
 		<mkdir dir="${dir.output.project.classes}" />
+		<mkdir dir="${dir.output.project.doc}" />
 		<mkdir dir="${dir.output.project.package}" />
 		<mkdir dir="${dir.output.project.package.client}/lib" />
 		<mkdir dir="${dir.output.project.package.thickclient}/lib" />

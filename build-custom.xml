@@ -51,6 +51,17 @@
 	<target name="-runXMLdemo.custom" if="runXMLdemo.custom.use"/>
 	<target name="-runWSdemo.custom" if="runWSdemo.custom.use"/>
 	
+	<target name="-package-system.custom" if="package-system.custom.use"/>
+	<target name="-compile-source.custom" if="compile-source.custom.use"/>
+	<target name="-package-war.custom" if="package-war.custom.use"/>
+	<target name="-package-client.custom" if="package-client.custom.use"/>
+	<target name="-package-client-jar.custom" if="package-client-jar.custom.use"/>
+	<target name="-package-client-resources.custom" if="package-client-resources.custom.use"/>
+	<target name="-package-thickclient.custom" if="package-thickclient.custom.use"/>
+	<target name="-package-thickclient-resources.custom" if="package-thickclient-resources.custom.use"/>
+
+	<target name="-doc.custom" if="doc.custom.use"/>
+	
 <!--	
 	<target name="-clean.custom" if="clean.custom.use"/>
 	<target name="-clean-generator.custom" if="clean-generator.custom.use"/>
@@ -59,16 +70,12 @@
 	<target name="-compile-templates.custom" if="compile-templates.custom.use"/>
 	<target name="-copy-project-framework.custom" if="copy-project-framework.custom.use"/>
 	<target name="-copy-template-files.custom" if="copy-template-files.custom.use"/>
-	<target name="-create-output-dirs.custom" if="create-output-dirs.custom.use"/>
 	<target name="-create-project-dirs.custom" if="create-project-dirs.custom.use"/>
 	<target name="-disable-writable-api.custom" if="disable-writable-api-yes,disable-writable-api.custom.use"/>
-	<target name="-doc.custom" if="doc.custom.use"/>
 	<target name="-doc-framework.custom" if="doc-framework.custom.use"/>
-	<target name="-format.custom" if="format.custom.use"/>
 	<target name="-generate-artifacts.custom" if="generate-artifacts.custom.use"/>
-	<target name="-package-client.custom" if="package-client.custom.use"/>
 	<target name="-package-server.custom" if="package-server.custom.use"/>
-	<target name="-package-system.custom" if="package-system.custom.use"/>
+	<target name="-format.custom" if="format.custom.use"/>
 -->
 
 </project>
