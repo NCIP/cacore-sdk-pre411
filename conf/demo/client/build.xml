@@ -84,5 +84,51 @@
 		</java>
 
 	</target>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                             Run Web Services Security Demo                                -->
+	<!-- ************************************************************************************************-->
+
+	<target name="WSTestClient">
+		<javac srcdir="." >
+			<include name="WSTestClient.java"/>
+			<classpath refid="cp"/>
+			<classpath>
+				<pathelement location="${src.dir}"/>
+			</classpath>
+		</javac>
+		<java classname="WSTestClient" fork="true">
+			<classpath refid="cp"/>
+			<classpath>
+				<pathelement location="${src.dir}"/>
+			</classpath>
+			<sysproperty key="log4j.configuration"
+						value="${conf.dir}/log4j.properties"/>
+		</java>
+
+	</target>
+		
+	<!-- ************************************************************************************************-->
+	<!--                                             Run Security Demo                                -->
+	<!-- ************************************************************************************************-->
+
+	<target name="TestSecurity">
+		<javac srcdir="." >
+			<include name="TestSecurity.java"/>
+			<classpath refid="cp"/>
+			<classpath>
+				<pathelement location="${src.dir}"/>
+			</classpath>
+		</javac>
+		<java classname="TestSecurity" fork="true">
+			<classpath refid="cp"/>
+			<classpath>
+				<pathelement location="${src.dir}"/>
+			</classpath>
+			<sysproperty key="log4j.configuration"
+						value="${conf.dir}/log4j.properties"/>
+		</java>
+
+	</target>
 
 </project>
