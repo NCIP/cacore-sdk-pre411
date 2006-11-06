@@ -78,7 +78,7 @@ ApplicationService appService = ApplicationServiceProvider.getRemoteInstance(
 try {
 	System.out.println("Scenario 1: Retrieving a Gene based on a Gene id.");
 	Gene gene = new Gene();
-	gene.setId(Long.valueOf(2));
+	gene.setId(new Long("2"));
 
 	try {
 		XMLUtility myUtil = new XMLUtility();
