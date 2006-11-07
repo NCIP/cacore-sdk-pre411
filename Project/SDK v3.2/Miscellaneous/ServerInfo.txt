@@ -1,10 +1,26 @@
-Oracle Test Schema
+Oracle DEV Schema
 ================
 Server: cbiodb2-d
 Database: CADEV
 Port: 1521
 User: cacoresdk
 Password: sdk1234
+
+Oracle QA Schema
+================
+Server: cbiodb2-d
+Database: CBTEST
+Port: 1521
+User: CACORESDK_QA
+Password: c@03!q
+
+Oracle ANT Schema
+================
+Server: cbiodb2-d
+Database: CBTEST
+Port: 1521
+User: CACORESDK_ANT
+Password: c@03!t
 
 MySQL Test Schema
 ================
@@ -15,6 +31,6 @@ Password: cac#476
 
 FTP Server
 ================
- ftp://ncicbftp2.nci.nih.gov/ 
- Username: sdkftp 
- Password: FooBar!2 (Password will keep changing. Check with systems team before using)
+ftp://ncicbftp2.nci.nih.gov/ 
+Username: sdkftp 
+Password: FooBar!2 (Password will keep changing. Check with systems team before using)
