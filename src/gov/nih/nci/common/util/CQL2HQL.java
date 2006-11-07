@@ -129,10 +129,11 @@ public class CQL2HQL {
 	 * @throws QueryException
 	 */
 	private static void processAttribute(StringBuffer hql, CQLAttribute attrib, boolean useAlias) throws QueryException {
+		hql.append(" lower(");
 		if (useAlias) {
 			hql.append(TARGET_ALIAS).append(".");
 		}
-		hql.append(attrib.getName());
+		hql.append(attrib.getName()).append(")");
 		CQLPredicate predicate = attrib.getPredicate();
 		// unary predicates
 		if (predicate.equals(CQLPredicate.IS_NULL)) {
@@ -142,7 +143,7 @@ public class CQL2HQL {
 		} else {
 			// binary predicates
 			String predValue = convertPredicate(predicate);
-			hql.append(" ").append(predValue).append(" '").append(attrib.getValue()).append("'");
+			hql.append(" ").append(predValue).append(" lower('").append(attrib.getValue()).append("')");
 		}
 	}
 	
