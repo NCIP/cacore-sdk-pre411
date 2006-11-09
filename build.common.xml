@@ -47,6 +47,11 @@
 	<condition property="os_flavor" value="unix">
 		<contains substring="unix" casesensitive="no" string="${os.name}" />
 	</condition>
+	<condition property="os_flavor" value="unix">
+		<not>
+			<isset property="os_flavor" />
+		</not>
+	</condition>
 
 
 	<condition property="dbtype_db2" value="">
