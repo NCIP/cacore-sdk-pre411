@@ -57,11 +57,7 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 	private java.util.Collection <%=otherEnd.getName()%> = new java.util.HashSet();
 	public java.util.Collection get<%=capFirst(otherEnd.getName())%>()
 	{
-		try
-		{
-			if(<%=otherEnd.getName()%>.size() == 0) {}
-		}
-		catch(Exception e) 
+		if (<%=otherEnd.getName()%>==null || <%=otherEnd.getName()%>.getClass().getName().indexOf("PersistentSet")>0)		
 		{
 	      try 
 			{
