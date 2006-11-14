@@ -119,9 +119,9 @@ public class HTTPQuery extends HttpServlet{
             else{
                 throw new Exception("Query not defined"+ getQuerySyntax());
             }
-
-            query = query.substring(0,query.indexOf("&username"));
-
+            if (query.indexOf("&username") > 0 )
+            	query = query.substring(0,query.indexOf("&username"));
+            
             HTTPUtils httpUtils = new HTTPUtils(); 
             if(properties != null){
                 httpUtils.setProperties(properties);
