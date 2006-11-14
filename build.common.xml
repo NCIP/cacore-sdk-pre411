@@ -106,7 +106,7 @@
 		<istrue value="${start_container}"/>
 	</condition>
 
-	<condition property="server-exclude-list" value="commons-logging*.jar,spring-richclient-*.jar,log4j*.jar" else="commons-logging*.jar,spring-richclient*.jar">
+	<condition property="server-exclude-list" value="servlet.jar,commons-logging*.jar,spring-richclient-*.jar,log4j*.jar" else="servlet.jar,commons-logging*.jar,spring-richclient*.jar">
 		<isset property="jboss-yes" />
 	</condition>
 
