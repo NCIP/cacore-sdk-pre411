@@ -128,7 +128,8 @@
 			<include name="*.jar" />
 		</fileset>
 		<pathelement location="${dir.codegen.temp.build}" />
-		<pathelement location="${dir.output.conf}/resources/server" />
+		<pathelement location="${dir.output.conf.resources.server}" />
+		<pathelement location="${dir.output.project.classes}" />
 	</path>
 
 	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
