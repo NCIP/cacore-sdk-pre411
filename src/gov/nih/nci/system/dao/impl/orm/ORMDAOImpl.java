@@ -110,7 +110,7 @@ public class ORMDAOImpl implements DAO
 			if (obj instanceof DetachedCriteria) 
 			{
 				hCriteria = ((org.hibernate.criterion.DetachedCriteria)request.getRequest()).getExecutableCriteria(session);
-
+				log.info("Detached Criteria Query :"+hCriteria.toString());
 				if (hCriteria != null)
 				{
 				    if(isCount != null && isCount.booleanValue())
@@ -154,6 +154,7 @@ public class ORMDAOImpl implements DAO
 				log.debug("ORMDAOImpl.query: it is a NestedCriteria Object ....");		
 				NestedCriteria2HQL converter = new NestedCriteria2HQL((NestedCriteria)obj, ormConn.getConfiguration(counter), session);
 				query = converter.translate();
+				log.info("HQL Query :"+query.getQueryString());
 				if (query != null)
 				{
 					if(isCount != null && isCount.booleanValue())
@@ -196,6 +197,7 @@ public class ORMDAOImpl implements DAO
 			else if (obj instanceof HQLCriteria)
 			{
 				Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
+				log.info("HQL Criteria Query :"+hqlQuery.getQueryString());
 				if(isCount != null && isCount.booleanValue())
 			    {
 					rowCount = new Integer(hqlQuery.list().size());
