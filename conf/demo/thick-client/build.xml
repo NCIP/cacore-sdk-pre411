@@ -9,9 +9,8 @@
 	<property name="conf.dir" value="conf" />
 	<property name="lib.dir" value="lib" />
 	<property name="src.dir" value="." />
-	<property name="classes.dir" value="./../../classes" />
-	<property name="orm.dir" value="./../../src" />
-	<property name="junit.dir" value="./../../junit" />
+	<property name="test.classes.dir" value="classes" />
+	<property name="junit.dir" value="junit" />
 
 	<path id="classpath">
 		<pathelement location="${src.dir}"/>
@@ -129,8 +128,6 @@
 		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="true">
 			<classpath>
 				<pathelement location="${conf.dir}"/>
-				<pathelement location="${classes.dir}"/>
-				<pathelement location="${orm.dir}"/>
 				<path refid="classpath"/>
 			</classpath>
 			<formatter type="xml"/>			
@@ -145,7 +142,7 @@
 			 -->
 			
 			<batchtest haltonfailure="no" todir="${junit.dir}">
-				<fileset dir="${classes.dir}">
+				<fileset dir="${test.classes.dir}">
 					<include name="**/*Test.class"/>
 				</fileset>
 			</batchtest>			
@@ -157,7 +154,7 @@
 			<fileset dir="${junit.dir}" includes="TEST-*.xml" />
 			<report format="frames" todir="${junit.dir}" />
 		</junitreport>	
-		<SDKecho message="Refer to index.html in ${junit.dir} for results" />		
+		<SDKecho message="Refer to index.html in the ${junit.dir} directory for results" />		
 	</target>
 	
 </project>

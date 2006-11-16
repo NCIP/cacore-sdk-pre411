@@ -27,7 +27,7 @@
 		description="Runs entire SDK code generation process"/>
 
 	<target name="-build-system.main" unless="build-system.main.ignore"
-		depends="title,generate-system,copy-framework,package-system,deploy-server"/> 
+		depends="install-tomcat,build-schema,title,generate-system,copy-framework,package-system,deploy-server"/> 
 
 	<target name="generate-system" 
 		depends="-generate-system.main,-generate-system.custom" 
@@ -86,6 +86,17 @@
 		</java>
 	</target>
 
+<!--***********************************************************************
+	*** Install, Configure, Start MySQL
+	*********************************************************************** -->	
+	<target name="build-schema"
+		depends="-build-schema.main,-build-schema.custom"
+		description="Creates database user and loads schema and data (when specified in deploy.properties)"/>
+
+	<target name="-build-schema.main"
+		depends="install-mysql,start-mysql,create-user,create-schema,import-data"
+		unless="build-schema.main.ignore"/>
+	
 <!--***********************************************************************
 	*** Generate Beans and Test Cases
 	*********************************************************************** -->
@@ -389,7 +400,7 @@
 
 	<target name="package-thickclient" depends="-package-thickclient.main,-package-thickclient.custom" description="Packages thick client"/>
 	
-	<target name="-package-thickclient.main" depends="package-thickclient-jar,package-thickclient-resources" unless="package-thickclient.main.ignore"/>
+	<target name="-package-thickclient.main" depends="package-thickclient-jar,package-thickclient-resources,package-thickclient-test-jar" unless="package-thickclient.main.ignore"/>
 	
 	<target name="package-thickclient-jar" depends="compile-source">
 		<SDKecho message="Packaging thick-client jar file"/>
@@ -421,6 +432,28 @@
 			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
 		</jar>
+	</target>
+	
+	<target name="package-thickclient-test-jar" depends="compile-source">
+		<SDKecho message="Packaging thick-client-test jar file"/>
+		<delete file="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient-test.jar"/>
+		<jar destfile="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient-test.jar" update="false">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Project-Title" value="${project_name}"/>
+				<attribute name="Model-File" value="${model_filename}"/>
+			</manifest>
+			<fileset dir="${dir.output.project.classes}">
+				<include name="**/ws/**/*"/>
+				<include name="**/test/**/*"/>
+			</fileset>
+		</jar>
+		<!-- This next step is necessary as the <batchtest...> task only works with a <fileset...> sub-task, and does not allow references to .jar files -->
+		<copy todir="${dir.output.project.package.thickclient}/classes" overwrite="true">
+			<fileset dir="${dir.output.project.classes}">
+				<include name="**/test/**/*"/>
+			</fileset>
+		</copy>		
 	</target>
 	
 	<target name="package-thickclient-resources" depends="-package-thickclient-resources.main,-package-thickclient-resources.custom" description="Packages thick-client's resources"/>
