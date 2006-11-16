@@ -415,7 +415,6 @@
 				<exclude name="**/proxy/**/*"/>
 				<exclude name="**/webservice/**/*"/>
 				<exclude name="**/ws/**/*"/>
-				<exclude name="**/mgmt/**/*"/>
 				<exclude name="**/comm/**/*"/>
 				<exclude name="**/comm/server/**/*"/>
 				<exclude name="**/test/**/*"/>
