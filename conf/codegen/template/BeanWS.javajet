@@ -17,8 +17,6 @@ if (isAbstract.equals("abstract")){
 %>
 
 package <%=UML13Utils.getNamespaceName(UML13Utils.getPackage(UML13Utils.getModel(klass), basePkg), klass)%>.ws;
-import <%=UML13Utils.getNamespaceName(UML13Utils.getPackage(UML13Utils.getModel(klass), basePkg), klass)%>.ws.*;
-import <%=UML13Utils.getNamespaceName(UML13Utils.getPackage(UML13Utils.getModel(klass), basePkg), klass)%>.*;
 import gov.nih.nci.system.applicationservice.*;
 import java.util.*;
 /**
@@ -33,7 +31,7 @@ public <% if (isAbstract.equals("abstract")) {%> <%=isAbstract%><%}%> class <%=k
 	if(superClass != null)
 		superPkgName = UML13Utils.getNamespaceName(UML13Utils.getPackage(UML13Utils.getModel(superClass), basePkg), superClass);
 %>
-    extends <%=superPkgName%>.<%=superClass.getName()%>
+    extends <%=superPkgName%>.ws.<%=superClass.getName()%>
 <% } %>
 	implements java.io.Serializable
 {
