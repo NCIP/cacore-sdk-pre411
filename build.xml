@@ -1,365 +1,456 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="caCORESDK" default="help" basedir=".">
+<project name="caCORESDK" default="" basedir=".">
 	<description>Build script for caCORE Software Development Kit</description>
-
-<!--***********************************************************************
-	*** ENVIRONMENT PROPERTY
-	*********************************************************************** -->
-	<property environment="env" />
-
-<!--***********************************************************************
-	*** PROPERTY FILES
-	*********************************************************************** -->
-	<property file="conf/deploy.properties"/>
-	<property file="conf/download.properties"/>
-	<property file="build.properties"/>
-	<property file="${file.properties.custom}"/>
-
-<!--***********************************************************************
-	*** CONDITIONAL PROPERTIES
-	*********************************************************************** -->
-
-	<condition property="fix-xmi-yes">
-		<equals arg1="${fix_xmi}" arg2="yes" casesensitive="false" trim="true" />
-	</condition>
-
-	<condition property="fix-xmi-yes-custom">
-		<and>
-			<istrue value="${fix-xmi-yes}"/>
-			<istrue value="${fix-xmi.custom.use}"/>
-		</and>
-	</condition>
-
-	<condition property="OR-mapping-yes">
-		<not>
-			<istrue value="${manual_datamodel}"/>
-		</not>
-	</condition>
-	<condition property="create-cache-value" value="true">
-		<istrue value="${create_cache}"/>
-	</condition>
-	<condition property="create-cache-value" value="false">
-		<not>
-			<istrue value="${create_cache}"/>
-		</not>
-	</condition>
-
-	<condition property="disable-writable-api-yes" value="true">
-		<istrue value="${disable_writable_api_generation}"/>
-	</condition>
-
-	<condition property="create_mysqluser_yes">
-		<and>
-			<contains substring="mysql" casesensitive="no" string="${database_type}"/>
-			<istrue value="${create_mysql_user}"/>
-		</and>
-	</condition>
-
-	<condition property="create_schema_yes">
-		<istrue value="${create_schema}"/>
-	</condition>
-
-	<condition property="import_data_yes">
-		<istrue value="${import_data}"/>
-	</condition>
-
-
-	<!-- THIS IS HERE FOR HISTORICAL REASONS: db_flavor USED TO BE CONDITIONAL -->
-	<property name="db_flavor" value="${database_type}"/>
-
-	<condition property="os_flavor" value="windows">
-		<contains substring="windows" casesensitive="no" string="${os.name}"/>
-	</condition>
-	<condition property="os_flavor" value="linux">
-		<contains substring="linux" casesensitive="no" string="${os.name}"/>
-	</condition>
-	<condition property="os_flavor" value="unix">
-		<contains substring="unix" casesensitive="no" string="${os.name}"/>
-	</condition>
-
-	<condition property="os_flavor" value="unix">
-		<contains substring="sun" casesensitive="no" string="${os.name}"/>
-	</condition>
-	
-	<condition property="jboss-yes">
-		<contains substring="jboss" casesensitive="no" string="${container_type}"/>
-	</condition>
-	<condition property="tomcat-yes">
-		<not>
-			<isset property="jboss-yes"/>
-		</not>
-	</condition>
-	<condition property="container-deploy-path" value="${j2se_container_home}/server/${jboss_configuration}/deploy">
-		<isset property="jboss-yes"/>
-	</condition>
-	<condition property="container-deploy-path" value="${j2se_container_home}/webapps">
-		<isset property="tomcat-yes"/>
-	</condition>
-	
-	<condition property="start-mysql-yes">
-		<and>
-			<contains substring="mysql" casesensitive="no" string="${database_type}"/>
-			<istrue value="${start_mysql}"/>
-		</and>
-	</condition>
-	<condition property="start-container-yes">
-		<istrue value="${start_container}"/>
-	</condition>
-
-	<condition property="server-exclude-list" value="commons-logging-1.1.jar,spring-richclient-full-0.1.0.jar,log4j-1.2.13.jar" else="commons-logging-1.1.jar,spring-richclient-full-0.1.0.jar">
-		<isset property="jboss-yes"/>
-	</condition>
 
 <!--***********************************************************************
 	*** OTHER INCLUDED ANT BUILD FILES
 	*********************************************************************** -->
-	<import file="install.xml"/>
-	<import file="${file.build.custom}"/>
-	<import file="db.${db_flavor}.xml"/>
-	<import file="os.${os_flavor}.xml"/>
-
-
+	<import file="build.common.xml"/>
+	
 <!--***********************************************************************
-	*** CLASSPATH AND UNIX-STYLE BASEDIR PROPERTIES
-	*********************************************************************** -->
-	<path id="classpath">
-		<fileset dir="${dir.lib}">
-			<include name="*.jar"/>
-		</fileset>
-		<pathelement location="${dir.output.project.build}"/>
-		<pathelement location="${dir.output.project.framework.build}"/>
-		<pathelement location="${dir.generator.build}"/>
-		<pathelement location="${dir.output.project.conf}"/>
-		<pathelement location="${dir.conf}"/>
-	</path>
-	<path id="classpath-client">
-		<fileset dir="${dir.output.project.package.client.lib}">
-			<include name="**/*.jar"/>
-		</fileset>
-		<pathelement path="${dir.output.project.package.client}"/>
-		<pathelement path="${dir.output.project.package.client.conf}"/>
-	</path>
-	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
-	<path id="basedir.path" >
-		<pathelement path="${basedir}"/>
-	</path>
-	<pathconvert targetos="unix" property="basedir.unix" refid="basedir.path"/>
-
-
-<!--***********************************************************************
-	*** ANT MACRO DEFINITIONS
+	*** FINALLY!  THE TARGETS
 	*********************************************************************** -->
 
-	<macrodef name="SDKcreatecontrol">
-		<attribute name="outputdir" default=""/>
-		<element name="controlfileset"/>
-		<element name="extendedfilterset" optional="yes"/>
-		<sequential>
-			<copy todir="${dir.output.project.conf}" overwrite="true">
-				<controlfileset/>
-				<filterset>
-					<filter token="OUTPUTDIR" value="@{outputdir}"/>
-					<filter token="LOGICAL_MODEL" value="${dir.model}/${fixed_filename}"/>
-					<filter token="INCLUDE_PACKAGE" value="${include_package}"/>
-					<filter token="EXCLUDE_PACKAGE" value="${exclude_package}"/>
-					<filter token="EXCLUDE_NAME" value="${exclude_name}"/>
-					<filter token="CACHE_PATH" value="${cachepath}"/>
-					<filter token="WEBSERVICENAME" value="${webservice_name}"/>
-					<filter token="DEPLOYWSDD" value="${file.wsdd.deploy}"/>
-					<filter token="DATABASE" value="${db_flavor}"/>
-					<filter token="EXTERNALSERVER" value="${external_server_name}"/>
-					<filter token="EVSDTSRPCSERVER" value="${evs_dtsrpc_server}"/>
-					<filter token="EVSDTSRPCPORT" value="${evs_dtsrpc_port}"/>
-					<filter token="EVSMETAPHRASESERVER" value="${evs_metaphrase_server}"/>
-					<filter token="EVSMETAPHRASEDATABASE" value="${evs_metaphrase_database}"/>
-					<filter token="EVSMETAPHRASEUSERNAME" value="${evs_metaphrase_username}"/>
-					<filter token="EVSMETAPHRASEPASSWORD" value="${evs_metaphrase_password}"/>
-					<filter token="WEB_SERVER_NAME" value="${web_server_name}"/>
-					<filter token="WEB_SERVER_PORT" value="${web_server_port}"/>
-					<filter token="PROJECT_NAME" value="${project_name}"/>
-					<extendedfilterset/>
-				</filterset>
-			</copy>
-		</sequential>
-	</macrodef>
+<!--***********************************************************************
+	***	Sequence of the SDK code generation process
+	***	1.	Initialize the project by creating directories and control files
+	*** 2.	Run Fix-XMI 
+	*** 3.	Generate Beans and JUnit Test cases
+	*** 4.	Generate ORM Layer
+	*** 5.	Generate Related Artifacts (like cache, XSD, wsdd file etc)
+	*** 6.	Copy framework code into the output directory
+	*** 7.	Move files around
+	*********************************************************************** -->	
 
-	<macrodef name="SDKecho">
-		<attribute name="message" default="..."/>
-		<sequential>
-			<echo>*****************************************************************</echo>
-			<echo>***  @{message}</echo>
-			<echo>*****************************************************************</echo>
-		</sequential>
-	</macrodef>
+	<target name="build-system" 
+		depends="-build-system.main,-build-system.custom" 
+		description="Runs entire SDK code generation process"/>
 
-	<macrodef name="SDKgenerate">
-		<attribute name="controlfile"/>
-		<sequential>
-			<java classname="gov.nih.nci.codegen.core.GeneratorImpl" fork="true" maxmemory="512m">
-				<classpath refid="classpath"/>
-				<arg value="@{controlfile}"/>
-			</java>
-		</sequential>
-	</macrodef>
+	<target name="-build-system.main" unless="build-system.main.ignore"
+		depends="title,generate-system,copy-framework,package-system,deploy-server"/> 
 
+	<target name="generate-system" 
+		depends="-generate-system.main,-generate-system.custom" 
+		description="Runs SDK code generation process and generates artifacts">
+	</target>
+	
+	<target name="-generate-system.main" unless="generate-system.main.ignore"
+		depends="init-project,copy-custom-lib,compile-generator,fix-xmi,build-orm,copy-custom-orm,build-beans,copy-custom-beans,build-artifacts" />
+	
 
 <!--***********************************************************************
-	*** ANT TASK DEFINITIONS
+	*** Compiling Code Generator
 	*********************************************************************** -->
+	<target name="compile-generator" 
+		depends="-compile-generator.main,-compile-generator.custom" 
+		description="Compile SDK code generation classes"/>
+	
+	<target name="-compile-generator.main" unless="compile-generator.main.ignore"
+		depends="generate-templates" description="Compile SDK code generation classes">
+		<SDKecho message="Compiling SDK code generator"/>
+		<javac destdir="${dir.codegen.temp.build}" debug="${sdk.debug}" debuglevel="lines,vars,source">
+			<src path="${dir.codegen.src}:${dir.codegen.temp.src}"/>
+			<include name="gov/nih/nci/codegen/**/*.java"/>
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
 
-	<taskdef name="jetc" classname="ch.paranor.epla.structure.JETCTask">
-		<classpath>
-			<pathelement location="${dir.lib}/jetc-task.jar"/>
-			<fileset dir="${dir.lib}">
-				<include name="boot.jar"/>
-				<include name="osgi.jar"/>
-				<include name="resources.jar"/>
-				<include name="runtime.jar"/>
-				<include name="codegen.jar"/>
-				<include name="jdtcore.jar"/>
-			</fileset>
-		</classpath>
-	</taskdef>
-
-	<taskdef name="jalopy" classname="de.hunsicker.jalopy.plugin.ant.AntPlugin">
-		<classpath>
-			<fileset dir="${dir.lib}">
-				<include name="*.jar"/>
-			</fileset>
-		</classpath>
-	</taskdef>
+	<target name="generate-templates"
+		depends="-generate-templates.main,-generate-templates.custom"
+		description="Generates Java code for JET templates for the project specified in deploy.properties"/>
+	
+	<target name="-generate-templates.main" unless="generate-templates.main.ignore"
+		description="Generates Java code for JET templates for the project specified in deploy.properties">
+		<SDKecho message="Compiling JET templates"/>
+		<jetc destDir="${dir.codegen.temp.src}">
+			<fileset dir="${dir.output.conf.template}" includes="**/*.javajet" excludes="**/hqlBeanImpl.javajet"/>
+		</jetc>
+	</target>
 
 <!--***********************************************************************
-	*** FINALLY!  THE TARGETS (in alphabetical order)
+	*** Fix-XMI task
 	*********************************************************************** -->
+	<target name="fix-xmi" 
+		depends="-fix-xmi.main,-fix-xmi.custom"
+		description="Pre-processes XMI file to ensure that it can be parsed by NetBeans MDR component"/>
+	
+	<target name="-fix-xmi.main" if="fix-xmi-yes" unless="fix-xmi.main.ignore"
+		depends="init-project,compile-generator" description="Pre-processes XMI file to ensure that it can be parsed by NetBeans MDR component">
+		<SDKecho message="Pre-processing XMI file"/>
+		<java classname="gov.nih.nci.codegen.core.util.FixXMI" fork="true">
+			<classpath refid="classpath"/>
+			<jvmarg value="-Xmx512m"/>
+			<arg value="${xmi_preprocessor}"/>
+			<arg value="${dir.model}/${model_filename}"/>
+			<arg value="${dir.model}/${fixed_filename}"/>
+		</java>
+	</target>
 
-	<target name="build-artifacts"
-		depends="-build-artifacts.main,-build-artifacts.custom"
-		description="Generates artifacts from model"/>
-
-	<target name="-build-artifacts.main"
-		depends="compile-generator,generate-artifacts"
-		unless="build-artifacts.main.ignore"/>
+<!--***********************************************************************
+	*** Generate Beans and Test Cases
+	*********************************************************************** -->
 
 	<target name="build-beans"
 		depends="-build-beans.main,-build-beans.custom"
 		description="Generates beans from model, copies custom beans and generates JUnit tests"/>
 
-	<target name="-build-beans.main"
-		depends="compile-generator,generate-beans,copy-custom-beans,generate-junit"
-		unless="build-beans.main.ignore"/>
+	<target name="-build-beans.main" unless="build-beans.main.ignore"
+		depends="init-project,compile-generator,fix-xmi,generate-beans,generate-junit"
+		description="Generates beans from model, copies custom beans and generates JUnit tests"/>
 
+	<target name="generate-beans"
+		depends="-generate-beans.main,-generate-beans.custom" 
+		description="Generate beans based on model specified in deploy.properties"/>
+	
+	<target name="-generate-beans.main" unless="generate-beans.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate beans based on model specified in deploy.properties">
+		<SDKecho message="Generating Java beans from model"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beangeneration}"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beanimplgeneration}"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beanwsgeneration}"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beanwsimplgeneration}"/>
+	</target>
+
+	<target name="generate-junit" 
+		depends="-generate-junit.main,-generate-junit.custom" 
+		description="Generate JUnit test classes from model"/>
+
+	<target name="-generate-junit.main" unless="generate-junit.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate JUnit test classes from model">
+		<SDKecho message="Generating JUnit test classes"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.junitgeneration}"/>
+	</target>
+
+<!--***********************************************************************
+	*** Generate ORM Layer and related files
+	*********************************************************************** -->
 	<target name="build-orm"
 		depends="-build-orm.main,-build-orm.custom"
 		description="Generates beans from model, copies custom beans and compiles all beans"/>
 
-	<target name="-build-orm.main"
-		depends="compile-generator,generate-OR-mapping,generate-orm-conf,copy-custom-orm"
-		unless="build-orm.main.ignore"/>
-
-	<target name="build-schema"
-		depends="-build-schema.main,-build-schema.custom"
-		description="Creates database user and loads schema and data (when specified in deploy.properties)"/>
-
-	<target name="-build-schema.main"
-		depends="install-mysql,start-mysql,create-user,create-schema,import-data"
-		unless="build-schema.main.ignore"/>
-
-	<target name="build-system"
-		depends="-build-system.main,-build-system.custom"
-		description="Runs entire SDK code generation process"/>
-
-	<target name="-build-system.main" depends="install-tomcat,build-schema,compile-generator,build-beans,build-orm,build-artifacts,compile-framework,compile-beans,package-system,deploy-server" unless="build-system.main.ignore"/>
-
-	<target name="clean"
-		depends="-clean.main,-clean.custom"
-		description="Removes all artifacts related to the project specified in deploy.properties"/>
-
-	<target name="-clean.main" unless="clean.main.ignore">
-		<SDKecho message="Deleting files related to '${project_name}' project"/>
-		<delete dir="${dir.output.project}"/>
-	</target>
-
-	<target name="clean-all"
-		depends="-clean-all.main,-clean-all.custom"
-		description="Removes all generated code and all artifacts related to all projects"/>
-
-	<target name="-clean-all.main" unless="clean-all.main.ignore" >
-		<input message="Are you sure you want to delete ALL generated code and all project artifacts? "
-			validargs="y,n" addproperty="do.delete" />
-		<condition property="do.abort">
-			<equals arg1="n" arg2="${do.delete}"/>
-		</condition>
-		<fail if="do.abort">Cleanall aborted--no files have been removed.</fail>
-		<delete dir="${dir.output}"/>
-		<delete dir="${dir.temp}"/>
-		<SDKecho message="All generated code and artifacts have been deleted"/>
-	</target>
-
-	<target name="clean-generator"
-		depends="-clean-generator.main,-clean-generator.custom"
-		description="Removes compiled/packaged SDK generator"/>
-
-	<target name="-clean-generator.main" unless="clean-generator.main.ignore">
-		<SDKecho message="Deleting SDK generator"/>
-		<delete dir="${dir.generator.build}" quiet="true"/>
-	</target>
-
-	<target name="compile-beans"
-		depends="-compile-beans.main,-compile-beans.custom"
-		description="Compile Java beans generated from model"/>
-
-	<target name="-compile-beans.main" unless="compile-beans.main.ignore">
-		<SDKecho message="Compiling Java beans"/>
-		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}" debug = "on">
-			<classpath refid="classpath"/>
-		</javac>
-	</target>
-
-	<target name="compile-framework"
-		depends="-compile-framework.main,-compile-framework.custom"
-		description="Compile application framework classes"/>
-
-	<target name="-compile-framework.main" depends="copy-project-framework,disable-writable-api" unless="compile-framework.main.ignore">
-		<SDKecho message="Compiling application framework"/>
-		<javac srcdir="${dir.output.project.framework.src}" destdir="${dir.output.project.framework.build}" debug = "on">
-			<classpath refid="classpath"/>
-		</javac>
-	</target>
-
-	<target name="compile-generator"
-		depends="-compile-generator.main,-compile-generator.custom"
-		description="Compile SDK code generation classes"/>
-
-	<target name="-compile-generator.main" unless="compile-generator.main.ignore">
-		<SDKecho message="Compiling SDK code generator"/>
-		<mkdir dir="${dir.generator.build}"/>
-		<javac destdir="${dir.generator.build}" debug = "on">
-			<src path="${dir.generator.src}"/>
-			<include name="gov/nih/nci/codegen/**/*.java"/>
-			<include name="gov/nih/nci/common/exception/*.java"/>
-			<include name="gov/nih/nci/common/util/*marshall*.java"/>
-			<classpath refid="classpath"/>
-		</javac>
-	</target>	
+	<target name="-build-orm.main" unless="build-orm.main.ignore"
+		depends="init-project,compile-generator,fix-xmi,generate-OR-mapping,generate-orm-conf,generate-dao-conf,generate-cache"
+		description="Generates beans from model, copies custom beans and compiles all beans"/>
 	
-	<target name="compile-templates"
-		depends="-compile-templates.main,-compile-templates.custom"
-		description="Compile Java JET templates for the project specified in deploy.properties"/>
+	<target name="generate-OR-mapping"  
+		depends="-generate-OR-mapping.main,-generate-OR-mapping.custom" 
+		description="Generate OR mapping from model"/>
 
-	<target name="-compile-templates.main" depends="compile-generator,copy-template-files" unless="compile-templates.main.ignore">
-		<SDKecho message="Compiling JET templates"/>
-		<jetc template="${dir.output.project.templates}/Bean.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanImpl.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanWS.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanWSImpl.javajet" destdir="${dir.output.project.src}"/>
-		<jetc template="${dir.output.project.templates}/BeanHBJunit.javajet" destdir="${dir.output.project.src}"/>
-		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.build}" debug = "on">
-			<classpath refid="classpath"/>
-		</javac>
+	<target name="-generate-OR-mapping.main" if="OR-mapping-yes" depends="init-project,compile-generator,fix-xmi" description="Generate OR mapping from model">
+		<SDKecho message="Generating OR mapping files"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.ormgeneration}"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.ormimplgeneration}"/>
+	</target>
+
+	<target name="generate-orm-conf" 
+		depends="-generate-orm-conf.main,-generate-orm-conf.custom" 
+		description="Generate ORM configuration files from model"/>
+	
+	<target name="-generate-orm-conf.main" unless="generate-orm-conf.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate ORM configuration files from model">
+		<SDKecho message="Generating ORM configuration files"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.hbcgeneration}"/>
+	</target>
+
+	<target name="generate-dao-conf" 
+		depends="-generate-dao-conf.main,-generate-dao-conf.custom" 
+		description="Generate DAO configuration files from model"/>
+	
+	<target name="-generate-dao-conf.main" unless="generate-dao-conf.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate DAO configuration files from model">
+		<SDKecho message="Generating DAO configuration files"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.daogeneration}"/>
+	</target>
+
+	<target name="generate-cache" 
+		depends="-generate-cache.main,-generate-cache.custom"/>
+	
+	<target name="-generate-cache.main" unless="generate-cache.main.ignore"
+		depends="init-project,compile-generator,fix-xmi">
+		<SDKecho message="Generating cache configuration files"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.cacheUtil}"/>
+	</target>
+	
+<!--***********************************************************************
+	*** Generate Other Artifacts
+	*********************************************************************** -->
+
+	<target name="build-artifacts"
+		depends="-build-artifacts.main,-build-artifacts.custom"
+	 	description="Generate configuration and other required system files from model"/>
+	
+	<target name="-build-artifacts.main" unless="build-artifacts.main.ignore"
+		depends="init-project,compile-generator,fix-xmi,generate-common-package-util,generate-common-role-util,
+				 generate-schemas,generate-wsdd,
+				 generate-xml-mapping"
+	 	description="Generate configuration and other required system files from model"/>
+
+	<target name="generate-common-package-util" 
+		depends="-generate-common-package-util.main,-generate-common-package-util.custom" 
+		description="Generate common package utility class"/>
+
+	<target name="-generate-common-package-util.main" unless="generate-common-package-util.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate common package utility class">
+		<SDKecho message="Generating common package utilities"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.commonPackageUtil}"/>
+	</target>
+
+	<target name="generate-common-role-util" 
+		depends="-generate-common-role-util.main,-generate-common-role-util.custom" 
+		description="Generate common role utility class"/>
+	
+	<target name="-generate-common-role-util.main" unless="generate-common-role-util.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate common role utility class">
+		<SDKecho message="Generating common role utilities"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.commonRoleUtil}"/>
+	</target>
+
+	<target name="generate-schemas" 
+		depends="-generate-schemas.main,-generate-schemas.custom" 
+		description="Generate XML schemas from model"/>
+	
+	<target name="-generate-schemas.main" unless="generate-schemas.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate XML schemas from model">
+		<SDKecho message="Generating XML schemas"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.schemageneration}"/>
+	</target>
+
+	<target name="generate-wsdd" 
+		depends="-generate-wsdd.main,-generate-wsdd.custom" 
+		description="Generate web services deployment descriptor"/>
+	
+	<target name="-generate-wsdd.main" unless="generate-wsdd.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate web services deployment descriptor">
+		<SDKecho message="Generating WSDD file"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.wsdd}"/>
+	</target>
+
+	<target name="generate-xml-mapping" 
+		depends="-generate-xml-mapping.main,-generate-xml-mapping.custom" 
+		description="Generate XML mapping files"/>
+
+	<target name="-generate-xml-mapping.main" unless="generate-xml-mapping.main.ignore"
+		depends="init-project,compile-generator,fix-xmi" description="Generate XML mapping files">
+		<SDKecho message="Generating XML mapping files"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.xmlmappinggeneration}"/>
+	</target>
+
+<!--***********************************************************************
+	*** Move Files To Create Package Structure (Similar to .war)
+	*********************************************************************** -->
+	<target name="copy-framework" 
+		depends="-copy-framework.main,-copy-framework.custom" 
+		description="Copies source code of generated system to output folder"/>
+
+	<target name="-copy-framework.main" unless="copy-framework.main.ignore" 
+		depends="init-project" description="Copies source code of generated system to output folder">
+		<SDKecho message="Copying framework files"/>
+		<copy todir="${dir.output.project.src}" overwrite="true">
+			<fileset dir="${dir.src}" excludes="gov/nih/nci/codegen/**"/>
+			<fileset dir="${dir.output.conf.hibernate}" excludes="**/*.dtd"/>
+			<fileset dir="${dir.output.conf.resources.server}" includes="**/*.*"/>
+			<fileset dir="${dir.output.conf.spring}" includes="applicationService.xml"/>
+			<fileset dir="${dir.output.conf.spring}" includes="${file.spring.configuration}"/>
+		</copy>
+		<copy todir="${dir.output.project.web}" overwrite="true">
+			<fileset dir="${dir.output.conf.web}" includes="**/*"/>
+		</copy>
+		<copy todir="${dir.output.project.webinf}" overwrite="true">
+			<fileset dir="${dir.output.conf.hibernate}" includes="**/*.dtd"/>
+			<fileset dir="${dir.output.conf.spring}">
+				<include name="httpinvoker-servlet.xml"/>
+				<include name="applicationContext.xml"/>
+			</fileset>
+			<fileset dir="${dir.output.conf.webservice}" includes="${file.server.config.wsdd}"/>
+		</copy>
+		<replace file="${dir.output.project.src}/gov/nih/nci/common/util/Constant.java">
+			<replacefilter token="@APPLICATION_NAME@" value="${application_name}"/>
+			<replacefilter token="@DEFAULT_SECURITY_LEVEL@" value="${default_security_level}"/>
+			<replacefilter token="@DEFAULT_SESSION_TIMEOUT@" value="${default_session_timeout}"/>
+		</replace>
+		<antcall target="disable-writable-api"/>
+	</target>
+	
+	<target name="disable-writable-api" if="disable-writable-api-yes" description="Disables functions that enable write functionality to the API">
+		<SDKecho message="Disabling writable APIs"/>
+		<replace dir="${dir.output.project.src}/gov/nih/nci/system/">
+			<include name="applicationservice/ApplicationService.java"/>
+			<include name="applicationservice/impl/ApplicationServiceImpl.java"/>
+			<include name="comm/server/ApplicationServiceServerImpl.java"/>
+			<include name="comm/common/ApplicationServiceProxy.java"/>
+			<include name="comm/client/ApplicationServiceClientImpl.java"/>
+			<replacefilter token="/*@WRITABLE_API_START@*/" value="/*"/>
+			<replacefilter token="/*@WRITABLE_API_END@*/" value="*/"/>
+		</replace>
 	</target>
 
 	
+<!--***********************************************************************
+	*** COMPILE AND PACKAGE GENERATED APPLICATION 
+	*********************************************************************** -->
+	
+	<target name="package-system" depends="-package-system.main,-package-system.custom" description="Creates a packages for system"/>
+	
+	<target name="-package-system.main" depends="compile-source,package-war,package-client,package-thickclient" unless="package-system.main.ignore" />
+
+	<target name="compile-source" depends="-compile-source.main,-compile-source.custom" description="Compiles the generated source code"/>
+	
+	<target name="-compile-source.main" depends="create-output-dirs" unless="compile-source.main.ignore">
+		<SDKecho message="Compiling Source"/>
+		<javac srcdir="${dir.output.project.src}" destdir="${dir.output.project.classes}" classpathref="classpath" debug="${sdk.debug}" debuglevel="lines,vars,source"/>
+	</target>
+	
+	<target name="package-war" depends="-package-war.main,-package-war.custom" description="Creates a war file for server"/>
+	
+	<target name="-package-war.main" depends="compile-source" unless="package-war.main.ignore">
+		<SDKecho message="Packaging .war file"/>
+		<war destfile="${dir.output.project.package}/${project_name}.war" webxml="${dir.output.project.webinf}/web.xml" update="false">
+			<lib dir="${dir.lib}" excludes="${server-exclude-list}"/>
+			<classes dir="${dir.output.project.classes}"/>
+			<classes dir="${dir.output.conf}" includes="**/xslt/**/*"/>
+			<classes dir="${dir.output.project.src}" excludes="**/*.java"/>
+			<zipfileset dir="${dir.output.project.web}" excludes="**/web.xml"/>
+		</war>
+	</target>
+
+	<target name="package-client" depends="-package-client.main,-package-client.custom" description="Packages the client"/>
+
+	<target name="-package-client.main" depends="package-client-jar,package-client-resources" unless="package-client.main.ignore"/>
+	
+	<target name="package-client-jar" depends="-package-client-jar.main,-package-client-jar.custom" description="Packages the client JAR file"/>
+
+	<target name="-package-client-jar.main" depends="compile-source" unless="package-client-jar.main.ignore">
+		<SDKecho message="Packaging client jar file"/>
+		<delete file="${dir.output.project.package.client}/lib/${project_name}-client.jar"/>
+		<jar destfile="${dir.output.project.package.client}/lib/${project_name}-client.jar" update="false">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Project-Title" value="${project_name}"/>
+				<attribute name="Model-File" value="${model_filename}"/>
+			</manifest>
+			<fileset dir="${dir.output.project.classes}">
+				<exclude name="**/applicationservice/impl/**/*"/>
+				<exclude name="**/webservice/*"/>
+				<exclude name="**/proxy/*"/>
+				<exclude name="**/dao/impl/**/*"/>
+				<exclude name="**/comm/server/*"/>
+				<exclude name="**/mgmt/**/*"/>
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${dir.output.project.src}">
+				<include name="mapping.dtd"/>
+				<include name="xml.properties"/>
+				<include name="xml-mapping.xml"/>
+				<include name="roleLookup.properties"/>
+				<include name="cacoreBeans.properties"/>
+				<include name="${file.control.systemProperties}"/>
+				<include name="${file.cache.properties}"/>
+			</fileset>
+			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
+		</jar>
+	</target>
+
+	<target name="package-client-resources" depends="-package-client-resources.main,-package-client-resources.custom" description="Packages client resources"/>
+	
+	<target name="-package-client-resources.main" unless="package-client-resources.main.ignore">
+		<SDKecho message="Packaging client resources"/>
+		<copy todir="${dir.output.project.package.client}/lib">
+			<fileset dir="${dir.lib}">
+				<include name="antlr*.jar"/>
+				<include name="axis.jar"/>
+				<include name="saaj.jar"/>
+				<include name="mail.jar"/>
+				<include name="jaxrpc.jar"/>
+				<include name="activation.jar"/>
+				<include name="aspect*.jar"/>
+				<include name="hibernate*.jar"/>
+				<include name="log4j*.jar"/>
+				<include name="commons-logging*.jar"/>
+				<include name="commons-discovery*.jar"/>
+				<include name="wsdl4j-1.5.1.jar"/>
+				<include name="cglib*.jar"/>
+				<include name="castor*.jar"/>
+				<include name="xercesImpl.jar"/>
+				<include name="spring*.jar"/>
+				<include name="xml-apis.jar"/>
+				<include name="asm.jar"/>
+				<include name="asm-attrs.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${dir.output.project.package.client}" overwrite="true">
+			<fileset dir="${dir.output.conf.demo.client}" includes="**/*"/>
+		</copy>	
+		<copy todir="${dir.output.project.package.client}/conf" overwrite="true">
+			<fileset dir="${dir.output.conf.resources.client}" includes="${file.logger.properties}"/>
+			<fileset dir="${dir.output.conf.spring}" includes="remoteService.xml"/>
+			<fileset dir="${dir.output.project.src}" includes="*.xsd"/>
+		</copy>
+	</target>
+
+	<target name="package-thickclient" depends="-package-thickclient.main,-package-thickclient.custom" description="Packages thick client"/>
+	
+	<target name="-package-thickclient.main" depends="package-thickclient-jar,package-thickclient-resources" unless="package-thickclient.main.ignore"/>
+	
+	<target name="package-thickclient-jar" depends="compile-source">
+		<SDKecho message="Packaging thick-client jar file"/>
+		<delete file="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient.jar"/>
+		<jar destfile="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient.jar" update="false">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Project-Title" value="${project_name}"/>
+				<attribute name="Model-File" value="${model_filename}"/>
+			</manifest>
+			<fileset dir="${dir.output.project.classes}">
+				<exclude name="**/proxy/**/*"/>
+				<exclude name="**/webservice/**/*"/>
+				<exclude name="**/ws/**/*"/>
+				<exclude name="**/mgmt/**/*"/>
+				<exclude name="**/comm/**/*"/>
+				<exclude name="**/comm/server/**/*"/>
+				<exclude name="**/test/**/*"/>
+			</fileset>
+			<fileset dir="${dir.output.project.src}">
+				<include name="cacoreBeans.properties"/>
+				<include name="${file.control.systemProperties}"/>
+				<include name="${file.dao.configuration}"/>
+				<include name="orm*.xml"/>
+				<include name="roleLookup.properties"/>
+				<include name="xml-mapping.xml"/>
+				<include name="**/*.hbm.xml"/>
+				<include name="${file.spring.configuration}"/>
+			</fileset>
+			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
+		</jar>
+	</target>
+	
+	<target name="package-thickclient-resources" depends="-package-thickclient-resources.main,-package-thickclient-resources.custom" description="Packages thick-client's resources"/>
+
+	<target name="-package-thickclient-resources.main" unless="package-thickclient-resources.main.ignore">
+		<SDKecho message="Packaging thick-client resources"/>
+		<copy todir="${dir.output.project.package.thickclient}" overwrite="true">
+			<fileset dir="${dir.output.project.src}">
+				<include name="${file.orm.properties}"/>
+				<include name="${file.logger.properties}"/>
+				<include name="${file.cache.properties}"/>
+				<include name="*.xsd"/>
+			</fileset>
+			<fileset dir="${dir.output.conf.resources.client}">
+				<include name="${file.logger.properties}"/>
+			</fileset>
+		</copy>
+		<copy todir="${dir.output.project.package.thickclient}" overwrite="true">
+			<fileset dir="${dir.output.conf.demo.thickclient}" includes="**/*"/>
+		</copy>
+		<copy todir="${dir.output.project.package.thickclient}/lib">
+			<fileset dir="${dir.lib}">
+				<exclude name="${server-exclude-list}"/>
+			</fileset>
+		</copy>
+	</target>
+
+<!--***********************************************************************
+	*** COPY CUSTOM CODE TO SDK
+	*********************************************************************** -->
 	
 	<target name="copy-custom-beans"
 		depends="-copy-custom-beans.main,-copy-custom-beans.custom"
@@ -380,206 +471,53 @@
 
 	<target name="-copy-custom-orm.main" unless="copy-custom-orm.main.ignore">
 		<SDKecho message="Copying custom OR mapping files"/>
-		<copy todir="${dir.output.project.orm}" overwrite="yes" failonerror="false">
+		<copy todir="${dir.output.project.src}" overwrite="yes" failonerror="false">
 			<fileset dir="${dir.src.custom.orm}">
 				<include name="**/*.hbm.xml" />
 			</fileset>
 		</copy>
-		<copy todir="${dir.output.project.conf}" overwrite="yes" failonerror="false">
+		<copy todir="${dir.output.project.src}" overwrite="yes" failonerror="false">
 			<fileset dir="${dir.src.custom.orm}">
 				<include name="*.cfg.xml"/>
 			</fileset>
 		</copy>
-	</target>
+	</target>	
 
-	<target name="copy-project-framework"
-		depends="-copy-project-framework.main,-copy-project-framework.custom"
-		description="Copies SDK framework files to project directory, adding project-specific properties"/>
+	<target name="copy-custom-lib"
+		depends="-copy-custom-lib.main,-copy-custom-lib.custom"
+		description="Adds custom-written OR mapping files to the project directory"/>
 
-	<target name="-copy-project-framework.main" unless="copy-project-framework.main.ignore"
-			depends="create-project-dirs">
-		<SDKecho message="Copying project framework files"/>
-		<copy todir="${dir.output.project.conf}" overwrite="true">
-			<fileset dir="${dir.conf}">
-				<include name="${file.control.remoteservice}"/>
-			</fileset>
-			<filterset>
-				<filter token="WEB_SERVER_NAME" value="${web_server_name}"/>
-				<filter token="WEB_SERVER_PORT" value="${web_server_port}"/>
-				<filter token="PROJECT_NAME" value="${project_name}"/>
-			</filterset>
-		</copy>
-		<copy todir="${dir.output.project.framework.src}" overwrite="true">
-			<fileset dir="${dir.framework.src}">
-				<include name="gov/nih/nci/common/util/Constant.java"/>
-			</fileset>
-			<filterset>
-				<filter token="APPLICATION_NAME" value="${application_name}"/>
-				<filter token="DEFAULT_SECURITY_LEVEL" value="${default_security_level}"/>
-				<filter token="DEFAULT_SESSION_TIMEOUT" value="${default_session_timeout}"/>
-			</filterset>
-		</copy>
-		<copy todir="${dir.output.project.framework.src}" overwrite="false">
-			<fileset dir="${dir.framework.src}">
-				<exclude name="gov/nih/nci/codegen/**/*.java"/>
-				<exclude name="gov/nih/nci/common/exception/*.java"/>
-				<exclude name="gov/nih/nci/common/util/*marshall*.java"/>			
+	<target name="-copy-custom-lib.main" unless="copy-custom-orm.main.ignore">
+		<SDKecho message="Copying custom JAR files"/>
+		<copy todir="${dir.lib}" overwrite="yes" failonerror="false">
+			<fileset dir="${dir.src.custom.lib}">
+				<include name="**/*.jar" />
 			</fileset>
 		</copy>
 	</target>
+	
+<!--***********************************************************************
+	*** THE APPLICATION DEPLOYMENT TARGETS
+	*********************************************************************** -->
+	<target name="deploy-server"
+		depends="-deploy-server.main,-deploy-server.custom"
+		description="Deploys system to J2EE container"/>
 
+	<target name="-deploy-server.main" depends="copy-server-file,start-container" unless="deploy-server.main.ignore"/>
+	
 	<target name="copy-server-file"
 		depends="-copy-server-file.main,-copy-server-file.custom"
 		description="Copy .war file to J2EE container deployment directory"/>
 
 	<target name="-copy-server-file.main" unless="copy-server-file.main.ignore">
-		<delete dir="${container-deploy-path}/${project_name}" quiet="true"/>
-		<delete file="${container-deploy-path}/${file.project.server.war}" quiet="true"/>
-		<copy tofile="${container-deploy-path}/${file.project.server.war}">
-			<fileset dir="${dir.output.project.package.server}">
-				<filename name="${file.project.server.war}"/>
+		<SDKecho message="Copying .war file to the server container"/>
+		<delete dir="${container-deploy-path}/${project_name}.war" quiet="true"/>
+		<delete file="${container-deploy-path}/${project_name}.war" quiet="true"/>
+		<copy tofile="${container-deploy-path}/${project_name}.war">
+			<fileset dir="${dir.output.project.package}">
+				<filename name="${project_name}.war"/>
 			</fileset>
 		</copy>
-	</target>
-
-	<target name="copy-template-files"
-		depends="-copy-template-files.main,-copy-template-files.custom"
-		description="Copy code generation templates to project output directory"/>
-
-
-	<target name="-copy-template-files.main" depends="create-project-dirs" unless="copy-template-files.main.ignore">
-		<SDKecho message="Copying template files"/>
-		<copy todir="${dir.output.project.templates}">
-			<fileset dir="${dir.conf}">
-				<include name="Bean*.javajet"/>
-				<include name="hqlBean*.javajet"/>
-			</fileset>
-			<fileset dir="${dir.conf}">
-				<include name="Bean*.skeleton"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="create-control-files"
-		depends="-create-control-files.main,-create-control-files.custom"
-		description="Create control files required by code transformers for the project specified in deploy.properties"/>
-
-	<target name="-create-control-files.main" depends="create-project-dirs" unless="create-control-files.main.ignore">
-		<SDKecho message="Creating control files"/>
-		<SDKcreatecontrol outputdir="${dir.output.project.src}">
-			<controlfileset>
-				<fileset dir="${dir.conf}">
-					<include name="${file.control.beangeneration}"/>
-					<include name="${file.control.beanimplgeneration}"/>
-					<include name="${file.control.beanwsgeneration}"/>
-					<include name="${file.control.beanwsimplgeneration}"/>
-					<include name="${file.control.junitgeneration}"/>
-				</fileset>
-			</controlfileset>
-		</SDKcreatecontrol>
-		<SDKcreatecontrol outputdir="${dir.output.project.conf}">
-			<controlfileset>
-				<fileset dir="${dir.conf}">
-					<include name="${file.control.commonPackageUtil}"/>
-					<include name="${file.control.commonRoleUtil}"/>
-					<include name="${file.control.cacheUtil}"/>
-					<include name="${file.control.daogeneration}"/>
-					<include name="${file.control.hbcgeneration}"/>
-					<include name="${file.control.wsdd}"/>
-					<include name="${file.control.systemProperties}"/>
-					<include name="${file.wsdd.undeploy}" />
-					<include name="log4j.properties"/>
-					<include name="applicationService.xml"/>
-				</fileset>
-			</controlfileset>
-		</SDKcreatecontrol>
-		<SDKcreatecontrol outputdir="${dir.output.project.orm}">
-			<controlfileset>
-				<fileset dir="${dir.conf}">
-					<include name="${file.control.ormgeneration}"/>
-					<include name="${file.control.ormimplgeneration}"/>
-				</fileset>
-			</controlfileset>
-		</SDKcreatecontrol>
-		<SDKcreatecontrol outputdir="${dir.output.project.xmlmapping}">
-			<controlfileset>
-				<fileset dir="${dir.conf}">
-					<include name="${file.control.xmlmappinggeneration}"/>
-				</fileset>
-			</controlfileset>
-		</SDKcreatecontrol>
-		<SDKcreatecontrol outputdir="${dir.output.project.xmlschema}">
-			<controlfileset>
-				<fileset dir="${dir.conf}">
-					<include name="${file.control.schemageneration}"/>
-				</fileset>
-			</controlfileset>
-		</SDKcreatecontrol>
-		<SDKcreatecontrol outputdir="">
-			<controlfileset>
-				<fileset dir="${dir.conf}">
-					<include name="${file.license}"/>
-				</fileset>
-			</controlfileset>
-		</SDKcreatecontrol>
-		<SDKcreatecontrol outputdir="">
-			<controlfileset>
-				<fileset dir="${dir.conf.xslt}">
-					<include name="*.xsl"/>
-				</fileset>
-			</controlfileset>
-			<extendedfilterset>
-		        <filter token="XSLT_PATH" value="${project_name}"/>
-			</extendedfilterset>
-		</SDKcreatecontrol>
-	</target>
-
-	<target name="create-output-dirs"
-		depends="-create-output-dirs.main,-create-output-dirs.custom"
-		description="Create output directories for the SDK framework"/>
-
-	<target name="-create-output-dirs.main" unless="create-output-dirs.main.ignore">
-		<SDKecho message="Creating output directories"/>
-		<mkdir dir="${dir.output}"/>
-		<mkdir dir="${dir.output.doc}"/>
-
-		<delete dir="${dir.temp}" quiet="true"/>
-		<mkdir dir="${dir.temp}"/>
-		<mkdir dir="${dir.temp.zip}"/>
-	</target>
-
-	<target name="create-project-dirs"
-		depends="-create-project-dirs.main,-create-project-dirs.custom"
-		description="Create output directories for the project specified in deploy.properties"/>
-
-	<target name="-create-project-dirs.main" unless="create-project-dirs.main.ignore">
-		<SDKecho message="Creating project directories"/>
-		<mkdir dir="${dir.output.project}"/>
-		<mkdir dir="${dir.output.project.build}"/>
-		<mkdir dir="${dir.output.project.xmlmapping}"/>
-		<mkdir dir="${dir.output.project.client}"/>
-		<mkdir dir="${dir.output.project.conf}"/>
-		<mkdir dir="${dir.output.project.doc}"/>
-		<mkdir dir="${dir.output.project.framework.src}"/>
-		<mkdir dir="${dir.output.project.framework.build}"/>
-		<mkdir dir="${dir.output.project.orm}"/>
-		<mkdir dir="${dir.output.project.package}"/>
-		<mkdir dir="${dir.output.project.package.server}"/>
-		<mkdir dir="${dir.output.project.package.client}"/>
-		<mkdir dir="${dir.output.project.xmlschema}"/>
-		<mkdir dir="${dir.output.project.src}"/>
-		<mkdir dir="${dir.output.project.templates}"/>
-		<mkdir dir="${dir.src.custom}"/>
-		<mkdir dir="${dir.src.custom.beans}"/>
-		<mkdir dir="${dir.src.custom.orm}"/>
-	</target>
-
-	<target name="deploy-server"
-		depends="-deploy-server.main,-deploy-server.custom"
-		description="Deploys system to J2EE container"/>
-
-	<target name="-deploy-server.main" depends="copy-server-file,start-container" unless="deploy-server.main.ignore">
-
 	</target>
 
 	<target name="deployWS"
@@ -592,528 +530,8 @@
 		<java classname="org.apache.axis.client.AdminClient" fork="true">
 			<classpath refid="classpath"/>
 			<arg value="-l${url.project.axisservice}"/>
-			<arg value="${dir.output.project.conf}/${file.wsdd.deploy}"/>
+			<arg value="${dir.output.project.src}/${file.wsdd.deploy}"/>
 		</java>
-	</target>
-
-	<target name="disable-writable-api"
-		depends="-disable-writable-api.main,-disable-writable-api.custom"
-		description="Disables functions that enable write functionality to the API"/>
-
-	<target name="-disable-writable-api.main" if="disable-writable-api-yes" unless="disable-writable-api.main.ignore">
-		<SDKecho message="Disabling writable APIs"/>
-		<copy todir="${dir.output.project.framework.src}" overwrite="true">
-			<fileset dir="${dir.framework.src}">
-				<include name="gov/nih/nci/system/applicationservice/ApplicationService.java"/>
-				<include name="gov/nih/nci/system/applicationservice/impl/ApplicationServiceImpl.java"/>
-				<include name="gov/nih/nci/system/comm/server/ApplicationServiceServerImpl.java"/>
-				<include name="gov/nih/nci/system/comm/common/ApplicationServiceProxy.java"/>
-				<include name="gov/nih/nci/system/comm/client/ApplicationServiceClientImpl.java"/>
-			</fileset>
-			<filterset begintoken="/*@" endtoken="@*/">
-				<filter token="WRITABLE_API_START" value="/*"/>
-				<filter token="WRITABLE_API_END" value="*/"/>
-			</filterset>
-		</copy>
-	</target>
-
-	<target name="doc"
-		depends="-doc.main,-doc.custom"
-		description="Create Javadoc HTML documentation for both the SDK framework and the system defined in deploy.properties"/>
-
-	<target name="-doc.main" unless="doc.main.ignore">
-		<javadoc packagenames="*" destdir="${dir.output.project.doc}" author="true"
-			public="true" version="true" use="true" windowtitle="${project_name} API Documentation"
-			doctitle="${project_name} API Documentation" useexternalfile="yes">
-		    <bottom><![CDATA[<i>This API was generated by the <a href='http://ncicb.nci.nih.gov/NCICB/infrastructure/cacoresdk'>caCORE Software Development Kit</a>.</i>]]></bottom>
-			<fileset dir="${dir.framework.src}">
-				<include name="**/*.java"/>
-			</fileset>
-			<fileset dir="${dir.output.project.src}">
-				<include name="**/*.java"/>
-			</fileset>
-		</javadoc>
-	</target>
-
-	<target name="doc-framework"
-		depends="-doc-framework.main,-doc-framework.custom"
-		description="Create Javadoc HTML documentation for only the SDK framework"/>
-
-	<target name="-doc-framework.main" unless="doc-framework.main.ignore">
-		<javadoc packagenames="*" destdir="${dir.output.doc}" author="false"
-			public="true" version="true" use="true" windowtitle="caCORE SDK API Documentation"
-			doctitle="caCORE SDK API Documentation" useexternalfile="yes">
-			<fileset dir="${dir.framework.src}">
-				<include name="**/*.java"/>
-			</fileset>
-		</javadoc>
-	</target>
-
-	<target name="fix-xmi"
-		depends="-fix-xmi.main,-fix-xmi.custom"
-		description="Pre-processes XMI file to ensure that it can be parsed by NetBeans MDR component">
-	</target>
-
-	<target name="-fix-xmi.main" if="fix-xmi-yes" depends="create-project-dirs,compile-generator" unless="fix-xmi.main.ignore">
-		<SDKecho message="Pre-processing XMI file"/>
-		<java classname="gov.nih.nci.codegen.core.util.FixXMI" fork="true">
-			<classpath refid="classpath"/>
-			<jvmarg value="-Xmx512m"/>
-			<arg value="${xmi_preprocessor}"/>
-			<arg value="${dir.model}/${model_filename}"/>
-			<arg value="${dir.model}/${fixed_filename}"/>
-		</java>
-	</target>
-
-	<target name="format"
-		depends="-format.main,-format.custom"
-		description="Formats generated source code">
-	</target>
-
-	<target name="-format.main" unless="format.main.ignore">
-		<SDKecho message="Formatting generated source code"/>
-		<jalopy fileformat="AUTO" loglevel="info" threads="2" failonerror="no"
-				destdir="${dir.output.project.src.formatted}" classpathref="classpath">
-			<fileset dir="${dir.output.project.src}">
-				<include name="**/*.java"/>
-				<exclude name="**/codegen/**"/>
-			</fileset>
-		</jalopy>
-	</target>
-
-	<target name="generate-artifacts"
-		depends="-generate-artifacts.main,-generate-artifacts.custom"
-		description="Generate configuration and other required system files from model"/>
-
-	<target name="-generate-artifacts.main"
-		depends="generate-cache,generate-common-package-util,generate-common-role-util,
-				 generate-dao-conf,generate-schemas,generate-wsdd,
-				 generate-xml-mapping"
-		unless="generate-artifacts.main.ignore"/>
-
-	<target name="generate-beans"
-		depends="-generate-beans.main,-generate-beans.custom"
-		description="Generate beans based on model specified in deploy.properties"/>
-
-	<target name="-generate-beans.main" depends="init-project,compile-templates" unless="generate-beans.main.ignore">
-		<SDKecho message="Generating Java beans from model"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.beangeneration}"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.beanimplgeneration}"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.beanwsgeneration}"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.beanwsimplgeneration}"/>
-	</target>
-
-	<target name="generate-cache"
-		depends="-generate-cache.main,-generate-cache.custom"
-		description="Generate cache configuration files"/>
-
-	<target name="-generate-cache.main" depends="init-project" unless="generate-cache.main.ignore">
-		<SDKecho message="Generating cache configuration files"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.cacheUtil}"/>
-	</target>
-
-	<target name="generate-common-package-util"
-		depends="-generate-common-package-util.main,-generate-common-package-util.custom"
-		description="Generate common package utility class"/>
-
-	<target name="-generate-common-package-util.main" depends="init-project" unless="generate-common-package-util.main.ignore">
-		<SDKecho message="Generating common package utilities"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.commonPackageUtil}"/>
-	</target>
-
-	<target name="generate-common-role-util"
-		depends="-generate-common-role-util.main,-generate-common-role-util.custom"
-		description="Generate common role utility class"/>
-
-	<target name="-generate-common-role-util.main" depends="init-project" unless="generate-common-role-util.main.ignore">
-		<SDKecho message="Generating common role utilities"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.commonRoleUtil}"/>
-	</target>
-
-	<target name="generate-dao-conf"
-		depends="-generate-dao-conf.main,-generate-dao-conf.custom"
-		description="Generate DAO configuration files from model"/>
-
-	<target name="-generate-dao-conf.main" depends="init-project" unless="generate-dao-conf.main.ignore">
-		<SDKecho message="Generating DAO configuration files"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.daogeneration}"/>
-	</target>
-
-	<target name="generate-junit"
-		depends="-generate-junit.main,-generate-junit.custom"
-		description="Generate JUnit test classes from model"/>
-
-	<target name="-generate-junit.main" depends="init-project" unless="generate-junit.main.ignore">
-		<SDKecho message="Generating JUnit test classes"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.junitgeneration}"/>
-	</target>
-
-	<target name="generate-OR-mapping"
-		depends="-generate-OR-mapping.main,-generate-OR-mapping.custom"
-		description="Generate OR mapping from model"/>
-
-	<target name="-generate-OR-mapping.main" if="OR-mapping-yes" depends="init-project" unless="generate-OR-mapping.main.ignore">
-		<SDKecho message="Generating OR mapping files"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.ormgeneration}"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.ormimplgeneration}"/>
-	</target>
-
-	<target name="generate-orm-conf"
-		depends="-generate-orm-conf.main,-generate-orm-conf.custom"
-		description="Generate ORM configuration files from model"/>
-
-	<target name="-generate-orm-conf.main" depends="init-project" unless="generate-orm-conf.main.ignore">
-		<SDKecho message="Generating ORM configuration files"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.hbcgeneration}"/>
-		<copy overwrite="true" file="${dir.conf}/${file.orm.properties}.${db_flavor}" tofile="${dir.output.project.conf}/${file.orm.properties}">
-			<filterset>
-				<filter token="DBNAME" value="${schema_name}"/>
-				<filter token="DBUSER" value="${db_user}"/>
-				<filter token="DBPASSWD" value="${db_password}"/>
-				<filter token="SERVERNAME" value="${db_server_name}"/>
-				<filter token="SECONDLEVELCACHE" value="${create-cache-value}"/>
-				<filter token="SHOWSQL" value="false"/>
-			</filterset>
-		</copy>
-	</target>
-
-	<target name="generate-schemas"
-		depends="-generate-schemas.main,-generate-schemas.custom"
-		description="Generate XML schemas from model"/>
-
-	<target name="-generate-schemas.main" depends="init-project" unless="-generate-schemas.main.ignore">
-		<SDKecho message="Generating XML schemas"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.schemageneration}"/>
-	</target>
-
-	<target name="generate-wsdd"
-		depends="-generate-wsdd.main,-generate-wsdd.custom"
-		description="Generate web services deployment descriptor"/>
-
-	<target name="-generate-wsdd.main" depends="init-project" unless="generate-wsdd.main.ignore">
-		<SDKecho message="Generating WSDD file"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.wsdd}"/>
-	</target>
-
-	<target name="generate-xml-mapping"
-		depends="-generate-xml-mapping.main,-generate-xml-mapping.custom"
-		description="Generate XML mapping files"/>
-
-	<target name="-generate-xml-mapping.main" depends="init-project" unless="generate-xml-mapping.main.ignore">
-		<SDKecho message="Generating XML mapping files"/>
-		<SDKgenerate controlfile="${dir.output.project.conf}/${file.control.xmlmappinggeneration}"/>
-	</target>
-
-	<target name="help" description="Default target that lists commonly used targets within this build script">
-		<echo>===============================</echo>
-		<echo>caCORE Software Development Kit</echo>
-		<echo>===============================</echo>
-		<echo> </echo>
-		<echo>To run the entire SDK code generation process, use:</echo>
-		<echo> </echo>
-		<echo>    ant build-system</echo>
-		<echo> </echo>
-		<echo>Other common targets</echo>
-		<echo>--------------------</echo>
-		<echo>    build-framework</echo>
-		<echo>    build-beans</echo>
-		<echo>    build-artifacts</echo>
-		<echo>    build-orm</echo>
-		<echo>    fix-xmi</echo>
-		<echo>    package-framework</echo>
-		<echo>    package-system</echo>
-		<echo>    package-client</echo>
-		<echo>    package-server</echo>
-		<echo>    deploy-server</echo>
-		<echo>    deployWS</echo>
-		<echo>    undeployWS</echo>
-	</target>
-
-	<target name="init-project"
-		depends="-init-project.main,-init-project.custom"
-		description="Initialize project build by creating output directories and necessary files"/>
-
-	<target name="-init-project.main" depends="create-output-dirs,create-project-dirs,create-control-files,copy-template-files,fix-xmi" unless="init-project.main.ignore">
-	</target>
-
-	<target name="package-client"
-		depends="-package-client.main,-package-client.custom"
-		description="Creates client.zip file"/>
-
-	<target name="-package-client.main" unless="package-client.main.ignore">
-		<!-- First, create test client files with current project information -->
-		<copy file="${dir.demo}/${file.demo.source}" tofile="${dir.output.project.client}/${file.demo.class.source}"
-			overwrite="true">
-			<filterset>
-				<filter token="WEB_SERVER_NAME" value="${web_server_name}"/>
-				<filter token="WEB_SERVER_PORT" value="${web_server_port}"/>
-				<filter token="PROJECT_NAME" value="${project_name}"/>
-			</filterset>
-		</copy>
-		<copy file="${dir.demo}/${file.demoxml.source}" tofile="${dir.output.project.client}/${file.demoxml.class.source}"
-					overwrite="true">
-					<filterset>
-						<filter token="WEB_SERVER_NAME" value="${web_server_name}"/>
-						<filter token="WEB_SERVER_PORT" value="${web_server_port}"/>
-						<filter token="PROJECT_NAME" value="${project_name}"/>
-						<filter token="SCHEMA_DIR" value="${basedir.unix}/${dir.output.project.xmlschema}"/>
-						<filter token="CLIENT_DIR" value="${basedir.unix}/${dir.output.project.package.client}"/>
-					</filterset>
-		</copy>
-		<copy file="${dir.demo}/${file.demoWS.source}" tofile="${dir.output.project.client}/${file.demoWS.class.source}"
-			overwrite="true">
-			<filterset>
-				<filter token="WEB_SERVER_NAME" value="${web_server_name}"/>
-				<filter token="WEB_SERVER_PORT" value="${web_server_port}"/>
-				<filter token="PROJECT_NAME" value="${project_name}"/>
-				<filter token="WEBSERVICENAME" value="${webservice_name}"/>
-			</filterset>
-		</copy>
-		<copy file="${dir.conf}/build_sdkclient.xml" tofile="${dir.output.project.conf}/build_sdkclient.xml" overwrite="true">
-			<filterset>
-				<filter token="AXIS_SERVICE" value="-l${url.project.axisservice}"/>
-			</filterset>
-		</copy>
-
-
-		<!-- Create client jar file -->
-		<mkdir dir="${dir.output.project.package.client.lib}"/>
-		<jar destfile="${dir.output.project.package.client.lib}/${file.project.client.jar}" update="yes">
-			<manifest>
-				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
-				<attribute name="Project-Title" value="${project_name}"/>
-				<attribute name="Model-File" value="${model_filename}"/>
-			</manifest>
-			<fileset dir="${dir.output.project.build}">
-				<exclude name="gov/nih/nci/system/**"/>
-				<exclude name="gov/nih/nci/codegen/**"/>
-			</fileset>
-			<fileset dir="${dir.output.project.framework.build}">
-				<include name="gov/nih/nci/system/applicationservice/*"/>
-				<include name="gov/nih/nci/system/delegator/DelegateException.class"/>
-				<include name="gov/nih/nci/system/proxy/InterfaceProxy.class"/>
-				<include name="gov/nih/nci/system/comm/common/ApplicationServiceProxy.class"/>
-				<include name="gov/nih/nci/system/comm/client/ApplicationServiceClientImpl.class"/>
-				<include name="gov/nih/nci/system/comm/client/ClientSession.class"/>
-				<include name="gov/nih/nci/common/util/**"/>
-				<include name="gov/nih/nci/common/net/**"/>
-				<include name="gov/nih/nci/common/exception/**"/>
-			</fileset>
-			<fileset dir="${dir.conf}">
-				<include name="mapping.dtd"/>
-				<include name="xml.properties"/>
-			</fileset>
-			<fileset dir="${dir.output.project.xmlmapping}">
-				<include name="xml-mapping.xml"/>
-			</fileset>
-			<fileset dir="${dir.output.project.conf}">
-				<include name="roleLookup.properties"/>
-				<include name="cacoreBeans.properties"/>
-				<include name="CORESystem.properties"/>
-				<include name="ehcache.xml"/>
-			</fileset>
-		</jar>
-
-		<!-- Create ZIP file with client jar and all necessary libs/conf -->
-		<zip destfile="${dir.output.project.package}/${file.project.client.zip}">
-			<zipfileset dir="${dir.output.project.package.client.lib}" includes="${file.project.client.jar}" prefix="lib"/>
-			<zipfileset dir="${dir.lib}" prefix="lib">
-				<include name="axis.jar"/>
-				<include name="saaj.jar"/>
-				<include name="mail.jar"/>
-				<include name="jaxrpc.jar"/>
-				<include name="activation.jar"/>
-				<include name="aspect*.jar"/>
-				<include name="hibernate3.jar"/>
-				<include name="log4j*.jar"/>
-				<include name="commons-logging-1.1.jar"/>
-				<include name="commons-discovery-0.2.jar"/>
-				<include name="wsdl4j-1.5.1.jar"/>
-				<include name="cglib-2.1.3.jar"/>
-				<include name="castor-1.0.2.jar"/>
-				<include name="xercesImpl.jar"/>
-				<include name="spring.jar"/>
-				<include name="spring-richclient-full-0.1.0.jar"/>
-				<include name="xml-apis.jar"/>
-				<include name="asm.jar"/>
-				<include name="asm-attrs.jar"/>
-
-			</zipfileset>
-			<zipfileset dir="${dir.conf}" includes="client_log4j.properties" prefix="conf"/>
-			<zipfileset dir="${dir.output.project.conf}" includes="${file.control.remoteservice}" prefix="conf"/>
-			<zipfileset dir="${dir.conf}" includes="ClientREADME.txt" fullpath="README.txt"/>
-			<zipfileset dir="${dir.conf}" includes="xml.properties" prefix="lib"/>
-			<zipfileset dir="${dir.conf}" includes="mapping.dtd" prefix="lib"/>
-			<zipfileset dir="${dir.output.project.conf}" includes="build_sdkclient.xml" fullpath="build.xml" />
-			<zipfileset dir="${dir.output.project.xmlschema}" prefix="lib">
-				<include name="*.xsd"/>
-			</zipfileset>
-			<zipfileset dir="${dir.output.project.client}" includes="${file.demo.class.source}"/>
-			<zipfileset dir="${dir.output.project.client}" includes="${file.demoxml.class.source}"/>
-			<zipfileset dir="${dir.output.project.client}" includes="${file.demoWS.class.source}"/>
-			<zipfileset dir="${dir.output.project.conf}" includes="${file.wsdd.deploy}" prefix="conf"/>
-			<zipfileset dir="${dir.conf}" includes="client.log" prefix="log"/>
-		</zip>
-
-		<!-- Unpack ZIP file into package directory so it can be used for tests/demos -->
-		<unzip src="${dir.output.project.package}/${file.project.client.zip}"
-			dest="${dir.output.project.package.client}"/>
-	</target>
-
-	<target name="package-server"
-		depends="-package-server.main,-package-server.custom"
-		description="Creates .war file for server"/>
-
-		
-	<target name="-package-server.main" unless="package-server.main.ignore">
-		<SDKecho message="Creating .war file for server"/>
-		<delete file="${dir.output.project.package.server}/${file.project.server.war}"/>
-		<war destfile="${dir.output.project.package.server}/${file.project.server.war}"
-			webxml="${dir.conf}/web.xml" update="yes">
-			<lib dir="${dir.lib}"  excludes="${server-exclude-list}"/>
-			<zipfileset dir="${dir.conf}" prefix="log">
-				<include name="server.log"/>
-				<include name="client.log"/>
-				<include name="hibernate.log"/>
-			</zipfileset>
-			<webinf dir="${dir.conf}">
-				<include name="server-config.wsdd"/>
-				<include name="hibernate-configuration-3.0.dtd"/>
-				<include name="hibernate-mapping-3.0.dtd"/>
-				<include name="applicationContext.xml"/>
-				<include name="httpinvoker-servlet.xml"/>
-			</webinf>
-			<classes dir="${dir.output.project.framework.build}">
-				<exclude name="gov/nih/nci/system/comm/client/ApplicationServiceClientImpl.class"/>
-				<exclude name="gov/nih/nci/system/comm/client/ClientSession.class"/>			
-			</classes>
-			<classes dir="${dir.output.project.build}">
-				<exclude name="**/impl/test/*.class"/>
-			</classes>
-			<classes dir="${dir.output.project.orm}"/>
-			<classes dir="${dir.output.project.conf}">
-				<include name="${file.control.systemProperties}"/>
-				<include name="${file.dao.configuration}"/>
-				<include name="roleLookup.properties"/>
-				<include name="cacoreBeans.properties"/>
-				<include name="log4j.properties"/>
-				<include name="applicationService.xml"/>
-				<include name="${file.orm.configuration}"/>
-				<include name="${file.cache.properties}"/>
-				<include name="${file.orm.properties}"/>
-			</classes>
-			<classes file="${dir.output.project.xmlmapping}/xml-mapping.xml" />
-			<classes file="${dir.conf}/xml.properties"/>
-			<classes file="${dir.output.project}/log4j.properties"/>
-			<zipfileset dir="${dir.output.project.conf}" prefix="WEB-INF/conf">
-				<include name="${file.dao.configuration}"/>
-			<!--	<include name="log4j.properties"/>
-				<include name="roleLookup.properties"/>
-				<include name="cacoreBeans.properties"/>
-				<include name="${file.cache.properties}"/>
-				<include name="${file.orm.properties}"/> -->
-			</zipfileset>
-			<zipfileset file="${dir.output.project}/log4j.properties" prefix="WEB-INF/conf"/>
-			<fileset dir="${dir.conf}">
-				<include name="Happy.jsp"/>
-				<include name="Classes.jsp"/>
-				<include name="Packages.jsp"/>
-				<include name="Criteria.jsp"/>
-				<include name="Result.jsp"/>
-			</fileset>
-		    <fileset dir="${dir.conf.xslt}">
-				<include name="**/**"/>
-				<exclude name="*.xsl"/>
-			</fileset>
-			<zipfileset dir="${dir.output.project.conf}" prefix="WEB-INF/classes/xslt">
-				<include name="*.xsl"/>
-			</zipfileset>
-			<classes file="${dir.conf}/spring/SDKSpringBeanConfig.xml"/>
-		</war>
-	</target>
-
-	<target name="package-system"
-		depends="-package-system.main,-package-system.custom"
-		description="Creates .war file for server and client.zip file for client"/>
-
-	<target name="-package-system.main" depends="package-server,package-client" unless="package-system.main.ignore" />
-
-	<target name="rundemo"
-		depends="-rundemo.main,-rundemo.custom"
-		description="Runs Java-based demo client for provided SDK example system"/>
-
-	<target name="-rundemo.main" unless="rundemo.main.ignore">
-		<SDKecho message="Running Java-based client demo"/>
-		<javac srcdir="${dir.output.project.package.client}" debug = "on">
-			<include name="${file.demo.class.source}"/>
-			<classpath refid="classpath-client"/>
-		</javac>
-		<java classname="${file.demo.class}" fork="true" dir="${dir.output.project.package.client}">
-			<classpath refid="classpath-client"/>
-			<sysproperty key="log4j.configuration" value="${dir.output.project.package.client.conf}/client_log4j.properties"/>
-		</java>
-	</target>
-
-	<target name="runtest"
-		depends="-runtest.main,-runtest.custom"
-		description="Runs JUnit test"/>
-
-	<target name="-runtest.main" unless="runtest.main.ignore">
-		<SDKecho message="Running JUnit test"/>
-		<mkdir dir="${dir.output.project.junit}"/>
-		<junit printsummary="yes" fork="yes" maxmemory="512m">
-			<formatter type="plain"/>
-			<batchtest fork="true" haltonfailure="no" todir="${dir.output.project.junit}">
-				<fileset dir="${dir.output.project.src}">
-					<include name="**/impl/test/*Test.java"/>
-				</fileset>
-			</batchtest>
-			<classpath>
-				<pathelement location="${dir.output.project}"/>
-				<pathelement location="${dir.output.project.conf}"/>
-				<pathelement location="${dir.output.project.orm}"/>
-			</classpath>
-			<classpath refid="classpath"/>
-			<sysproperty key="log4j.configuration" value="${dir.output.project.package.client.conf}/client_log4j.properties"/>
-		</junit>
-	</target>
-
-	<target name="runWSdemo"
-		depends="-runWSdemo.main,-runWSdemo.custom"
-		description="Runs Web Services-bases demo client for provided SDK example system"/>
-
-	<target name="-runWSdemo.main" unless="runWSdemo.main.ignore">
-		<SDKecho message="Running Web Services demo"/>
-		<javac srcdir="${dir.output.project.package.client}" debug = "on">
-			<include name="${file.demoWS.class.source}"/>
-			<classpath refid="classpath-client"/>
-		</javac>
-		<java classname="${file.demoWS.class}" fork="true" dir="${dir.output.project.package.client}">
-			<classpath refid="classpath-client"/>
-			<sysproperty key="log4j.configuration" value="${dir.output.project.package.client.conf}/client_log4j.properties"/>
-		</java>
-	</target>
-
-	<target name="runXMLdemo"
-		depends="-runXMLdemo.main,-runXMLdemo.custom"
-		description="Runs demo of XML conversion utility on provided SDK example system"/>
-
-	<target name="-runXMLdemo.main" unless="runXMLdemo.main.ignore">
-		<SDKecho message="Running XML conversion utility demo"/>
-		<javac srcdir="${dir.output.project.package.client}" debug = "on">
-			<include name="${file.demoxml.class.source}"/>
-			<classpath refid="classpath-client"/>
-		</javac>
-		<java classname="${file.demoxml.class}" fork="true" dir="${dir.output.project.package.client}">
-			<classpath refid="crtlasspath-client"/>
-			<sysproperty key="log4j.configuration" value="${dir.output.project.package.client.conf}/client_log4j.properties"/>
-		</java>
-	</target>
-
-
-	<target name="show-properties" unless="show-properties.main.ignore" description="Display a list of all properties currently set">
-		<echoproperties destfile="antproperties.txt"/>
-		<echo>Properties were dumped to 'antproperties.txt'</echo>
 	</target>
 
 	<target name="undeployWS"
@@ -1125,8 +543,50 @@
 		<java classname="org.apache.axis.client.AdminClient" fork="true">
 			<classpath refid="classpath"/>
 			<arg value="-l${url.project.axisservice}"/>
-			<arg value="${dir.output.project.conf}/${file.wsdd.undeploy}"/>
+			<arg value="${dir.output.conf.webservice}/${file.wsdd.undeploy}"/>
 		</java>
 	</target>
 
+<!--***********************************************************************
+	*** CREATE SDK DISTRIBUTION PACKAGE
+	*********************************************************************** -->
+		
+	<target name="package-sdk"
+		depends="create-output-dirs"
+		description="Creates a distribution of the caCORE SDK">
+		<SDKecho message="Creating SDK distribution package"/>
+		<delete file="${dir.output.project.package}/${file.output.zip}" quiet="true"/>
+		<zip destfile="${dir.output.project.package}/${file.output.zip}">
+			<zipfileset dir="${basedir}" prefix="cacoresdk">
+				<include name="conf/**/*"/>
+				<include name="lib/**/*"/>
+				<include name="models/**/*"/>
+				<include name="src/**/*"/>
+				<include name="*.xml"/>
+				<include name="*.properties"/>
+				<exclude name="**/CVS/**"/>
+			</zipfileset>
+		</zip>
+	</target>
+
+<!--***********************************************************************
+	*** DOCUMENTATION TASK
+	*********************************************************************** -->
+	
+	<target name="doc"
+		depends="-doc.main,-doc.custom"
+		description="Create Javadoc HTML documentation for both the SDK framework and the system defined in deploy.properties"/>
+
+	<target name="-doc.main" unless="doc.main.ignore">
+		<SDKecho message="Generating Javadocs"/>
+		<javadoc packagenames="*" destdir="${dir.output.project.doc}" author="true"
+			public="true" version="true" use="true" windowtitle="${project_name} API Documentation"
+			doctitle="${project_name} API Documentation" useexternalfile="yes">
+		    <bottom><![CDATA[<i>This API was generated by the <a href='http://ncicb.nci.nih.gov/NCICB/infrastructure/cacoresdk'>caCORE Software Development Kit</a>.</i>]]></bottom>
+			<fileset dir="${dir.output.project.src}">
+				<include name="**/*.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+ 
 </project>

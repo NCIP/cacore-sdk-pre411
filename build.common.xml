@@ -11,7 +11,8 @@
 	*** PROPERTY FILES
 	*********************************************************************** -->
 	<property file="conf/deploy.properties" />
-	<property file="build.codegen.properties" />
+	<property file="${basedir}/build.properties" />
+	<property file="${file.conf}" />
 	<property file="${file.properties.custom}" />
 
 	<!--***********************************************************************
