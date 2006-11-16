@@ -2,8 +2,8 @@
 <project name="caCOREdb" basedir=".">
 
 	<target name="create-user" if="create_mysqluser_yes">
-		<delete file="${dir.conf}/create_user.sql"/>
-	    <copy file="${dir.conf}/create_user.sql.template" tofile="${dir.output.project.conf}/create_user.sql">
+		<delete file="${dir.conf.database-scripts}/create_user.sql"/>
+	    <copy file="${dir.conf.database-scripts}/create_user.sql.template" tofile="${dir.output.conf.database-scripts}/create_user.sql">
 			<filterset>
 				<filter token="DBNAME" value="${schema_name}"/>
 				<filter token="DBUSER" value="${db_user}"/>
@@ -11,7 +11,7 @@
 				<filter token="DBPASSWD" value="${db_password}"/>
 			</filterset>
     	</copy>
-		<exec dir="${mysql_home}/bin" executable="${mysql_home}/bin/mysql" input = "${dir.output.project.conf}/create_user.sql">
+		<exec dir="${mysql_home}/bin" executable="${mysql_home}/bin/mysql" input = "${dir.output.conf.database-scripts}/create_user.sql">
 			<arg line="-u root"/>
 		</exec> 
 	</target>
@@ -22,12 +22,12 @@
 		<exec dir="${mysql_home}/bin" executable="${mysql_home}/bin/mysqladmin">
 			<arg line="-u root create ${schema_name}"/>
 		</exec> 
-		<exec dir="${mysql_home}/bin" executable="${mysql_home}/bin/mysql" input = "${dir.conf}/${ddl_filename}">
+		<exec dir="${mysql_home}/bin" executable="${mysql_home}/bin/mysql" input="${dir.conf.database-scripts}/${ddl_filename}">
 			<arg line="-u root ${schema_name}"/>
 		</exec> 
 	</target>
 	<target name="import-data" if="import_data_yes">
-		<exec dir="${mysql_home}/bin" executable="${mysql_home}/bin/mysql" input= "${dir.conf}/${datadump_name}">
+		<exec dir="${mysql_home}/bin" executable="${mysql_home}/bin/mysql" input="${dir.conf.database-scripts}/${datadump_name}">
 			<arg line="-u root ${schema_name}"/>
 		</exec> 
 	</target>
