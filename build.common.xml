@@ -10,6 +10,7 @@
 	<!--***********************************************************************
 	*** PROPERTY FILES
 	*********************************************************************** -->
+	<property file="conf/download/download.properties"/>
 	<property file="conf/deploy.properties" />
 	<property file="${basedir}/build.properties" />
 	<property file="${file.conf}" />
@@ -111,7 +112,21 @@
 		<isset property="jboss-yes" />
 	</condition>
 
+	<condition property="create_mysqluser_yes">
+		<and>
+			<contains substring="mysql" casesensitive="no" string="${database_type}"/>
+			<istrue value="${create_mysql_user}"/>
+		</and>
+	</condition>
 
+	<condition property="create_schema_yes">
+		<istrue value="${create_schema}"/>
+	</condition>
+
+	<condition property="import_data_yes">
+		<istrue value="${import_data}"/>
+	</condition>
+	
 	<!--***********************************************************************
 	*** OTHER INCLUDED ANT BUILD FILES
 	*********************************************************************** -->
@@ -244,6 +259,9 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 		<mkdir dir="${dir.output.project.package}" />
 		<mkdir dir="${dir.output.project.package.client}/lib" />
 		<mkdir dir="${dir.output.project.package.thickclient}/lib" />
+		<delete dir="${dir.temp}" quiet="true"/>
+		<mkdir dir="${dir.temp}"/>
+		<mkdir dir="${dir.temp.zip}"/>
 	</target>
 
 	<!-- Control File //Revisit this section -->
