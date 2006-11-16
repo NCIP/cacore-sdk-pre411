@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2006-10-25 11:07:27">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2006-11-10 15:13:07">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -97,7 +97,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_477D900C_005B_421F_8837_FA5F191645BE" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_C5996166_097F_4053_9536_706CD2C74872" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68"/>
 									</UML:Dependency.client>
@@ -120,6 +120,192 @@
 											<UML:ModelElement.taggedValue/>
 										</UML:AssociationEnd>
 										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_STUDENT" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_BDE98D1A_9599_437b_A076_5BD372D06122">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Class name="MONITOR" xmi.id="EAID_0E4D07AE_DF41_485d_AE83_0F5EF7CCD592" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="DISPLAY_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor.id" xmi.id="EAID_C5369C89_FBE4_4F31_A067_C80ADD9FFAC8"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="BRAND" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid2"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor.brand" xmi.id="EAID_C2249CB5_F88A_4B7B_BE12_616F0110448A"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="FK_MONITOR_DISPLAY" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="DISPLAY_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="PK_MONITOR" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="DISPLAY_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Association name="(DISPLAY_ID = ID)" xmi.id="EAID_76D5E669_B60F_4647_9495_60B6F56EDEF3" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_MONITOR_DISPLAY" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_0E4D07AE_DF41_485d_AE83_0F5EF7CCD592">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_DISPLAY" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_F3DEA245_6D40_4cea_ADDA_4CD26EF13AB1">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_F703E50E_B275_4CE9_9A97_1F64AD3717AA" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_0E4D07AE_DF41_485d_AE83_0F5EF7CCD592"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_C7759A44_3482_4c56_97E7_0A7778155F35"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
+								<UML:Association name="(DPI_SUPPORTED = DISPLAY_ID)" xmi.id="EAID_660ED88E_2FBB_45ce_A659_6FFB67ED3569" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_LCD_MONITOR_MONITOR" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_253DE03D_92CD_4459_97EC_26E5C52B6EE1">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_MONITOR" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_0E4D07AE_DF41_485d_AE83_0F5EF7CCD592">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Association name="(MONITOR_ID = DISPLAY_ID)" xmi.id="EAID_70A37FCD_B06F_4401_86F4_F0C27727FC26" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_CRT_MONITOR_MONITOR" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_75BE56C3_1C34_4dcf_8D1B_9CA45D518193">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_MONITOR" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_0E4D07AE_DF41_485d_AE83_0F5EF7CCD592">
 											<UML:AssociationEnd.multiplicity>
 												<UML:Multiplicity>
 													<UML:Multiplicity.range>
@@ -258,7 +444,7 @@
 										</UML:AssociationEnd>
 									</UML:Association.connection>
 								</UML:Association>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_8F14FD3B_1899_4B2E_8844_4AFB1C2BAAE9" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_D3BEB16E_7EA7_4AD5_8A70_D7E6EF948658" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_142F6B68_9970_4954_959F_E4E4B143F30C"/>
 									</UML:Dependency.client>
@@ -343,7 +529,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_ADF3AB5F_5016_43D1_9E34_32386213FE03" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_303DB0A0_0820_4FA7_8330_79FA56B54928" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_159377E1_0116_418a_8B1C_D0CDFF38D31A"/>
 									</UML:Dependency.client>
@@ -366,6 +552,188 @@
 											<UML:ModelElement.taggedValue/>
 										</UML:AssociationEnd>
 										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_BOOK" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_159377E1_0116_418a_8B1C_D0CDFF38D31A">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Class name="CARD" xmi.id="EAID_219079C5_B7DE_40ac_B07F_896FC9DA6627" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card.id" xmi.id="EAID_C0D5EBDC_16C4_4575_92B3_C0F56F34D9CE"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid2"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card.Name" xmi.id="EAID_EBE2ADFC_83DA_4ED1_AD63_160F182BBA24"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="SUIT_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card.suit" xmi.id="EAID_F671AB38_01AC_4521_BC80_3FD558C175FA"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="FK_CARD_SUIT" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="SUIT_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="PK_CARD" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_03DCD28F_DEB5_4385_853C_72CE7D9A8828" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_219079C5_B7DE_40ac_B07F_896FC9DA6627"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
+								<UML:Association name="(SUIT_ID = ID)" xmi.id="EAID_38E71865_982B_4339_9E14_A54F373F809D" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_CARD_SUIT" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_219079C5_B7DE_40ac_B07F_896FC9DA6627">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_SUIT" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_DD5DF684_720D_414e_9CE7_81F5FD2502C6">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Association name="(CARD_ID = ID)" xmi.id="EAID_557CE33C_4CFA_408f_9A26_DA7A0D4BAED5" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_HAND_CARD_CARD" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_7FCE55F0_C372_4e59_BBD8_E1564C7D8543">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_CARD" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_219079C5_B7DE_40ac_B07F_896FC9DA6627">
 											<UML:AssociationEnd.multiplicity>
 												<UML:Multiplicity>
 													<UML:Multiplicity.range>
@@ -500,7 +868,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_226AD81A_F4F1_47F6_9F81_45E3F77A05EF" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_917353BB_1737_449A_9959_7B0247247105" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_249A807B_21BE_4be9_83B4_33E42B9CF9A2"/>
 									</UML:Dependency.client>
@@ -534,6 +902,117 @@
 										</UML:AssociationEnd>
 									</UML:Association.connection>
 								</UML:Association>
+								<UML:Class name="LCD_MONITOR" xmi.id="EAID_253DE03D_92CD_4459_97EC_26E5C52B6EE1" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="MONITOR_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor.id" xmi.id="EAID_F3A86387_84E1_4238_8243_E43C98366FA0"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="DPI_SUPPORTED" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor.dpiSupported" xmi.id="EAID_B06E6AA7_CDCA_4D6B_BAA9_E4E4DC7028C3"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="FK_LCD_MONITOR_MONITOR" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="DPI_SUPPORTED" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="PK_LCD_MONITOR" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="MONITOR_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_C3031BB9_E93A_45A8_B4DA_66F5AF760A35" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_253DE03D_92CD_4459_97EC_26E5C52B6EE1"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_9E6AD14D_C710_4a67_AAD8_6EFEEDFFC18A"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
 								<UML:Class name="PROJECT" xmi.id="EAID_30C6C782_44B0_40c4_AF1C_393415BB58C3" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="table"/>
@@ -610,7 +1089,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_6676172D_D13A_4053_A8B8_4DA2E99C531A" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_A50BBCE6_7EDF_4E2E_A038_A4CC49AB6977" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_30C6C782_44B0_40c4_AF1C_393415BB58C3"/>
 									</UML:Dependency.client>
@@ -793,15 +1272,6 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_37D8CFAA_DE02_464C_A42F_1B43084B5DCA" visibility="public">
-									<UML:Dependency.client>
-										<Foundation.Core.ModelElement xmi.idref="EAID_39BA10D3_F7B9_468e_8C39_CCBA190E856A"/>
-									</UML:Dependency.client>
-									<UML:Dependency.supplier>
-										<Foundation.Core.ModelElement xmi.idref="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D"/>
-									</UML:Dependency.supplier>
-									<UML:ModelElement.taggedValue/>
-								</UML:Dependency>
 								<UML:Association name="(BANK_ID = ID)" xmi.id="EAID_4D607A04_5BED_4a07_AE8D_F6A8D20B8991" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
 									<UML:ModelElement.taggedValue/>
 									<UML:Association.connection>
@@ -852,6 +1322,15 @@
 										</UML:AssociationEnd>
 									</UML:Association.connection>
 								</UML:Association>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_7BE30EED_891A_458C_9BFD_5BB8DB79CD8F" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_39BA10D3_F7B9_468e_8C39_CCBA190E856A"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
 								<UML:Class name="HUMAN" xmi.id="EAID_39C1C549_5C9B_4280_8957_C83A3B49D0EB" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="table"/>
@@ -979,7 +1458,7 @@
 										</UML:AssociationEnd>
 									</UML:Association.connection>
 								</UML:Association>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_F9DCCF77_9682_4C82_874A_3599615C7600" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_38FD5895_1190_4813_BEDA_5EA9DCFAB141" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_39C1C549_5C9B_4280_8957_C83A3B49D0EB"/>
 									</UML:Dependency.client>
@@ -1064,7 +1543,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_4FB5E721_4903_403F_908E_C55EB0364A88" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_34212776_0CC3_47A1_A94A_EC089D5B9581" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_484F817B_ED75_4092_AECA_F018F3B55206"/>
 									</UML:Dependency.client>
@@ -1174,7 +1653,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_0E6B0B3E_E3AD_4790_BA37_3C50FE4050B8" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_A4D2FA42_2D86_4DEA_B936_12BFA016904D" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_57DBA3B7_581B_41aa_9B3F_0A3CA2B5AA68"/>
 									</UML:Dependency.client>
@@ -1309,7 +1788,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_EBEE90CF_5DB5_4B68_A840_68B3E42F6CD9" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_974D149E_5537_483C_B82F_07802689913C" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_5A3EFFAA_5CCC_495b_8CDE_1DE0A94CCFED"/>
 									</UML:Dependency.client>
@@ -1524,7 +2003,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_AF1C713D_C307_473E_A8EA_753CB49A99D7" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_01D2331F_7EF6_47BC_9F60_45CFDD249C0E" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_61853F69_1F39_4737_863D_015FDD9575E3"/>
 									</UML:Dependency.client>
@@ -1635,7 +2114,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_472C8A52_2FB4_4D10_9F27_9D8FD414884A" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_10C4F419_8E45_469B_B3D6_7040F749D1D3" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_61B7DD8A_FDA5_4c3b_B331_5C56A71FB1BE"/>
 									</UML:Dependency.client>
@@ -1745,7 +2224,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_BB134F03_CA22_4BB8_8199_A932086F0C9F" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_0B90C15D_3ACD_4031_886C_91E7DF80EA4B" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_67F107E8_7E37_4848_82E5_F9EAC1113CAB"/>
 									</UML:Dependency.client>
@@ -1768,6 +2247,116 @@
 											<UML:ModelElement.taggedValue/>
 										</UML:AssociationEnd>
 										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_ORDERLINE" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_67F107E8_7E37_4848_82E5_F9EAC1113CAB">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Class name="DECK" xmi.id="EAID_6BB8DF98_4AB1_4899_B8DA_D2AF16D14DA4" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck.id" xmi.id="EAID_74333647_4305_4D65_BD4B_474B6D291C1F"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid2"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck.name" xmi.id="EAID_D2039D09_9302_4DC0_B6AC_9BD6565AF00B"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="PK_DECK" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_074BDE96_5F42_4FD3_A2AB_BBB6D211BC76" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_6BB8DF98_4AB1_4899_B8DA_D2AF16D14DA4"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_613B45B4_C464_42c1_BDEC_A7D2018B7412"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
+								<UML:Association name="(DECK_ID = ID)" xmi.id="EAID_715B5F7D_8F56_4013_A2F2_A1C4C9C5C84D" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_SUIT_DECK" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_DD5DF684_720D_414e_9CE7_81F5FD2502C6">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_DECK" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_6BB8DF98_4AB1_4899_B8DA_D2AF16D14DA4">
 											<UML:AssociationEnd.multiplicity>
 												<UML:Multiplicity>
 													<UML:Multiplicity.range>
@@ -1855,7 +2444,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" xmi.id="EAID_E3BC34F1_D287_400d_8412_9F3351BCF862" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_2AA5D5EB_F838_4164_BC49_34928D3CD080" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_6BD42D64_464D_4d15_9418_DEC26B6553F3"/>
 									</UML:Dependency.client>
@@ -1878,6 +2467,116 @@
 											<UML:ModelElement.taggedValue/>
 										</UML:AssociationEnd>
 										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_PAYMENT" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_6BD42D64_464D_4d15_9418_DEC26B6553F3">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Class name="RESTAURANT" xmi.id="EAID_6C8389BC_9651_4914_AF77_5055BC96BD28" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Restaurant.id" xmi.id="EAID_1313FD90_5D9C_4220_BB09_ACDC6E15DDBB"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid2"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Restaurant.name" xmi.id="EAID_013AD95A_F225_4E63_9DE1_1CA4E3361C16"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="PK_RESTAURANT" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_4D545E7D_68AA_4BAA_B3BB_6700A40605F4" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_6C8389BC_9651_4914_AF77_5055BC96BD28"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_97A1477D_77DA_499c_B516_8FEAEDA36D04"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
+								<UML:Association name="(RESTAURANT_ID = ID)" xmi.id="EAID_3B29C2D2_9A6E_4908_AC93_D195970CF581" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_CHEF_RESTAURANT" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_85FEC480_6243_43c2_A72C_2E2B6D4F4087">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_RESTAURANT" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_6C8389BC_9651_4914_AF77_5055BC96BD28">
 											<UML:AssociationEnd.multiplicity>
 												<UML:Multiplicity>
 													<UML:Multiplicity.range>
@@ -2012,7 +2711,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_4378EA63_67A9_4A6D_B5FC_EFDD721DE5AC" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_15C194A8_8E10_4DE3_9503_FDD1E124F3CE" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396"/>
 									</UML:Dependency.client>
@@ -2122,7 +2821,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" xmi.id="EAID_643E2C70_9896_44b2_BAB4_DF26833C1807" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_2E4A0A8B_7798_4DE9_8DFF_8D8780730F8F" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_74FAAA9D_01B6_4b4f_B37A_4106607156FE"/>
 									</UML:Dependency.client>
@@ -2156,6 +2855,117 @@
 										</UML:AssociationEnd>
 									</UML:Association.connection>
 								</UML:Association>
+								<UML:Class name="CRT_MONITOR" xmi.id="EAID_75BE56C3_1C34_4dcf_8D1B_9CA45D518193" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="MONITOR_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor.id" xmi.id="EAID_695BC1C9_D3E2_4FA3_B81F_903621CA71AD"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="REFRESH_RATE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor.refreshRate" xmi.id="EAID_B892356C_136D_43D6_A17B_B9B1774BF1FC"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="FK_CRT_MONITOR_MONITOR" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="MONITOR_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="PK_CRT_MONITOR" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="MONITOR_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_9FD35A3A_539E_44F2_8806_1E655E8EC372" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_75BE56C3_1C34_4dcf_8D1B_9CA45D518193"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_782AA84A_21F0_4a1d_AA92_64F753204759"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
 								<UML:Class name="COMPUTER" xmi.id="EAID_77C53686_0435_4ea6_ADF2_87685C5E8194" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="table"/>
@@ -2232,7 +3042,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_51680675_4E54_4FAA_9D3E_2E5D2DD2B408" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_6DBCE2A3_E28B_4F1C_AAFD_45AD5695886B" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_77C53686_0435_4ea6_ADF2_87685C5E8194"/>
 									</UML:Dependency.client>
@@ -2342,7 +3152,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_4BAC049D_FB05_4834_98BF_F5EE20ECC68F" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_6683AF90_D961_456E_BDC2_4EC9BE918354" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_7C804B64_1C9D_4bff_B129_6C6D9A09079D"/>
 									</UML:Dependency.client>
@@ -2427,12 +3237,306 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_D84B21FF_5305_4E42_BB50_AA42E0E85481" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_D0B5FE54_E8E3_4B62_AA2C_341272D06A2D" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_7D1E7C4F_5A0B_46c1_8DEB_A140CEE321AA"/>
 									</UML:Dependency.client>
 									<UML:Dependency.supplier>
 										<Foundation.Core.ModelElement xmi.idref="EAID_99A644B0_2028_4462_8301_4D34931B9995"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
+								<UML:Class name="HAND_CARD" xmi.id="EAID_7FCE55F0_C372_4e59_BBD8_E1564C7D8543" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="HAND_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card.handCollection" xmi.id="EAID_19DF9F50_F5B0_4A82_898F_6E4FEA5C024C"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="CARD_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand.cardCollection" xmi.id="EAID_A65B419F_D05D_46DD_8B45_63EEB418A927"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="FK_HAND_CARD_CARD" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="CARD_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="FK_HAND_CARD_HAND" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="HAND_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="PK_HAND_CARD" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="HAND_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="CARD_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Association name="(HAND_ID = ID)" xmi.id="EAID_0F457081_2004_4657_8928_D82DECA754FD" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+									<UML:ModelElement.taggedValue/>
+									<UML:Association.connection>
+										<UML:AssociationEnd visibility="public" multiplicity="0..*" name="FK_HAND_CARD_HAND" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_7FCE55F0_C372_4e59_BBD8_E1564C7D8543">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="0" upper="-1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+										<UML:AssociationEnd visibility="public" multiplicity="1" name="PK_HAND" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_A8A10228_F24E_414e_B3BA_3991A9D8E3C1">
+											<UML:AssociationEnd.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:AssociationEnd.multiplicity>
+											<UML:ModelElement.taggedValue/>
+										</UML:AssociationEnd>
+									</UML:Association.connection>
+								</UML:Association>
+								<UML:Class name="CHEF" xmi.id="EAID_85FEC480_6243_43c2_A72C_2E2B6D4F4087" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef.id" xmi.id="EAID_F8AAB38F_62FA_4344_93AA_62CA3E27D7BC"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid2"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef.name" xmi.id="EAID_8BC09FDD_D4CB_41B8_B791_28F566722427"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="RESTAURANT_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef.restaurant" xmi.id="EAID_71B55672_5F9B_4ED4_BD5D_784EE701476B"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="FK_CHEF_RESTAURANT" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="RESTAURANT_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="PK_CHEF" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_82A9E9FD_4908_4D4B_AFA8_163343BF182C" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_85FEC480_6243_43c2_A72C_2E2B6D4F4087"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E"/>
 									</UML:Dependency.supplier>
 									<UML:ModelElement.taggedValue/>
 								</UML:Dependency>
@@ -2512,7 +3616,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_1010FBB1_7E37_408B_8088_7B50D3A05121" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_9A2171FF_17EC_4105_BA08_CC3E01F272EE" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_88740600_2ABE_43cd_963C_4644D9062C78"/>
 									</UML:Dependency.client>
@@ -2616,32 +3720,6 @@
 												</UML:Parameter>
 											</UML:BehavioralFeature.parameter>
 										</UML:Operation>
-										<UML:Operation name="UQ_PERSON_ADDRESS_ID" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
-											<UML:ModelElement.stereotype>
-												<UML:Stereotype name="unique"/>
-											</UML:ModelElement.stereotype>
-											<UML:ModelElement.taggedValue/>
-											<UML:BehavioralFeature.parameter>
-												<UML:Parameter kind="return" visibility="public">
-													<UML:Parameter.type>
-														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
-													</UML:Parameter.type>
-													<UML:ModelElement.taggedValue/>
-													<UML:Parameter.defaultValue>
-														<UML:Expression/>
-													</UML:Parameter.defaultValue>
-												</UML:Parameter>
-												<UML:Parameter name="ADDRESS_ID" kind="in" visibility="public">
-													<UML:Parameter.type>
-														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
-													</UML:Parameter.type>
-													<UML:ModelElement.taggedValue/>
-													<UML:Parameter.defaultValue>
-														<UML:Expression/>
-													</UML:Parameter.defaultValue>
-												</UML:Parameter>
-											</UML:BehavioralFeature.parameter>
-										</UML:Operation>
 										<UML:Operation name="PK_PERSON" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
 											<UML:ModelElement.stereotype>
 												<UML:Stereotype name="PK"/>
@@ -2668,9 +3746,35 @@
 												</UML:Parameter>
 											</UML:BehavioralFeature.parameter>
 										</UML:Operation>
+										<UML:Operation name="UQ_PERSON_ADDRESS_ID" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="unique"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ADDRESS_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_2A9965D8_06AD_439D_939E_F0AC47383CBE" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_C5855796_BF67_4544_8FAA_D7EE5963D619" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_8AC93FAC_02FE_4ca0_92A1_E88EAFC69F53"/>
 									</UML:Dependency.client>
@@ -2755,7 +3859,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" xmi.id="EAID_4436A897_11CD_479c_995B_2EBC5BEF1379" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_2E26745C_87DD_4244_8A31_75334477E817" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_8C9445ED_1701_4885_8989_57A262BC1932"/>
 									</UML:Dependency.client>
@@ -2845,7 +3949,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_74C0ADB4_84D4_4BFB_8CEE_068F92CFF7EA" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_99431ED6_C705_4D32_88C8_6A0E5DBFEF26" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_92CC229F_665B_4d9c_AD0C_82E30104D484"/>
 									</UML:Dependency.client>
@@ -2930,7 +4034,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_D372E834_11E5_41F2_ABC1_C19691667713" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_1ABAC21D_DF58_48E0_ABE3_3ABFDA348AF5" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_A1CBC2E2_3020_4816_88AD_EFB0B57B7338"/>
 									</UML:Dependency.client>
@@ -3041,12 +4145,76 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_819F4C9A_5F80_4678_BF9D_2E3E4B33FF29" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_66DD81B7_6AF7_495E_97E1_F7C026B97115" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_A2BA174C_D1D4_4933_BAB3_3E35446F5AA6"/>
 									</UML:Dependency.client>
 									<UML:Dependency.supplier>
 										<Foundation.Core.ModelElement xmi.idref="EAID_12DBFC9B_D995_4251_96D0_6FB3EB85C0FB"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
+								<UML:Class name="HAND" xmi.id="EAID_A8A10228_F24E_414e_B3BA_3991A9D8E3C1" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand.id" xmi.id="EAID_149C97B1_DD01_4a1b_B8A2_C3C1CEA0F49D"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="PK_HAND" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_E7206166_DA32_465F_9E6C_166A9227AE65" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_A8A10228_F24E_414e_B3BA_3991A9D8E3C1"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_DF711CE5_51FF_4575_821B_772EA4A3513D"/>
 									</UML:Dependency.supplier>
 									<UML:ModelElement.taggedValue/>
 								</UML:Dependency>
@@ -3152,7 +4320,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_50DC0C80_CE1C_41D8_A7AA_00F896CC2F1A" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_0365CE46_1CD3_45D3_8698_9E43A3C078F1" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_A953B7CA_3592_4966_89CD_2457BD8CD7B2"/>
 									</UML:Dependency.client>
@@ -3262,7 +4430,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_9FA5918F_2DE2_4F96_870E_FFC4D109918B" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_5338B21E_5C72_49B0_8EB0_832C1ED2F2F6" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_AED854E0_8E67_4aed_AF31_71CDFCD1E59E"/>
 									</UML:Dependency.client>
@@ -3372,7 +4540,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" xmi.id="EAID_3CC2544D_8FCD_402b_957E_E72F3CFC1D0D" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_F8332A15_D300_4C40_8BAF_B45F7E0333CA" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_BDE98D1A_9599_437b_A076_5BD372D06122"/>
 									</UML:Dependency.client>
@@ -3530,7 +4698,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_013C0B6A_AC40_4328_9BB2_FD80ABB3CB99" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_4A72EF89_A258_4C2A_AC46_9058854D6EFF" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_BFD15E72_3CE6_4b80_98B4_DF102B3154FC"/>
 									</UML:Dependency.client>
@@ -3615,7 +4783,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_2C228CDA_08B3_4E35_A100_D6587D7D4708" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_9A3EC511_B666_476C_8C0D_0D3568D16F29" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_D0B8381A_AE30_4596_8DDE_A92C22E848D1"/>
 									</UML:Dependency.client>
@@ -3700,7 +4868,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_DB104DF0_CB2C_483F_B857_F13643C2065C" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_B2277370_2994_4299_9ABB_BB01688EAA7B" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_D74B8811_BD4F_49df_A171_7955DF4E7249"/>
 									</UML:Dependency.client>
@@ -3931,12 +5099,144 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_1B5CC74A_E68A_4D52_9C8C_F44F644EFDF1" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_4A235EA2_490D_4DD0_989A_902C2CEB9531" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_DA0EED73_E5F7_4af9_89BA_F8A711339BB2"/>
 									</UML:Dependency.client>
 									<UML:Dependency.supplier>
 										<Foundation.Core.ModelElement xmi.idref="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
+								<UML:Class name="SUIT" xmi.id="EAID_DD5DF684_720D_414e_9CE7_81F5FD2502C6" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit.id" xmi.id="EAID_B26258C1_AA41_4E6C_9A23_9B50831F3353"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid2"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit.name" xmi.id="EAID_78E7D38A_FB37_452C_AB11_4240C0E548AF"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="DECK_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit.deck" xmi.id="EAID_8D15B6C3_2295_46F0_A20B_F5FD46A80F45"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="FK_SUIT_DECK" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="FK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="DECK_ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+										<UML:Operation name="PK_SUIT" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_488EE107_E109_4220_96D2_C67A98AE006C" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_DD5DF684_720D_414e_9CE7_81F5FD2502C6"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7"/>
 									</UML:Dependency.supplier>
 									<UML:ModelElement.taggedValue/>
 								</UML:Dependency>
@@ -3965,7 +5265,7 @@
 											</UML:ModelElement.stereotype>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee.projectCollection" xmi.id="EAID_0F33EA45_EE57_4DD3_86E9_4CF6646531E4"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project.employeeCollection" xmi.id="EAID_9EB8B5D7_C6B9_484E_93C6_BE4944269897"/>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project.employeeCollection" xmi.id="EAID_D3C09FFA_6E5D_41e2_9DFC_5B025665923A"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="PROJECT_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3987,7 +5287,6 @@
 											</UML:ModelElement.stereotype>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee.projectCollection" xmi.id="EAID_DE74EBE1_961C_4A7E_87B0_7C0643502D7D"/>
-												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project.employeeCollection" xmi.id="EAID_F485C2CF_929B_4683_996E_9F6477B92527"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="FK_EMPLOYEE_PROJECT_EMPLOYEE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -4079,6 +5378,112 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
+								<UML:Class name="DISPLAY" xmi.id="EAID_F3DEA245_6D40_4cea_ADDA_4CD26EF13AB1" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+									<UML:ModelElement.stereotype>
+										<UML:Stereotype name="table"/>
+									</UML:ModelElement.stereotype>
+									<UML:ModelElement.taggedValue/>
+									<UML:Classifier.feature>
+										<UML:Attribute name="ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display.id" xmi.id="EAID_59C650FC_5DC7_4F61_98CA_F8F7C46A19A5"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="WIDTH" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display.width" xmi.id="EAID_97FC633C_3A35_4481_BB88_06B53E630F3D"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Attribute name="HEIGHT" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
+											<UML:StructuralFeature.multiplicity>
+												<UML:Multiplicity>
+													<UML:Multiplicity.range>
+														<UML:MultiplicityRange lower="1" upper="1"/>
+													</UML:Multiplicity.range>
+												</UML:Multiplicity>
+											</UML:StructuralFeature.multiplicity>
+											<UML:Attribute.initialValue>
+												<UML:Expression/>
+											</UML:Attribute.initialValue>
+											<UML:StructuralFeature.type>
+												<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+											</UML:StructuralFeature.type>
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="column"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display.height" xmi.id="EAID_39BF7F8A_76B1_484F_8878_916E3EE7458A"/>
+											</UML:ModelElement.taggedValue>
+										</UML:Attribute>
+										<UML:Operation name="PK_DISPLAY" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+											<UML:ModelElement.stereotype>
+												<UML:Stereotype name="PK"/>
+											</UML:ModelElement.stereotype>
+											<UML:ModelElement.taggedValue/>
+											<UML:BehavioralFeature.parameter>
+												<UML:Parameter kind="return" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid1"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+												<UML:Parameter name="ID" kind="in" visibility="public">
+													<UML:Parameter.type>
+														<Foundation.Core.Classifier xmi.idref="eaxmiid0"/>
+													</UML:Parameter.type>
+													<UML:ModelElement.taggedValue/>
+													<UML:Parameter.defaultValue>
+														<UML:Expression/>
+													</UML:Parameter.defaultValue>
+												</UML:Parameter>
+											</UML:BehavioralFeature.parameter>
+										</UML:Operation>
+									</UML:Classifier.feature>
+								</UML:Class>
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_1ECF545F_A487_44C8_A5EE_1580D638BB5C" visibility="public">
+									<UML:Dependency.client>
+										<Foundation.Core.ModelElement xmi.idref="EAID_F3DEA245_6D40_4cea_ADDA_4CD26EF13AB1"/>
+									</UML:Dependency.client>
+									<UML:Dependency.supplier>
+										<Foundation.Core.ModelElement xmi.idref="EAID_BD83C679_098A_46a0_B994_50A9478E9896"/>
+									</UML:Dependency.supplier>
+									<UML:ModelElement.taggedValue/>
+								</UML:Dependency>
 								<UML:Class name="AUTHOR_BOOK" xmi.id="EAID_F7DB6D44_C033_4a4d_9310_A9DC052654B3" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="table"/>
@@ -4104,7 +5509,6 @@
 											</UML:ModelElement.stereotype>
 											<UML:ModelElement.taggedValue>
 												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book.authorCollection" xmi.id="EAID_4247CD07_F24A_4C55_98BF_684B9FB2B2AC"/>
-												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author.bookCollection" xmi.id="EAID_4C091148_3314_4EA1_A446_1D3FABC6995F"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="BOOK_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -4340,7 +5744,7 @@
 										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
-								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_4529C29F_BAB4_4F22_A083_3D26C237F1F4" visibility="public">
+								<UML:Dependency isSpecification="false" name="dependency" xmi.id="EAID_D9BA6269_6892_4661_821D_8F409A11ED97" visibility="public">
 									<UML:Dependency.client>
 										<Foundation.Core.ModelElement xmi.idref="EAID_F8E45904_0E69_4440_BB1E_45F28EEF5865"/>
 									</UML:Dependency.client>
@@ -4868,6 +6272,151 @@
 																						</UML:Class>
 																					</UML:Namespace.ownedElement>
 																				</UML:Package>
+																				<UML:Package name="twolevelinheritance" xmi.id="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																					<UML:ModelElement.taggedValue/>
+																					<UML:Namespace.ownedElement>
+																						<UML:Class name="CRTMonitor" xmi.id="EAID_782AA84A_21F0_4a1d_AA92_64F753204759" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:GeneralizableElement.generalization>
+																								<Foundation.Core.Generalization xmi.idref="EAID_196BAAF8_17DB_409d_89E7_D98490EE8496"/>
+																							</UML:GeneralizableElement.generalization>
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="refreshRate" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																							<UML:Namespace.ownedElement>
+																								<UML:Generalization child="EAID_782AA84A_21F0_4a1d_AA92_64F753204759" parent="EAID_C7759A44_3482_4c56_97E7_0A7778155F35" xmi.id="EAID_196BAAF8_17DB_409d_89E7_D98490EE8496" visibility="public">
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Generalization>
+																							</UML:Namespace.ownedElement>
+																						</UML:Class>
+																						<UML:Class name="LCDMonitor" xmi.id="EAID_9E6AD14D_C710_4a67_AAD8_6EFEEDFFC18A" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:GeneralizableElement.generalization>
+																								<Foundation.Core.Generalization xmi.idref="EAID_5CF2F699_4407_4a5a_8192_F434CF7AB662"/>
+																							</UML:GeneralizableElement.generalization>
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="dpiSupported" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																							<UML:Namespace.ownedElement>
+																								<UML:Generalization child="EAID_9E6AD14D_C710_4a67_AAD8_6EFEEDFFC18A" parent="EAID_C7759A44_3482_4c56_97E7_0A7778155F35" xmi.id="EAID_5CF2F699_4407_4a5a_8192_F434CF7AB662" visibility="public">
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Generalization>
+																							</UML:Namespace.ownedElement>
+																						</UML:Class>
+																						<UML:Class name="Display" xmi.id="EAID_BD83C679_098A_46a0_B994_50A9478E9896" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																								<UML:Attribute name="width" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																								<UML:Attribute name="height" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																							<UML:Namespace.ownedElement>
+																								<UML:Generalization child="EAID_C7759A44_3482_4c56_97E7_0A7778155F35" parent="EAID_BD83C679_098A_46a0_B994_50A9478E9896" xmi.id="EAID_FDFBF3FD_4358_4bff_9781_236F2CDB2F25" visibility="public">
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Generalization>
+																							</UML:Namespace.ownedElement>
+																						</UML:Class>
+																						<UML:Class name="Monitor" xmi.id="EAID_C7759A44_3482_4c56_97E7_0A7778155F35" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:GeneralizableElement.generalization>
+																								<Foundation.Core.Generalization xmi.idref="EAID_FDFBF3FD_4358_4bff_9781_236F2CDB2F25"/>
+																							</UML:GeneralizableElement.generalization>
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="brand" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																						</UML:Class>
+																					</UML:Namespace.ownedElement>
+																				</UML:Package>
 																			</UML:Namespace.ownedElement>
 																		</UML:Package>
 																		<UML:Package name="manytomany" xmi.id="EAPK_0ADF759C_0FD8_47ef_BC13_4087C612DDE3" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
@@ -5047,6 +6596,115 @@
 																							</UML:Association.connection>
 																						</UML:Association>
 																						<UML:Class name="Author" xmi.id="EAID_775B56C3_D694_417a_A41E_2926FD5F3160" visibility="public" namespace="EAPK_1F65F8B6_8E3C_4af6_BB0D_C8764F42AA86" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																								<UML:Attribute name="name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																						</UML:Class>
+																					</UML:Namespace.ownedElement>
+																				</UML:Package>
+																			</UML:Namespace.ownedElement>
+																		</UML:Package>
+																		<UML:Package name="manytoone" xmi.id="EAPK_44CCCF7B_68AE_40a4_890A_3A3E94390252" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																			<UML:ModelElement.taggedValue/>
+																			<UML:Namespace.ownedElement>
+																				<UML:Package name="unidirectional" xmi.id="EAPK_7B0F2C9C_9B6E_4182_A547_59D3F0C2CBB2" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																					<UML:ModelElement.taggedValue/>
+																					<UML:Namespace.ownedElement>
+																						<UML:Class name="Chef" xmi.id="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E" visibility="public" namespace="EAPK_7B0F2C9C_9B6E_4182_A547_59D3F0C2CBB2" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																								<UML:Attribute name="name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																						</UML:Class>
+																						<UML:Association xmi.id="EAID_DE22261E_E609_43f7_83F8_6551C984809D" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Association.connection>
+																								<UML:AssociationEnd visibility="public" multiplicity="1..*" name="chefCollection" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="-1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																								<UML:AssociationEnd visibility="public" multiplicity="1" name="restaurant" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_97A1477D_77DA_499c_B516_8FEAEDA36D04">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																							</UML:Association.connection>
+																						</UML:Association>
+																						<UML:Class name="Restaurant" xmi.id="EAID_97A1477D_77DA_499c_B516_8FEAEDA36D04" visibility="public" namespace="EAPK_7B0F2C9C_9B6E_4182_A547_59D3F0C2CBB2" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue/>
 																							<UML:Classifier.feature>
 																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
@@ -5767,6 +7425,220 @@
 																						</UML:Class>
 																					</UML:Namespace.ownedElement>
 																				</UML:Package>
+																				<UML:Package name="levelassociation" xmi.id="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+																					<UML:ModelElement.taggedValue/>
+																					<UML:Namespace.ownedElement>
+																						<UML:Class name="Card" xmi.id="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																								<UML:Attribute name="Name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																						</UML:Class>
+																						<UML:Association xmi.id="EAID_276EEBA0_1B52_4180_8D14_D8B5239EBAEF" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Association.connection>
+																								<UML:AssociationEnd visibility="public" multiplicity="*" name="cardCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="0" upper="-1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																								<UML:AssociationEnd visibility="public" multiplicity="1" name="suit" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																							</UML:Association.connection>
+																						</UML:Association>
+																						<UML:Association xmi.id="EAID_5F54B24F_3226_47aa_8903_1858EEEE3472" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="correlation-table" value="HAND_CARD" xmi.id="EAID_2E4C84B7_9444_4A4B_8AD7_015F3E7F5025"/>
+																							</UML:ModelElement.taggedValue>
+																							<UML:Association.connection>
+																								<UML:AssociationEnd visibility="public" multiplicity="0..*" name="handCollection" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_DF711CE5_51FF_4575_821B_772EA4A3513D">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="0" upper="-1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																								<UML:AssociationEnd visibility="public" multiplicity="1..*" name="cardCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="-1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																							</UML:Association.connection>
+																						</UML:Association>
+																						<UML:Class name="Deck" xmi.id="EAID_613B45B4_C464_42c1_BDEC_A7D2018B7412" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																								<UML:Attribute name="name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																						</UML:Class>
+																						<UML:Association xmi.id="EAID_55E10696_0D13_4f64_9FBB_6D476490C522" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Association.connection>
+																								<UML:AssociationEnd visibility="public" multiplicity="1..*" name="suitCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="-1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																								<UML:AssociationEnd visibility="public" multiplicity="1" name="deck" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_613B45B4_C464_42c1_BDEC_A7D2018B7412">
+																									<UML:AssociationEnd.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:AssociationEnd.multiplicity>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:AssociationEnd>
+																							</UML:Association.connection>
+																						</UML:Association>
+																						<UML:Class name="Hand" xmi.id="EAID_DF711CE5_51FF_4575_821B_772EA4A3513D" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																						</UML:Class>
+																						<UML:Class name="Suit" xmi.id="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																							<UML:ModelElement.taggedValue/>
+																							<UML:Classifier.feature>
+																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																								<UML:Attribute name="name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
+																									<UML:StructuralFeature.multiplicity>
+																										<UML:Multiplicity>
+																											<UML:Multiplicity.range>
+																												<UML:MultiplicityRange lower="1" upper="1"/>
+																											</UML:Multiplicity.range>
+																										</UML:Multiplicity>
+																									</UML:StructuralFeature.multiplicity>
+																									<UML:Attribute.initialValue>
+																										<UML:Expression/>
+																									</UML:Attribute.initialValue>
+																									<UML:StructuralFeature.type>
+																										<Foundation.Core.Classifier xmi.idref="EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E"/>
+																									</UML:StructuralFeature.type>
+																									<UML:ModelElement.taggedValue/>
+																								</UML:Attribute>
+																							</UML:Classifier.feature>
+																						</UML:Class>
+																					</UML:Namespace.ownedElement>
+																				</UML:Package>
 																				<UML:Package name="primarykey" xmi.id="EAPK_54E20EEA_7C24_47cb_A255_BC7EEA2911B8" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 																					<UML:ModelElement.taggedValue/>
 																					<UML:Namespace.ownedElement>
@@ -5987,58 +7859,80 @@
 				<Foundation.Core.ModelElement xmi.idref="EAID_289E0290_19C8_4c35_A095_12DF9BF798A6"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_AE8518B8_E8DA_40ab_818A_4CF243FB09EA"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_DEDCDA85_654B_45f6_8EFA_DDB29A9860CF"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_196BAAF8_17DB_409d_89E7_D98490EE8496"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_5CF2F699_4407_4a5a_8192_F434CF7AB662"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_FDFBF3FD_4358_4bff_9781_236F2CDB2F25"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_8781B31F_62E5_4aaf_8C68_781FA3A0E317"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_80122D88_6997_437f_A6ED_8B374ED98F03"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_DE22261E_E609_43f7_83F8_6551C984809D"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_64AA7407_1F2B_4b96_8A5E_0724B850D6A3"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_D04382EB_0ECD_435b_855D_07A03AD1E887"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_63546342_FF6A_4b44_BC32_49BA1A3893BB"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_12B89A6B_89E0_4456_B71F_165772645E9A"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_F3D72441_145C_406c_9CBE_C435158C89BA"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_3696123F_39AA_40b2_AD92_24A6878219EA"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_276EEBA0_1B52_4180_8D14_D8B5239EBAEF"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_5F54B24F_3226_47aa_8903_1858EEEE3472"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_55E10696_0D13_4f64_9FBB_6D476490C522"/>
 			</UML:Stereotype.extendedElement>
 		</UML:Stereotype>
 		<UML:Stereotype xmi.id="eaxmiid5" name="DataSource" visibility="private" isSpecification="false" isRoot="false" isLeaf="false" isAbstract="false" baseClass="Dependency">
 			<UML:Stereotype.extendedElement>
-				<Foundation.Core.ModelElement xmi.idref="EAID_477D900C_005B_421F_8837_FA5F191645BE"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_8F14FD3B_1899_4B2E_8844_4AFB1C2BAAE9"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_ADF3AB5F_5016_43D1_9E34_32386213FE03"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_226AD81A_F4F1_47F6_9F81_45E3F77A05EF"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_6676172D_D13A_4053_A8B8_4DA2E99C531A"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_37D8CFAA_DE02_464C_A42F_1B43084B5DCA"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_F9DCCF77_9682_4C82_874A_3599615C7600"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_4FB5E721_4903_403F_908E_C55EB0364A88"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_0E6B0B3E_E3AD_4790_BA37_3C50FE4050B8"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_EBEE90CF_5DB5_4B68_A840_68B3E42F6CD9"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_AF1C713D_C307_473E_A8EA_753CB49A99D7"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_472C8A52_2FB4_4D10_9F27_9D8FD414884A"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_BB134F03_CA22_4BB8_8199_A932086F0C9F"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_E3BC34F1_D287_400d_8412_9F3351BCF862"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_4378EA63_67A9_4A6D_B5FC_EFDD721DE5AC"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_643E2C70_9896_44b2_BAB4_DF26833C1807"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_51680675_4E54_4FAA_9D3E_2E5D2DD2B408"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_4BAC049D_FB05_4834_98BF_F5EE20ECC68F"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_D84B21FF_5305_4E42_BB50_AA42E0E85481"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_1010FBB1_7E37_408B_8088_7B50D3A05121"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_2A9965D8_06AD_439D_939E_F0AC47383CBE"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_4436A897_11CD_479c_995B_2EBC5BEF1379"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_74C0ADB4_84D4_4BFB_8CEE_068F92CFF7EA"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_D372E834_11E5_41F2_ABC1_C19691667713"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_819F4C9A_5F80_4678_BF9D_2E3E4B33FF29"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_50DC0C80_CE1C_41D8_A7AA_00F896CC2F1A"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_9FA5918F_2DE2_4F96_870E_FFC4D109918B"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_3CC2544D_8FCD_402b_957E_E72F3CFC1D0D"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_013C0B6A_AC40_4328_9BB2_FD80ABB3CB99"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_2C228CDA_08B3_4E35_A100_D6587D7D4708"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_DB104DF0_CB2C_483F_B857_F13643C2065C"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_1B5CC74A_E68A_4D52_9C8C_F44F644EFDF1"/>
-				<Foundation.Core.ModelElement xmi.idref="EAID_4529C29F_BAB4_4F22_A083_3D26C237F1F4"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_C5996166_097F_4053_9536_706CD2C74872"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_F703E50E_B275_4CE9_9A97_1F64AD3717AA"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_D3BEB16E_7EA7_4AD5_8A70_D7E6EF948658"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_303DB0A0_0820_4FA7_8330_79FA56B54928"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_03DCD28F_DEB5_4385_853C_72CE7D9A8828"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_917353BB_1737_449A_9959_7B0247247105"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_C3031BB9_E93A_45A8_B4DA_66F5AF760A35"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_A50BBCE6_7EDF_4E2E_A038_A4CC49AB6977"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_7BE30EED_891A_458C_9BFD_5BB8DB79CD8F"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_38FD5895_1190_4813_BEDA_5EA9DCFAB141"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_34212776_0CC3_47A1_A94A_EC089D5B9581"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_A4D2FA42_2D86_4DEA_B936_12BFA016904D"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_974D149E_5537_483C_B82F_07802689913C"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_01D2331F_7EF6_47BC_9F60_45CFDD249C0E"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_10C4F419_8E45_469B_B3D6_7040F749D1D3"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_0B90C15D_3ACD_4031_886C_91E7DF80EA4B"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_074BDE96_5F42_4FD3_A2AB_BBB6D211BC76"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_2AA5D5EB_F838_4164_BC49_34928D3CD080"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_4D545E7D_68AA_4BAA_B3BB_6700A40605F4"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_15C194A8_8E10_4DE3_9503_FDD1E124F3CE"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_2E4A0A8B_7798_4DE9_8DFF_8D8780730F8F"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_9FD35A3A_539E_44F2_8806_1E655E8EC372"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_6DBCE2A3_E28B_4F1C_AAFD_45AD5695886B"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_6683AF90_D961_456E_BDC2_4EC9BE918354"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_D0B5FE54_E8E3_4B62_AA2C_341272D06A2D"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_82A9E9FD_4908_4D4B_AFA8_163343BF182C"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_9A2171FF_17EC_4105_BA08_CC3E01F272EE"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_C5855796_BF67_4544_8FAA_D7EE5963D619"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_2E26745C_87DD_4244_8A31_75334477E817"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_99431ED6_C705_4D32_88C8_6A0E5DBFEF26"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_1ABAC21D_DF58_48E0_ABE3_3ABFDA348AF5"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_66DD81B7_6AF7_495E_97E1_F7C026B97115"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_E7206166_DA32_465F_9E6C_166A9227AE65"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_0365CE46_1CD3_45D3_8698_9E43A3C078F1"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_5338B21E_5C72_49B0_8EB0_832C1ED2F2F6"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_F8332A15_D300_4C40_8BAF_B45F7E0333CA"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_4A72EF89_A258_4C2A_AC46_9058854D6EFF"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_9A3EC511_B666_476C_8C0D_0D3568D16F29"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_B2277370_2994_4299_9ABB_BB01688EAA7B"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_4A235EA2_490D_4DD0_989A_902C2CEB9531"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_488EE107_E109_4220_96D2_C67A98AE006C"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_1ECF545F_A487_44C8_A5EE_1580D638BB5C"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_D9BA6269_6892_4661_821D_8F409A11ED97"/>
 			</UML:Stereotype.extendedElement>
 		</UML:Stereotype>
 		<UML:Stereotype xmi.id="eaxmiid6" name="FK" visibility="private" isSpecification="false" isRoot="false" isLeaf="false" isAbstract="false" baseClass="Association">
 			<UML:Stereotype.extendedElement>
 				<Foundation.Core.ModelElement xmi.idref="EAID_F027AAA5_EDEE_4d97_84BF_3D79C7D11842"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_76D5E669_B60F_4647_9495_60B6F56EDEF3"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_660ED88E_2FBB_45ce_A659_6FFB67ED3569"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_70A37FCD_B06F_4401_86F4_F0C27727FC26"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_2DD22DF7_DD80_40f4_AB8A_824819CDF4E8"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_5BC8C1E6_45F1_4459_A0D7_58BBA76F48CB"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_38E71865_982B_4339_9E14_A54F373F809D"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_557CE33C_4CFA_408f_9A26_DA7A0D4BAED5"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_F8FC084F_25BF_4e67_9EF6_67C2F62AF439"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_15EB3C20_B652_4b7f_B9B0_6D5C7AC0949E"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_4D607A04_5BED_4a07_AE8D_F6A8D20B8991"/>
@@ -6050,10 +7944,13 @@
 				<Foundation.Core.ModelElement xmi.idref="EAID_56C7EFAB_E807_49f3_A004_ED57ED16AB16"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_B2342F6D_6288_43c1_80C1_CB0606E7EA4C"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_12E4C54B_1C15_4d42_AC3A_AA803766D07B"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_715B5F7D_8F56_4013_A2F2_A1C4C9C5C84D"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_EEB72C85_59EF_4831_BAC1_C8AEE2E2E6F4"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_3B29C2D2_9A6E_4908_AC93_D195970CF581"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_91383631_BF27_41c8_B132_30487EC30EB2"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_125A856F_A995_45eb_B5D7_6253DC5B31DC"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_C4BC6D31_BFE0_488c_B9BC_E70AE77E4EC9"/>
+				<Foundation.Core.ModelElement xmi.idref="EAID_0F457081_2004_4657_8928_D82DECA754FD"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_6AA4E5C9_8B59_4663_9047_14DD7C4EC046"/>
 				<Foundation.Core.ModelElement xmi.idref="EAID_EF3114F1_4077_48af_AB8D_6D1075900A97"/>
 			</UML:Stereotype.extendedElement>
