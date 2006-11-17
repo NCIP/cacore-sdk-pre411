@@ -17,6 +17,7 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar"/>
 		</fileset>
+		<pathelement path="${conf.dir}"/>
 	</path>
 		
 	<macrodef name="SDKecho">
@@ -43,6 +44,8 @@
 		<echo>${java.class.path}</echo>
 		<java classname="TestClient" fork="true">
 			<classpath refid="classpath"/>
+			<sysproperty key="log4j.configuration"
+									value="${conf.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -127,12 +130,12 @@
 
 		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="true">
 			<classpath>
-				<pathelement location="${conf.dir}"/>
 				<path refid="classpath"/>
 			</classpath>
+			
 			<formatter type="xml"/>			
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/client_log4j.properties"/>
+						value="${conf.dir}/log4j.properties"/>
 			
 			<!-- Sample single test
 			
