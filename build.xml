@@ -459,7 +459,7 @@
 
 	<target name="-package-thickclient-resources.main" unless="package-thickclient-resources.main.ignore">
 		<SDKecho message="Packaging thick-client resources"/>
-		<copy todir="${dir.output.project.package.thickclient}" overwrite="true">
+		<copy todir="${dir.output.project.package.thickclient}/conf" overwrite="true">
 			<fileset dir="${dir.output.project.src}">
 				<include name="${file.orm.properties}"/>
 				<include name="${file.logger.properties}"/>
