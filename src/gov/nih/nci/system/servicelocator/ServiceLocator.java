@@ -24,8 +24,8 @@ import org.jdom.Element;
 public class ServiceLocator {
 
 	private static Logger log = Logger.getLogger(ServiceLocator.class.getName());
-	private Map domainObjectToDataSourceMap = null;
-	private Map dataSourceConfigMap = null;
+	private Map domainObjectToDataSourceMap =  new Hashtable();
+	private Map dataSourceConfigMap = new Hashtable();
 	private int ormCount = 0;
 
 
@@ -40,8 +40,6 @@ public class ServiceLocator {
 	{
 		Parser parser = new Parser("DAOConfig.xml");
 		List list = parser.getList("/DAOConfiguration/domainObjects");
-		domainObjectToDataSourceMap = new Hashtable();
-		dataSourceConfigMap = new Hashtable();
 		
 		for (Iterator i = list.iterator(); i.hasNext();) {
 			Element element = (Element) i.next();
