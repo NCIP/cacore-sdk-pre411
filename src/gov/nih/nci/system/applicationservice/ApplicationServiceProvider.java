@@ -103,7 +103,7 @@ public class ApplicationServiceProvider
 
 	public synchronized static ApplicationService getRemoteInstance(String URL)
 	{
-		if (applicationService == null)
+		//if (applicationService == null) Commented this line because user specifically is asking for a new instance. But this will still not work in multi threaded environment
 		{
 			try 
 			{
