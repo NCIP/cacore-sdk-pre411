@@ -42,6 +42,14 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
 	</filter-mapping>
 
 	<servlet>
+		<servlet-name>sdkstartup</servlet-name>
+		<servlet-class>
+			gov.nih.nci.common.util.WebStartupUtil
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
 		<servlet-name>context</servlet-name>
 		<servlet-class>
 			org.springframework.web.context.ContextLoaderServlet
@@ -110,4 +118,8 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
       	<url-pattern>/Happy</url-pattern>
     </servlet-mapping>
 
+	<welcome-file-list>
+		<welcome-file>Happy.jsp</welcome-file>
+	</welcome-file-list>
+	
 </web-app>
