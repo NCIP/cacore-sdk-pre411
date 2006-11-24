@@ -352,10 +352,8 @@
 				<include name="mapping.dtd"/>
 				<include name="xml.properties"/>
 				<include name="xml-mapping.xml"/>
-				<include name="roleLookup.properties"/>
 				<include name="cacoreBeans.properties"/>
 				<include name="${file.control.systemProperties}"/>
-				<include name="${file.cache.properties}"/>
 			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
 		</jar>
