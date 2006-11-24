@@ -167,8 +167,9 @@ public class CQL2HQL {
 		String sourceRoleName = assoc.getSourceRoleName();
 		if (roleName == null && sourceRoleName ==null ) {
 			// still null?? no association to the object!
-			throw new QueryException("Association from type " + parentName + 
-				" to type " + assoc.getName() + " does not exist.  Use only direct associations");
+			if(!existInheritance(parentName,assoc.getName()))
+				throw new QueryException("Association from type " + parentName + 
+						" to type " + assoc.getName() + " does not exist.  Use only direct associations");
 		}
 		if(roleName!=null)
 		{
@@ -180,7 +181,7 @@ public class CQL2HQL {
 			processObject(hql, assoc);
 			hql.append(")");
 		}
-		else
+		else if (sourceRoleName!=null)
 		{
 			if (useAlias) {
 				hql.append(TARGET_ALIAS).append(".");
@@ -188,7 +189,16 @@ public class CQL2HQL {
 			hql.append("id in ( select ").append(sourceRoleName).append(".id ");
 			processObject(hql, assoc);
 			hql.append(")");
-		}	
+		}
+		else
+		{
+			if (useAlias) {
+				hql.append(TARGET_ALIAS).append(".");
+			}
+			hql.append("id in ( select ").append("id ");
+			processObject(hql, assoc);
+			hql.append(")");
+		}
 	}
 	
 	
@@ -425,5 +435,19 @@ public class CQL2HQL {
 		Method[] methodArray = new Method[allMethods.size()];
 		allMethods.toArray(methodArray);
 		return methodArray;
+	}
+	
+	private static boolean existInheritance(String parent, String child) throws QueryException
+	{
+		try {
+			Class parentClass= getClassFromCache(parent);
+			Class childClass= getClassFromCache(child);
+			if (childClass.getSuperclass().getName().equals(parent)
+					|| parentClass.getSuperclass().getName().equals(child))
+				return true;
+			return false;
+		} catch (Exception ex) {
+			throw new QueryException("Could not load class: " + ex.getMessage(), ex);
+		}
 	}
 }

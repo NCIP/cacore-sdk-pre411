@@ -62,10 +62,12 @@ public class NestedCriteria2HQL
 			{
 				hql.append(",").append(temp.getSourceName()).append(" ").append(srcAlias);
 				hql.append(" where ");
+				//Rolename will be null only in case of inheritance
+				String roleName = temp.getRoleName() == null?"id":temp.getRoleName();
 				if (temp.isTargetCollection())
 					hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(temp.getRoleName()).append(")");
 				else
-					hql.append(destAlias).append("=").append(srcAlias).append(".").append(temp.getRoleName());
+					hql.append(destAlias).append("=").append(srcAlias).append(".").append(roleName);
 
 				hql.append(" and ");
 			} else

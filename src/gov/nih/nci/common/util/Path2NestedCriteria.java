@@ -54,7 +54,7 @@ public class Path2NestedCriteria
 					if (roleName == null) 
 						throw new Exception("No association found from " + src + " to " + dest+ ", please double check your query path.");
 				}
-				roleName = (!src.equals(dest))?getRoleName(newCriteria,Class.forName(src), Class.forName(dest).newInstance()):"";
+				//roleName = (!src.equals(dest))?getRoleName(newCriteria,Class.forName(src), Class.forName(dest).newInstance()):"";
 
 				newCriteria.setSourceObjectName(src);
 				newCriteria.setTargetObjectName(dest);
