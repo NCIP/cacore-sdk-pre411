@@ -82,7 +82,7 @@ public class M2MUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Book searchObject = new Book();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book",searchObject );
 
 		assertNotNull(results);
@@ -108,7 +108,7 @@ public class M2MUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		Book searchObject = new Book();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author",searchObject );
 
 		assertNotNull(results);
@@ -127,7 +127,7 @@ public class M2MUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
 		Book searchObject = new Book();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book",searchObject );
 
 		assertNotNull(results);
@@ -162,7 +162,7 @@ public class M2MUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
 		Book searchObject = new Book();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author",searchObject );
 
 		assertNotNull(results);

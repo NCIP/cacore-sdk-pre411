@@ -82,7 +82,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Computer searchObject = new Computer();
-		searchObject.setId(3);
+		searchObject.setId(new Integer(3));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer",searchObject );
 
 		assertNotNull(results);
@@ -108,7 +108,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		Computer searchObject = new Computer();
-		searchObject.setId(3);
+		searchObject.setId(new Integer(3));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive",searchObject );
 
 		assertNotNull(results);
@@ -128,7 +128,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
 		Computer searchObject = new Computer();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer",searchObject );
 
 		assertNotNull(results);
@@ -164,7 +164,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
 		Computer searchObject = new Computer();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive",searchObject );
 
 		assertNotNull(results);
@@ -193,7 +193,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch3() throws ApplicationException
 	{
 		HardDrive searchObject = new HardDrive();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer",searchObject );
 
 		assertNotNull(results);
@@ -241,7 +241,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 			assertNotNull(hardDrive);
 			assertNotNull(hardDrive.getId());
 			assertNotNull(hardDrive.getSize());
-			assertEquals(true,hardDrive.getId()>1);
+			assertEquals(true,hardDrive.getId().intValue()>1);
 		}
 	}	
 

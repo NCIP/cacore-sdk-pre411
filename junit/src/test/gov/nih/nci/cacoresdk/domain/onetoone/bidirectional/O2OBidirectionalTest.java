@@ -82,7 +82,7 @@ public class O2OBidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Product searchObject = new Product();
-		searchObject.setId(3);
+		searchObject.setId(new Integer(3));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
 
 		assertNotNull(results);
@@ -108,7 +108,7 @@ public class O2OBidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		Product searchObject = new Product();
-		searchObject.setId(3);
+		searchObject.setId(new Integer(3));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
 
 		assertNotNull(results);
@@ -128,7 +128,7 @@ public class O2OBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
 		Product searchObject = new Product();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
 
 		assertNotNull(results);
@@ -161,7 +161,7 @@ public class O2OBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
 		Product searchObject = new Product();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
 
 		assertNotNull(results);
@@ -190,7 +190,7 @@ public class O2OBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch3() throws ApplicationException
 	{
 		OrderLine searchObject = new OrderLine();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
 
 		assertNotNull(results);

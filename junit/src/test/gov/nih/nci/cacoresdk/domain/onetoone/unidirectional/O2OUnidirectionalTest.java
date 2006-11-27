@@ -82,7 +82,7 @@ public class O2OUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Person searchObject = new Person();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person",searchObject );
 
 		assertNotNull(results);
@@ -108,7 +108,7 @@ public class O2OUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		Person searchObject = new Person();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address",searchObject );
 
 		assertNotNull(results);
@@ -127,7 +127,7 @@ public class O2OUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
 		Person searchObject = new Person();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person",searchObject );
 
 		assertNotNull(results);
@@ -160,7 +160,7 @@ public class O2OUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
 		Person searchObject = new Person();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Address",searchObject );
 
 		assertNotNull(results);

@@ -82,7 +82,7 @@ public class M2OUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Chef searchObject = new Chef();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef",searchObject );
 
 		assertNotNull(results);
@@ -107,7 +107,7 @@ public class M2OUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		Chef searchObject = new Chef();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Restaurant",searchObject );
 
 		assertNotNull(results);
@@ -126,7 +126,7 @@ public class M2OUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
 		Chef searchObject = new Chef();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef",searchObject );
 
 		assertNotNull(results);
@@ -157,7 +157,7 @@ public class M2OUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
 		Chef searchObject = new Chef();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Restaurant",searchObject );
 
 		assertNotNull(results);

@@ -82,7 +82,7 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Child searchObject = new Child();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
 
 		assertNotNull(results);
@@ -109,7 +109,7 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		Child searchObject = new Child();
-		searchObject.setId(3);
+		searchObject.setId(new Integer(3));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
 
 		assertNotNull(results);
@@ -136,7 +136,7 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch3() throws ApplicationException
 	{
 		Child searchObject = new Child();
-		searchObject.setId(5);
+		searchObject.setId(new Integer(5));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
 
 		assertNotNull(results);
@@ -168,7 +168,7 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 		try
 		{
 			Child searchObject = new Child();
-			searchObject.setId(1);
+			searchObject.setId(new Integer(1));
 			Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent",searchObject );
 	
 			assertNotNull(results);

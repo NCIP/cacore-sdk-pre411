@@ -81,7 +81,7 @@ public class M2MBidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Employee searchObject = new Employee();
-		searchObject.setId(7);
+		searchObject.setId(new Integer(7));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee",searchObject );
 
 		assertNotNull(results);
@@ -107,7 +107,7 @@ public class M2MBidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		Employee searchObject = new Employee();
-		searchObject.setId(7);
+		searchObject.setId(new Integer(7));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project",searchObject );
 
 		assertNotNull(results);
@@ -127,7 +127,7 @@ public class M2MBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
 		Employee searchObject = new Employee();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee",searchObject );
 
 		assertNotNull(results);
@@ -166,7 +166,7 @@ public class M2MBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
 		Employee searchObject = new Employee();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project",searchObject );
 
 		assertNotNull(results);
@@ -195,7 +195,7 @@ public class M2MBidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch3() throws ApplicationException
 	{
 		Project searchObject = new Project();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee",searchObject );
 
 		assertNotNull(results);
@@ -243,7 +243,7 @@ public class M2MBidirectionalTest extends SDKTestBase
 			assertNotNull(project);
 			assertNotNull(project.getId());
 			assertNotNull(project.getName());
-			assertEquals(true,project.getId()>1);
+			assertEquals(true,project.getId().intValue()>1);
 		}
 	}	
 

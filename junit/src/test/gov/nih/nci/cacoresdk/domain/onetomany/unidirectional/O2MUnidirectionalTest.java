@@ -81,7 +81,7 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		KeyChain searchObject = new KeyChain();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain",searchObject );
 
 		assertNotNull(results);
@@ -107,7 +107,7 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
 		KeyChain searchObject = new KeyChain();
-		searchObject.setId(4);
+		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key",searchObject );
 
 		assertNotNull(results);
@@ -126,7 +126,7 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
 		KeyChain searchObject = new KeyChain();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain",searchObject );
 
 		assertNotNull(results);
@@ -161,7 +161,7 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
 		KeyChain searchObject = new KeyChain();
-		searchObject.setId(1);
+		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key",searchObject );
 
 		assertNotNull(results);
