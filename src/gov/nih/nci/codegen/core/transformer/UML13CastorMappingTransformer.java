@@ -17,6 +17,8 @@ import gov.nih.nci.common.util.caCOREMarshaller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -182,7 +184,8 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
 
             Document doc = new Document();
 			doc.setDocType(docType);
-	        for (Iterator i = classifiers.iterator(); i.hasNext();) {
+			Collection sortedClassifier = sortClassifiers(classifiers);
+	        for (Iterator i = sortedClassifier.iterator(); i.hasNext();) {
 	            UmlClass klass = (UmlClass) i.next();
 	            try {
 	            	doMapping(klass, mappingEl);
@@ -194,7 +197,26 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
             return doc;
 	    }
 
-     private String getNamespaceURI(UmlClass klass) throws XMLUtilityException{
+    private Collection sortClassifiers(Collection classifiers)
+	{
+	    // The caCOREMarsheller has problem with forward references.   Sorting
+		// the class with the list generalizations to the top.
+		class caCOREComparer implements Comparator {
+            public int compare(Object obj1, Object obj2)
+            {
+                    int i1 = ((UmlClass)obj1).getGeneralization().size();
+                    int i2 = ((UmlClass)obj2).getGeneralization().size();
+    
+                    return i1 - i2;
+            }
+		}
+
+ 		ArrayList list = new ArrayList(classifiers);
+		Collections.sort(list, new caCOREComparer());
+		return list;
+	}
+     
+	private String getNamespaceURI(UmlClass klass) throws XMLUtilityException{
     	 StringBuffer nsURI = new StringBuffer();
     	 try {
     	 context = loadProperty(this.PROPERTIES_CONTEXT_KEY);
