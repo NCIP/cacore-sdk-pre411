@@ -19,19 +19,25 @@ public class XMLUtility {
     private static gov.nih.nci.common.util.Marshaller marshaller;
     private static gov.nih.nci.common.util.Unmarshaller unmarshaller;
     private static Logger log= Logger.getLogger(XMLUtility.class.getName());
-    private Properties _properties;
+    private static Properties _properties;
 
     /* Validation is turned off by default to improve performance */
 
     /**
      * Creates and XMLUtility instance
      */
-    public XMLUtility() {
+    static
+    {
 		setMarshaller();
 		setUnmarshaller();
     }
+    
+    public XMLUtility() {
+		//setMarshaller();
+		//setUnmarshaller();
+    }
 
-    private String loadProperty(String key) throws IOException{
+    private static String loadProperty(String key) throws IOException{
 	        if(_properties == null){
 	            try {
 	                _properties = new Properties();
@@ -53,7 +59,7 @@ public class XMLUtility {
     	marshaller = m;
     }
 
-    private void setMarshaller() {
+    private static void setMarshaller() {
             try {
 		    String marshallerProperty = loadProperty(XMLUtility.PROPERTIES_MARSHALLING_KEY);
 		    if (marshallerProperty != null) {
@@ -72,7 +78,7 @@ public class XMLUtility {
     	unmarshaller = um;
     }
 
-    public void setUnmarshaller() {
+    public static void setUnmarshaller() {
             try {
 			String unmarshallerProperty = loadProperty(XMLUtility.PROPERTIES_UNMARSHALLING_KEY);
 			if (unmarshallerProperty != null) {
