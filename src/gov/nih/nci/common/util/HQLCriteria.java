@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class HQLCriteria implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String hqlString;
 	
 	public HQLCriteria(String hqlString)

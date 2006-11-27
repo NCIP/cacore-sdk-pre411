@@ -12,6 +12,10 @@ import java.util.Hashtable;
 public class UserSession extends Hashtable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long lastAccessedTime;
 	
 	/**

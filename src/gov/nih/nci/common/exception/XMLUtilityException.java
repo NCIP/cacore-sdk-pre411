@@ -9,7 +9,11 @@ package gov.nih.nci.common.exception;
  */
 public class XMLUtilityException extends Exception {
 
-    private Exception rootException;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Exception rootException;
 
     public XMLUtilityException(String message, Throwable cause) {
         super(message);

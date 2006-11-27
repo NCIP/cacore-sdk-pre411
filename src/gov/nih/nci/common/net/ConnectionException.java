@@ -32,6 +32,11 @@ package gov.nih.nci.common.net;
 public class ConnectionException extends Exception {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * ConnectionException with exception message
 	 * @param message
 	 */

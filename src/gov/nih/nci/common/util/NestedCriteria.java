@@ -15,6 +15,10 @@ public class NestedCriteria implements Serializable{
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private String targetObjectName;
 	private String sourceObjectName;
 	private String roleName;
