@@ -257,6 +257,91 @@ public class JSPUtils
         return fileList;
     }
     
-   
-    
+public ArrayList getAssociations(String className) throws Exception{
+       String qualifiedName = null;
+       String packageName = null;
+       if(className.indexOf(".")<1){
+           for(Iterator i=properties.keySet().iterator(); i.hasNext();){
+               String key = (String)i.next();
+               if(key.endsWith(className)){
+                   qualifiedName = key;
+                   packageName = properties.getProperty(key);
+                   break;
+               }
+           }
+       }else{
+           qualifiedName = className;
+           packageName = className.substring(0, className.lastIndexOf("."));
+       }
+       Field[] fields = Class.forName(qualifiedName).getDeclaredFields();
+       HashSet roleNames = new HashSet();
+       roleNames.add(qualifiedName);
+       for(int i =0; i< fields.length; i++){
+           fields[i].setAccessible(true);
+           Field field = fields[i];
+           String type = field.getType().getName();
+           String fieldName = field.getName();
+           if(!field.getType().isPrimitive()){
+               if(fieldName.endsWith("Collection") || (type.startsWith("java") && type.endsWith("Collection"))){
+                   String roleClassName = null;
+                   String beanName = fieldName.substring(0, fieldName.lastIndexOf("Collection"));
+                   roleClassName = locateClass(beanName, packageName);
+                   if(roleClassName != null){
+                       roleNames.add(roleClassName);
+                   }                   
+               }else if(!type.startsWith("java")){
+                   if(type.startsWith(packageName)){
+                       roleNames.add(type);
+                   }else{
+                       int counter = 0;
+                       for(int x=0; x<packageName.length(); x++){
+                           if(packageName.charAt(x)== '.'){
+                               counter++;
+                           }
+                       }
+                       String pkg = packageName.substring(0, packageName.lastIndexOf("."));
+                       for(int x=counter; x>1; x--){
+                           if(type.startsWith("pkg")){
+                               roleNames.add(type);
+                               break;
+                           }
+                           pkg = pkg.substring(0, pkg.lastIndexOf("."));
+                       }
+                   }
+               }
+           }
+       }
+       if(!(Class.forName(qualifiedName).getSuperclass().getName().equalsIgnoreCase("java.lang.Object"))){
+           String superClassName = Class.forName(qualifiedName).getSuperclass().getName();
+           List associations = getAssociations(superClassName);
+           for(int i=0; i<associations.size(); i++){
+               if(!(superClassName.equals((String)associations.get(i)))){
+                   roleNames.add((String)associations.get(i));
+               }               
+           }
+       }
+       ArrayList roles = new ArrayList();
+       for(Iterator i = roleNames.iterator(); i.hasNext();){
+           roles.add((String)i.next());
+       }       
+       return roles;
+   }
+   private String locateClass(String beanName, String packageName){
+       List classNameList = new ArrayList();
+       String className = null;
+       for(Iterator i = properties.keySet().iterator(); i.hasNext();){
+           String key = (String)i.next();
+           if(key.toLowerCase().endsWith(beanName.toLowerCase())){
+               if(key.startsWith(packageName)){
+               className = key;
+               break;
+               }
+               classNameList.add(key);
+           }
+       }
+       if(className == null && classNameList.size() == 1){
+           className = (String)classNameList.get(0);
+       }
+       return className; 
+   }
 }
