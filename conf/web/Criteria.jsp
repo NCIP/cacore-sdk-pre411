@@ -48,7 +48,7 @@ if(className != null)
 	{	
 		jspUtils = JSPUtils.getJSPUtils(config);
 		fieldNames = jspUtils.getSearchableFields(className);
-		domainNames = jspUtils.getDomainNames();
+		domainNames = jspUtils.getAssociations(className);
 		
 	}
 	catch(Exception ex){
