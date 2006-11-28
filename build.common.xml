@@ -267,7 +267,7 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 	<!-- Control File //Revisit this section -->
 	<target name="copy-control-files" description="Create control files required by code transformers for the project specified in deploy.properties" depends="-copy-control-files.main,-copy-control-files.custom" />
 
-	<target name="-copy-control-files.main" unless="copy-control-files.main.ignore" description="Copy control files required by code transformers for the project specified in deploy.properties">
+	<target name="-copy-control-files.main" unless="copy-control-files.main.ignore" >
 		<SDKecho message="Copying configuration files" />
 		<copy todir="${dir.output.project}" overwrite="true">
 			<fileset dir="${basedir}">

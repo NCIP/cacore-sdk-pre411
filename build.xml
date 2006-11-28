@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="caCORESDK" default="" basedir=".">
+<project name="caCORESDK" default="help" basedir=".">
 	<description>Build script for caCORE Software Development Kit</description>
 
 <!--***********************************************************************
@@ -11,6 +11,32 @@
 	*** FINALLY!  THE TARGETS
 	*********************************************************************** -->
 
+	<target name="help">
+		<echo>===============================</echo>
+		<echo>caCORE Software Development Kit</echo>
+		<echo>===============================</echo>
+		<echo> </echo>
+		<echo>To run the entire SDK code generation process, use:</echo>
+		<echo> </echo>
+		<echo>    ant build-system</echo>
+		<echo> </echo>
+		<echo>Other common targets</echo>
+		<echo>--------------------</echo>
+		<echo>    build-framework</echo>
+		<echo>    build-beans</echo>
+		<echo>    build-artifacts</echo>
+		<echo>    build-orm</echo>
+		<echo>    clean-all</echo>
+		<echo>    fix-xmi</echo>
+		<echo>    package-framework</echo>
+		<echo>    package-system</echo>
+		<echo>    package-client</echo>
+		<echo>    package-server</echo>
+		<echo>    deploy-server</echo>
+		<echo>    deployWS</echo>
+		<echo>    undeployWS</echo>		
+	</target>
+	
 <!--***********************************************************************
 	***	Sequence of the SDK code generation process
 	***	1.	Initialize the project by creating directories and control files
@@ -46,7 +72,7 @@
 		description="Compile SDK code generation classes"/>
 	
 	<target name="-compile-generator.main" unless="compile-generator.main.ignore"
-		depends="generate-templates" description="Compile SDK code generation classes">
+		depends="generate-templates">
 		<SDKecho message="Compiling SDK code generator"/>
 		<javac destdir="${dir.codegen.temp.build}" debug="${sdk.debug}" debuglevel="lines,vars,source">
 			<src path="${dir.codegen.src}:${dir.codegen.temp.src}"/>
@@ -59,8 +85,7 @@
 		depends="-generate-templates.main,-generate-templates.custom"
 		description="Generates Java code for JET templates for the project specified in deploy.properties"/>
 	
-	<target name="-generate-templates.main" unless="generate-templates.main.ignore"
-		description="Generates Java code for JET templates for the project specified in deploy.properties">
+	<target name="-generate-templates.main" unless="generate-templates.main.ignore">
 		<SDKecho message="Compiling JET templates"/>
 		<jetc destDir="${dir.codegen.temp.src}">
 			<fileset dir="${dir.output.conf.template}" includes="**/*.javajet" excludes="**/hqlBeanImpl.javajet"/>
@@ -75,7 +100,7 @@
 		description="Pre-processes XMI file to ensure that it can be parsed by NetBeans MDR component"/>
 	
 	<target name="-fix-xmi.main" if="fix-xmi-yes" unless="fix-xmi.main.ignore"
-		depends="init-project,compile-generator" description="Pre-processes XMI file to ensure that it can be parsed by NetBeans MDR component">
+		depends="init-project,compile-generator">
 		<SDKecho message="Pre-processing XMI file"/>
 		<java classname="gov.nih.nci.codegen.core.util.FixXMI" fork="true">
 			<classpath refid="classpath"/>
@@ -106,15 +131,14 @@
 		description="Generates beans from model, copies custom beans and generates JUnit tests"/>
 
 	<target name="-build-beans.main" unless="build-beans.main.ignore"
-		depends="init-project,compile-generator,fix-xmi,generate-beans,generate-junit"
-		description="Generates beans from model, copies custom beans and generates JUnit tests"/>
+		depends="init-project,compile-generator,fix-xmi,generate-beans,generate-junit"/>
 
 	<target name="generate-beans"
 		depends="-generate-beans.main,-generate-beans.custom" 
 		description="Generate beans based on model specified in deploy.properties"/>
 	
 	<target name="-generate-beans.main" unless="generate-beans.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate beans based on model specified in deploy.properties">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating Java beans from model"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beangeneration}"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beanimplgeneration}"/>
@@ -127,7 +151,7 @@
 		description="Generate JUnit test classes from model"/>
 
 	<target name="-generate-junit.main" unless="generate-junit.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate JUnit test classes from model">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating JUnit test classes"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.junitgeneration}"/>
 	</target>
@@ -140,14 +164,13 @@
 		description="Generates beans from model, copies custom beans and compiles all beans"/>
 
 	<target name="-build-orm.main" unless="build-orm.main.ignore"
-		depends="init-project,compile-generator,fix-xmi,generate-OR-mapping,generate-orm-conf,generate-dao-conf,generate-cache"
-		description="Generates beans from model, copies custom beans and compiles all beans"/>
+		depends="init-project,compile-generator,fix-xmi,generate-OR-mapping,generate-orm-conf,generate-dao-conf,generate-cache"/>
 	
 	<target name="generate-OR-mapping"  
 		depends="-generate-OR-mapping.main,-generate-OR-mapping.custom" 
 		description="Generate OR mapping from model"/>
 
-	<target name="-generate-OR-mapping.main" if="OR-mapping-yes" depends="init-project,compile-generator,fix-xmi" description="Generate OR mapping from model">
+	<target name="-generate-OR-mapping.main" if="OR-mapping-yes" depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating OR mapping files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.ormgeneration}"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.ormimplgeneration}"/>
@@ -158,7 +181,7 @@
 		description="Generate ORM configuration files from model"/>
 	
 	<target name="-generate-orm-conf.main" unless="generate-orm-conf.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate ORM configuration files from model">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating ORM configuration files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.hbcgeneration}"/>
 	</target>
@@ -168,13 +191,14 @@
 		description="Generate DAO configuration files from model"/>
 	
 	<target name="-generate-dao-conf.main" unless="generate-dao-conf.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate DAO configuration files from model">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating DAO configuration files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.daogeneration}"/>
 	</target>
 
 	<target name="generate-cache" 
-		depends="-generate-cache.main,-generate-cache.custom"/>
+		depends="-generate-cache.main,-generate-cache.custom" 
+		description="Generates the ehCache configuration files"/>
 	
 	<target name="-generate-cache.main" unless="generate-cache.main.ignore"
 		depends="init-project,compile-generator,fix-xmi">
@@ -193,15 +217,14 @@
 	<target name="-build-artifacts.main" unless="build-artifacts.main.ignore"
 		depends="init-project,compile-generator,fix-xmi,generate-common-package-util,generate-common-role-util,
 				 generate-schemas,generate-wsdd,
-				 generate-xml-mapping"
-	 	description="Generate configuration and other required system files from model"/>
+				 generate-xml-mapping"/>
 
 	<target name="generate-common-package-util" 
 		depends="-generate-common-package-util.main,-generate-common-package-util.custom" 
 		description="Generate common package utility class"/>
 
 	<target name="-generate-common-package-util.main" unless="generate-common-package-util.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate common package utility class">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating common package utilities"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.commonPackageUtil}"/>
 	</target>
@@ -211,7 +234,7 @@
 		description="Generate common role utility class"/>
 	
 	<target name="-generate-common-role-util.main" unless="generate-common-role-util.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate common role utility class">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating common role utilities"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.commonRoleUtil}"/>
 	</target>
@@ -221,7 +244,7 @@
 		description="Generate XML schemas from model"/>
 	
 	<target name="-generate-schemas.main" unless="generate-schemas.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate XML schemas from model">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating XML schemas"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.schemageneration}"/>
 	</target>
@@ -231,7 +254,7 @@
 		description="Generate web services deployment descriptor"/>
 	
 	<target name="-generate-wsdd.main" unless="generate-wsdd.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate web services deployment descriptor">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating WSDD file"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.wsdd}"/>
 	</target>
@@ -241,7 +264,7 @@
 		description="Generate XML mapping files"/>
 
 	<target name="-generate-xml-mapping.main" unless="generate-xml-mapping.main.ignore"
-		depends="init-project,compile-generator,fix-xmi" description="Generate XML mapping files">
+		depends="init-project,compile-generator,fix-xmi">
 		<SDKecho message="Generating XML mapping files"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.xmlmappinggeneration}"/>
 	</target>
@@ -254,7 +277,7 @@
 		description="Copies source code of generated system to output folder"/>
 
 	<target name="-copy-framework.main" unless="copy-framework.main.ignore" 
-		depends="init-project" description="Copies source code of generated system to output folder">
+		depends="init-project">
 		<SDKecho message="Copying framework files"/>
 		<copy todir="${dir.output.project.src}" overwrite="true">
 			<fileset dir="${dir.src}" excludes="gov/nih/nci/codegen/**"/>
@@ -359,8 +382,8 @@
 		</jar>
 	</target>
 
-	<target name="package-client-resources" depends="-package-client-resources.main,-package-client-resources.custom" description="Packages client resources"/>
-	
+	<target name="package-client-resources" depends="-package-client-resources.main,-package-client-resources.custom" description="Packages client resources"/>	
+
 	<target name="-package-client-resources.main" unless="package-client-resources.main.ignore">
 		<SDKecho message="Packaging client resources"/>
 		<copy todir="${dir.output.project.package.client}/lib">
