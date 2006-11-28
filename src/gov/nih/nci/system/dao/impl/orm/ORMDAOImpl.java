@@ -5,6 +5,7 @@ import gov.nih.nci.common.net.Response;
 import gov.nih.nci.common.util.CQL2HQL;
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
+import gov.nih.nci.common.util.HibernateQueryWrapper;
 import gov.nih.nci.common.util.NestedCriteria;
 import gov.nih.nci.common.util.NestedCriteria2HQL;
 import gov.nih.nci.common.util.ObjectFactory;
@@ -230,9 +231,15 @@ public class ORMDAOImpl implements DAO
 			}
 			else if (obj instanceof CQLQuery)
 			{
-				String hql = CQL2HQL.translate((CQLQuery)obj, false);
+				HibernateQueryWrapper queryWrapper = CQL2HQL.translate((CQLQuery)obj, false,request.getCaseSensitivity().booleanValue()); 
+				String hql = queryWrapper.getHql();
+				List params = queryWrapper.getParameters();
 				log.info("CQL Query :"+hql);
 				Query hqlQuery = session.createQuery(hql);
+				
+				for(int i = 0; i<params.size();i++)
+					hqlQuery.setParameter(i,params.get(i) );
+				
 				if(isCount != null && isCount.booleanValue())
 			    {
 					rowCount = new Integer(hqlQuery.list().size());

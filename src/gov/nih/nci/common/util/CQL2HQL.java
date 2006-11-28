@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -48,13 +49,14 @@ public class CQL2HQL {
 	 * @return
 	 * @throws QueryException
 	 */
-	public static String translate(CQLQuery query, boolean eliminateSubclasses) throws QueryException {
+	public static HibernateQueryWrapper translate(CQLQuery query, boolean eliminateSubclasses, boolean caseSensitive) throws QueryException {
 		StringBuffer hql = new StringBuffer();
-		processTarget(hql, query.getTarget(), eliminateSubclasses);
-		return hql.toString();
+		List parameters = new ArrayList();
+		processTarget(hql,parameters, query.getTarget(), eliminateSubclasses,caseSensitive);
+		return new HibernateQueryWrapper(hql.toString(),parameters);
 	}
 	
-	private static void processTarget(StringBuffer hql, CQLObject target, boolean eliminateSubclasses) 
+	private static void processTarget(StringBuffer hql, List params, CQLObject target, boolean eliminateSubclasses, boolean caseSensitive) 
 		throws QueryException {
 		String objName = target.getName();
 		hql.append("select distinct(").append(TARGET_ALIAS).append(") From ").append(objName);
@@ -73,19 +75,21 @@ public class CQL2HQL {
 		if (target.getAttribute() != null) {
 			if (andFlag) 
 				hql.append(" and ");
-			processAttribute(hql, target.getAttribute(), true);
+			processAttribute(hql, params,target.getName(), target.getAttribute(), true,caseSensitive);
 			andFlag = true;
 		}
 		if (target.getAssociation() != null) {
 			if (andFlag) 
 				hql.append(" and ");
-			processAssociation(hql, objName, target.getAssociation(), true);
+			processAssociation(hql, params, objName, target.getAssociation(), true,caseSensitive);
 			andFlag = true;
 		}
 		if (target.getGroup() != null) {
 			if (andFlag) 
 				hql.append(" and ");
-			processGroup(hql, objName, target.getGroup(), true);
+			hql.append(" (");
+			processGroup(hql, params, objName, target.getGroup(), true,caseSensitive);
+			hql.append(") ");
 		}
 	}
 	
@@ -99,20 +103,32 @@ public class CQL2HQL {
 	 * 		The object to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processObject(StringBuffer hql, CQLObject obj) throws QueryException {
+	private static void processObject(StringBuffer hql, List params, CQLObject obj, boolean caseSensitive) throws QueryException {
 		String objName = obj.getName();
+		boolean andFlag = false;
 		hql.append("from ").append(objName);
+
+		if( obj.getAttribute() == null && obj.getAssociation() == null && obj.getGroup() == null)
+			return;
+		
+		hql.append(" where ");
+
 		if (obj.getAttribute() != null) {
-			hql.append(" where ");
-			processAttribute(hql, obj.getAttribute(), false);
+			processAttribute(hql,params, obj.getName() ,obj.getAttribute(), false,caseSensitive);
+			andFlag = true;
 		}
 		if (obj.getAssociation() != null) {
-			hql.append(" where ");
-			processAssociation(hql, objName, obj.getAssociation(), false);
+			if (andFlag) 
+				hql.append(" and ");
+			processAssociation(hql, params, objName, obj.getAssociation(), false,caseSensitive);
+			andFlag = true;
 		}
 		if (obj.getGroup() != null) {
-			hql.append(" where ");
-			processGroup(hql, objName, obj.getGroup(), false);
+			if (andFlag) 
+				hql.append(" and ");
+			hql.append(" (");
+			processGroup(hql,params, objName, obj.getGroup(), false,caseSensitive);
+			hql.append(") ");
 		}
 	}
 	
@@ -122,28 +138,59 @@ public class CQL2HQL {
 	 * 
 	 * @param hql
 	 * 		The existing HQL query fragment
+	 * @param parentName 
 	 * @param objAlias
 	 * 		The alias of the object to which this attribute belongs
 	 * @param attrib
 	 * 		The attribute to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processAttribute(StringBuffer hql, CQLAttribute attrib, boolean useAlias) throws QueryException {
-		hql.append(" lower(");
-		if (useAlias) {
-			hql.append(TARGET_ALIAS).append(".");
-		}
-		hql.append(attrib.getName()).append(")");
+	private static void processAttribute(StringBuffer hql,  List params, String parentName, CQLAttribute attrib, boolean useAlias, boolean caseSensitive) throws QueryException {
+		String dataType = getDataType(parentName,attrib.getName());
 		CQLPredicate predicate = attrib.getPredicate();
-		// unary predicates
-		if (predicate.equals(CQLPredicate.IS_NULL)) {
-			hql.append(" is null");
-		} else if (predicate.equals(CQLPredicate.IS_NOT_NULL)) {
-			hql.append(" is not null");
-		} else {
-			// binary predicates
+		String attribName = useAlias?TARGET_ALIAS+"."+attrib.getName():attrib.getName();
+	
+		if (predicate.equals(CQLPredicate.IS_NULL)) 
+			hql.append(attribName).append(" is null");
+		else if (predicate.equals(CQLPredicate.IS_NOT_NULL)) 
+			hql.append(attribName).append(" is not null");
+		else
+		{
 			String predValue = convertPredicate(predicate);
-			hql.append(" ").append(predValue).append(" lower('").append(attrib.getValue()).append("')");
+			if ("java.lang.String".equals(dataType))
+			{
+				if(caseSensitive)
+					hql.append(" ").append(attribName).append(" ");
+				else
+					hql.append(" lower(").append(attribName).append(")");
+				
+				hql.append(" ").append(predValue);
+				if(caseSensitive)
+					hql.append("?");
+				else
+					hql.append(" lower(?)");
+				params.add(attrib.getValue());
+			}
+			else if ("java.util.Date".equals(dataType) || "java.lang.Boolean".equals(dataType)
+						|| "java.lang.Long".equals(dataType) || "java.lang.Double".equals(dataType)
+						|| "java.lang.Float".equals(dataType) || "java.lang.Integer".equals(dataType))
+			{
+					hql.append(attribName).append(" ").append(predValue).append("?");
+				if ("java.util.Date".equals(dataType))
+					params.add(new java.util.Date(attrib.getValue()));
+				else if ("java.lang.Boolean".equals(dataType))
+					params.add(new Boolean(attrib.getValue()));
+				else if ("java.lang.Long".equals(dataType))
+					params.add(new Long(attrib.getValue()));
+				else if ("java.lang.Double".equals(dataType))
+					params.add(new Double(attrib.getValue()));
+				else if ("java.lang.Float".equals(dataType))
+					params.add(new Float(attrib.getValue()));
+				else if ("java.lang.Integer".equals(dataType))
+					params.add(new Integer(attrib.getValue()));
+			}
+			else
+				hql.append(attribName).append(" ").append(predValue).append(" '").append(attrib.getValue()).append("' ");
 		}
 	}
 	
@@ -161,7 +208,7 @@ public class CQL2HQL {
 	 * 		The association to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processAssociation(StringBuffer hql, String parentName, CQLAssociation assoc, boolean useAlias) throws QueryException {
+	private static void processAssociation(StringBuffer hql,  List params, String parentName, CQLAssociation assoc, boolean useAlias, boolean caseSensitive) throws QueryException {
 		// get the role name of the association
 		String roleName = getRoleName(parentName, assoc);
 		String sourceRoleName = assoc.getSourceRoleName();
@@ -178,7 +225,7 @@ public class CQL2HQL {
 				hql.append(TARGET_ALIAS).append(".");
 			}
 			hql.append(roleName).append(".id in ( select id ");
-			processObject(hql, assoc);
+			processObject(hql,params, assoc,caseSensitive);
 			hql.append(")");
 		}
 		else if (sourceRoleName!=null)
@@ -187,7 +234,7 @@ public class CQL2HQL {
 				hql.append(TARGET_ALIAS).append(".");
 			}
 			hql.append("id in ( select ").append(sourceRoleName).append(".id ");
-			processObject(hql, assoc);
+			processObject(hql,params, assoc,caseSensitive);
 			hql.append(")");
 		}
 		else
@@ -196,7 +243,7 @@ public class CQL2HQL {
 				hql.append(TARGET_ALIAS).append(".");
 			}
 			hql.append("id in ( select ").append("id ");
-			processObject(hql, assoc);
+			processObject(hql,params, assoc,caseSensitive);
 			hql.append(")");
 		}
 	}
@@ -213,7 +260,7 @@ public class CQL2HQL {
 	 * 		The group to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processGroup(StringBuffer hql, String parentName, CQLGroup group, boolean useAlias) throws QueryException {
+	private static void processGroup(StringBuffer hql,  List params, String parentName, CQLGroup group, boolean useAlias, boolean caseSensitive) throws QueryException {
 		String logic = group.getLogicOperator().getValue();
 		
 		// flag indicating a logic clause is needed before adding further query parts
@@ -224,7 +271,7 @@ public class CQL2HQL {
 			Iterator iterator = group.getAttributeCollection().iterator();
 			for (int i = 0; iterator.hasNext(); i++) {
 				logicClauseNeeded = true;
-				processAttribute(hql, (CQLAttribute)iterator.next(), useAlias);
+				processAttribute(hql,params, parentName,(CQLAttribute)iterator.next(), useAlias,caseSensitive);
 				if (iterator.hasNext()) {
 					hql.append(" ").append(logic).append(" ");
 				}
@@ -239,7 +286,7 @@ public class CQL2HQL {
 			Iterator iterator = group.getAssociationCollection().iterator();
 			for (int i = 0; iterator.hasNext(); i++) {
 				logicClauseNeeded = true;
-				processAssociation(hql, parentName, (CQLAssociation) iterator.next(), useAlias);
+				processAssociation(hql,params, parentName, (CQLAssociation) iterator.next(), useAlias,caseSensitive);
 				if (iterator.hasNext()) {
 					hql.append(" ").append(logic).append(" ");
 				}
@@ -254,7 +301,7 @@ public class CQL2HQL {
 			Iterator iterator = group.getGroupCollection().iterator();
 			for (int i = 0; iterator.hasNext(); i++) {
 				hql.append("( ");
-				processGroup(hql, parentName, (CQLGroup) iterator.next(), useAlias);
+				processGroup(hql,params, parentName, (CQLGroup) iterator.next(), useAlias,caseSensitive);
 				hql.append(" )");
 				if (iterator.hasNext()) {
 					hql.append(" ").append(logic).append(" ");
@@ -450,4 +497,53 @@ public class CQL2HQL {
 			throw new QueryException("Could not load class: " + ex.getMessage(), ex);
 		}
 	}
+	
+	/**
+	 * Gets all fields from a class and it's superclasses 
+	 * 
+	 * @param clazz
+	 * 		The class to explore for typed fields
+	 * @return
+	 */
+	private static Field[] getFields(Class clazz) {
+		Set allFields = new HashSet();
+		Class checkClass = clazz;
+		while (checkClass != null) {
+			Field[] classFields = checkClass.getDeclaredFields();
+			if(classFields!=null)
+				for(int i=0;i<classFields.length;i++)
+					allFields.add(classFields[i]);
+			checkClass = checkClass.getSuperclass();
+		}
+		Field[] fieldArray = new Field[allFields.size()];
+		allFields.toArray(fieldArray);
+		return fieldArray;
+	}	
+	
+	/**
+	 * Gets the data type of a particular field of the class
+	 * @param className
+	 * @param attribName
+	 * @return
+	 * @throws ClassNotFoundException 
+	 */
+	private static String getDataType(String className, String attribName) throws QueryException
+	{
+		Field[] classFields;
+		try
+		{
+			classFields = getFields(getClassFromCache(className));
+			for (int i=0; i<classFields.length;i++)
+			{
+				if(classFields[i].getName().equals(attribName))
+					return classFields[i].getType().getName();
+			}
+			return "";
+		} 
+		catch (ClassNotFoundException e)
+		{
+			throw new QueryException("Could not determine type of attribute "+attribName+" in class "+className,e);
+		}
+	}
+	
 }

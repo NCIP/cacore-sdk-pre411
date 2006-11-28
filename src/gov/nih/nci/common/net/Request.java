@@ -36,6 +36,7 @@ public class Request implements java.io.Serializable
 	private String domainObjectName;
 	private Hashtable config;
 	private Boolean isCount;
+	private Boolean caseSensitivity;
 	private Integer firstRow;
 	private Integer recordsCount;
 	
@@ -159,4 +160,16 @@ public class Request implements java.io.Serializable
 	{
 	    this.isCount = b;
 	}
+
+	public Boolean getCaseSensitivity()
+	{
+		return caseSensitivity;
+	}
+
+	public void setCaseSensitivity(Boolean caseSensitivity)
+	{
+		this.caseSensitivity = caseSensitivity;
+	}
+	
+	
 }
