@@ -86,7 +86,6 @@ public class caCOREMarshaller implements gov.nih.nci.common.util.Marshaller {
      */
     public Mapping getMapping() throws XMLUtilityException {
         /* if no mapping file explicity specified then load the default */
-    	System.out.println("Inside getMapping\n");
         if(mapping == null){
             try {
             	EntityResolver resolver = new EntityResolver() {
