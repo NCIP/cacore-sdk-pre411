@@ -10,6 +10,8 @@ import gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
+import gov.nih.nci.system.query.cql.CQLGroup;
+import gov.nih.nci.system.query.cql.CQLLogicalOperator;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
@@ -278,7 +280,7 @@ public class LevelAssociationTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testOneLevelAssociationCQLSearch() throws ApplicationException
+	public void testOneLevelAssociationCQLSearch1() throws ApplicationException
 	{
 		CQLQuery query = new CQLQuery();
 		CQLObject target = new CQLObject();
@@ -303,6 +305,51 @@ public class LevelAssociationTest extends SDKTestBase
 		}
 	}
 
+	/**
+	 * Uses CQL Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testOneLevelAssociationCQLSearch2() throws ApplicationException
+	{
+		CQLQuery query = new CQLQuery();
+		CQLObject target = new CQLObject();
+		target.setName("gov.nih.nci.cacoresdk.domain.other.levelassociation.Card");
+		
+		CQLAssociation association1 = new CQLAssociation();
+		association1.setName("gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand");
+		association1.setSourceRoleName("cardCollection");
+		association1.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
+		
+		CQLAssociation association2 = new CQLAssociation();
+		association2.setName("gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand");
+		association2.setSourceRoleName("cardCollection");
+		association2.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"2"));
+		
+		CQLGroup group = new CQLGroup();
+		group.setLogicOperator(CQLLogicalOperator.OR);
+		group.addAssociation(association1);
+		group.addAssociation(association2);
+		
+		target.setAttribute(new CQLAttribute("Name",CQLPredicate.EQUAL_TO,"Ace"));
+		target.setGroup(group);
+		query.setTarget(target);
+		
+		Collection results = getApplicationService().query(query,"gov.nih.nci.cacoresdk.domain.other.levelassociation.Card");
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Card result = (Card)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
+	}
+	
 	/**
 	 * Uses CQL Search Criteria for search
 	 * Verifies that the results are returned 

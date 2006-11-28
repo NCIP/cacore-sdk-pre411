@@ -385,7 +385,7 @@ public class AllDataTypeTest extends SDKTestBase
 
 		CQLObject object = new CQLObject();
 		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
-		object.setAttribute(new CQLAttribute("dateValue",CQLPredicate.EQUAL_TO,"3/3/2003"));
+		object.setAttribute(new CQLAttribute("dateValue",CQLPredicate.EQUAL_TO,"03/03/2003"));
 		criteria.setTarget(object);
 		
 		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
