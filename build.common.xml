@@ -229,7 +229,7 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 	<target name="clean-all" depends="-clean-all.main,-clean-all.custom" description="Removes all generated code and all artifacts related to all projects" />
 
-	<target name="-clean-all.main" unless="clean-all.main.ignore" description="Removes all generated code and all artifacts related to all projects">
+	<target name="-clean-all.main" unless="clean-all.main.ignore" >
 		<input message="Are you sure you want to delete ALL generated code and all project artifacts? " validargs="y,n" addproperty="do.delete" />
 		<condition property="do.abort">
 			<equals arg1="n" arg2="${do.delete}" />
@@ -245,7 +245,7 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 	<target name="create-output-dirs" description="Create output directories for the SDK framework" depends="-create-output-dirs.main,-create-output-dirs.custom" />
 
-	<target name="-create-output-dirs.main" unless="create-output-dirs.main.ignore" description="Create output directories for the SDK framework">
+	<target name="-create-output-dirs.main" unless="create-output-dirs.main.ignore" >
 		<SDKecho message="Creating output directories" />
 		<mkdir dir="${dir.output}" />
 		<mkdir dir="${dir.codegen.temp.src}" />
