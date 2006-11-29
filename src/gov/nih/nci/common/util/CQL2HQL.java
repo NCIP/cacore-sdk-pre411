@@ -59,7 +59,8 @@ public class CQL2HQL {
 	private static void processTarget(StringBuffer hql, List params, CQLObject target, boolean eliminateSubclasses, boolean caseSensitive) 
 		throws QueryException {
 		String objName = target.getName();
-		hql.append("select distinct(").append(TARGET_ALIAS).append(") From ").append(objName);
+		//hql.append("select distinct ").append(TARGET_ALIAS).append(" ");
+		hql.append(" From ").append(objName);
 		hql.append(" as ").append(TARGET_ALIAS);
 		
 		if(eliminateSubclasses==false && target.getAttribute() == null && target.getAssociation() == null && target.getGroup() == null)
