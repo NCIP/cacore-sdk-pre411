@@ -284,7 +284,12 @@ public ArrayList getAssociations(String className) throws Exception{
            if(!field.getType().isPrimitive()){
                if(fieldName.endsWith("Collection") || (type.startsWith("java") && type.endsWith("Collection"))){
                    String roleClassName = null;
-                   String beanName = fieldName.substring(0, fieldName.lastIndexOf("Collection"));
+                   String beanName;
+                   if(fieldName.endsWith("Collection")){
+                       beanName = fieldName.substring(0, fieldName.lastIndexOf("Collection"));
+                   }else{
+                       beanName = fieldName;
+                   }   
                    roleClassName = locateClass(beanName, packageName);
                    if(roleClassName != null){
                        roleNames.add(roleClassName);
