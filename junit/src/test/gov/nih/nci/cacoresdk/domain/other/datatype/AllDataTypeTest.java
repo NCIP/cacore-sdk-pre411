@@ -65,6 +65,31 @@ public class AllDataTypeTest extends SDKTestBase
 		for(Iterator i = results.iterator();i.hasNext();)
 			validateObject((AllDataType)i.next());
 	}
+
+	/**
+	 * Uses CQL Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testEntireObjectCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+
+		assertNotNull(results);
+		assertEquals(5,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+			validateObject((AllDataType)i.next());
+	}
 	
 	
 	/**
