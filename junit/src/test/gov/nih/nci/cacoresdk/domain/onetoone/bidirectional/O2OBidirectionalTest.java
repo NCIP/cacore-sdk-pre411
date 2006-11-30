@@ -309,6 +309,72 @@ public class O2OBidirectionalTest extends SDKTestBase
 
 		assertNotNull(results);
 		assertEquals(0,results.size());
-	}	
+	}
 	
+	public void testGetMethods1() throws ApplicationException
+	{
+		Product searchObject = new Product();
+		searchObject.setId(new Integer(1));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		Product result = (Product)results.iterator().next();
+		assertEquals(new Integer(1),result.getLine().getId());
+
+
+		searchObject.setId(new Integer(2));
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		result = (Product)results.iterator().next();
+		assertEquals(new Integer(2),result.getLine().getId());
+
+		searchObject.setId(new Integer(3));
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		result = (Product)results.iterator().next();
+		assertNull(result.getLine());
+		
+	}
+
+
+	public void testGetMethods2() throws ApplicationException
+	{
+		OrderLine searchObject = new OrderLine();
+		searchObject.setId(new Integer(1));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		OrderLine result = (OrderLine)results.iterator().next();
+		assertEquals(new Integer(1),result.getProduct().getId());
+
+
+		searchObject.setId(new Integer(2));
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		result = (OrderLine)results.iterator().next();
+		assertEquals(new Integer(2),result.getProduct().getId());
+
+		searchObject.setId(new Integer(3));
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		result = (OrderLine)results.iterator().next();
+		assertNull(result.getProduct());
+		
+	}
 }
