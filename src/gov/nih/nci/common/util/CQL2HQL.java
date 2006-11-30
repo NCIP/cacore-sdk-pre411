@@ -31,6 +31,8 @@ import java.util.Set;
  */
 public class CQL2HQL {
 	public static final String TARGET_ALIAS = "xxTargetAliasxx";
+	public static final String SOURCE_ASSOC_ALIAS = "parent";
+	public static final String TARGET_ASSOC_ALIAS = "child";
 	private static Map predicateValues;
 	private static Map classCache;
 	private static Map fieldCache;
@@ -221,28 +223,54 @@ public class CQL2HQL {
 		}
 		if(roleName!=null)
 		{
-			// make an HQL subquery for the object
-			if (useAlias) {
-				hql.append(TARGET_ALIAS).append(".");
+			if(isCollection(parentName,roleName))
+			{
+				if (useAlias) 
+					hql.append(TARGET_ALIAS).append(".");
+				hql.append("id in ( select ").append(TARGET_ASSOC_ALIAS).append(".id from ");
+				hql.append(parentName).append(" as ").append(TARGET_ASSOC_ALIAS).append(",");
+				hql.append(assoc.getName()).append(" as ").append(SOURCE_ASSOC_ALIAS);
+				hql.append(" where ").append(SOURCE_ASSOC_ALIAS).append(" in elements(").append(TARGET_ASSOC_ALIAS).append(".").append(roleName).append(")");
+				hql.append(" and ").append(SOURCE_ASSOC_ALIAS).append(".id in (select id ");
+				processObject(hql,params, assoc,caseSensitive);
+				hql.append("))");
 			}
-			hql.append(roleName).append(".id in ( select id ");
-			processObject(hql,params, assoc,caseSensitive);
-			hql.append(")");
+			else
+			{
+				if (useAlias) 
+					hql.append(TARGET_ALIAS).append(".");
+				hql.append(roleName).append(".id in ( select id ");
+				processObject(hql,params, assoc,caseSensitive);
+				hql.append(")");
+			}
 		}
 		else if (sourceRoleName!=null)
 		{
-			if (useAlias) {
-				hql.append(TARGET_ALIAS).append(".");
+			if(isCollection(assoc.getName(),sourceRoleName))
+			{
+				if (useAlias) 
+					hql.append(TARGET_ALIAS).append(".");
+				hql.append("id in ( select ").append(TARGET_ASSOC_ALIAS).append(".id from ");
+				hql.append(parentName).append(" as ").append(TARGET_ASSOC_ALIAS).append(",");
+				hql.append(assoc.getName()).append(" as ").append(SOURCE_ASSOC_ALIAS);
+				hql.append(" where ").append(TARGET_ASSOC_ALIAS).append(" in elements(").append(SOURCE_ASSOC_ALIAS).append(".").append(sourceRoleName).append(")");
+				hql.append(" and ").append(SOURCE_ASSOC_ALIAS).append(".id in (select id ");
+				processObject(hql,params, assoc,caseSensitive);
+				hql.append("))");
 			}
-			hql.append("id in ( select ").append(sourceRoleName).append(".id ");
-			processObject(hql,params, assoc,caseSensitive);
-			hql.append(")");
+			else
+			{
+				if (useAlias) 
+					hql.append(TARGET_ALIAS).append(".");
+				hql.append("id in ( select ").append(sourceRoleName).append(".id ");
+				processObject(hql,params, assoc,caseSensitive);
+				hql.append(")");
+			}
 		}
 		else
 		{
-			if (useAlias) {
+			if (useAlias) 
 				hql.append(TARGET_ALIAS).append(".");
-			}
 			hql.append("id in ( select ").append("id ");
 			processObject(hql,params, assoc,caseSensitive);
 			hql.append(")");
@@ -547,4 +575,41 @@ public class CQL2HQL {
 		}
 	}
 	
+	private static boolean isCollection(String className, String attribName) throws QueryException
+	{
+		Field[] classFields;
+		try
+		{
+			classFields = getFields(getClassFromCache(className));
+			for (int i=0; i<classFields.length;i++)
+			{
+				if(classFields[i].getName().equals(attribName))
+				{
+					Class type = classFields[i].getType();
+					if("java.util.Collection".equals(type.getName()))
+						return true;
+
+					/*Class interfaces[] = type.getInterfaces();
+					if(interfaces == null || interfaces.length == 0) return false;
+					for(int j=0;j<interfaces.length;j++)
+					{
+						Class intf = interfaces[j];
+						do
+						{
+							System.out.println("Interface :"+intf.getName());		
+							if("java.util.Collection".equals(intf.getName()))
+								return true;
+							intf = intf.getSuperclass();
+						}while(intf!=null);
+					}*/
+					return false;
+				}
+			}
+			return false;
+		} 
+		catch (ClassNotFoundException e)
+		{
+			throw new QueryException("Could not determine type of attribute "+attribName+" in class "+className,e);
+		}
+	}
 }
