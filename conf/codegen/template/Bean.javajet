@@ -94,7 +94,7 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 			try
 			{
 				String idString = (Class.forName("java.lang.String").isInstance(getId()))? "'"+ getId() + "'" : ""+getId(); 
-				String hql = "select child from <%=fullyQualifiedTargetClassName%> as child, <%=fullyQualifiedClassName%> as parent  where child=parent.<%=otherEnd.getName()%> and parent.id="+idString;
+				String hql = "select child from <%=fullyQualifiedTargetClassName%> as child where child.id in (select parent.<%=otherEnd.getName()%>.id from <%=fullyQualifiedClassName%> as parent where parent.id="+idString+")";
 				HQLCriteria hqlCriteria = new HQLCriteria(hql);
 				ApplicationService applicationService = ApplicationServiceProvider.getApplicationService();
 				java.util.List resultList = applicationService.query(hqlCriteria,"<%=fullyQualifiedTargetClassName%>");				 
