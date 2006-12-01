@@ -131,4 +131,26 @@
 
 	</target>
 
+	<!-- ************************************************************************************************-->
+	<!--                                             Run Writable API Demo                                -->
+	<!-- ************************************************************************************************-->
+
+	<target name="TestWritableAPI">
+		<javac srcdir="." >
+			<include name="TestWritableAPIClient.java"/>
+			<classpath refid="cp"/>
+			<classpath>
+				<pathelement location="${src.dir}"/>
+			</classpath>
+		</javac>
+		<java classname="TestWritableAPIClient" fork="true">
+			<classpath refid="cp"/>
+			<classpath>
+				<pathelement location="${src.dir}"/>
+			</classpath>
+			<sysproperty key="log4j.configuration"
+						value="${conf.dir}/log4j.properties"/>
+		</java>
+
+	</target>	
 </project>
