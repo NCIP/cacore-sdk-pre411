@@ -26,8 +26,10 @@ public class WritableDAO {
 	public Object createObject(Object obj) throws DAOException {
 		Session session = null;
 		Transaction transaction = null;
-		String objName = obj.getClass().getName();		
+		String objName = obj.getClass().getName();
+		
 		try {
+			ORMConnection.getInstance();
 			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
 			log.error("Could not obtain a session! Could not create " + objName);
@@ -75,6 +77,7 @@ public class WritableDAO {
 		Transaction transaction = null;
 		String objName = obj.getClass().getName();
 		try {
+			ORMConnection.getInstance();
 			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
 			log.error("Could not obtain a session");
@@ -126,6 +129,7 @@ public class WritableDAO {
 		Transaction transaction = null;
 		String objName = obj.getClass().getName();
 		try {
+			ORMConnection.getInstance();
 			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
 			log.error("Could not obtain a session! Could not delete " + objName);
@@ -173,6 +177,7 @@ public class WritableDAO {
 		log.debug("objName: " + objName);
 		
 		try {
+			ORMConnection.getInstance();
 			session = ORMConnection.openSession(objName);
 		} catch (Exception ex) {
 			log.error("Could not obtain a session! Could not get " + objName + " objects");
