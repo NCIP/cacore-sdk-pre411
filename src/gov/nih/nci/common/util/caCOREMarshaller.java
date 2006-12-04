@@ -99,15 +99,16 @@ public class caCOREMarshaller implements gov.nih.nci.common.util.Marshaller {
             	};
 
                 org.xml.sax.InputSource mappIS = new org.xml.sax.InputSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(loadProperty(this.PROPERTIES_MAPPING_KEY)));
-                mapping = new Mapping();
-                mapping.setEntityResolver(resolver);
-                mapping.loadMapping(mappIS);
+	        	Mapping localMapping = new Mapping();
+                localMapping.setEntityResolver(resolver);
+                localMapping.loadMapping(mappIS);
+                return localMapping;
             }catch (IOException e) {
                 log.error("Error reading default xml mapping file " + e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
                 throw new XMLUtilityException("Error reading default xml mapping file " + e.getMessage(), e);
             }
         }
-        return mapping;
+       	return mapping;
     }
     
     public String toXML(Object beanObject) throws XMLUtilityException {
@@ -116,7 +117,7 @@ public class caCOREMarshaller implements gov.nih.nci.common.util.Marshaller {
         return strWriter.toString();
     }
 	
-	public void toXML(Object beanObject, java.io.Writer stream) throws XMLUtilityException{
+	public synchronized void toXML(Object beanObject, java.io.Writer stream) throws XMLUtilityException{
 
         org.exolab.castor.xml.Marshaller marshaller = null;
         try {
@@ -127,7 +128,7 @@ public class caCOREMarshaller implements gov.nih.nci.common.util.Marshaller {
             throw new XMLUtilityException("Output stream invalid "  + e.getMessage(), e);
         }
         try{
-             marshaller.setMapping(this.getMapping());
+        		marshaller.setMapping(this.getMapping());
         }catch (MappingException e) {
             log.error("The mapping file is invalid " + e.getMessage());
             throw new XMLUtilityException("The mapping file is invalid "  + e.getMessage(), e

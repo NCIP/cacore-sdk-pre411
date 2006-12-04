@@ -101,9 +101,10 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
             	    }
             	};
                 org.xml.sax.InputSource mappIS = new org.xml.sax.InputSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(loadProperty(this.PROPERTIES_MAPPING_KEY)));
-                mapping = new Mapping();
-                mapping.setEntityResolver(resolver);
-                mapping.loadMapping(mappIS);
+                Mapping localMapping = new Mapping();
+                localMapping.setEntityResolver(resolver);
+                localMapping.loadMapping(mappIS);
+                return localMapping;
             }catch (IOException e) {
                 log.error("Error reading default xml mapping file " + e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
                 throw new XMLUtilityException("Error reading default xml mapping file " + e.getMessage(), e);
@@ -111,7 +112,7 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
         }
         return mapping;
     }
-    public Object fromXML(java.io.Reader input)throws XMLUtilityException{
+    public synchronized Object fromXML(java.io.Reader input)throws XMLUtilityException{
     	Object beanObject;
 
         org.exolab.castor.xml.Unmarshaller unmarshaller;
