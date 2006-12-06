@@ -12,7 +12,7 @@ Server: cbiodb2-d
 Database: CBTEST
 Port: 1521
 User: CACORESDK_QA
-Password: c@03!q
+Password: c0r3ga!
 
 Oracle ANT Schema
 ================
@@ -20,7 +20,7 @@ Server: cbiodb2-d
 Database: CBTEST
 Port: 1521
 User: CACORESDK_ANT
-Password: c@03!t
+Password: c0r3nt!
 
 MySQL Test Schema
 ================
