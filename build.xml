@@ -28,10 +28,7 @@
 		<echo>    build-orm</echo>
 		<echo>    clean-all</echo>
 		<echo>    fix-xmi</echo>
-		<echo>    package-framework</echo>
 		<echo>    package-system</echo>
-		<echo>    package-client</echo>
-		<echo>    package-server</echo>
 		<echo>    deploy-server</echo>
 		<echo>    deployWS</echo>
 		<echo>    undeployWS</echo>		
@@ -617,7 +614,10 @@
 				<include name="src/**/*"/>
 				<include name="*.xml"/>
 				<include name="*.properties"/>
+				<include name="*.txt"/>
 				<exclude name="**/CVS/**"/>
+				<exclude name="models/xmi/sdk-test.xmi"/>
+				<exclude name="models/xmi/fixed*.xmi"/>				
 			</zipfileset>
 		</zip>
 	</target>
