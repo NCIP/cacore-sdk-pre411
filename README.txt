@@ -2,8 +2,7 @@
 				
 This is the root folder of caCORE SDK. This directory contains the following
 directories and files.
-conf 			- Configuration files for toolkit/system/code generator, templates, license etc.,
-demo 			- TestClient.java
+conf 			- Configuration files for toolkit,system,code generator, templates, license etc.,
 lib  			- All required libraries
 models 			- caCORESDKTemplate.eap (Enterprise Architect Project file - need Enterprise
          		  Architect Software to open) and cabioExampleDomainModel.xmi file.
