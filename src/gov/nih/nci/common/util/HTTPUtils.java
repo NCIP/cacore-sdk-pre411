@@ -369,7 +369,8 @@ public Field[] getAllFields(Class resultClass){
 	        for (int i = 0; i < fields.length; i++) {
 	                    fields[i].setAccessible(true);
 	                    String fieldName = fields[i].getName();
-	                    fieldList.add(fields[i]);
+	                    if(fieldName.indexOf('$')==-1)
+	                    	fieldList.add(fields[i]);
 	            }
 	        if(!resultClass.getSuperclass().getName().equalsIgnoreCase("java.lang.Object")){
 	            resultClass = resultClass.getSuperclass();
