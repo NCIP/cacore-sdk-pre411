@@ -620,6 +620,23 @@
 				<exclude name="models/xmi/fixed*.xmi"/>				
 			</zipfileset>
 		</zip>
+
+		<delete file="${dir.output.project.package}/${file.output.tar}" quiet="true"/>
+		<tar destfile="${dir.output.project.package}/${file.output.tar}">
+			<tarfileset dir="${basedir}" prefix="cacoresdk">
+				<include name="conf/**/*"/>
+				<include name="lib/**/*"/>
+				<include name="models/**/*"/>
+				<include name="src/**/*"/>
+				<include name="*.xml"/>
+				<include name="*.properties"/>
+				<include name="*.txt"/>
+				<exclude name="**/CVS/**"/>
+				<exclude name="models/xmi/sdk-test.xmi"/>
+				<exclude name="models/xmi/fixed*.xmi"/>				
+			</tarfileset>
+		</tar>
+		
 	</target>
 
 <!--***********************************************************************
