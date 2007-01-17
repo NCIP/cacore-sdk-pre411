@@ -54,7 +54,7 @@
 	
 	<target name="-unpack-mysql-extract.main">
 		<mkdir dir="${mysql_home}"/>
-		<unzip src="${dir.temp}/${mysql.file.linux}" dest="${dir.temp}"/>
+		<untar compression="gzip" src="${dir.temp}/${mysql.file.linux}" dest="${dir.temp}"/>
 		<move todir="${mysql_home}">
 			<fileset dir="${dir.temp}/${mysql.unzip.path.linux}"/>
 		</move>		
