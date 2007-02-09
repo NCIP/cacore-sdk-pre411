@@ -4,20 +4,20 @@
 
 <html>
 <head>
-<title>Home</title>
+<title><s:text name="home.title"/></title>
 <link rel="stylesheet" type="text/css" href="styleSheet.css" />
 <script src="script.js" type="text/javascript"></script>
 </head>
 <body>
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%">
 
-<%@ include file="WEB-INF/jsp/include/header.inc" %>	
+<%@ include file="include/header.inc" %>	
 	
   <tr>
     <td height="100%" align="center" valign="top">
       <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="771">
 
-<%@ include file="WEB-INF/jsp/include/applicationHeader.inc" %>
+<%@ include file="include/applicationHeader.inc" %>
 
         <tr>
           <td valign="top">
@@ -25,7 +25,7 @@
               <tr>
                 <td height="20" class="mainMenu">
 
-<%@ include file="WEB-INF/jsp/include/mainMenu.inc" %>                
+<%@ include file="include/mainMenu.inc" %>                
 
                 </td>
               </tr>
@@ -53,13 +53,12 @@
                             
                               <!-- welcome begins -->
                               <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
-                                <tr><td class="welcomeTitle" height="20">WELCOME TO THE CACORE SDK</td>
+                                <tr><td class="welcomeTitle" height="20"><s:text name="home.welcome.title"/></td>
                                 </tr>
                                 <tr>
                                   <td class="welcomeContent" valign="top">
-										The caCORE Software Development Kit (SDK) is a set of tools that can be used by 
-										an intermediate Java developer to create a 'caCORE-like' system. Such systems are 
-										constructed using certain design principles:<br> 
+										<s:text name="home.welcome.intro"/>
+										<br> 
 										<br>
 										<ul>
 											<li>UML Modeling</li>
@@ -105,24 +104,24 @@
                                   
 	                                    <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" class="sidebarSection">	
 	                                      <tr>
-	                                        <td class="sidebarTitle" height="20">LOGIN</td>
+	                                        <td class="sidebarTitle" height="20"><s:text name="home.login"/></td>
 	                                      </tr>
 	                                      <tr>
 	                                        <td class="sidebarContent">
-	                                        <s:form method="post" action="Login.action" name="loginForm" theme="simple">   	
+	                                        <s:form method="post" action="Login.action" name="loginForm" theme="css_xhtml">   	
 	                                          <table cellpadding="2" cellspacing="0" border="0">
 	                                          
 	                                            <tr>
-	                                              <td class="sidebarLogin" align="left"><label for="loginID">LOGIN ID</label></td>
-	                                              <td class="formFieldLogin"><s:textfield name="username" cssClass="formField" size="14" theme="simple" /></td>
+	                                              <td class="sidebarLogin" align="left"><s:text name="home.loginID"/></td>
+	                                              <td class="formFieldLogin"><s:textfield name="username" cssClass="formField" size="14" /></td>
 	                                            </tr>
 	                                            <tr>
-	                                              <td class="sidebarLogin" align="left"><label for="password">PASSWORD</label></td>
-	                                              <td class="formFieldLogin"><s:password name="password" cssClass="formField" size="14" theme="simple"/></td>
+	                                              <td class="sidebarLogin" align="left"><s:text name="home.password"/></td>
+	                                              <td class="formFieldLogin"><s:password name="password" cssClass="formField" size="14" /></td>
 	                                            </tr>
 	                                            <tr>
 	                                              <td>&nbsp;</td>
-	                                              <td><s:submit cssClass="actionButton" type="submit" value="Login" theme="simple"/></td>
+	                                              <td><s:submit cssClass="actionButton" type="submit" value="Login" /></td>
 	                                            </tr>
 	                                          </table>
 											</s:form>		                                          
@@ -212,7 +211,7 @@
                 <td height="20" class="footerMenu">
                 
                   <!-- application ftr begins -->
-					<%@ include file="WEB-INF/jsp/include/applicationFooter.inc" %>                  
+					<%@ include file="include/applicationFooter.inc" %>                  
                   <!-- application ftr ends -->
                   
                 </td>
@@ -226,7 +225,7 @@
   <tr>
     <td>
     
-<%@ include file="WEB-INF/jsp/include/footer.inc" %>
+<%@ include file="include/footer.inc" %>
     
     </td>
   </tr>
