@@ -45,8 +45,10 @@ HDR AND FTR BEGINS
   background-color:#A90101; /* constant: red */
 }
 .subhdrBG{ /* for the cell that contains the application header */
- background-color:#98B7B7; /* darker */
- 
+  background-color:#9FA2BA; /* lighter */
+  border-left:1px solid #CCCCCC; /* constant: medium gray */
+  border-right:1px solid #CCCCCC; /* constant: medium gray */
+  border-top:1px solid #CCCCCC; /* constant: medium gray */
 }
 .ftrTable{ /* for the table that contains the footer */
   padding-top:0.4em;
@@ -59,7 +61,7 @@ td.mainMenu{
   background-color:#5C5C5C; /* constant: dark gray */
   font-family:arial,helvetica,verdana,sans-serif;
   border-bottom:1px solid #CCCCCC; /* constant: medium gray */
-  border-top:1px solid #CCCCCC; /* constant: medium gray */
+  border:1px solid #CCCCCC; /* constant: medium gray */
 }
 td.mainMenuItem{ /* for the off state of the main menu (top) cells */
   font-size:0.6em;
@@ -71,7 +73,7 @@ td.mainMenuItem{ /* for the off state of the main menu (top) cells */
 td.mainMenuItemOver{ /* for the over state of the main menu (top) cells */
   font-size:0.6em;
   font-weight:bold;
-  background-color:#6A8989; /* darker */
+  background-color:#797C9C; /* darker */
   padding-left:1em;
   padding-right:1em;
 }
@@ -91,12 +93,12 @@ td.footerMenuItem{ /* for the off state of the footer menu (bottom) cells */
 td.footerMenuItemOver{ /* for the over state of the footer menu (bottom) cells */
   font-size:0.6em;
   font-weight:bold;
-  background-color:#6A8989; /* darker */
+  background-color:#797C9C; /* darker */
   padding-left:1em;
   padding-right:1em;
 }
 td.subMenu{ /* for the basic style of the sub-menu area */
-  background-color:#98B7B7; /* lighter */
+  background-color:#9FA2BA; /* lighter */
   font-family:arial,helvetica,verdana,sans-serif;
 }
 td.subMenuPrimaryTitle{ /* for the title elements of the sub menu (left-side) */
@@ -122,7 +124,7 @@ td.subMenuSecondaryTitle{ /* for the off state of the cell for the elements (usu
   font-size:0.6em;
   font-weight:bold;
   padding-left:0.8em;
-  background-color:#98B7B7; /* lighter */
+  background-color:#9FA2BA; /* lighter */
   color:#FFFFFF; /* constant: white */
   border-bottom:1px solid #CCCCCC; /* constant: medium gray */
   border-right:1px solid #CCCCCC; /* constant: medium gray */
@@ -131,7 +133,7 @@ td.subMenuSecondaryTitleOver{ /* for the over state of the cell for the elements
   font-size:0.6em;
   font-weight:bold;
   padding-left:0.8em;
-  background-color:#6A8989; /* darker */
+  background-color:#797C9C; /* darker */
   color:#FFFFFF; /* constant: white */
   border-bottom:1px solid #CCCCCC; /* constant: medium gray */
   border-right:1px solid #CCCCCC; /* constant: medium gray */
@@ -164,7 +166,7 @@ a:hover{
 a:link.subMenuPrimary,a:visited.subMenuPrimary,a:active.subMenuPrimary{ /* for the text links in the primary submenu */
 	color:#5C5C5C; /* constant: dark gray */
 	text-decoration:underline;	
-  white-space: nowrap;
+	white-space: nowrap;
 }
 a:hover.subMenuPrimary{
 	color:#A90101; /* constant: red */
@@ -172,7 +174,7 @@ a:hover.subMenuPrimary{
 a:link.subMenuSecondary,a:visited.subMenuSecondary,a:active.subMenuSecondary{ /* for the text links under the secondary submenu (quick links area) */
 	color:#FFFFFF; /* constant: white */
 	text-decoration:none;	
-  white-space: nowrap;
+	white-space: nowrap;
 }
 a:hover.subMenuSecondary{
 	color:#FFFFFF; /* constant: white */
@@ -180,7 +182,7 @@ a:hover.subMenuSecondary{
 a:link.mainMenuLink,a:visited.mainMenuLink,a:active.mainMenuLink{ /* for the text links in the main menu */
 	color:#FFFFFF; /* constant: white */
 	text-decoration:none;
-  white-space: nowrap;
+	white-space: nowrap;
 }
 a:hover.mainMenuLink{
 	color:#FFFFFF; /* constant: white */
@@ -188,15 +190,15 @@ a:hover.mainMenuLink{
 a:link.footerMenuLink,a:visited.footerMenuLink,a:active.footerMenuLink{ /* for the text links at the top of the footer */
 	color:#FFFFFF; /* constant: white */
 	text-decoration:none;
-  white-space: nowrap;
+	white-space: nowrap;
 }
 a:hover.footerMenuLink{
 	color:#FFFFFF; /* constant: white */
 }
 a:link.dataPagingLink,a:visited.dataPagingLink,a:active.dataPagingLink{ /* for the previous and next links for the paging areas */
 	color:#5C5C5C; /* constant: dark gray */
-  text-decoration:underline;
-  white-space: nowrap;
+	text-decoration:underline;
+	white-space: nowrap;
 }
 a:hover.dataPagingLink{
 	color:#A90101; /* constant: red */
@@ -231,7 +233,7 @@ FORM BEGINS
   color:#000000; /* constant: black */
   border-right:1px solid #5C5C5C; /* constant: dark gray */
   border-bottom:1px solid #5C5C5C; /* constant: dark gray */
-  text-align:right;
+	text-align:right;
 }
 .formTitle{ /* for header cells (top) of forms */
   font-family:arial,helvetica,verdana,sans-serif;
@@ -301,7 +303,6 @@ SIDEBAR BEGINS
 .sidebarContent{ /* for the areas under the sidebar titles and requires text */
   font-size:1em;
   padding:0.8em;
-  border-right:1px solid #CCCCCC; /* constant: medium gray */
   border-left:1px solid #CCCCCC; /* constant: medium gray */
 }
 .sidebarLogin{ /* for the sidebar login cells */
@@ -344,21 +345,11 @@ DATA TABLE BEGINS
 }
 .dataTable{ /* for the main table below the labels */
   font-family:arial,helvetica,verdana,sans-serif;
-  font-size:1.0em;
+  font-size:0.7em;
   color:#000000; /* constant: black */
   border-top:1px solid #5C5C5C; /* constant: dark gray */
   border-left:1px solid #5C5C5C; /* constant: dark gray */
 }
-.dataTable2{ /* for the main table below the labels */
-  font-family:arial,helvetica,verdana,sans-serif;
-  font-size:0.8em;
-  color:#000000; /* constant: black */
-  border-top:1px solid #5C5C5C; /* constant: dark gray */
-  border-left:1px solid #5C5C5C; /* constant: dark gray */
-  border-right:1px solid #5C5C5C; /* constant: dark gray */
-  border-bottom:1px solid #5C5C5C; /* constant: dark gray */
-}
-
 .dataRowLight{ /* for the light color of alternating rows */
   background-color:#FFFFFF; /* constant: white */
   color:#000000; /* constant: black */
@@ -402,10 +393,16 @@ STANDARD CONTENT BEGINS
 ###############*/
 table.contentPage{ /* for overall top style for a content page */
   font-family:arial,helvetica,verdana,sans-serif;
-  padding-left:1em;
-  padding-right:1em;
   font-size:0.7em;
   color:#000000; /* constant: black */
+  border-left:1px solid #CCCCCC; /* constant: light gray */
+  border-right:1px solid #CCCCCC; /* constant: light gray */
+}
+table.contentBegins{ /* for overall top style for first cell in content area (not home page) */
+  font-family:arial,helvetica,verdana,sans-serif;
+  font-size:1em;
+  color:#000000; /* constant: black */
+  padding:1em;
 }
 h2,.h2{ /* for header of page */
   font-size:1.6em;
@@ -417,13 +414,6 @@ h3,.h3{ /* for title of page */
   font-size:1.3em;
   font-weight:bold;
 }
-h4,.h4{ /* for header of page */
-  font-size:1.0em;
-  font-weight:bold;
-  color:#5C5C5C; /* constant: dark gray */
-  text-align:center;
-}
-
 p,.p{ /* for paragraphs */
   padding-left:1em;
 }
@@ -432,9 +422,12 @@ p,.p{ /* for paragraphs */
   font-size:0.7em;
   color:#000000; /* constant: black */
 }
+
+/*###############
+MISCELLANEOUS BEGINS
+###############*/
 .bannerHome{ /* for the banner area of the home page */
-  background-color:#6A8989;
-  border-right:1px solid #CCCCCC; /* constant: light gray */
+  background-color:#797C9C; /* darker*/
 }
 .txtHighlight{ /* adds emphasis to text */
   color:#A90101;
