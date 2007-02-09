@@ -130,14 +130,16 @@ public class caCOREMarshaller implements gov.nih.nci.common.util.Marshaller {
         try{
         		marshaller.setMapping(this.getMapping());
         }catch (MappingException e) {
-            log.error("The mapping file is invalid " + e.getMessage());
-            throw new XMLUtilityException("The mapping file is invalid "  + e.getMessage(), e
-            );
+            log.error("The mapping file is invalid:  e.getMessage()", e);
+            throw new XMLUtilityException("The mapping file is invalid "  + e.getMessage(), e);
         }
 
         try {
             /** Disabled to improve performance **/
         	marshaller.setMarshalAsDocument(true);
+        	marshaller.setDebug(true);
+        	marshaller.setSuppressNamespaces(false);
+        	//marshaller.setNamespaceMapping("", "gme://caCORE.cabig/3.1/gov.nih.nci.cabio.domain");
             marshaller.setValidation(this.isValidation());
             marshaller.marshal(beanObject);
         } catch (MarshalException e) {

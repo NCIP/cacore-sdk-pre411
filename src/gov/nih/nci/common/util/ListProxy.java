@@ -1,10 +1,14 @@
 package gov.nih.nci.common.util;
 
-import java.util.*;
+import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.applicationservice.ApplicationServiceProvider;
 
-import gov.nih.nci.system.applicationservice.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Logger;
 
 /** 
  * <!-- LICENSE_TEXT_START -->
@@ -32,7 +36,7 @@ import org.apache.log4j.*;
  * @author caBIO Team
  * @version 1.0
  */
-public class ListProxy extends ArrayList implements java.util.Set{
+public class ListProxy extends ArrayList implements Set {
 	private static final long serialVersionUID = 1L;
 	
 	// the real size of actual list if competely materialized, the record count
@@ -80,7 +84,7 @@ public class ListProxy extends ArrayList implements java.util.Set{
 				int rowCount = listChunk_.size();
 				ApplicationService appService = ApplicationServiceProvider.getApplicationService();
 				try {
-					// Data larger than the max query size.  Must determining the 
+					// Data larger than the max query size.  Must determine the 
 					// actual size
 					if (rowCount == maxRecordsPerQuery_)
 						rowCount = appService.getQueryRowCount(originalCrit_,
@@ -127,7 +131,7 @@ public class ListProxy extends ArrayList implements java.util.Set{
 					try {
 						ls = appService.query(originalCrit_, firstResult,
 								maxRecordsPerQuery_, targetClassName);
-						if (ls.size() <= 0) // there is no more records in
+						if (ls.size() <= 0) // there are no more records in
 											// database
 							break;
 						computedResult = ls.contains(o);
@@ -245,8 +249,7 @@ public class ListProxy extends ArrayList implements java.util.Set{
 					try {
 						ls = appService.query(originalCrit_, firstResult,
 								recordsCount, targetClassName);
-						if (ls.size() <= 0) // there is no more records in
-											// database
+						if (ls.size() <= 0) // there are no more records in database
 							break;
 						computedResult = ls.contains(c);
 						if (computedResult)
@@ -368,8 +371,8 @@ public class ListProxy extends ArrayList implements java.util.Set{
 					&& (index < realSize_)) {
 				originalStart_ = index;
 				try {
-					List ls = new ListProxy();
-					ls = appService.query(originalCrit_, originalStart_,
+
+					List ls = appService.query(originalCrit_, originalStart_,
 							maxRecordsPerQuery_, targetClassName);
 					listChunk_.clear();
 
@@ -382,8 +385,7 @@ public class ListProxy extends ArrayList implements java.util.Set{
 			} else if (index < firstRow) {// first row is at 2003, index is 4
 				originalStart_ = index;
 				try {
-					List ls1 = new ListProxy();
-					ls1 = appService.query(originalCrit_, originalStart_,
+					List ls1 = appService.query(originalCrit_, originalStart_,
 							maxRecordsPerQuery_, targetClassName);
 					listChunk_.clear();
 					listChunk_.addAll(ls1);

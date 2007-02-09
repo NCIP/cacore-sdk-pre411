@@ -19,7 +19,7 @@ import java.io.InputStream;
 public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller {
 	
 	public static final String PROPERTIES_FILENAME = "xml.properties";
-    public static final String PROPERTIES_MAPPING_KEY = "mapping-file";
+    public static final String PROPERTIES_MAPPING_KEY = "unmarshaller-mapping-file";
     public static final String PROPERTIES_VALIDATION_KEY = "validation";
 	
     private Unmarshaller unmarshaller;
@@ -74,12 +74,13 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
 
     /**
      * Implementations can set their own castor mapping
-     * to override default behavious of caCORE xml serialization/deserialization
+     * to override default behaviour of caCORE xml serialization/deserialization
      * framework.
      * @param mapping castor Mapping file to be used
      *
      */
     public void setMapping(Mapping mapping) {
+    	log.debug("setMapping called");
         this.mapping = mapping;
     }
 
@@ -89,7 +90,9 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
      */
     public Mapping getMapping() throws XMLUtilityException {
         /* if no mapping file explicity specified then load the default */
+    	log.debug("mapping is null? " + (mapping==null));
         if(mapping == null){
+        	log.info("mapping is null; will try to load it");
             try {
             	EntityResolver resolver = new EntityResolver() {
             	    public InputSource resolveEntity(String publicId, String systemId) {
@@ -105,9 +108,9 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
                 localMapping.setEntityResolver(resolver);
                 localMapping.loadMapping(mappIS);
                 return localMapping;
-            }catch (IOException e) {
-                log.error("Error reading default xml mapping file " + e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
-                throw new XMLUtilityException("Error reading default xml mapping file " + e.getMessage(), e);
+            } catch (IOException e) {
+                log.error("Error reading default xml mapping file ", e);  //To change body of catch statement use File | Settings | File Templates.
+                throw new XMLUtilityException("Error reading default xml mapping file ", e);
             }
         }
         return mapping;
@@ -115,29 +118,35 @@ public class caCOREUnmarshaller implements gov.nih.nci.common.util.Unmarshaller 
     public synchronized Object fromXML(java.io.Reader input)throws XMLUtilityException{
     	Object beanObject;
 
-        org.exolab.castor.xml.Unmarshaller unmarshaller;
+        org.exolab.castor.xml.Unmarshaller unmarshaller = null;
         try {
-                    unmarshaller = new org.exolab.castor.xml.Unmarshaller(this.getMapping());
-                } catch (MappingException e) {
-                    log.error("XML mapping file invalid: " + e.getMessage());
-                    throw new XMLUtilityException("XML mapping file invalid: " + e.getMessage(),e);
-                }
+        	log.debug("Creating unmarshaller");
+            unmarshaller = new org.exolab.castor.xml.Unmarshaller(this.getMapping());
+        } catch (MappingException e) {
+        	log.error("XML mapping file is invalid: ", e);
+            throw new XMLUtilityException("XML mapping file invalid: ", e);
+        } catch (Exception e){
+        	log.error("General Exception caught trying to create unmarshaller: ", e);
+        	throw new XMLUtilityException("General Exception caught trying to create unmarshaller: ", e);
+        }
 
-                try {
-                    beanObject = unmarshaller.unmarshal(input);
-                } catch (MarshalException e) {
-                	log.error("Error marshalling input: " + e.getMessage());
-                    throw new XMLUtilityException("Error unmarshalling xml input: " + e.getMessage(),e);
-                } catch (ValidationException e) {
-                	log.error("Error in xml validation when unmarshalling xml input: " + e.getMessage());
-                    throw new XMLUtilityException(e.getMessage(),e);
-                }
-                return beanObject;
+        try {
+        	log.debug("About to unmarshal from input ");
+            beanObject = unmarshaller.unmarshal(input);
+        } catch (MarshalException e) {
+        	log.error("Error marshalling input: ", e);
+            throw new XMLUtilityException("Error unmarshalling xml input: " + e.getMessage(),e);
+        } catch (ValidationException e) {
+        	log.error("Error in xml validation when unmarshalling xml input: ", e);
+            throw new XMLUtilityException("Error in xml validation when unmarshalling xml input: ", e);
+        }
+        return beanObject;
     }
 
     public Object fromXML(java.io.File xmlFile)throws XMLUtilityException {
     	Object beanObject = null;
         try {
+        	log.debug("Reading from file: " + xmlFile.getName());
             FileReader fRead = new FileReader(xmlFile);
             beanObject = fromXML(fRead);
         } catch (FileNotFoundException e) {
