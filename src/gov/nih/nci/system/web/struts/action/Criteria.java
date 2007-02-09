@@ -35,7 +35,7 @@ public class Criteria extends BaseActionSupport {
 
 		HttpServletRequest request = ServletActionContext.getRequest();
 
-		// A Workaround for Criteria2.jsp, which requires embedded JSP logic 
+		// A Workaround for Criteria.jsp, which requires embedded JSP logic 
 		request.setAttribute("klassName", getSelectedDomain());
 
 		return SUCCESS;
