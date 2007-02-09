@@ -56,6 +56,30 @@ public class JSPUtils
         return jspUtils;
         
     }
+    
+    synchronized public static JSPUtils getJSPUtils(ServletContext context)
+    {       
+        try
+        {
+            if(jspUtils == null)
+            {                
+                List fileList = new ArrayList();
+                //ServletContext context = config.getServletContext();
+                String beanFiles = context.getInitParameter ("cacoreBeans.Properties");
+                
+                jspUtils = new JSPUtils();         
+                fileList = getFileList(beanFiles);
+                
+                loadProperties(fileList);
+            }
+        }
+        catch(Exception e)
+        {
+            log.error(e.getMessage());
+        }
+        return jspUtils;
+        
+    }    
 
     
     /**
@@ -235,7 +259,7 @@ public class JSPUtils
         }
         
     }
-    static List getFileList(String files){
+   public static List getFileList(String files){
         List fileList = new ArrayList();
         
         if(files.indexOf(SEMICOLON_SEPARATOR)>0){
