@@ -294,6 +294,14 @@
 			</fileset>
 			<fileset dir="${dir.output.conf.webservice}" includes="${file.server.config.wsdd}"/>
 		</copy>
+		<copy todir="${dir.output.project.classes}" overwrite="true">
+			<fileset dir="${dir.conf.struts2}">
+				<include name="example.xml"/>
+				<include name="struts.properties"/>
+				<include name="struts.xml"/>
+			</fileset>			
+			<fileset dir="${dir.output.conf.webservice}" includes="${file.server.config.wsdd}"/>
+		</copy>		
 		<replace file="${dir.output.project.src}/gov/nih/nci/common/util/Constant.java">
 			<replacefilter token="@APPLICATION_NAME@" value="${application_name}"/>
 			<replacefilter token="@DEFAULT_SECURITY_LEVEL@" value="${default_security_level}"/>
