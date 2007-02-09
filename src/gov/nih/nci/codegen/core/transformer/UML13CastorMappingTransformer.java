@@ -117,6 +117,8 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
     public static final String PROPERTIES_NS_PREFIX_KEY = "ns_prefix";
     private UML13ClassifierFilter _classifierFilt;
     private String _pkgName;
+    private boolean _includeAssociations = false;    
+    private boolean _includeFieldHandler = false;    
     private Properties _properties;
     private String context;
     private String classification;
@@ -166,7 +168,7 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
             throw new TransformationException("couldn't filter model elements",
                     ex);
         }
-      
+
         Document doc = generateRepository(classifiers);
         XMLOutputter p = new XMLOutputter();
         p.setFormat(Format.getPrettyFormat());
@@ -249,6 +251,7 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
          Element classEl = new Element(classElName);
          mappingEl.addContent(classEl);
          classEl.setAttribute("name", getPackage(klass)+Constant.DOT+klass.getName());
+         classEl.setAttribute("identity", "id");
          if (superClassName!=null){
         	 classEl.setAttribute("extends", superClassName);
          }
@@ -287,42 +290,85 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
              classEl.addContent(field);
 	      }
          
-//         for (Iterator i = UML13Utils.getAssociationEnds(klass).iterator(); i.hasNext();) {
-//             AssociationEnd thisEnd = (AssociationEnd) i.next();
-//             AssociationEnd otherEnd = UML13Utils.getOtherAssociationEnd(thisEnd);
-//             addSequenceAssociationElement(classEl, klass,thisEnd, otherEnd);
-//         }
+         if (_includeAssociations) {
+	         log.debug("*********** klass: " + klass.getName());
+	         log.debug("*********** UML13Utils.getAssociationEnds(klass).size(): " + UML13Utils.getAssociationEnds(klass).size());
+	         
+	         for (Iterator i = UML13Utils.getAssociationEnds(klass).iterator(); i.hasNext();) {
+	             AssociationEnd thisEnd = (AssociationEnd) i.next();
+	             AssociationEnd otherEnd = UML13Utils.getOtherAssociationEnd(thisEnd);
+	             addSequenceAssociationElement(classEl, klass,thisEnd, otherEnd);
+	         }
+         }
          
      }
 
-     private void addSequenceAssociationElement(Element mappingEl, UmlClass klass, AssociationEnd thisEnd, AssociationEnd otherEnd) {
+     private void addSequenceAssociationElement(Element mappingEl, UmlClass klass, AssociationEnd thisEnd, AssociationEnd otherEnd) throws XMLUtilityException {
          if (otherEnd.isNavigable()) {
              /** If classes belong to the same package then do not qualify the association
               *
               */
+    		 log.debug("mappingEl.getName(): " + mappingEl);
+    		 log.debug("klass.getName(): " + klass.getName());
+    		 log.debug("thisEnd.getName(): " + thisEnd.getName());
+    		 log.debug("thisEnd.getType().getName(): " + thisEnd.getType().getName());    		 
+    		 log.debug("otherEnd.getName(): " + otherEnd.getName()); 
+    		 log.debug("otherEnd.getType().getName(): " + otherEnd.getType().getName());  
+  		 
         	 if (UML13Utils.isMany2One(thisEnd, otherEnd)) {
-             if (UML13Utils.getLowerBound(thisEnd, otherEnd).equals("1")) {
+       		 
+            	 log.debug("UML13Utils.isMany2One(thisEnd, otherEnd): " + true);
+        		 log.debug("lowerBound: " + UML13Utils.getLowerBound(thisEnd, otherEnd));
+        		 log.debug("upperBound: " + UML13Utils.getUpperBound(thisEnd, otherEnd));
+
             	 Element field = new Element("field");
             	 field.setAttribute("name", otherEnd.getName());
             	 String associationPackage = getPackage(otherEnd.getType());
-            	 field.setAttribute("type", associationPackage+Constant.DOT + otherEnd.getType().getName());
+            	 field.setAttribute("type", associationPackage + Constant.DOT + otherEnd.getType().getName());
+            	 if (_includeFieldHandler) {
+            		 field.setAttribute("handler", "gov.nih.nci.common.util.CastorDomainObjectFieldHandler" );
+            	 }
             	 Element bind = new Element("bind-xml");
-                 bind.setAttribute("name", otherEnd.getName());
+                 bind.setAttribute("name", otherEnd.getType().getName());  //otherEnd.getName()
+            	 bind.setAttribute("type", associationPackage + Constant.DOT+otherEnd.getType().getName());
+                 bind.setAttribute("location", otherEnd.getName());	                 
                  bind.setAttribute("node", "element");
                  field.addContent(bind);
-                 mappingEl.addContent(field); 
-             }
-        	 } else if (UML13Utils.isMany2Many(thisEnd, otherEnd) || UML13Utils.isOne2Many(thisEnd, otherEnd)){
-        		 if (UML13Utils.getLowerBound(thisEnd, otherEnd).equals("1")) {
-                	 Element field = new Element("field");
-                	 field.setAttribute("name", otherEnd.getName());
-                	 field.setAttribute("type", "java.util.Collection" );
-                	 Element bind = new Element("bind-xml");
-                     bind.setAttribute("name", otherEnd.getName());
-                     bind.setAttribute("node", "element");
-                     field.addContent(bind);
-                     mappingEl.addContent(field);
-                 } 
+                 
+                 mappingEl.addContent(field);
+
+           	 } else if (UML13Utils.isMany2Many(thisEnd, otherEnd) || UML13Utils.isOne2Many(thisEnd, otherEnd)){
+            	 log.debug("UML13Utils.isMany2Many(thisEnd, otherEnd): " + UML13Utils.isMany2Many(thisEnd, otherEnd));
+            	 log.debug("UML13Utils.isOne2Many(thisEnd, otherEnd): " + UML13Utils.isOne2Many(thisEnd, otherEnd));
+        		 log.debug("lowerBound: " + UML13Utils.getLowerBound(thisEnd, otherEnd));
+        		 log.debug("upperBound: " + UML13Utils.getUpperBound(thisEnd, otherEnd));
+            	 Element field = new Element("field");
+            	 field.setAttribute("name", otherEnd.getName());
+            	 String associationPackage = getPackage(otherEnd.getType());
+            	 field.setAttribute("type", associationPackage + Constant.DOT+otherEnd.getType().getName());
+            	 field.setAttribute("collection", "collection" );
+            	 if (_includeFieldHandler) {
+            		 field.setAttribute("handler", "gov.nih.nci.common.util.CastorCollectionFieldHandler" );
+            	 }
+            	 
+            	 //for container = false
+            	 //field.setAttribute("container", "false" );
+
+            	 Element bind = new Element("bind-xml");
+                 //bind.setAttribute("auto-naming", "deriveByClass");
+            	 
+            	 // for container = false
+            	 //bind.setAttribute("name", otherEnd.getName());
+
+            	 
+            	 // for container = true
+            	 bind.setAttribute("name", otherEnd.getType().getName());
+            	 bind.setAttribute("type", associationPackage+Constant.DOT+otherEnd.getType().getName());
+                 bind.setAttribute("location", otherEnd.getName());
+                 bind.setAttribute("node", "element");
+                 
+                 field.addContent(bind);
+                 mappingEl.addContent(field);
         		 
         	 }
         	 
@@ -354,9 +400,7 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
     /**
      * @see gov.nih.nci.codegen.core.JDOMConfigurable#configure(org.jdom.Element)
      */
-    public void configure(org.w3c.dom.Element config)
-            throws ConfigurationException {
-
+    public void configure(org.w3c.dom.Element config) throws ConfigurationException {
         org.w3c.dom.Element filterEl = XMLUtils.getChild(config, "filter");
         if (filterEl == null) {
         	log.error("no child filter element found");
@@ -370,6 +414,18 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
         }
         _pkgName = getParameter(config, "basePackage");
         log.debug("basePackage: " + _pkgName);
+        
+        String isIncludeAssociations = getParameter(config, "includeAssociations");
+        log.debug("includeAssociations: " + isIncludeAssociations);
+        if (isIncludeAssociations != null && isIncludeAssociations.length() > 0) {
+        	_includeAssociations = new Boolean(isIncludeAssociations).booleanValue();
+        }        
+        
+        String isIncludeFieldHandler = getParameter(config, "includeFieldHandler");
+        log.debug("includeFieldHandler: " + isIncludeFieldHandler);
+        if (isIncludeFieldHandler != null && isIncludeFieldHandler.length() > 0) {
+        	_includeFieldHandler = new Boolean(isIncludeFieldHandler).booleanValue();
+        }
 
         try {
             _classifierFilt = (UML13ClassifierFilter) Class.forName(className)
@@ -394,7 +450,6 @@ private String getQualifiedName(ModelElement me) {
         }
         qName = UML13Utils.getNamespaceName(pkg, me) + Constant.DOT + me.getName();
         int i = qName.lastIndexOf(Constant.DOT);
-        //System.out.println("Attribute type name: " + qName + "\n");
         if (qName.startsWith(".") || qName.startsWith("java")) {
 			qName = qName.substring(i+1);
 		}

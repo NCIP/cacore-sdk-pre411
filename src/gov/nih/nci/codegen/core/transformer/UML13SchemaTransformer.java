@@ -333,7 +333,6 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
 
             //Do properties
             for (Iterator i = UML13Utils.getAttributes(klass).iterator(); i.hasNext();) {
-
                 org.omg.uml.foundation.core.Attribute att = (org.omg.uml.foundation.core.Attribute) i.next();
                 log.debug("att.getName(): " + att.getName()); 
                 
@@ -406,38 +405,22 @@ public class UML13SchemaTransformer implements Transformer, XMLConfigurable {
             String maxOccurs = UML13Utils.getUpperBound(thisEnd, otherEnd);
             log.debug("maxOccurs: " + maxOccurs);
             
-            if ("1".equalsIgnoreCase(maxOccurs)){ // not a collection
-            	
-            	// If classes belong to the same package then do not qualify the association
-                log.debug("associationPackage: " + associationPackage);
-                log.debug("getPackage(klass): " + getPackage(klass));
-                if(associationPackage.equals(getPackage(klass))){
-                    associationElement.setAttribute("type", otherEnd.getType().getName());
-                }
-                else{
-                    associationElement.setAttribute("type", associationPackage + ':'+otherEnd.getType().getName());
-                }
-                associationElement.setAttribute("minOccurs","0");   
-                associationElement.setAttribute("maxOccurs",maxOccurs);
-            } else { 
-            	// A collection - model association as an element with the association name that 
-            	// has a sequence of the associated type.  See GForge #1311.
-                associationElement.setAttribute("minOccurs","0");   
-                associationElement.setAttribute("maxOccurs","1");
+            // A collection - model association as an element with the association name that 
+            // has a sequence of the associated type.  See GForge #1311.
+            associationElement.setAttribute("minOccurs","0");   
+            associationElement.setAttribute("maxOccurs","1");
                 
-                Element complexType = new Element("complexType",w3cNS);
-                Element innerSequence = new Element("sequence", w3cNS);
-                Element associatedObjElement = new Element("element", w3cNS);
+            Element complexType = new Element("complexType",w3cNS);
+            Element innerSequence = new Element("sequence", w3cNS);
+            Element associatedObjElement = new Element("element", w3cNS);
                 
-                associatedObjElement.setAttribute("ref", otherEnd.getType().getName());
-                associatedObjElement.setAttribute("minOccurs","0");   
-                associatedObjElement.setAttribute("maxOccurs",maxOccurs);  
+            associatedObjElement.setAttribute("ref", otherEnd.getType().getName());
+            associatedObjElement.setAttribute("minOccurs","0");   
+            associatedObjElement.setAttribute("maxOccurs",maxOccurs);  
                 
-                innerSequence.addContent(associatedObjElement);
-                complexType.addContent(innerSequence);
-                associationElement.addContent(complexType);           	
-            }
-            
+            innerSequence.addContent(associatedObjElement);
+            complexType.addContent(innerSequence);
+            associationElement.addContent(complexType);           	
 
         }
     }

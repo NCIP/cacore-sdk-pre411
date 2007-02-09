@@ -18,7 +18,6 @@ import org.xml.sax.*;
 
 import javax.xml.validation.*;
 import javax.xml.*;
-import javax.xml.XMLConstants;
 import javax.xml.transform.stream.*;
 import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
@@ -110,9 +109,13 @@ try {
 			System.out.println("   Title: "+ myGene.getTitle() + "\n");
 			System.out.println("   Symbol: "+ myGene.getSymbol() + "\n");
 			System.out.println("   LocusLinkId: "+ myGene.getLocusLinkId() + "\n\n\n");
+			System.out.println("   libraryCollection.size(): "+ myGene.getLibraryCollection().size() + "\n\n\n");
+			System.out.println("   sequenceCollection.size(): "+ myGene.getSequenceCollection().size() + "\n\n\n");
+			System.out.println("   chromosome: "+ myGene.getChromosome() + "\n\n\n");
+			System.out.println("   taxon: "+ myGene.getTaxon() + "\n\n\n");			
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("latency in miliseconds = "+ (endTime - startTime));
+		System.out.println("latency in milliseconds = "+ (endTime - startTime));
 
 	} catch (ParserConfigurationException ea) {
 		ea.printStackTrace();
