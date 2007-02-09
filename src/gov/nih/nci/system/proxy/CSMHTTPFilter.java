@@ -45,6 +45,8 @@ public class CSMHTTPFilter implements Filter
 			HttpSession session = httpServletRequest.getSession();
 			if ( null != session.getAttribute(Constant.USER_NAME))
 				userName = (String)session.getAttribute(Constant.USER_NAME);
+			if ( null != session.getAttribute(Constant.PASSWORD))
+				password = (String)session.getAttribute(Constant.PASSWORD);			
 			ClientInfo clientInfo = new ClientInfo();
 			clientInfo.setUserName(userName);
 			clientInfo.setPassword(password);		
