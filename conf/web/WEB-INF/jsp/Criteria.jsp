@@ -27,6 +27,9 @@ if(className != null)
 	catch(Exception ex){
 		message=ex.getMessage();
 	}
+	
+	if(fieldNames != null && fieldNames.size() > 0)
+	{ 	
 %>
 <s:form method="post" action="Result.action" target="_blank" name="form1" theme="simple">
 	<table summary="" cellpadding="3" cellspacing="0" border="0" align="center">
@@ -74,7 +77,7 @@ if(className != null)
 			</td>
 		</tr>
 -->		
-				<% if(fieldNames != null)
+		<% if(fieldNames != null && fieldNames.size() > 0)
 		{  
 			String attrName;
 		   	String attrType;
@@ -129,4 +132,5 @@ if(className != null)
 	<s:hidden name="selectedDomain" />
 </s:form>
 
-<%}%> 
+<%		}
+	}%> 

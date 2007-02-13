@@ -17,38 +17,12 @@ public class ShowDynamicTree extends BaseActionSupport {
 
 	private static Logger log = Logger.getLogger(ShowDynamicTree.class
 			.getName());
-//
-//	private String username;
-//
-//	private String password;
-//
-//	public String getPassword() {
-//		return password;
-//	}
-//
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
-//
-//	public String getUsername() {
-//		return username;
-//	}
-//
-//	public void setUsername(String username) {
-//		this.username = username;
-//	}
 
 	public String execute() throws Exception {
 
 		if (!isAuthenticated()){
 			return LOGIN;
 		}		
-
-//		log.debug("username: " + getUsername());
-//		log.debug("password: " + getPassword());
-//
-//		session.put(Constant.USER_NAME, getUsername());
-//		session.put(Constant.PASSWORD, getPassword());
 			
 		return SUCCESS;
 	}
@@ -72,14 +46,15 @@ public class ShowDynamicTree extends BaseActionSupport {
 		List classes = new ArrayList();
 
 		int pos = 0;
+		int categoryId = 1;
 		String klassName = null;
 
-		Category root = new Category(1L, "caBIO Domain Packages", "",
-				new Category[0]);
+		Category root = new Category(categoryId++, "caBIO Domain Packages", "",new Category[0]);
 		if (packageNames != null) {
 
 			Category tmpPackageCat = null;
 			Category tmpClassCat = null;
+
 
 			for (int i = 0; i < packageNames.size(); i++) {
 
@@ -99,8 +74,9 @@ public class ShowDynamicTree extends BaseActionSupport {
 							//in case there is no package
 							klassName = className;
 						}
-						// id just needs to be unique; i.e., need not be sequential;
-						tmpClassCat = new Category((j+1) * (i+1), klassName, packageName, new Category[0]);
+						// id just needs to be unique
+						tmpClassCat = new Category(categoryId++, klassName, packageName, new Category[0]);
+
 						
 						log.debug("About to add Category: " + tmpClassCat);
 						
@@ -108,7 +84,7 @@ public class ShowDynamicTree extends BaseActionSupport {
 					}
 				}
 
-				tmpPackageCat = new Category(2L, packageName, "", classes);
+				tmpPackageCat = new Category(categoryId++, packageName, "", classes);
 
 				packages.add(tmpPackageCat);
 
