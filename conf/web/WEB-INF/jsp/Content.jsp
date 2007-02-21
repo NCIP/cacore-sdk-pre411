@@ -78,8 +78,8 @@
 														</td>
 													</tr>
 													<tr>
-														<td valign="top" width="25%" style="border:0px; border-right:1px; border-style:solid; border-color:black;">
-															<div style="float:left; margin-right: 50px;">
+														<td valign="top" style="border:0px; border-right:1px; border-style:solid; border-color:black;">
+															<div style="width: 300px; float:left; margin: 7px; overflow: auto;">
 															<s:tree 
 															    theme="ajax"
 															    rootNode="%{classTreeRootNode}" 
@@ -89,13 +89,13 @@
 															    treeSelectedTopic="treeSelected">
 															</s:tree> 
 															</div>														
-														</td valign="top">
-														<td>
-															<div id="displayId">
-															
+														</td>
+														<td valign="top">
+															<div id="displayId" style="width: 450px; float:left; margin: 7px; overflow: auto;">
+																&nbsp;
 															</div>														
 														</td>														
-													</tr>													
+													</tr>														
 												</table>
 											</td>
 										</tr>
