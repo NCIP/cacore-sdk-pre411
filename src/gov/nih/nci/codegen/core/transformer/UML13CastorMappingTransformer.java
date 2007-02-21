@@ -206,12 +206,21 @@ public class UML13CastorMappingTransformer implements Transformer, XMLConfigurab
 		class caCOREComparer implements Comparator {
             public int compare(Object obj1, Object obj2)
             {
-                    int i1 = ((UmlClass)obj1).getGeneralization().size();
-                    int i2 = ((UmlClass)obj2).getGeneralization().size();
-    
-                    return i1 - i2;
+            	return determineWeight((UmlClass)obj1) - determineWeight((UmlClass)obj2);
             }
-		}
+            
+            private int determineWeight(UmlClass obj)
+            {
+            	int count = -1;
+            	UmlClass superClass = obj;
+            	do 
+            	{
+            		superClass = UML13Utils.getSuperClass(superClass);
+            		count++;
+            	}while (superClass!=null);
+            	return count;
+            }
+		};
 
  		ArrayList list = new ArrayList(classifiers);
 		Collections.sort(list, new caCOREComparer());
