@@ -49,7 +49,7 @@ public class ShowDynamicTree extends BaseActionSupport {
 		int categoryId = 1;
 		String klassName = null;
 
-		Category root = new Category(categoryId++, "caBIO Domain Packages", "",new Category[0]);
+		Category root = new Category(categoryId++, getText("showdynamictree.root.title"), "",new Category[0]);
 		if (packageNames != null) {
 
 			Category tmpPackageCat = null;
@@ -74,6 +74,7 @@ public class ShowDynamicTree extends BaseActionSupport {
 							//in case there is no package
 							klassName = className;
 						}
+						
 						// id just needs to be unique
 						tmpClassCat = new Category(categoryId++, klassName, packageName, new Category[0]);
 
@@ -87,6 +88,9 @@ public class ShowDynamicTree extends BaseActionSupport {
 				tmpPackageCat = new Category(categoryId++, packageName, "", classes);
 
 				packages.add(tmpPackageCat);
+				
+				//Reset classes array for the next package
+				classes = new ArrayList();
 
 			}
 
