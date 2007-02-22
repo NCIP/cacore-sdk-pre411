@@ -35,11 +35,16 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 <% for(Iterator i = UML13Utils.getAttributes((UmlClass)klass).iterator(); i.hasNext();){ %>
 	<% Attribute att = (Attribute)i.next(); %>
 	<% String attTypeName = (getQualifiedName(att.getType(), basePkg).startsWith("."))?getQualifiedName(att.getType(), basePkg).substring(1)+att.getName():getQualifiedName(att.getType(), basePkg); %>	
+	<%=UML13JavaSourceHelper.getAttributeJavadoc(att)%>
 	<%=att.getVisibility().toString().substring(3)%> <%=attTypeName%> <%=att.getName()%>;
+	
+	<%=UML13JavaSourceHelper.getAttributeJavadocGetter(att)%>
 	public <%=attTypeName%> get<%=capFirst(att.getName())%>()
 	{
 		return <%=att.getName()%>;
 	}
+	
+	<%=UML13JavaSourceHelper.getAttributeJavadocSetter(att)%>	
 	public void set<%=capFirst(att.getName())%>(<%=attTypeName%> <%=att.getName()%>)
 	{
 		this.<%=att.getName()%> = <%=att.getName()%>;
@@ -54,7 +59,10 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 	<% if(otherEnd.isNavigable()){ %>
 		<% if(UML13Utils.isMany2Many(thisEnd, otherEnd) || UML13Utils.isOne2Many(thisEnd, otherEnd)){ %>
 		<%//Other end of the association is MANY%>
+	<%=UML13JavaSourceHelper.getAssociationAttributeJavadoc(otherEnd.getType().getName(), true)%>		
 	private java.util.Collection <%=otherEnd.getName()%> = new java.util.HashSet();
+	
+	<%=UML13JavaSourceHelper.getAssociationAttributeJavadocGetter(otherEnd.getName())%>		
 	public java.util.Collection get<%=capFirst(otherEnd.getName())%>()
 	{
 		if (<%=otherEnd.getName()%>==null || <%=otherEnd.getName()%>.getClass().getName().indexOf("PersistentSet")>0)		
@@ -77,13 +85,17 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 		return <%=otherEnd.getName()%>;
 	}
 	
+	<%=UML13JavaSourceHelper.getAssociationAttributeJavadocSetter(otherEnd.getName())%>		
 	public void set<%=capFirst(otherEnd.getName())%>(java.util.Collection <%=otherEnd.getName()%>)
 	{
 		this.<%=otherEnd.getName()%> = <%=otherEnd.getName()%>;
 	}	
 		<% } else if( UML13Utils.isMany2One(thisEnd, otherEnd)|| UML13Utils.isOne2One(thisEnd, otherEnd)){ %>
 		<%//Other end of the association is ONE%>
+	<%=UML13JavaSourceHelper.getAssociationAttributeJavadoc(otherEnd.getType().getName(), false)%>		
 	private <%=fullyQualifiedTargetClassName%> <%=otherEnd.getName()%>;
+
+	<%=UML13JavaSourceHelper.getAssociationAttributeJavadocGetter(otherEnd.getName())%>		
 	public <%=fullyQualifiedTargetClassName%> get<%=capFirst(otherEnd.getName())%>()
 	{
 			<% if (eagerFetchPackages.contains(pkgName)) {%>
@@ -113,6 +125,7 @@ public <% if (klass.isAbstract()){%> abstract <%}%> class <%=klass.getName()%>
 			<% } %>		
 	}
 
+	<%=UML13JavaSourceHelper.getAssociationAttributeJavadocSetter(otherEnd.getName())%>		
 	public void set<%=capFirst(otherEnd.getName())%>(<%=fullyQualifiedTargetClassName%> <%=otherEnd.getName()%>)
 	{
 		this.<%=otherEnd.getName()%> = <%=otherEnd.getName()%>;
