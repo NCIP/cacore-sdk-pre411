@@ -14,7 +14,7 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.*;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
@@ -186,6 +186,47 @@ public class UML13JavaSourceHelper {
 		return javadocOut.toString();
 	}
 
+	public static String getAssociationAttributeJavadoc(String associationType, boolean isCollection) {
+		StringBuffer javadocOut = new StringBuffer();
+		
+
+		javadocOut.append("/**\n");
+		javadocOut.append("An associated ");
+		if(isCollection)
+			javadocOut.append(" collection of ");
+		javadocOut.append(associationType);
+		javadocOut.append(" object");
+		javadocOut.append("\n");
+		javadocOut.append("   */\n");
+
+		return javadocOut.toString();
+	}
+
+	public static String getAssociationAttributeJavadocGetter(String associationName) {
+		StringBuffer javadocOut = new StringBuffer();
+		javadocOut.append("/**\n");
+		javadocOut.append("Retreives the value of "+associationName+" attribue\n");
+		javadocOut.append("   * @return ");
+		javadocOut.append(associationName);
+		javadocOut.append("\n");
+		javadocOut.append("   */\n");
+
+		return javadocOut.toString();
+	}
+		
+	public static String getAssociationAttributeJavadocSetter(String associationName) {
+		StringBuffer javadocOut = new StringBuffer();
+
+		javadocOut.append("/**\n");
+		javadocOut.append("Sets the value of "+associationName+" attribue\n");
+		javadocOut.append("@param ").append(associationName);
+		javadocOut.append("\n");
+		javadocOut.append("   */\n");
+
+		return javadocOut.toString();
+	}	
+
+	
 	public static String getAttributeJavadoc(Attribute att) {
 		StringBuffer javadocOut = new StringBuffer();
 		TaggedValue doc = UML13Utils.getTaggedValue(att, "description");
@@ -210,6 +251,50 @@ public class UML13JavaSourceHelper {
 
 		return javadocOut.toString();
 	}
+
+	public static String getAttributeJavadocSetter(Attribute att) {
+		StringBuffer javadocOut = new StringBuffer();
+		TaggedValue doc = UML13Utils.getTaggedValue(att, "description");
+
+		String docStr = null;
+		if (doc != null) {
+			docStr = doc.getValue();
+		}
+
+		//docStr = getLineFormattedJavadoc(docStr);
+
+		javadocOut.append("/**\n");
+		javadocOut.append("Sets the value of "+att.getName()+" attribue\n");
+		javadocOut.append("@param ").append(att.getName());
+		javadocOut.append(" ").append(docStr);
+		javadocOut.append("\n");
+		javadocOut.append("   */\n");
+
+		return javadocOut.toString();
+	}	
+	public static String getAttributeJavadocGetter(Attribute att) {
+		StringBuffer javadocOut = new StringBuffer();
+		TaggedValue doc = UML13Utils.getTaggedValue(att, "description");
+
+		String docStr = null;
+		if (doc != null) {
+			docStr = doc.getValue();
+		}
+
+		docStr = getLineFormattedJavadoc(docStr);
+
+		javadocOut.append("/**\n");
+		javadocOut.append("Retreives the value of "+att.getName()+" attribue\n");
+		javadocOut.append("   * @return ");
+		javadocOut.append(att.getName());
+		javadocOut.append("\n");
+		
+		javadocOut.append("\n");
+		javadocOut.append("   */\n");
+
+		return javadocOut.toString();
+	}
+	
 
 	/**
 	 * Formats the javadoc text
