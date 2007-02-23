@@ -362,33 +362,7 @@ public List getSearchCriteriaList(String criteria){
 public Field[] getAllFields(Class resultClass){
     List fieldList = new ArrayList();
     try{
-
-// ORIGINAL
-//    	
-//	  	if(!resultClass.getName().equalsIgnoreCase("java.lang.Object")){
-//	
-//	    while(resultClass != null && !resultClass.isInterface() && !resultClass.isPrimitive()){
-//	        Field[] fields = resultClass.getDeclaredFields();
-//	        for (int i = 0; i < fields.length; i++) {
-//	                    fields[i].setAccessible(true);
-//	                    String fieldName = fields[i].getName();
-//	                    if(fieldName.indexOf('$')==-1)
-//	                    	fieldList.add(fields[i]);
-//	            }
-//	        if(!resultClass.getSuperclass().getName().equalsIgnoreCase("java.lang.Object")){
-//	            resultClass = resultClass.getSuperclass();
-//	            }
-//	        else{
-//	            break;
-//	            }
-//	
-//	        }
-//	  	}
-
-// NEW
-//
 	  	getAllFields(resultClass, fieldList);
-	  	
     }catch(Exception ex){
     	log.error("Exception: ", ex);
     }
