@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  JBoss Server Configuration                                           -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+<!-- $Id: oracle-ds.xml,v 1.1 2007-03-05 20:05:20 hunterst Exp $ -->
+<!-- ==================================================================== -->
+<!--  Datasource config for Oracle originally from Steven Coy             -->
+<!-- ==================================================================== -->
+<datasources>
+<local-tx-datasource>
+    <jndi-name>csmupt</jndi-name>
+    <connection-url>jdbc:oracle:thin:@cbiodb30.nci.nih.gov:1521:CBTEST</connection-url>
+    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+    <user-name>cacoresdk_qa</user-name>
+    <password>c0r3ga!</password>
+  </local-tx-datasource>  
+  
+<local-tx-datasource>
+    <jndi-name>sdk</jndi-name>
+    <connection-url>jdbc:oracle:thin:@cbiodb30.nci.nih.gov:1521:CBTEST</connection-url>
+    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+    <user-name>CACORESDK_QA</user-name>
+    <password>c0r3ga!</password>
+    <check-valid-connection-sql>Select sysdate from dual</check-valid-connection-sql>
+    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+    <min-pool-size>10</min-pool-size>
+    <max-pool-size>20</max-pool-size>
+    <blocking-timeout-millis>5000</blocking-timeout-millis>
+    <idle-timeout-minutes>15</idle-timeout-minutes>
+  </local-tx-datasource>  
+</datasources>
