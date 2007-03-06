@@ -2,8 +2,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
-<s:head theme="ajax" debug="true" />
+<head>
 <title>Content</title>
+<s:head theme="ajax" debug="true" />
 <link rel="stylesheet" type="text/css" href="styleSheet.css" />
 <script src="script.js" type="text/javascript"></script>
 <script>
@@ -21,7 +22,7 @@
 
     dojo.event.topic.subscribe("treeSelected", this, "treeNodeSelected");
 </script>
-<s:head/>
+</head>
 <body>
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%">
 
