@@ -47,7 +47,7 @@
 	<target name="compile">
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="lines,vars,source">
 			<include name="**/*.java"/>
-			<classpath refid="client-cp"/>
+			<classpath refid="thick-client-cp"/>
 		</javac>
 	</target>
 	
