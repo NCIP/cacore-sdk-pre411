@@ -129,7 +129,11 @@
 
 	<target name="-build-beans.main" unless="build-beans.main.ignore"
 		depends="init-project,compile-generator,fix-xmi,generate-beans,generate-junit"/>
-
+	
+	<target name="build-beans-xsd-and-xml-mapping" 
+		depends="build-beans,generate-schemas,generate-xml-mapping"
+		description="Runs Bean, XSD, and XML Mapping process"/>
+	
 	<target name="generate-beans"
 		depends="-generate-beans.main,-generate-beans.custom" 
 		description="Generate beans based on model specified in deploy.properties"/>
@@ -259,11 +263,12 @@
 	<target name="generate-xml-mapping" 
 		depends="-generate-xml-mapping.main,-generate-xml-mapping.custom" 
 		description="Generate XML mapping files"/>
-
-	<target name="-generate-xml-mapping.main" unless="generate-xml-mapping.main.ignore"
-		depends="init-project,compile-generator,fix-xmi">
-		<SDKecho message="Generating XML mapping files"/>
+	
+	<target name="-generate-xml-mapping.main" depends="init-project,compile-generator,fix-xmi" unless="generate-xml-mapping.main.ignore">
+		<SDKecho message="Generating Marshaller XML mapping file"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.xmlmappinggeneration}"/>
+		<SDKecho message="Generating Unmarshaller XML mapping file"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.xmlunmarshallermappinggeneration}"/>
 	</target>
 
 <!--***********************************************************************
@@ -380,6 +385,7 @@
 				<include name="mapping.dtd"/>
 				<include name="xml.properties"/>
 				<include name="xml-mapping.xml"/>
+				<include name="unmarshaller-xml-mapping.xml"/>
 				<include name="cacoreBeans.properties"/>
 				<include name="${file.control.systemProperties}"/>
 			</fileset>
@@ -452,6 +458,7 @@
 				<include name="orm*.xml"/>
 				<include name="roleLookup.properties"/>
 				<include name="xml-mapping.xml"/>
+				<include name="unmarshaller-xml-mapping.xml"/>				
 				<include name="**/*.hbm.xml"/>
 				<include name="${file.spring.configuration}"/>
 			</fileset>
