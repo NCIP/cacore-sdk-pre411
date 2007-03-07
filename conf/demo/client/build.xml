@@ -7,6 +7,7 @@
 <project name="caCORE SDK Client Demo" default="rundemo" basedir=".">
 
 	<property name="conf.dir" value="conf" />
+	<property name="log4j.dir" value="conf/resources/client" />
 	<property name="lib.dir" value="lib" />
 	<property name="src.dir" value="." />
 
@@ -35,7 +36,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/log4j.properties"/>
+						value="${log4j.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -57,7 +58,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/log4j.properties"/>
+						value="${log4j.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -80,7 +81,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/log4j.properties"/>
+						value="${log4j.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -103,7 +104,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/log4j.properties"/>
+						value="${log4j.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -126,7 +127,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/log4j.properties"/>
+						value="${log4j.dir}/log4j.properties"/>
 		</java>
 
 	</target>
@@ -149,7 +150,7 @@
 				<pathelement location="${src.dir}"/>
 			</classpath>
 			<sysproperty key="log4j.configuration"
-						value="${conf.dir}/log4j.properties"/>
+						value="${log4j.dir}/log4j.properties"/>
 		</java>
 
 	</target>	
