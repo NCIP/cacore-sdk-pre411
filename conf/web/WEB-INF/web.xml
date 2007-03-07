@@ -150,8 +150,8 @@ taglib>
     </servlet-mapping>
 
 	<welcome-file-list>
-		<!-- welcome-file>Happy.jsp</welcome-file -->
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>Happy.jsp</welcome-file>
+		<!--  welcome-file>index.html</welcome-file -->
 		
 	</welcome-file-list>
 	
