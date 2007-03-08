@@ -437,6 +437,17 @@
 	<target name="package-thickclient-jar" depends="compile-source">
 		<SDKecho message="Packaging thick-client jar file"/>
 		<delete file="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient.jar"/>
+		<touch file="${dir.temp}/CORESystem.temp"></touch>
+		<touch file="${dir.temp}/CORESystem.new"></touch>
+		<echo file="${dir.temp}/CORESystem.temp">
+CLIENT_TYPE=Thick
+		</echo>
+		<copy todir="${dir.temp}" file="${dir.output.project.src}/${file.control.systemProperties}" overwrite="true"/>
+		<concat destfile="${dir.temp}/CORESystem.new">
+		    <filelist files="${file.control.systemProperties},CORESystem.temp" dir="${dir.temp}"/>
+		</concat>
+		<copy tofile="${dir.temp}/${file.control.systemProperties}" file="${dir.temp}/CORESystem.new" overwrite="true"/>
+	
 		<jar destfile="${dir.output.project.package.thickclient}/lib/${project_name}-thickclient.jar" update="false">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
@@ -447,13 +458,11 @@
 				<exclude name="**/proxy/**/*"/>
 				<exclude name="**/webservice/**/*"/>
 				<exclude name="**/ws/**/*"/>
-				<exclude name="**/comm/**/*"/>
-				<exclude name="**/comm/server/**/*"/>
 				<exclude name="**/test/**/*"/>
+				<exclude name="**/web/**/*"/>
 			</fileset>
 			<fileset dir="${dir.output.project.src}">
 				<include name="cacoreBeans.properties"/>
-				<include name="${file.control.systemProperties}"/>
 				<include name="${file.dao.configuration}"/>
 				<include name="orm*.xml"/>
 				<include name="roleLookup.properties"/>
@@ -462,8 +471,14 @@
 				<include name="**/*.hbm.xml"/>
 				<include name="${file.spring.configuration}"/>
 			</fileset>
+			<fileset dir="${dir.temp}">
+				<include name="${file.control.systemProperties}"/>
+			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}" includes="mapping.dtd"/>
 		</jar>
+		<delete>
+		    <fileset dir="${dir.temp}" includes="CORESystem.temp,CORESystem.new,${file.control.systemProperties}"/>
+		</delete>
 	</target>
 	
 	<target name="package-thickclient-test-jar" depends="compile-source">
@@ -498,11 +513,13 @@
 				<include name="${file.logger.properties}"/>
 				<include name="${file.cache.properties}"/>
 				<include name="*.xsd"/>
+				<include name="applicationService.xml"/>
 			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}">
 				<include name="${file.logger.properties}"/>
 			</fileset>
 		</copy>
+		<copy tofile="${dir.output.project.package.thickclient}/conf/remoteService.xml" file="${dir.output.conf.spring}/remoteServiceThickClient.xml" overwrite="true"/>
 		<copy todir="${dir.output.project.package.thickclient}" overwrite="true">
 			<fileset dir="${dir.output.conf.demo.thickclient}" includes="**/*"/>
 		</copy>
