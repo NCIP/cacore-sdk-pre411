@@ -97,13 +97,8 @@ public class ClientSession
 		
 		if (instance == null)
 		{
-			System.out.println("Creating new instance");
 			instance = new ClientSession();
 			setCSInstance(instance);
-		}
-		else
-		{
-			System.out.println("Using existing instance");			
 		}
 
 		return instance;
