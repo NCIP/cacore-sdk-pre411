@@ -63,17 +63,17 @@ public class ClientSession
 	    		if((SECURITY_POLICY_THREAD).equals(secPolicy))
 	    		{
 	    			securityPolicy=SECURITY_POLICY_THREAD;
-	    			log.error("Thread level security policy defined in CORESystem.properties file. Switching security policy to Thread based");
+	    			log.info("Thread level security policy defined in CORESystem.properties file. Switching security policy to Thread based");
 	    		}
 	    		else if((SECURITY_POLICY_INSTNACE).equals(secPolicy))
 	    		{
 	    			securityPolicy=SECURITY_POLICY_INSTNACE;
-	    			log.error("JVM/Classloader level security policy defined in CORESystem.properties file. Switching security policy to JVM/Classloader");
+	    			log.info("JVM/Classloader level security policy defined in CORESystem.properties file. Switching security policy to JVM/Classloader");
 	    		}
 	    		else
 	    		{
 	    			securityPolicy=SECURITY_POLICY_INSTNACE;
-	    			log.error("Unknown security policy defined in CORESystem.properties file. Keeping security policy to default (JVM/Classloader)");
+	    			log.info("Unknown security policy defined in CORESystem.properties file. Keeping security policy to default (JVM/Classloader)");
 	    		}
 	    	 }
 	    	 else
