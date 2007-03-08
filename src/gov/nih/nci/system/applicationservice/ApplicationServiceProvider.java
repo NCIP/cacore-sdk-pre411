@@ -1,5 +1,7 @@
 package gov.nih.nci.system.applicationservice;
 
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 
 
@@ -15,7 +17,40 @@ public class ApplicationServiceProvider
 
 	private static Logger log= Logger.getLogger(ApplicationServiceProvider.class.getName());
 	private static ApplicationService applicationService;
-
+	private static boolean isThickClient;
+	
+    static
+    {
+    	try
+    	{
+    		Properties _properties = new Properties();
+    		_properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("CORESystem.properties"));
+    		String clientType = _properties.getProperty("CLIENT_TYPE");
+    		if(clientType!=null)
+    		{
+    			if(("Thick").equals(clientType))
+	    		{
+    				isThickClient=true;
+	    			log.info("Using Thick Client mode");
+	    		}
+	    		else
+	    		{
+	    			isThickClient=false;
+	    		}
+	    	 }
+	    	 else
+	    	 {
+	    		 isThickClient=false;
+	    	 }
+    	}
+    	catch(Exception e)
+    	{
+    		isThickClient=false;
+    		log.error("Error while reading the CORESystem.properties file.");
+    	}
+    }	
+	
+	
 	/**
 	 * Default constructor. Does nothing
 	 */	
@@ -37,9 +72,16 @@ public class ApplicationServiceProvider
 	{
 		if (applicationService == null)
 		{
-			applicationService = getLocalInstance();
-			if (applicationService == null)
+			if(isThickClient)
+			{
 				applicationService = getRemoteInstance();
+			}
+			else
+			{
+				applicationService = getLocalInstance();
+				if (applicationService == null)
+					applicationService = getRemoteInstance();
+			}
 		}
 		return applicationService;
 	}
