@@ -50,7 +50,7 @@
 		description="Runs entire SDK code generation process"/>
 
 	<target name="-build-system.main" unless="build-system.main.ignore"
-		depends="install-tomcat,build-schema,title,generate-system,copy-framework,package-system,deploy-server"/> 
+		depends="install-tomcat,build-schema,title,generate-system,copy-framework,package-system,deploy-server,doc"/> 
 
 	<target name="generate-system" 
 		depends="-generate-system.main,-generate-system.custom" 
