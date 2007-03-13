@@ -305,7 +305,7 @@ public class UML13JavaSourceHelper {
 	public static String getLineFormattedJavadoc(String val) {
 		StringBuffer javadocOut = new StringBuffer();
 		if (val == null) {
-			javadocOut.append("   * DOCUMENT ME!");
+			//javadocOut.append("   * DOCUMENT ME!");
 		} else {
 			// replace newlines
 			val.replace('\n', ' ');
