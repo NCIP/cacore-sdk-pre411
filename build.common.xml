@@ -295,6 +295,7 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 			<replacefilter token="@APPLICATION_NAME@" value="${application_name}" />
 			<replacefilter token="@DEFAULT_SECURITY_LEVEL@" value="${default_security_level}" />
 			<replacefilter token="@DEFAULT_SESSION_TIMEOUT@" value="${default_session_timeout}" />
+			<replacefilter token="@AUTHENTICATION_DISABLED@" value="${authentication_disabled}" />
 			<replacefilter token="@DBNAME@" value="${schema_name}" />
 			<replacefilter token="@DBUSER@" value="${db_user}" />
 			<replacefilter token="@DBPASSWD@" value="${db_password}" />

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import gov.nih.nci.common.util.ClientInfo;
 import gov.nih.nci.common.util.ClientInfoThreadVariable;
 import gov.nih.nci.common.util.Constant;
+import gov.nih.nci.common.util.SecurityConfiguration;
 import gov.nih.nci.system.server.mgmt.SecurityEnabler;
 
 import javax.wsdl.extensions.soap.SOAPHeaderFault;
@@ -27,7 +28,7 @@ public class CSMSOAPHandler extends BasicHandler
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static SecurityEnabler securityEnabler = new SecurityEnabler(Constant.APPLICATION_NAME);
+	private static SecurityEnabler securityEnabler = new SecurityEnabler(SecurityConfiguration.getApplicationName());
 
 	public void invoke(MessageContext messageContext) throws AxisFault
 	{

@@ -3,6 +3,7 @@ package gov.nih.nci.system.proxy;
 import gov.nih.nci.common.util.ClientInfo;
 import gov.nih.nci.common.util.ClientInfoThreadVariable;
 import gov.nih.nci.common.util.Constant;
+import gov.nih.nci.common.util.SecurityConfiguration;
 import gov.nih.nci.security.util.StringUtilities;
 import gov.nih.nci.system.server.mgmt.SecurityEnabler;
 
@@ -22,7 +23,7 @@ public class CSMHTTPFilter implements Filter
 {
 
 	private FilterConfig filterConfig = null;
-	private static SecurityEnabler securityEnabler = new SecurityEnabler(Constant.APPLICATION_NAME);
+	private static SecurityEnabler securityEnabler = new SecurityEnabler(SecurityConfiguration.getApplicationName());
 
 	public void init(FilterConfig config) throws ServletException
 	{

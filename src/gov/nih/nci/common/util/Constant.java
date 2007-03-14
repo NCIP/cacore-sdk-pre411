@@ -76,10 +76,6 @@ public class Constant {
 	public static final String CSM_SECURITY_LEVEL = ".CSM.Security.Level";
 	public static final String CSM_SECURITY_SESSION_TIMEOUT = "CSM.Security.Session.Timeout";
 	
-	public static final String APPLICATION_NAME = "@APPLICATION_NAME@";
-	public static final int DEFAULT_SECURITY_LEVEL = Integer.parseInt("@DEFAULT_SECURITY_LEVEL@");
-	public static final long DEFAULT_SESSION_TIMEOUT = Long.parseLong("@DEFAULT_SESSION_TIMEOUT@");
-	
 	public static final String USER_NAME = "username";
 	public static final String PASSWORD = "password";
 }

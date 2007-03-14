@@ -1,6 +1,7 @@
 package gov.nih.nci.system.web.struts.action;
 
 import gov.nih.nci.common.util.Constant;
+import gov.nih.nci.common.util.SecurityConfiguration;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class BaseActionSupport extends ActionSupport implements
 	
 	protected boolean isAuthenticated() {
 
-		gov.nih.nci.system.server.mgmt.SecurityEnabler securityEnabler =  new gov.nih.nci.system.server.mgmt.SecurityEnabler(Constant.APPLICATION_NAME);
+		gov.nih.nci.system.server.mgmt.SecurityEnabler securityEnabler =  new gov.nih.nci.system.server.mgmt.SecurityEnabler(SecurityConfiguration.getApplicationName());
 		if (securityEnabler.getSecurityLevel() > 0) {
 			if (null == session.get(Constant.USER_NAME) || null == session.get(Constant.PASSWORD) ){
 				return false;

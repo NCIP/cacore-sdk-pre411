@@ -8,6 +8,7 @@ package gov.nih.nci.system.server.mgmt;
 
 import gov.nih.nci.common.util.ClientInfoThreadVariable;
 import gov.nih.nci.common.util.Constant;
+import gov.nih.nci.common.util.SecurityConfiguration;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -98,19 +99,26 @@ public class SecurityEnabler
 		}
 
 		boolean authenticated = false;
-		if (null == authenticationManager)
+		if(!SecurityConfiguration.isAuthenticationDisabled())
 		{
-			authenticationManager = getAuthenticationManager();
+			if (null == authenticationManager)
+			{
+				authenticationManager = getAuthenticationManager();
+			}
+			try
+			{
+				authenticated = authenticationManager.login(userId, password);
+			}
+			catch (Exception ex)
+			{
+				authenticated = false;
+				log.error("Could not authenticate the user: " + ex.getMessage());
+				throw new AuthenticationException("Could not authenticate the user", ex);
+			}
 		}
-		try
+		else //Authentication disabled
 		{
-			authenticated = authenticationManager.login(userId, password);
-		}
-		catch (Exception ex)
-		{
-			authenticated = false;
-			log.error("Could not authenticate the user: " + ex.getMessage());
-			throw new AuthenticationException("Could not authenticate the user", ex);
+			authenticated=true;
 		}
 		if (authenticated)
 		{
@@ -235,7 +243,7 @@ public class SecurityEnabler
 			catch (Exception ex)
 			{
 				log.error("No Security level found; setting a default security level");
-				securityLevel = Constant.DEFAULT_SECURITY_LEVEL;
+				securityLevel = SecurityConfiguration.getSecurityLevel();
 			}
 		}
 		return securityLevel;

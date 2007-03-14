@@ -3,6 +3,7 @@ package gov.nih.nci.system.web.struts.action;
 import java.util.Map;
 
 import gov.nih.nci.common.util.Constant;
+import gov.nih.nci.common.util.SecurityConfiguration;
 import gov.nih.nci.system.applicationservice.AuthenticationException;
 import gov.nih.nci.system.server.mgmt.SecurityEnabler;
 
@@ -31,7 +32,7 @@ public class Login extends ActionSupport implements SessionAware {
 
 		try {
 			log.debug("Will now try to authenticate user");
-			securityEnabler = new SecurityEnabler(Constant.APPLICATION_NAME);
+			securityEnabler = new SecurityEnabler(SecurityConfiguration.getApplicationName());
 			securityEnabler.authenticate(getUsername(), getPassword());
 			log.debug("User has been successfully authenticated");
 		} catch (AuthenticationException ae){

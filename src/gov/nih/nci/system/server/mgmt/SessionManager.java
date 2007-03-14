@@ -7,6 +7,7 @@
 package gov.nih.nci.system.server.mgmt;
 
 import gov.nih.nci.common.util.Constant;
+import gov.nih.nci.common.util.SecurityConfiguration;
 
 import java.util.Hashtable;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class SessionManager
 {
 	private static SessionManager sessionManager;
 	private Hashtable sessions;
-	private long timeOut = Constant.DEFAULT_SESSION_TIMEOUT;
+	private long timeOut = SecurityConfiguration.getSecuritySessionTimeout();
 	
 	private static Logger log = Logger.getLogger(SessionManager.class.getName());	
 
@@ -63,7 +64,7 @@ public class SessionManager
 		}
 		catch (Exception ex)
 		{
-			timeOut = Constant.DEFAULT_SESSION_TIMEOUT;
+			timeOut = SecurityConfiguration.getSecuritySessionTimeout();
 		}
 	}
 

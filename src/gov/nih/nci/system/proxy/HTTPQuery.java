@@ -53,7 +53,7 @@ public class HTTPQuery extends HttpServlet{
     private static Properties properties = new Properties();
     private String cacoreStyleSheet;
     private int pageSize = 1000;
-    private SecurityEnabler securityEnabler = new SecurityEnabler(Constant.APPLICATION_NAME);
+    private SecurityEnabler securityEnabler = new SecurityEnabler(SecurityConfiguration.getApplicationName());
     /**
      * Initialize the servlet
      */

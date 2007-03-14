@@ -7,7 +7,7 @@
 <!--
     function setValues()
 	{
-		<%gov.nih.nci.system.server.mgmt.SecurityEnabler securityEnabler =  new gov.nih.nci.system.server.mgmt.SecurityEnabler(Constant.APPLICATION_NAME);
+		<%gov.nih.nci.system.server.mgmt.SecurityEnabler securityEnabler =  new gov.nih.nci.system.server.mgmt.SecurityEnabler(gov.nih.nci.common.util.SecurityConfiguration.getApplicationName());
 		  if (securityEnabler.getSecurityLevel() > 0)
 		  {%>
 		document.form1.username.value=prompt("Please Enter the User Name", "");

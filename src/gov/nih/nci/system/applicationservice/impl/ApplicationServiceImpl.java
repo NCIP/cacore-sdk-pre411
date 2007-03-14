@@ -2,6 +2,7 @@ package gov.nih.nci.system.applicationservice.impl;
 
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
+import gov.nih.nci.common.util.SecurityConfiguration;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.applicationservice.AuthorizationException;
@@ -38,7 +39,7 @@ public class ApplicationServiceImpl extends ApplicationService
 	{
 		this.applicationServiceBusinessImpl = ApplicationServiceBusinessImpl.getLocalInstance();
 		this.writableDAO = new WritableDAO();
-		this.securityEnabler = new SecurityEnabler(Constant.APPLICATION_NAME);
+		this.securityEnabler = new SecurityEnabler(SecurityConfiguration.getApplicationName());
 	}
 
 

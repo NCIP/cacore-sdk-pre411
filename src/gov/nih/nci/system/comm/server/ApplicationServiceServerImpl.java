@@ -4,6 +4,7 @@ import gov.nih.nci.common.util.ClientInfo;
 import gov.nih.nci.common.util.ClientInfoThreadVariable;
 import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.common.util.HQLCriteria;
+import gov.nih.nci.common.util.SecurityConfiguration;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
@@ -27,7 +28,7 @@ public class ApplicationServiceServerImpl implements ApplicationServiceProxy
 	 */
 	public ApplicationServiceServerImpl()
 	{
-		securityEnabler = new SecurityEnabler(Constant.APPLICATION_NAME);
+		securityEnabler = new SecurityEnabler(SecurityConfiguration.getApplicationName());
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(Constant.APPLICATION_SERVICE_FILE_NAME);
 		applicationService = (ApplicationService) ctx.getBean(Constant.APPLICATION_SERVICE);
 	}
