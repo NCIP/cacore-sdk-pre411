@@ -689,6 +689,9 @@ CLIENT_TYPE=Thick
 				<include name="**/*.java"/>
 				<exclude name="**/impl/**/*.java"/>
 				<exclude name="**/ws/*.java"/>
+				<exclude name="**/gov/nih/nci/codegen/**/*.java"/>
+				<exclude name="**/gov/nih/nci/common/**/*.java"/>
+				<exclude name="**/gov/nih/nci/system/**/*.java"/>
 			</fileset>
 		</javadoc>
 	</target>
