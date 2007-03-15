@@ -243,7 +243,7 @@ public class SecurityEnabler
 			catch (Exception ex)
 			{
 				log.error("No Security level found; setting a default security level");
-				securityLevel = SecurityConfiguration.getSecurityLevel();
+				securityLevel = SecurityConfiguration.getSecurityLevel().intValue();
 			}
 		}
 		return securityLevel;

@@ -28,7 +28,7 @@ public class SessionManager
 {
 	private static SessionManager sessionManager;
 	private Hashtable sessions;
-	private long timeOut = SecurityConfiguration.getSecuritySessionTimeout();
+	private long timeOut = SecurityConfiguration.getSecuritySessionTimeout().longValue();
 	
 	private static Logger log = Logger.getLogger(SessionManager.class.getName());	
 
@@ -64,7 +64,7 @@ public class SessionManager
 		}
 		catch (Exception ex)
 		{
-			timeOut = SecurityConfiguration.getSecuritySessionTimeout();
+			timeOut = SecurityConfiguration.getSecuritySessionTimeout().longValue();
 		}
 	}
 
