@@ -102,6 +102,8 @@
 				<include name="mapping.dtd"/>
 				<include name="my.cnf.template"/>
 				<include name="ormgeneration.xml"/>
+				<include name="PojoBean.javajet"/>
+				<include name="pojobeangeneration.xml"/>				
 				<include name="Packages.jsp"/>
 				<include name="remoteService.xml"/>
 				<include name="Result.jsp"/>

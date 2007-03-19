@@ -130,9 +130,12 @@
 	<target name="-build-beans.main" unless="build-beans.main.ignore"
 		depends="init-project,compile-generator,fix-xmi,generate-beans,generate-junit"/>
 	
-	<target name="build-beans-xsd-and-xml-mapping" 
-		depends="build-beans,generate-schemas,generate-xml-mapping"
-		description="Runs Bean, XSD, and XML Mapping process"/>
+	<target name="build-pojo-beans" unless="build-pojo-beans.main.ignore"
+		depends="init-project,compile-generator,fix-xmi,generate-pojo-beans"/>
+	
+	<target name="build-pojo-beans-xsd-xml-mapping" 
+		depends="build-pojo-beans,generate-schemas,generate-xml-mapping,copy-framework,compile-source"
+		description="Runs POJO Bean, XSD, and XML Mapping processes"/>
 	
 	<target name="generate-beans"
 		depends="-generate-beans.main,-generate-beans.custom" 
@@ -146,7 +149,13 @@
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beanwsgeneration}"/>
 		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.beanwsimplgeneration}"/>
 	</target>
-
+	
+	<target name="generate-pojo-beans" unless="generate-beans.main.ignore"
+		depends="init-project,compile-generator,fix-xmi">
+		<SDKecho message="Generating Plain Old Java Object (POJO) Java beans from model"/>
+		<SDKgenerate controlfile="${dir.output.conf.control}/${file.control.pojobeangeneration}"/>
+	</target>
+	
 	<target name="generate-junit" 
 		depends="-generate-junit.main,-generate-junit.custom" 
 		description="Generate JUnit test classes from model"/>
