@@ -41,68 +41,9 @@ public class NestedCriteria2HQL
 	public Query translate() throws Exception
 	{
 		StringBuffer hql = new StringBuffer();
-//		String srcAlias = "";
-//		String destAlias = getAlias(criteria.getTargetObjectName(),1);
 
-// NEW
 		processNestedCriteria( hql, criteria);
 		
-// ORIGINAL
-//
-//		hql.append("from ");
-//		hql.append(criteria.getTargetObjectName()).append(" ").append(destAlias);;
-//		hql.append(" where ");
-//
-//		NestedCriteria temp = criteria;
-//		Stack closingStack = new Stack();
-//		while (temp != null)
-//		{
-//			srcAlias = getAlias(temp.getSourceName(),1);
-//			destAlias = getAlias(temp.getTargetObjectName(),1);
-//			hql.append(destAlias).append(".id in ");
-//			hql.append("(");
-//			hql.append("select ").append(destAlias).append(".id ");
-//			hql.append(" from ").append(temp.getTargetObjectName()).append(" ").append(destAlias);
-//
-//			//Source and Target will be same in the case of it is the only node in the linked list.
-//			if (!temp.getSourceName().equals(temp.getTargetObjectName()))
-//			{
-//				hql.append(",").append(temp.getSourceName()).append(" ").append(srcAlias);
-//				hql.append(" where ");
-//				//Rolename will be null only in case of inheritance
-//				String roleName = temp.getRoleName() == null?"id":temp.getRoleName();
-//				if (temp.isTargetCollection())
-//					hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(temp.getRoleName()).append(")");
-//				else
-//					hql.append(destAlias).append("=").append(srcAlias).append(".").append(roleName);
-//
-//				hql.append(" and ");
-//			} else
-//			{
-//				hql.append(" where ");
-//			}
-//
-//			//If it is the last node then process the attached object list collection
-//			if (temp.getInternalNestedCriteria() == null)
-//			{
-//				for (Iterator i = temp.getSourceObjectList().iterator(); i.hasNext();)
-//				{
-//					Object obj = i.next();
-//					hql.append(srcAlias).append(".id in ").append("(");
-//					hql.append(getObjectCriterion(obj, cfg));
-//					hql.append(")");
-//					if (i.hasNext())
-//						hql.append(" or ");
-//				}
-//			}
-//
-//			closingStack.push(")");
-//			temp = temp.getInternalNestedCriteria();
-//		}
-//
-//		while (!closingStack.empty())
-//			hql.append(closingStack.pop());
-
 		query = prepareQuery(hql);
 		log.debug("HQL Query :"+query.getQueryString());
 		return query;
@@ -123,7 +64,6 @@ public class NestedCriteria2HQL
 			log.error("Unexpected NestedCriteria condition found for criteria: " + criteria);
 			throw new Exception("Unexpected NestedCriteria condition found for criteria: " + criteria);
 		}
-		
 	}
 	
 	private boolean condition1(NestedCriteria criteria){
@@ -272,7 +212,7 @@ public class NestedCriteria2HQL
 					hql.append(" and ");
 				}
 			}
-			//hql.append("select " + destAlias + " from " + targetObjectName + " " + destAlias + ", " + sourceObjectName + " " + srcAlias + " where " + srcAlias + "." + destAlias + "=" + destAlias + " and ");
+
 			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
 			{
 				Object obj = i.next();
