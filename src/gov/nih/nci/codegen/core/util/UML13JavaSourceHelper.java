@@ -58,22 +58,112 @@ public class UML13JavaSourceHelper {
 		super();
 	}
 
+	private static String getDocumentation(Classifier klass)
+	{
+		TaggedValue doc = UML13Utils.getTaggedValue(klass, "documentation");
+		String docStr;
+		if (doc != null)
+		{
+			docStr = doc.getValue();
+			
+			for(int i=2;i<=8;i++)
+			{
+				TaggedValue docNext = UML13Utils.getTaggedValue(klass, "documentation"+i);
+				if(docNext==null) break;
+				docStr += doc.getValue();
+			}
+		}
+		else
+		{
+			doc = UML13Utils.getTaggedValue(klass, "description");
+			if (doc == null) return " ";
+			
+			docStr = doc.getValue();
+			
+			for(int i=2;i<=8;i++)
+			{
+				TaggedValue docNext = UML13Utils.getTaggedValue(klass, "description"+i);
+				if(docNext==null) break;
+				docStr += doc.getValue();
+			}
+		}
+		
+		return docStr;
+	}
+
+	private static String getDocumentation(Operation op)
+	{
+		TaggedValue doc = UML13Utils.getTaggedValue(op, "documentation");
+		
+		if (doc == null) return " ";
+		String docStr = doc.getValue();
+		
+		for(int i=2;i<=8;i++)
+		{
+			TaggedValue docNext = UML13Utils.getTaggedValue(op, "documentation"+i);
+			if(docNext==null) break;
+			docStr += doc.getValue();
+		}
+		
+		return docStr;
+	}	
+	
+	private static String getDocumentation(Parameter p)
+	{
+		TaggedValue doc = UML13Utils.getTaggedValue(p, "documentation");
+		
+		if (doc == null) return " ";
+		String docStr = doc.getValue();
+		
+		for(int i=2;i<=8;i++)
+		{
+			TaggedValue docNext = UML13Utils.getTaggedValue(p, "documentation"+i);
+			if(docNext==null) break;
+			docStr += doc.getValue();
+		}
+		
+		return docStr;
+	}	
+
+	private static String getDocumentation(Attribute att)
+	{
+		TaggedValue doc = UML13Utils.getTaggedValue(att, "description");
+		String docStr;
+		if (doc != null) 
+		{
+			docStr = doc.getValue();
+			
+			for(int i=2;i<=8;i++)
+			{
+				TaggedValue docNext = UML13Utils.getTaggedValue(att, "description"+i);
+				if(docNext==null) break;
+				docStr += doc.getValue();
+			}
+		}
+		else
+		{
+			doc = UML13Utils.getTaggedValue(att, "documentation");
+			if (doc == null ) return " ";
+			docStr = doc.getValue();
+			for(int i=2;i<=8;i++)
+			{
+				TaggedValue docNext = UML13Utils.getTaggedValue(att, "documentation"+i);
+				if(docNext==null) break;
+				docStr += doc.getValue();
+			}
+		}
+		return docStr;
+	}
+	
+	
 	public static String getClassJavadoc(Classifier klass) {
 		StringBuffer javadocOut = new StringBuffer();
-		TaggedValue doc = UML13Utils.getTaggedValue(klass, "documentation");
-		// This special tagged value is here to deprecate the camod domain
-		// package only
+		
 		TaggedValue specialdep = UML13Utils.getTaggedValue(klass,
 				"deprecation1");
-		String docStr = null;
-		if (doc != null) {
-			docStr = doc.getValue();
-		}
-		if (docStr == null) {
-			docStr = "";
-		} else {
-			docStr = getLineFormattedJavadoc(docStr);
-		}
+		
+		String docStr = getDocumentation(klass);
+		docStr = getLineFormattedJavadoc(docStr);
 		javadocOut.append("  /**\n");
 		javadocOut.append(docStr);
 		javadocOut.append("\n");
@@ -101,15 +191,9 @@ public class UML13JavaSourceHelper {
 			TaggedValue dep = UML13Utils.getTaggedValue(klass, "deprecation");
 			TaggedValue see = UML13Utils.getTaggedValue(klass, "see");
 
-			String docStr = null;
-			if (doc != null) {
-				docStr = doc.getValue();
-			}
-			if (docStr == null) {
-				docStr = "";
-			} else {
-				docStr = getLineFormattedJavadoc(docStr);
-			}
+			String docStr = getDocumentation(klass);
+			docStr = getLineFormattedJavadoc(docStr);
+
 			javadocOut.append("  /**\n");
 			javadocOut.append(docStr);
 			javadocOut.append("\n");
@@ -134,19 +218,12 @@ public class UML13JavaSourceHelper {
 
 	public static String getMethodJavadoc(Operation op) {
 		StringBuffer javadocOut = new StringBuffer();
-		TaggedValue doc = UML13Utils.getTaggedValue(op, "documentation");
 		TaggedValue dep = UML13Utils.getTaggedValue(op, "deprecated");
 		Classifier ret = UML13Utils.getReturnType(op);
 
-		String docStr = null;
-		if (doc != null) {
-			docStr = doc.getValue();
-		}
-		if (docStr == null) {
-			docStr = "   * DOCUMENT ME!";
-		} else {
-			docStr = getLineFormattedJavadoc(docStr);
-		}
+		String docStr = getDocumentation(op);
+		docStr = getLineFormattedJavadoc(docStr);
+
 		javadocOut.append("  /**\n");
 		javadocOut.append(docStr);
 		javadocOut.append("\n");
@@ -157,13 +234,9 @@ public class UML13JavaSourceHelper {
 		}
 		for (Iterator i = UML13Utils.getParameters(op).iterator(); i.hasNext();) {
 			Parameter p = (Parameter) i.next();
-			TaggedValue pDoc = UML13Utils.getTaggedValue(p, "documentation");
-			String pDocStr = null;
-			if (pDoc != null) {
-				pDocStr = pDoc.getValue();
-			} else {
-				pDocStr = "";
-			}
+
+			String pDocStr = getDocumentation(p);
+			
 			javadocOut.append("   * @param ");
 			javadocOut.append(p.getName());
 			javadocOut.append(Constant.SPACE);
@@ -229,14 +302,9 @@ public class UML13JavaSourceHelper {
 	
 	public static String getAttributeJavadoc(Attribute att) {
 		StringBuffer javadocOut = new StringBuffer();
-		TaggedValue doc = UML13Utils.getTaggedValue(att, "description");
 		TaggedValue dep = UML13Utils.getTaggedValue(att, "deprecated");
 
-		String docStr = null;
-		if (doc != null) {
-			docStr = doc.getValue();
-		}
-
+		String docStr = getDocumentation(att);
 		docStr = getLineFormattedJavadoc(docStr);
 
 		javadocOut.append("/**\n");
@@ -254,14 +322,8 @@ public class UML13JavaSourceHelper {
 
 	public static String getAttributeJavadocSetter(Attribute att) {
 		StringBuffer javadocOut = new StringBuffer();
-		TaggedValue doc = UML13Utils.getTaggedValue(att, "description");
 
-		String docStr = null;
-		if (doc != null) {
-			docStr = doc.getValue();
-		}
-
-		//docStr = getLineFormattedJavadoc(docStr);
+		String docStr = getDocumentation(att);
 
 		javadocOut.append("/**\n");
 		javadocOut.append("Sets the value of "+att.getName()+" attribue\n");
@@ -274,14 +336,8 @@ public class UML13JavaSourceHelper {
 	}	
 	public static String getAttributeJavadocGetter(Attribute att) {
 		StringBuffer javadocOut = new StringBuffer();
-		TaggedValue doc = UML13Utils.getTaggedValue(att, "description");
 
-		String docStr = null;
-		if (doc != null) {
-			docStr = doc.getValue();
-		}
-
-		docStr = getLineFormattedJavadoc(docStr);
+		String docStr = getDocumentation(att);
 
 		javadocOut.append("/**\n");
 		javadocOut.append("Retreives the value of "+att.getName()+" attribue\n");
