@@ -10,6 +10,7 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.MappingException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
@@ -161,9 +162,9 @@ public class NestedCriteria2HQL
 			}
 			else
 			{
-				if(this.criteria.getInternalNestedCriteria()==null)
-					selectBuffer.append("select ").append(srcAlias).append(".").append(roleName).append(" ").append(getObjectCriterion(sourceObjectList.iterator().next(), cfg));
-				else
+				//if(this.criteria.getInternalNestedCriteria()==null)
+				//	selectBuffer.append("select ").append(srcAlias).append(".").append(roleName).append(" ").append(getObjectCriterion(sourceObjectList.iterator().next(), cfg));
+				//else
 				{
 					selectBuffer.append("select ").append(destAlias).append(" from ")
 					.append(targetObjectName).append(" ").append(destAlias)
@@ -196,9 +197,9 @@ public class NestedCriteria2HQL
 			}
 			else
 			{
-				if(this.criteria.getInternalNestedCriteria()==null)
-					hql.append("select ").append(srcAlias).append(".").append(roleName).append(" where ");
-				else
+				//if(this.criteria.getInternalNestedCriteria()==null)
+				//	hql.append("select ").append(srcAlias).append(".").append(roleName).append(" where ");
+				//else
 				{
 					hql.append("select ").append(destAlias).append(" from ")
 					.append(targetObjectName).append(" ").append(destAlias)
@@ -276,15 +277,31 @@ public class NestedCriteria2HQL
 	
 	private Query prepareQuery(StringBuffer hql)
 	{
-		query = session.createQuery(hql.toString());
+		//Check if the target contains any CLOB. If yes then do a subselect with distinct else do plain distinct
+		String destalias = getAlias(criteria.getTargetObjectName(), 1);
+		boolean containsCLOB = checkClobAttribute(criteria.getTargetObjectName());
+		String countQ="";
+		String normalQ="";
+		String originalQ = hql.toString();
+		if(containsCLOB)
+		{
+			String modifiedQ = originalQ.replaceFirst(destalias,destalias+".id" );
+			String suffix = "from "+criteria.getTargetObjectName()+" as "+destalias+" where "+destalias+".id in ("+modifiedQ+")";
+			normalQ="select "+destalias+" "+suffix;
+			countQ="select count(*) "+suffix;
+		}
+		else
+		{
+			normalQ = originalQ.replaceFirst("select "+destalias, "select distinct "+destalias+" ");
+			countQ = originalQ.replaceFirst("select "+destalias, "select count(distinct "+destalias+") ");
+		}
 		
-		String countQueryStr =  hql.toString();
-		countQueryStr = countQueryStr.replaceFirst(" .*? ", " count(*) ");
-		log.debug("****** countQueryStr: " + countQueryStr);
+		log.debug("****** NormalQ: " + normalQ);
+		log.debug("****** CountQ: " + countQ);
 		
-		countQuery = session.createQuery(countQueryStr);
+		query = session.createQuery(normalQ);
+		countQuery = session.createQuery(countQ);
 		
-		log.debug("**** countQuery: " + countQuery);
 		
 		// ORIGINAL
 		//countQuery = session.createQuery("select count(*) " + hql.toString());
@@ -335,6 +352,24 @@ public class NestedCriteria2HQL
 		}
 		return query;
 	}
+
+	private boolean checkClobAttribute(String objClassName)
+	{
+		PersistentClass pclass = cfg.getClassMapping(objClassName);
+
+		Iterator properties = pclass.getPropertyIterator();
+		while (properties.hasNext())
+		{
+			Property prop = (Property) properties.next();
+			if (!prop.getType().isAssociationType())
+				if (prop.getType().getName().equals("gov.nih.nci.common.util.StringClobType"))
+					return true;
+		}
+		
+		return false;
+	}
+
+
 
 	private String getObjectAttributeCriterion(String sourceAlias, Object obj, Configuration cfg) throws Exception
 	{
