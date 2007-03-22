@@ -12,7 +12,7 @@ import junit.framework.TestSuite;
  * @author Satish Patel
  *
  */
-public class SDKTestSuit {
+public class SDKTestSuite {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(

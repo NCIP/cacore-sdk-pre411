@@ -83,7 +83,7 @@
 				<path refid="thick-client-cp"/>
 			</classpath>
 			<formatter type="xml"/>			
-			<test name="test.gov.nih.nci.cacoresdk.SDKTestSuit" todir="${report.dir}" />
+			<test name="test.gov.nih.nci.cacoresdk.SDKTestSuite" todir="${report.dir}" />
 		</junit>
 	</target>	
 	
