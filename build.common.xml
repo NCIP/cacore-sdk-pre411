@@ -241,7 +241,7 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 	<target name="init-project" depends="-init-project.main,-init-project.custom" description="Initialize project build by creating output directories and necessary files" />
 
-	<target name="-init-project.main" unless="init-project.main.ignore" depends="create-output-dirs,copy-control-files,replace-tokens-in-files" />
+	<target name="-init-project.main" unless="init-project.main.ignore" depends="create-output-dirs,copy-control-files,rename-csm-files,replace-tokens-in-files" />
 
 	<target name="create-output-dirs" description="Create output directories for the SDK framework" depends="-create-output-dirs.main,-create-output-dirs.custom" />
 
@@ -276,6 +276,11 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 		</copy>
 	</target>
 		
+	<target name="rename-csm-files" description="Renames the template hibernate configuration file to include the application context name in the start" >
+		<SDKecho message="Renaming CSM Hibernate Configuration File" />
+		<move file="${dir.output.conf}/resources/server/application_name.csm.new.hibernate.cfg.xml" tofile="${dir.output.conf}/resources/server/${application_name}.csm.new.hibernate.cfg.xml" />
+	</target>
+
 	<target name="replace-tokens-in-files">
 		<SDKecho message="Replacing tokens in configuration files" />
 		<replace dir="${dir.output.conf}">
@@ -296,6 +301,11 @@ oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 			<replacefilter token="@DEFAULT_SECURITY_LEVEL@" value="${default_security_level}" />
 			<replacefilter token="@DEFAULT_SESSION_TIMEOUT@" value="${default_session_timeout}" />
 			<replacefilter token="@AUTHENTICATION_DISABLED@" value="${authentication_disabled}" />
+			<replacefilter token="@CSM_DATABASE_URL@" value="${csm_database_url}" />
+			<replacefilter token="@CSM_DATABASE_USER_NAME@" value="${csm_database_user_name}" />
+			<replacefilter token="@CSM_DATABASE_PASSWORD@" value="${csm_database_password}" />
+			<replacefilter token="@CSM_DATABASE_DIALECT@" value="${csm_database_dialect}" />
+			<replacefilter token="@CSM_DATABASE_DRIVER@" value="${csm_database_driver}" />
 			<replacefilter token="@DBNAME@" value="${schema_name}" />
 			<replacefilter token="@DBUSER@" value="${db_user}" />
 			<replacefilter token="@DBPASSWD@" value="${db_password}" />

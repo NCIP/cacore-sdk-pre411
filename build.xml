@@ -526,6 +526,8 @@ CLIENT_TYPE=Thick
 				<include name="${file.cache.properties}"/>
 				<include name="*.xsd"/>
 				<include name="applicationService.xml"/>
+				<include name="ApplicationSecurityConfig.xml"/>
+				<include name="*.csm.new.hibernate.cfg.xml"/>
 			</fileset>
 			<fileset dir="${dir.output.conf.resources.client}">
 				<include name="${file.logger.properties}"/>
