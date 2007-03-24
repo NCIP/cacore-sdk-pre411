@@ -55,7 +55,7 @@ public class SecurityConfiguration
 				securitySessionTimeout=new Long(60000);
 			}
 			
-			if(authDisabled!=null && "no".equalsIgnoreCase(authDisabled))
+			if(authDisabled!=null && "yes".equalsIgnoreCase(authDisabled))
 				authenticationDisabled=true;
 			else
 				authenticationDisabled=false;
