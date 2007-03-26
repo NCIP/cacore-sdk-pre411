@@ -99,7 +99,8 @@
 	<target name="-fix-xmi.main" if="fix-xmi-yes" unless="fix-xmi.main.ignore"
 		depends="init-project,compile-generator">
 		<SDKecho message="Pre-processing XMI file"/>
-		<java classname="gov.nih.nci.codegen.core.util.FixXMI" fork="true">
+		<delete file="${dir.model}/${fixed_filename}"/>
+		<java classname="gov.nih.nci.codegen.core.util.FixXMI" fork="true" failonerror="true">
 			<classpath refid="classpath"/>
 			<jvmarg value="-Xmx512m"/>
 			<arg value="${xmi_preprocessor}"/>
