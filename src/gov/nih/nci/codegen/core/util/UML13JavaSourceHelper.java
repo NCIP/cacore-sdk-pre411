@@ -70,7 +70,7 @@ public class UML13JavaSourceHelper {
 			{
 				TaggedValue docNext = UML13Utils.getTaggedValue(klass, "documentation"+i);
 				if(docNext==null) break;
-				docStr += doc.getValue();
+				docStr += docNext.getValue();
 			}
 		}
 		else
@@ -84,7 +84,7 @@ public class UML13JavaSourceHelper {
 			{
 				TaggedValue docNext = UML13Utils.getTaggedValue(klass, "description"+i);
 				if(docNext==null) break;
-				docStr += doc.getValue();
+				docStr += docNext.getValue();
 			}
 		}
 		
@@ -102,7 +102,7 @@ public class UML13JavaSourceHelper {
 		{
 			TaggedValue docNext = UML13Utils.getTaggedValue(op, "documentation"+i);
 			if(docNext==null) break;
-			docStr += doc.getValue();
+			docStr += docNext.getValue();
 		}
 		
 		return docStr;
@@ -119,7 +119,7 @@ public class UML13JavaSourceHelper {
 		{
 			TaggedValue docNext = UML13Utils.getTaggedValue(p, "documentation"+i);
 			if(docNext==null) break;
-			docStr += doc.getValue();
+			docStr += docNext.getValue();
 		}
 		
 		return docStr;
@@ -137,7 +137,7 @@ public class UML13JavaSourceHelper {
 			{
 				TaggedValue docNext = UML13Utils.getTaggedValue(att, "description"+i);
 				if(docNext==null) break;
-				docStr += doc.getValue();
+				docStr += docNext.getValue();
 			}
 		}
 		else
@@ -149,7 +149,7 @@ public class UML13JavaSourceHelper {
 			{
 				TaggedValue docNext = UML13Utils.getTaggedValue(att, "documentation"+i);
 				if(docNext==null) break;
-				docStr += doc.getValue();
+				docStr += docNext.getValue();
 			}
 		}
 		return docStr;
