@@ -124,9 +124,14 @@ public class SessionManager
 	 * 
 	 * @return The set of all the session keys from the internal cache
 	 */
-	protected Set getSessionKeySet()
+	protected UserSession[] getSessionKeySet()
 	{
-		return sessions.keySet();
+		//return sessions.keySet();
+		synchronized(sessions)
+		{
+			UserSession[] sessionArray = new UserSession[sessions.size()]; 
+			return (UserSession[])sessions.values().toArray(sessionArray);
+		}
 	}
 
 	protected long getTimeOut()

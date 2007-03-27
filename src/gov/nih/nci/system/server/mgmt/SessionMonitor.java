@@ -43,10 +43,22 @@ public class SessionMonitor extends Thread
 	private void monitor()
 	{
 		SessionManager sessionManager = SessionManager.getInstance();
-		Set keys = sessionManager.getSessionKeySet();
-		Iterator it = keys.iterator();
-
-		while (it.hasNext())
+		UserSession keys[] = sessionManager.getSessionKeySet();
+		
+		if(keys.length==0) return;
+		
+		for(int i=0;i<keys.length;i++)
+		{
+			UserSession userSession = keys[i];
+			String sessionKey = (String) userSession.get(keys[i]);
+			if (System.currentTimeMillis() - userSession.getLastAccessedTime() > sessionManager.getTimeOut())
+			{
+				sessionManager.killSession(sessionKey);
+			}
+		}
+/*
+ 		Set keys = sessionManager.getSessionKeySet();
+ 		while (it.hasNext())
 		{
 			String sessionKey = (String) it.next();
 			UserSession userSession = sessionManager.getSessionForMonitoring(sessionKey);
@@ -55,7 +67,7 @@ public class SessionMonitor extends Thread
 				sessionManager.killSession(sessionKey);
 			}
 		}
-
+*/
 	}
 
 }
