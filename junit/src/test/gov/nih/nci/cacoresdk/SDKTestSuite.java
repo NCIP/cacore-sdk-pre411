@@ -1,5 +1,5 @@
 package test.gov.nih.nci.cacoresdk;
-import test.gov.nih.nci.cacoresdk.domain.inheritnance.InheritanceSuite;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.InheritanceSuite;
 import test.gov.nih.nci.cacoresdk.domain.manytomany.Many2ManySuite;
 import test.gov.nih.nci.cacoresdk.domain.manytoone.Many2OneSuite;
 import test.gov.nih.nci.cacoresdk.domain.onetomany.One2ManySuite;

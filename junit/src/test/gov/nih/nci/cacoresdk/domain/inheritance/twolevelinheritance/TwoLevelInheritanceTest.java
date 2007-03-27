@@ -1,4 +1,4 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritnance.twolevelinheritance;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance;
 
 import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor;
 import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display;

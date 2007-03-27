@@ -1,4 +1,4 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritnance.onechild;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.onechild;
 
 import gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human;
 import gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal;

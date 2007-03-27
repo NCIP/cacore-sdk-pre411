@@ -1,4 +1,4 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritnance.multiplechild;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.multiplechild;
 
 import gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.GraduateStudent;
 import gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student;

@@ -1,4 +1,4 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritnance.parentwithassociation;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation;
 
 import gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType;
 import gov.nih.nci.system.applicationservice.ApplicationException;

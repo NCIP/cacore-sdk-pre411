@@ -1,12 +1,12 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritnance;
+package test.gov.nih.nci.cacoresdk.domain.inheritance;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import test.gov.nih.nci.cacoresdk.domain.inheritnance.childwithassociation.ChildWithAssociationTest;
-import test.gov.nih.nci.cacoresdk.domain.inheritnance.multiplechild.MultipleChildTest;
-import test.gov.nih.nci.cacoresdk.domain.inheritnance.onechild.OneChildTest;
-import test.gov.nih.nci.cacoresdk.domain.inheritnance.parentwithassociation.ParentWithAssociationTest;
-import test.gov.nih.nci.cacoresdk.domain.inheritnance.twolevelinheritance.TwoLevelInheritanceTest;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.ChildWithAssociationTest;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.MultipleChildTest;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.onechild.OneChildTest;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.ParentWithAssociationTest;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.TwoLevelInheritanceTest;
 
 public class InheritanceSuite
 {

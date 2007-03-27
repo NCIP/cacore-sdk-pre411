@@ -1,4 +1,4 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritnance.childwithassociation;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation;
 
 import java.util.Collection;
 import java.util.Iterator;
