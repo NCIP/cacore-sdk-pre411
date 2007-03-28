@@ -663,7 +663,6 @@ CLIENT_TYPE=Thick
 				<include name="*.properties"/>
 				<include name="*.txt"/>
 				<exclude name="**/CVS/**"/>
-				<exclude name="models/xmi/sdk-test.xmi"/>
 				<exclude name="models/xmi/fixed*.xmi"/>				
 			</zipfileset>
 		</zip>
@@ -679,7 +678,6 @@ CLIENT_TYPE=Thick
 				<include name="*.properties"/>
 				<include name="*.txt"/>
 				<exclude name="**/CVS/**"/>
-				<exclude name="models/xmi/sdk-test.xmi"/>
 				<exclude name="models/xmi/fixed*.xmi"/>				
 			</tarfileset>
 		</tar>
