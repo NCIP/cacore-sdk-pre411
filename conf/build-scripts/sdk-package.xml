@@ -141,6 +141,7 @@
 			</zipfileset>
 			<zipfileset dir="models/xmi" prefix="${project_name}/models/xmi">
 				<include name="cabioExampleDomainModel.xmi"/>
+				<include name="sdk-test.xmi"/>
 				<exclude name="**/CVS/**"/>
 			</zipfileset>
 			<zipfileset dir="src" prefix="${project_name}/src">
