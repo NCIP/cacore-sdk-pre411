@@ -6,11 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.MappingException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
@@ -104,7 +101,7 @@ public class NestedCriteria2HQL
 
 		if (sourceObjectList.size() == 1 ){
 			log.debug("Scenario1: Processing single object in source object list");
-			String select = "select " + destAlias + " " + getObjectCriterion(sourceObjectList.iterator().next(), cfg);
+			String select = getObjectCriterion(sourceObjectList.iterator().next(), cfg);
 			hql.append(select);
 			log.debug("Scenario1: Single object HQL sub-select: " + select);
 		} else {
@@ -228,7 +225,7 @@ public class NestedCriteria2HQL
 		
 		String targetObjectName = criteria.getTargetObjectName();
 		String sourceObjectName = criteria.getSourceName();
-		String srcAlias = getAlias(criteria.getSourceName(),1);
+		String srcAlias = getAlias(criteria.getSourceName(),2);
 		String destAlias = getAlias(targetObjectName,1);
 		
 		log.debug("Scenario3: targetObjectName: " + targetObjectName);
@@ -292,8 +289,8 @@ public class NestedCriteria2HQL
 		}
 		else
 		{
-			normalQ = originalQ.replaceFirst("select "+destalias, "select distinct "+destalias+" ");
-			countQ = originalQ.replaceFirst("select "+destalias, "select count(distinct "+destalias+") ");
+			normalQ = originalQ.replaceFirst("select "+destalias, "select distinct ("+destalias+") ");
+			countQ = originalQ.replaceFirst("select "+destalias, "select count(distinct "+destalias+".id) ");
 		}
 		
 		log.debug("****** NormalQ: " + normalQ);
@@ -305,7 +302,7 @@ public class NestedCriteria2HQL
 		
 		// ORIGINAL
 		//countQuery = session.createQuery("select count(*) " + hql.toString());
-
+		log.debug("Setting "+paramList.size()+" parameters in the query");
 		for (int i=0;i<paramList.size();i++)
 		{
 			Object valueObj = paramList.get(i);
@@ -458,8 +455,8 @@ public class NestedCriteria2HQL
 
 		HashMap associationCritMap = getObjAssocCriterion(obj, cfg);
 
-//		hql.append("select ");
-//		hql.append(srcAlias).append(".id ");
+		hql.append("select ");
+		hql.append(srcAlias);
 		hql.append(" from ").append(obj.getClass().getName()).append(" ").append(srcAlias);
 
 		// get association value
@@ -502,7 +499,7 @@ public class NestedCriteria2HQL
 						String alias = getAlias(objs[i].getClass().getName(),counter++);
 						hql.append(alias).append(" in elements(").append(srcAlias).append(".").append(roleName).append(")");
 						hql.append(" and ");
-						hql.append(alias).append(".id in (").append(getObjectCriterion(objs[i], cfg)).append(") ");
+						hql.append(alias).append(" in (").append(getObjectCriterion(objs[i], cfg)).append(") ");
 						if (i < objs.length-1)
 							hql.append(" and ");
 					}
@@ -511,7 +508,7 @@ public class NestedCriteria2HQL
 					String alias = getAlias(roleValue.getClass().getName(),counter++);
 					hql.append(alias).append("=").append(srcAlias).append(".").append(roleName);
 					hql.append(" and ");
-					hql.append(alias).append(".id in (").append(getObjectCriterion(roleValue, cfg)).append(") ");
+					hql.append(alias).append(" in (").append(getObjectCriterion(roleValue, cfg)).append(") ");
 				}
 				hql.append(" ");
 				if (associationKeys.hasNext())
