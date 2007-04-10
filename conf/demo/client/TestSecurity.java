@@ -11,7 +11,7 @@ import org.hibernate.criterion.*;
 
 
 /**
-	* TestClient.java demonstartes various ways to execute searches with and without
+	* TestClient.java demonstrates various ways to execute searches with and without
     * using Application Service Layer (convenience layer that abstracts building criteria
     * Uncomment different scenarios below to demonstrate the various types of searches
 */
