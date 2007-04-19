@@ -29,7 +29,7 @@ Password: 	c0r3nt!
 
 MySQL Test Schema
 ================
-Server: 	cbiovdev5004
+Server: 	cbiodb590
 Port: 		3626 (this is not the standard MySQL port as multiple databases will run here).
 Username: 	cacoresdk
 Password: 	cac#476
