@@ -41,3 +41,10 @@ Username: sdkftp
 Password: FooBar!2 (Password will keep changing. Check with systems team before using)
 
 
+Oracle EA Schema
+================
+Server: 	cbiodb20
+Database: 	CCCSTG
+Port: 		1521
+User: 		eacacoresdk
+Password: 	ea#cacoresdk123
