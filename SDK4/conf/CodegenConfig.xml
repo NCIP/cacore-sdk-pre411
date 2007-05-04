@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
+
+	<bean name="XMILoader" class="gov.nih.nci.codegen.UMLModelLoader" singleton="true">
+		<constructor-arg value="conf/xmi/sdk.xmi"></constructor-arg>
+	</bean>
+
+	<bean name="UMLModel" factory-bean="XMILoader" factory-method="getUMLModel" singleton="true"/>
+
+	<bean name="DataModelValidator" class="gov.nih.nci.codegen.validator.UMLDataModelValidator"/>
+	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator"/>
+	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator"/>
+
+	<bean name="BeanTransformer" class="gov.nih.nci.codegen.transformer.jet.POJOTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="true"/>
+				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>				
+				<property name="suffix" value=".java"/>				
+			</bean>
+		</property>
+	</bean>
+	<bean name="EHCacheTransformer" class="gov.nih.nci.codegen.transformer.jet.EHCacheTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>
+				<property name="fileName" value="ehcache.xml"/>
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean name="XmlMappingTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>
+				<property name="fileName" value="xml-mapping.xml"/>
+			</bean>
+		</property>
+	</bean>
+		
+	<bean name="Generator" class="gov.nih.nci.codegen.Generator" singleton="false">
+		<constructor-arg ref="UMLModel"></constructor-arg>
+		<constructor-arg index="1">
+			<list>
+				<ref bean="DataModelValidator"/>
+				<ref bean="LogicalModelValidator"/>
+				<ref bean="ModelMappingValidator"/>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="2">
+			<list>
+				<ref bean="BeanTransformer"/>
+				<ref bean="EHCacheTransformer"/>
+				<ref bean="XmlMappingTransformer"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+
+</beans>

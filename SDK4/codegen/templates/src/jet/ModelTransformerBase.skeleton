@@ -1,0 +1,17 @@
+import gov.nih.nci.codegen.transformer.UMLModelJETTransformer;
+import gov.nih.nci.codegen.Artifact;
+import gov.nih.nci.codegen.artifact.BaseArtifact;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
+
+public class CLASS extends UMLModelJETTransformer{
+
+	public Artifact executeTemplate(UMLModel model){
+		BaseArtifact artifact = new BaseArtifact();
+		artifact.setContent(generate(model));
+		return artifact;
+	}
+	
+	public String generate(UMLModel model){
+		return "";
+	}
+}

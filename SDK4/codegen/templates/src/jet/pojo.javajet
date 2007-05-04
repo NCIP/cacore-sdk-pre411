@@ -1,0 +1,103 @@
+<%@ jet package="gov.nih.nci.codegen.transformer.jet" 
+        class="POJOTransformer"
+        skeleton="ClassTransformerBase.skeleton" %>
+package <%=TransformerUtils.getFullPackageName(klass)%>;
+
+<%=TransformerUtils.getImports(klass)%>
+import java.io.Serializable;
+import java.util.List;
+import java.util.Date;
+
+public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)%> implements Serializable
+{
+	/**
+	* An attribute to allow serialization of the domain objects
+	*/
+	private static final long serialVersionUID = 1234567890L;
+
+	<%for(UMLAttribute attr:klass.getAttributes()){%>
+	<%=attr.getVisibility().getName()%> <%=TransformerUtils.getDataType(attr)%> <%=attr.getName()%>;
+	public <%=TransformerUtils.getDataType(attr)%> <%=TransformerUtils.getGetterMethodName(attr)%>(){
+		return <%=attr.getName()%>;
+	}
+
+	public void <%=TransformerUtils.getSetterMethodName(attr)%>(<%=TransformerUtils.getDataType(attr)%> <%=attr.getName()%>){
+		this.<%=attr.getName()%> = <%=attr.getName()%>;
+	}
+	<%}
+	for(UMLAssociation assoc:klass.getAssociations()){
+		List<UMLAssociationEnd> assocEnds = assoc.getAssociationEnds();
+		UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(klass,assocEnds);
+		UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass,assocEnds);
+	
+		if(otherEnd.isNavigable())
+		{
+			UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
+			if(TransformerUtils.isAssociationEndMany(otherEnd))
+			{%>
+	private List<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>;
+	public List<<%=assocKlass.getName()%>> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
+		return <%=otherEnd.getRoleName()%>;
+	}
+
+	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(List<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>){
+		this.<%=otherEnd.getRoleName()%> = <%=otherEnd.getRoleName()%>;
+	}
+		<%}else{%>
+	private <%=assocKlass.getName()%> <%=otherEnd.getRoleName()%>;
+	public <%=assocKlass.getName()%> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
+		return <%=otherEnd.getRoleName()%>;
+	}
+
+	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(<%=assocKlass.getName()%> <%=otherEnd.getRoleName()%>){
+		this.<%=otherEnd.getRoleName()%> = <%=otherEnd.getRoleName()%>;
+	}
+			<%}
+		}
+		
+		if((TransformerUtils.isSelfAssociation(thisEnd,otherEnd))&&(thisEnd.isNavigable())){
+			if(TransformerUtils.isAssociationEndMany(thisEnd)){
+		%>
+	private List<<%=klass.getName()%>> <%=thisEnd.getRoleName()%>;
+	public List<<%=klass.getName()%>> <%=TransformerUtils.getGetterMethodName(thisEnd)%>(){
+		return <%=thisEnd.getRoleName()%>;
+	}
+
+	public void <%=TransformerUtils.getSetterMethodName(thisEnd)%>(List<<%=klass.getName()%>> <%=thisEnd.getRoleName()%>){
+		this.<%=thisEnd.getRoleName()%> = <%=thisEnd.getRoleName()%>;
+	}
+			<%}else{%>
+	private <%=klass.getName()%> <%=thisEnd.getRoleName()%>;
+	public <%=klass.getName()%> <%=TransformerUtils.getGetterMethodName(thisEnd)%>(){
+		return <%=thisEnd.getRoleName()%>;
+	}
+
+	public void <%=TransformerUtils.getSetterMethodName(thisEnd)%>(<%=klass.getName()%> <%=thisEnd.getRoleName()%>){
+		this.<%=thisEnd.getRoleName()%> = <%=thisEnd.getRoleName()%>;
+	}
+			<%}
+		}	
+	}
+
+	String idGetter = TransformerUtils.getClassIdGetterMthod(klass); 
+	if(idGetter!=null){
+	%>		
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof <%=klass.getName() %>) 
+		{
+			<%=klass.getName() %> c =(<%=klass.getName()%>)obj; 			 
+			if(<%=idGetter%>() != null && <%=idGetter%>().equals(c.<%=idGetter%>()))
+				return true;
+		}
+		return false;
+	}
+		
+	public int hashCode()
+	{
+		if(<%=idGetter%>() != null)
+			return <%=idGetter%>().hashCode();
+		return 0;
+	}
+	<%}%>
+}
