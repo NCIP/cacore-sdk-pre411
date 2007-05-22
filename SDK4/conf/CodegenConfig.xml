@@ -21,6 +21,8 @@
 			</bean>
 		</property>
 	</bean>
+	
+
 	<bean name="EHCacheTransformer" class="gov.nih.nci.codegen.transformer.jet.EHCacheTransformer">
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
@@ -29,9 +31,14 @@
 				<property name="fileName" value="ehcache.xml"/>
 			</bean>
 		</property>
+		<property name="configurationParams">
+			<map>
+				<entry key="CACHE_PATH" value="java.io.tmpdir"/>
+			</map>
+		</property>
 	</bean>
 
-
+<!-- 
 	<bean name="XmlMappingTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
@@ -41,7 +48,8 @@
 			</bean>
 		</property>
 	</bean>
-		
+	 -->
+	 	
 	<bean name="Generator" class="gov.nih.nci.codegen.Generator" singleton="false">
 		<constructor-arg ref="UMLModel"></constructor-arg>
 		<constructor-arg index="1">
@@ -55,7 +63,9 @@
 			<list>
 				<ref bean="BeanTransformer"/>
 				<ref bean="EHCacheTransformer"/>
+				<!-- 
 				<ref bean="XmlMappingTransformer"/>
+				 -->
 			</list>
 		</constructor-arg>
 	</bean>
