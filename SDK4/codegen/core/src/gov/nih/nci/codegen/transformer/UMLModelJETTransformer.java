@@ -3,14 +3,19 @@ package gov.nih.nci.codegen.transformer;
 import gov.nih.nci.codegen.Artifact;
 import gov.nih.nci.codegen.ArtifactHandler;
 import gov.nih.nci.codegen.GenerationException;
+import gov.nih.nci.codegen.GeneratorError;
 import gov.nih.nci.codegen.GeneratorErrors;
 import gov.nih.nci.codegen.Transformer;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
+
+import java.util.Map;
 
 public abstract class UMLModelJETTransformer implements Transformer
 {
 
 	private ArtifactHandler artifactHandler;
+	
+	private Map<String, String> configurationParams;
 	
 	/**
 	 * @param artifactHandler the artifactHandler to set
@@ -22,12 +27,17 @@ public abstract class UMLModelJETTransformer implements Transformer
 	
 	public GeneratorErrors execute(UMLModel model)
 	{
-		try {
-			Artifact artifact = executeTemplate(model);
+		GeneratorErrors errors = new GeneratorErrors();
+		try 
+		{
+			Artifact artifact = executeTemplate(model, configurationParams);
 			artifactHandler.handleArtifact(artifact);
-		} catch (GenerationException e) {
+		} 
+		catch (GenerationException e) 
+		{
+			errors.addError(new GeneratorError("Error while generating artifact for the model",e));
 		}
-		return null;
+		return errors;
 	}
 
 	public GeneratorErrors validate(UMLModel model)
@@ -35,6 +45,11 @@ public abstract class UMLModelJETTransformer implements Transformer
 		return null;
 	}
 	
-	protected abstract Artifact executeTemplate(UMLModel model);	
+	protected abstract Artifact executeTemplate(UMLModel model, Map<String, String> configurationParams) throws GenerationException;
+
+	public void setConfigurationParams(Map<String, String> configurationParams) {
+		this.configurationParams = configurationParams;
+	}	
+	
 	
 }
