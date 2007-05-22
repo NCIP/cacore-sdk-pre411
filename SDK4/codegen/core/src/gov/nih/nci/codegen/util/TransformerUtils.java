@@ -1,13 +1,17 @@
 package gov.nih.nci.codegen.util;
 
-import java.util.List;
-
 import gov.nih.nci.codegen.GenerationException;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDatatype;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 public class TransformerUtils
 {
@@ -136,4 +140,30 @@ public class TransformerUtils
 		//TODO Figureout a way to get the ID attribute's getter method
 		return "getId";
 	}
+	
+
+	public static Collection<UMLClass> getAllClasses(UMLModel model)
+	{
+		Collection<UMLClass> classes = new HashSet<UMLClass>();
+		getAllClasses(model.getPackages(),classes);
+		return classes;
+	}
+	
+	private static void getAllClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes)
+	{
+		for(UMLPackage pkg:pkgCollection)
+			getAllClasses(pkg,classes);
+	}
+	
+	private static void getAllClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
+	{
+		for(UMLClass klass:rootPkg.getClasses())
+		{
+			String pkgName = TransformerUtils.getFullPackageName(klass);
+			if(!"table".equals(klass.getStereotype()) && !pkgName.startsWith("java.lang") && !pkgName.startsWith("java.util"))
+				classes.add(klass);
+		}
+		getAllClasses(rootPkg.getPackages(),classes);
+	}
+	
 }
