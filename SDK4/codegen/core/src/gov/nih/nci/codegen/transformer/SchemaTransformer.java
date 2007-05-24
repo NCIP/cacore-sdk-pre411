@@ -31,7 +31,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 /**
- * Produces an XML schema for the project object model
+ * Produces an XML schema for the project UML Model
  * <p>
  *
  * @author Daniel Dumitru

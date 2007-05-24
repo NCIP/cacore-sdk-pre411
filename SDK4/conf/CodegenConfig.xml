@@ -16,18 +16,17 @@
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="true"/>
-				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>				
+				<property name="outputDir" value="C:/dan/dev/caCore/codegen/codegen-output/src"/>				
 				<property name="suffix" value=".java"/>				
 			</bean>
 		</property>
 	</bean>
 	
-
 	<bean name="EHCacheTransformer" class="gov.nih.nci.codegen.transformer.jet.EHCacheTransformer">
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
-				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>
+				<property name="outputDir" value="C:/dan/dev/caCore/codegen/codegen-output/src"/>
 				<property name="fileName" value="ehcache.xml"/>
 			</bean>
 		</property>
@@ -42,7 +41,7 @@
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
-				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>
+				<property name="outputDir" value="C:/dan/dev/caCore/codegen/codegen-output/src"/>
 				<property name="fileName" value="hibernate.cfg.xml"/>
 			</bean>
 		</property>
@@ -59,18 +58,43 @@
 		</property>
 	</bean>
 
-<!-- 
-	<bean name="XmlMappingTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
+	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
+		<property name="includeAssociations" value="true"/>
+		<property name="includeFieldHandler" value="true"/>
+		<property name="namespaceUriPrefix" value="gme://caCORE.caCORE/3.2/" />		
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
-				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>
+				<property name="outputDir" value="C:/dan/dev/caCore/codegen/codegen-output/src"/>
 				<property name="fileName" value="xml-mapping.xml"/>
 			</bean>
 		</property>
 	</bean>
-	 -->
-	 	
+
+	<bean name="XmlMappingUnmarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
+		<property name="includeAssociations" value="true"/>
+		<property name="includeFieldHandler" value="false"/>
+		<property name="namespaceUriPrefix" value="gme://caCORE.caCORE/3.2/" />
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="C:/dan/dev/caCore/codegen/codegen-output/src"/>
+				<property name="fileName" value="unmarshaller-xml-mapping.xml"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
+		<property name="namespaceUriPrefix" value="gme://caCORE.caCORE/3.2" />
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="true"/>
+				<property name="outputDir" value="C:/dan/dev/caCore/codegen/codegen-output/src"/>
+				<property name="suffix" value=".xsd"/>	
+			</bean>
+		</property>
+	</bean>	
+		
 	<bean name="Generator" class="gov.nih.nci.codegen.Generator" singleton="false">
 		<constructor-arg ref="UMLModel"></constructor-arg>
 		<constructor-arg index="1">
@@ -85,12 +109,11 @@
 				<ref bean="BeanTransformer"/>
 				<ref bean="EHCacheTransformer"/>
 				<ref bean="HibernateCfgTransformer"/>
-				<!-- 
-				<ref bean="XmlMappingTransformer"/>
-				 -->
+				<ref bean="XmlMappingMarshallerTransformer"/>
+				<ref bean="XmlMappingUnmarshallerTransformer"/>
+				<ref bean="SchemaTransformer"/>				
 			</list>
 		</constructor-arg>
 	</bean>
-
 
 </beans>
