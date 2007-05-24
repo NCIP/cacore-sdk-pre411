@@ -3,15 +3,22 @@ package gov.nih.nci.codegen.handler;
 import gov.nih.nci.codegen.Artifact;
 import gov.nih.nci.codegen.ArtifactHandler;
 import gov.nih.nci.codegen.GenerationException;
+import gov.nih.nci.codegen.transformer.SchemaTransformer;
 import gov.nih.nci.codegen.util.TransformerUtils;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 public class FileHandler implements ArtifactHandler
 {
-
+	private static Logger log = Logger.getLogger(FileHandler.class);
+	
 	private String outputDir;
 	private String fileName;
 	private String prefix;
@@ -113,8 +120,16 @@ public class FileHandler implements ArtifactHandler
 	
 	private String prepareFileName(Artifact artifact)
 	{
-		String fName = useArtifactSource == true ? TransformerUtils.getFQCN(artifact.getSource()).replace('.','/') : fileName ;
+		String fName = null;
+
+		if (useArtifactSource == true) {
+			fName = artifact.getSourceName();
+		} else {
+			fName = fileName;
+		}
+
 		String name = (prefix == null ? "" : prefix) + fName + (suffix == null ? "" : suffix);
+		
 		return name;
 	}
 }

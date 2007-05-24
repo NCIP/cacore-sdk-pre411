@@ -1,6 +1,6 @@
 package gov.nih.nci.codegen;
 
-import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 
 public interface Artifact
 {
@@ -10,9 +10,9 @@ public interface Artifact
 	public String getContent();
 	
 	/**
-	 * @return the source
-	 */	
-	public UMLClass getSource();
-	
+	 * @return
+	 */
+	public String getSourceName();
+
 	
 }

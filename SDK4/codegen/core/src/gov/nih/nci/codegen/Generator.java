@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-
-
 /**
  * Generates the code from the {@link #model}. 
  * <code>Generator</code> class iterates over available {@link gov.nih.nci.codegen.Validator} 
