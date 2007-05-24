@@ -58,7 +58,7 @@
 		</property>
 	</bean>
 
-	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
+	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
 		<property name="includeAssociations" value="true"/>
 		<property name="includeFieldHandler" value="true"/>
 		<property name="namespaceUriPrefix" value="gme://caCORE.caCORE/3.2/" />		
@@ -71,7 +71,7 @@
 		</property>
 	</bean>
 
-	<bean name="XmlMappingUnmarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
+	<bean name="XmlMappingUnmarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
 		<property name="includeAssociations" value="true"/>
 		<property name="includeFieldHandler" value="false"/>
 		<property name="namespaceUriPrefix" value="gme://caCORE.caCORE/3.2/" />
