@@ -38,6 +38,27 @@
 		</property>
 	</bean>
 
+	<bean name="HibernateCfgTransformer" class="gov.nih.nci.codegen.transformer.jet.HibernateCfgTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="C:/Satish/workspace/codegen-output/src"/>
+				<property name="fileName" value="hibernate.cfg.xml"/>
+			</bean>
+		</property>
+		<property name="configurationParams">
+			<map>
+				<entry key="HIBERNATE_PROPERTIES">
+					<map>
+						<entry key="dialect" value="MySQL"/>
+					</map>
+				</entry>
+				<entry key="INCLUDE_CLASS" value=".domain."/>
+				<entry key="INCLUDE_SEARCH_EVENT_LISTENER" value="true"/>
+			</map>
+		</property>
+	</bean>
+
 <!-- 
 	<bean name="XmlMappingTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer">
 		<property name="artifactHandler">
@@ -63,6 +84,7 @@
 			<list>
 				<ref bean="BeanTransformer"/>
 				<ref bean="EHCacheTransformer"/>
+				<ref bean="HibernateCfgTransformer"/>
 				<!-- 
 				<ref bean="XmlMappingTransformer"/>
 				 -->
