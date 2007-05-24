@@ -354,14 +354,14 @@ public class TransformerUtils
 					String id = ((UMLClass)(otherEnd.getUMLElement())).getName() + Constant.LEFT_BRACKET
 							+ getFQCN((UMLClass)(otherEnd.getUMLElement())) + Constant.RIGHT_BRACKET;
 					
-					System.out.println("id: " + id);
-					System.out.println("assocEndsMap.get(id) == null ? " + (assocEndsMap.get(id) == null));
-					System.out.println("ae.getType(): " + (UMLClass)(ae.getUMLElement()));
-					System.out.println("superClass: " + superClass);
+					log.debug("id: " + id);
+					log.debug("assocEndsMap.get(id) == null ? " + (assocEndsMap.get(id) == null));
+					log.debug("ae.getType(): " + (UMLClass)(ae.getUMLElement()));
+					log.debug("superClass: " + superClass);
 					
 					if ((UMLClass)ae.getUMLElement() == superClass && assocEndsMap.get(id) == null) {
 						log.debug("adding assoc: " + id);
-						System.out.println("adding assoc: " + id);
+						log.debug("adding assoc: " + id);
 						assocEndsMap.put(id, ae);
 					}
 				}
