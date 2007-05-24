@@ -9,6 +9,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -144,7 +145,7 @@ public class TransformerUtils
 
 	public static Collection<UMLClass> getAllClasses(UMLModel model)
 	{
-		Collection<UMLClass> classes = new HashSet<UMLClass>();
+		Collection<UMLClass> classes = new ArrayList<UMLClass>();
 		getAllClasses(model.getPackages(),classes);
 		return classes;
 	}
@@ -165,5 +166,32 @@ public class TransformerUtils
 		}
 		getAllClasses(rootPkg.getPackages(),classes);
 	}
+
+
+	
+	public static Collection<UMLClass> getAllParentClasses(UMLModel model)
+	{
+		Collection<UMLClass> classes = new ArrayList<UMLClass>();
+		getAllParentClasses(model.getPackages(),classes);
+		return classes;
+	}
+	
+	private static void getAllParentClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes)
+	{
+		for(UMLPackage pkg:pkgCollection)
+			getAllParentClasses(pkg,classes);
+	}
+	
+	private static void getAllParentClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
+	{
+		for(UMLClass klass:rootPkg.getClasses())
+		{
+			String pkgName = TransformerUtils.getFullPackageName(klass);
+			if(!"table".equals(klass.getStereotype()) && !pkgName.startsWith("java.lang") && !pkgName.startsWith("java.util") && ModelUtil.getSuperclasses(klass).length == 0)
+				classes.add(klass);
+		}
+		getAllParentClasses(rootPkg.getPackages(),classes);
+	}
+
 	
 }
