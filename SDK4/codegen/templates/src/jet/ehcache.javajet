@@ -3,7 +3,7 @@
         skeleton="ModelTransformerBase.skeleton" %>  
 <ehcache>
 
-	<diskStore path="<%=configurationParams.get("CACHE_PATH")%>"/>
+	<diskStore path="<%=(String)configurationParams.get("CACHE_PATH")%>"/>
 
 	<defaultCache
 		maxElementsInMemory="500"
