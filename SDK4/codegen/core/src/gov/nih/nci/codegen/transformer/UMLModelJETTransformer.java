@@ -15,7 +15,7 @@ public abstract class UMLModelJETTransformer implements Transformer
 
 	private ArtifactHandler artifactHandler;
 	
-	private Map<String, String> configurationParams;
+	private Map<String, Object> configurationParams;
 	
 	/**
 	 * @param artifactHandler the artifactHandler to set
@@ -45,9 +45,9 @@ public abstract class UMLModelJETTransformer implements Transformer
 		return null;
 	}
 	
-	protected abstract Artifact executeTemplate(UMLModel model, Map<String, String> configurationParams) throws GenerationException;
+	protected abstract Artifact executeTemplate(UMLModel model, Map<String, Object> configurationParams) throws GenerationException;
 
-	public void setConfigurationParams(Map<String, String> configurationParams) {
+	public void setConfigurationParams(Map<String, Object> configurationParams) {
 		this.configurationParams = configurationParams;
 	}	
 	
