@@ -28,26 +28,31 @@ public abstract class UMLClassJetTransformer implements Transformer
 	public GeneratorErrors execute(UMLModel model)
 	{
 		GeneratorErrors errors = new GeneratorErrors();
-		Collection<UMLClass> classes = TransformerUtils.getAllClasses(model);
+		Collection<UMLClass> classes = getAllClasses(model);
 		for(UMLClass klass:classes)
 			try
 		{
-			Artifact artifact = executeTemplate(klass);
+			Artifact artifact = executeTemplate(model, klass);
 			artifactHandler.handleArtifact(artifact);
 		}
 		catch(GenerationException ge)
 		{
-			errors.addError(new GeneratorError("Error while generating artifact for the class",ge));
+			errors.addError(new GeneratorError("Error while generating artifact for the class "+klass.getName()+"\n\t",ge));
 		}
 		return errors;
 	}
 	
-	public abstract Artifact executeTemplate(UMLClass klass) throws GenerationException;
+	public abstract Artifact executeTemplate(UMLModel model, UMLClass klass) throws GenerationException;
 
 	public GeneratorErrors validate(UMLModel model)
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	protected Collection<UMLClass> getAllClasses(UMLModel model)
+	{
+		return TransformerUtils.getAllClasses(model);		
 	}
 	
 }
