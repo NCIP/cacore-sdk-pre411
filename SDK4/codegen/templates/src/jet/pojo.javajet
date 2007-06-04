@@ -5,8 +5,6 @@ package <%=TransformerUtils.getFullPackageName(klass)%>;
 
 <%=TransformerUtils.getImports(klass)%>
 import java.io.Serializable;
-import java.util.List;
-import java.util.Date;
 
 public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)%> implements Serializable
 {
@@ -35,12 +33,12 @@ public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)
 			UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
 			if(TransformerUtils.isAssociationEndMany(otherEnd))
 			{%>
-	private List<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>;
-	public List<<%=assocKlass.getName()%>> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
+	private Collection<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>;
+	public Collection<<%=assocKlass.getName()%>> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
 		return <%=otherEnd.getRoleName()%>;
 	}
 
-	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(List<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>){
+	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(Collection<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>){
 		this.<%=otherEnd.getRoleName()%> = <%=otherEnd.getRoleName()%>;
 	}
 		<%}else{%>
@@ -54,29 +52,6 @@ public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)
 	}
 			<%}
 		}
-		
-		if((TransformerUtils.isSelfAssociation(thisEnd,otherEnd))&&(thisEnd.isNavigable())){
-			if(TransformerUtils.isAssociationEndMany(thisEnd)){
-		%>
-	private List<<%=klass.getName()%>> <%=thisEnd.getRoleName()%>;
-	public List<<%=klass.getName()%>> <%=TransformerUtils.getGetterMethodName(thisEnd)%>(){
-		return <%=thisEnd.getRoleName()%>;
-	}
-
-	public void <%=TransformerUtils.getSetterMethodName(thisEnd)%>(List<<%=klass.getName()%>> <%=thisEnd.getRoleName()%>){
-		this.<%=thisEnd.getRoleName()%> = <%=thisEnd.getRoleName()%>;
-	}
-			<%}else{%>
-	private <%=klass.getName()%> <%=thisEnd.getRoleName()%>;
-	public <%=klass.getName()%> <%=TransformerUtils.getGetterMethodName(thisEnd)%>(){
-		return <%=thisEnd.getRoleName()%>;
-	}
-
-	public void <%=TransformerUtils.getSetterMethodName(thisEnd)%>(<%=klass.getName()%> <%=thisEnd.getRoleName()%>){
-		this.<%=thisEnd.getRoleName()%> = <%=thisEnd.getRoleName()%>;
-	}
-			<%}
-		}	
 	}
 
 	String idGetter = TransformerUtils.getClassIdGetterMthod(klass); 
