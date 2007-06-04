@@ -7,6 +7,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDatatype;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
@@ -20,6 +22,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -86,28 +89,70 @@ public class TransformerUtils
 
 	public static String getImports(UMLClass klass) throws GenerationException
 	{
+		StringBuilder sb = new StringBuilder();
+		Set<String> importList = new HashSet<String>();
 		UMLClass[] superClasses = ModelUtil.getSuperclasses(klass);
-
-		if(superClasses.length == 0) return "";
 
 		if(superClasses.length>1)
 			throw new GenerationException("Class can not have more than one super classes");
 
-		String pkgName = ModelUtil.getFullPackageName(klass);
-		String superPkg = ModelUtil.getFullPackageName(superClasses[0]);
+		String pkgName = getFullPackageName(klass);
+		if(superClasses.length == 1)
+		{ 
+			String superPkg = getFullPackageName(superClasses[0]);
+			if(!pkgName.equals(superPkg))
+				importList.add(getFullPackageName(superClasses[0]));
+		}
+		
+		for(UMLAssociation association: klass.getAssociations())
+		{
+			List<UMLAssociationEnd> assocEnds = association.getAssociationEnds();
+			UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass,assocEnds);
+			
+			String assocPkg = getFullPackageName ((UMLClass)otherEnd.getUMLElement());
+			if(!pkgName.equals(assocPkg) && !importList.contains(assocPkg))
+				importList.add(assocPkg);
+			if(isAssociationEndMany(otherEnd) && otherEnd.isNavigable()&& !importList.contains("java.util.Collection"))
+				importList.add("java.util.Collection");
+		}
+		
+		for(String importClass:importList)
+			sb.append("import ").append(importClass).append(";");
 
-		StringBuilder sb = new StringBuilder();
-		if(!pkgName.equals(superPkg))
-			sb.append("import ").append(removeBasePackage(ModelUtil.getFullName(superClasses[0]))).append(";");
-
-		//TODO - Imports for the data types e.g. List, Date etc
 		return sb.toString();
 	}
 
 	public static String getDataType(UMLAttribute attr)
 	{
 		UMLDatatype dataType = attr.getDatatype();
-		return dataType.getName();
+		String name = dataType.getName();
+		if(dataType instanceof UMLClass)
+			name = getFQCN((UMLClass)dataType);
+		
+		if(name.startsWith("java.lang."))
+			name = name.substring("java.lang.".length());
+
+		if("int".equalsIgnoreCase(name) || "integer".equalsIgnoreCase(name))
+			return "Integer";
+		if("double".equalsIgnoreCase(name))
+			return "Double";
+		if("float".equalsIgnoreCase(name))
+			return "Float";
+		if("long".equalsIgnoreCase(name))
+			return "Long";
+		if("string".equalsIgnoreCase(name))
+			return "String";
+		if("char".equalsIgnoreCase(name) || "character".equalsIgnoreCase(name))
+			return "Character";
+		if("boolean".equalsIgnoreCase(name) )
+			return "Boolean";
+
+		if("date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name))
+			return "java.util.Date";
+
+		System.out.println("Type = "+name);
+		
+		return name;
 	}
 
 	public static String getGetterMethodName(UMLAttribute attr)
@@ -148,7 +193,7 @@ public class TransformerUtils
 
 	public static Boolean isAssociationEndMany(UMLAssociationEnd assocEnd)
 	{
-		if((assocEnd.getHighMultiplicity()<1)||(assocEnd.getLowMultiplicity()<1)) 
+		if((assocEnd.getHighMultiplicity()<1)||(assocEnd.getLowMultiplicity()<0)) 
 			return true;
 		else
 			return false;
@@ -171,12 +216,65 @@ public class TransformerUtils
 		return assocEnd1.getUMLElement().equals(assocEnd2.getUMLElement());
 	}
 
-	public static String getClassIdGetterMthod(UMLClass klass)
+	public static String getClassIdGetterMthod(UMLClass klass) throws GenerationException
 	{
-		//TODO Figureout a way to get the ID attribute's getter method
-		return "getId";
+		return "get"+firstCharUpper(getClassIdAttrName(klass));
 	}
 
+	private static String firstCharUpper(String data)
+	{
+		if(data == null || data.length() == 0) return data;
+		return Character.toUpperCase(data.charAt(0)) + data.substring(1); 
+	}
+	
+	public static String getClassIdAttrName(UMLClass klass) throws GenerationException
+	{
+		return getClassIdAttr(klass).getName();
+	}
+
+	public static UMLAttribute getClassIdAttr(UMLClass klass) throws GenerationException
+	{
+		UMLClass table = getTable(klass);
+		String fqcn = getFQCN(klass);
+		String idAttr = "id";
+		int count = 0;
+		for(UMLAttribute column:table.getAttributes())
+		{
+			for(UMLTaggedValue tv: column.getTaggedValues())
+			{
+				if ("id-attribute".equals(tv.getName()))
+				{
+					String tvValue = tv.getValue();
+					if(tvValue.startsWith(fqcn+"."))
+					{
+						String attrName = tvValue.substring((fqcn+".").length());
+						count++;
+					}
+				}
+			}
+		}
+		
+		if(count > 1)
+			throw new GenerationException("More than one column found that maps to the primary key identifier for class : "+fqcn);
+		
+		for(UMLAttribute attribute:klass.getAttributes())
+		{
+			if(idAttr.equals(attribute.getName()))
+				return attribute;
+		}
+		for(UMLGeneralization gen: klass.getGeneralizations())
+		{
+			if(gen.getSubtype() == klass)
+			{
+				UMLAttribute superId = getClassIdAttr(gen.getSupertype());
+				if(superId != null)
+					return superId;
+			}
+		}
+		
+		throw new GenerationException("No column found that maps to the primary key identifier for class : "+fqcn);
+	}
+	
 	// TODO :: add method to UMLAttribute instead?  However, would alter existing interface...
 	public static boolean isStatic(UMLAttribute att){
 		
@@ -462,5 +560,237 @@ public class TransformerUtils
 		getAllParentClasses(rootPkg.getPackages(),classes);
 	}
 
+	public static UMLClass getTable(UMLClass klass) throws GenerationException
+	{
+		Set<UMLDependency> dependencies = klass.getDependencies();
+		int count = 0;
+		for(UMLDependency dependency:dependencies)
+		{
+			//TODO Cortrect the condition for the UMLDependency DataSource check
+			count++;
+			if(count>1)
+				throw new GenerationException("No table found for : "+getFQCN(klass));
+		}
+		
+		for(UMLDependency dependency:dependencies)
+		{
+			UMLClass client = (UMLClass) dependency.getClient();
+			if(!"table".equalsIgnoreCase(client.getStereotype()))
+				throw new GenerationException("Invalid stereotyoe for the dependency of : "+getFQCN(klass));
+			
+			return client;
+		}
+		return null;
+	}
+	
+	public static String getMappedColumnName(UMLClass table, String attrName) throws GenerationException
+	{
+		int count = 0;
+		UMLAttribute targetColumn = null; 
+		for(UMLAttribute column: table.getAttributes())
+		{
+			for(UMLTaggedValue tv: column.getTaggedValues())
+			{
+				if ("mapped-attributes".equals(tv.getName()))
+				{
+					String tvValue = tv.getValue();
+					String[] tvValues = tvValue.split(",");
+					for(String val:tvValues)
+					{
+						if(attrName.equals(val))
+						{
+							count++;
+							targetColumn = column;
+						}
+					}
+				}
+			}
+		}
+		
+		if(count == 0) throw new GenerationException("No column found for : "+attrName);
+		if(count > 1) throw new GenerationException("More than one column found for : "+attrName);
+	
+		return targetColumn.getName();
+	}
+	
+	public static String getEmptySpace(Integer count)
+	{
+		String spaces = "";
+		
+		for(Integer i=0;i<count;i++)
+			spaces +="\t";
+		
+		return spaces;
+	}
+	
+	
+	public static UMLClass findCorrelationTable(UMLAssociation association, UMLModel model, UMLClass klass) throws GenerationException
+	{
+		String tvValue = null;
+		int count = 0;
+		for(UMLTaggedValue tv: association.getTaggedValues())
+		{
+			if ("correlation-table".equals(tv.getName()))
+			{
+				tvValue = tv.getValue();
+				count++;
+			}
+		}
+		List<UMLAssociationEnd> ends = association.getAssociationEnds();
+		UMLAssociationEnd thisEnd = getThisEnd(klass, ends);
+		UMLAssociationEnd otherEnd = getOtherEnd(klass, ends);
+		
+		String temp = ((UMLClass)(thisEnd.getUMLElement())).getName()+"."+otherEnd.getRoleName();
+		
+		temp += "-->" +((UMLClass)(otherEnd.getUMLElement())).getName()+"."+thisEnd.getRoleName();
+		
+		if(count == 0 || tvValue == null || tvValue.trim().length() == 0) throw new GenerationException("No correlation table found for "+temp +" association");
+		if(count > 1) throw new GenerationException("More than one correlation table found for "+temp+" association");
+		
+		UMLClass correlationTable = ModelUtil.findClass(model,"Logical View.Data Model."+tvValue);
+		
+		if(correlationTable == null) throw new GenerationException("No correlation table found named : \""+tvValue+"\"");
+		
+		return correlationTable;
+	}
+	
+	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, Boolean throwException) throws GenerationException
+	{
+		String tvVal = getFQCN(klass) +"."+ otherEnd.getRoleName();
+		String tvKey = "implements-association";
+		
+		UMLAttribute resultColumn = null;
+		int count = 0;
+		
+		for(UMLAttribute column: table.getAttributes())
+		{
+			for(UMLTaggedValue tv: column.getTaggedValues())
+			{
+				if (tvKey.equals(tv.getName()))
+				{
+					String tvValue = tv.getValue();
+					String[] tvValues = tvValue.split(",");
+					for(String val:tvValues)
+					{
+						if(tvVal.equals(val))
+						{
+							count++;
+							resultColumn = column;
+						}
+					}
+				}
+			}
+		}
+		
+		if(count == 0 && throwException) throw new GenerationException("No column found for : "+tvVal);
+		if(count > 1) throw new GenerationException("More than one column found for : "+tvVal);
+		
+		if(resultColumn == null ) return "";
+		return resultColumn.getName();
+	}
+
+	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd) throws GenerationException
+	{
+		return findAssociatedColumn(table,klass, otherEnd, true);
+	}
+
+	public static String findInverseColumnValue(UMLClass table,UMLClass klass, UMLAssociationEnd thisEnd) throws GenerationException
+	{
+		String tvVal = getFQCN(klass) +"."+ thisEnd.getRoleName();
+		String tvKey = "inverse-of";
+		
+		UMLAttribute resultColumn = null;
+		int count = 0;
+		
+		for(UMLAttribute column: table.getAttributes())
+		{
+			for(UMLTaggedValue tv: column.getTaggedValues())
+			{
+				if (tvKey.equals(tv.getName()))
+				{
+					String tvValue = tv.getValue();
+					String[] tvValues = tvValue.split(",");
+					for(String val:tvValues)
+					{
+						if(tvVal.equals(val))
+						{
+							count++;
+							resultColumn = column;
+						}
+					}
+				}
+			}
+		}
+		
+		if(count > 1) throw new GenerationException("More than one column found for inverse-of mapping of : "+tvVal);
+		
+		if(resultColumn!=null)
+			return resultColumn.getName();
+		else
+			return "";
+	}
+	
+	public static String findDiscriminatingColumnName(String fqcn, UMLClass table) throws GenerationException
+	{
+		String tvVal = fqcn;
+		String tvKey = "discriminator";
+		
+		UMLAttribute resultColumn = null;
+		int count = 0;
+		
+		for(UMLAttribute column: table.getAttributes())
+		{
+			for(UMLTaggedValue tv: column.getTaggedValues())
+			{
+				if (tvKey.equals(tv.getName()))
+				{
+					String tvValue = tv.getValue();
+					String[] tvValues = tvValue.split(",");
+					for(String val:tvValues)
+					{
+						if(tvVal.equals(val))
+						{
+							count++;
+							resultColumn = column;
+						}
+					}
+				}
+			}
+		}
+		
+		if(count > 1) throw new GenerationException("More than one discriminating columns found for : "+fqcn);
+		
+		if(resultColumn!=null)
+			return resultColumn.getName();
+		else
+			return null;
+	}
+
+	public static String getDiscriminatorValue(UMLClass klass) throws GenerationException
+	{
+		String tvKey = "discriminator";
+		
+		String result = null;
+		int count = 0;
+		
+		for(UMLTaggedValue tv: klass.getTaggedValues())
+		{
+			if (tvKey.equals(tv.getName()))
+			{
+				String tvValue = tv.getValue();
+				String[] tvValues = tvValue.split(",");
+				for(String val:tvValues)
+				{
+					count++;
+					result = val;
+				}
+			}
+		}
+		
+		if(count == 0 || result == null || result.trim().length() == 0) throw new GenerationException("No discriminating values found for : "+getFQCN(klass));
+		if(count > 1) throw new GenerationException("More than one discriminating values found for : "+getFQCN(klass));
+		
+		return result;
+	}
 	
 }
