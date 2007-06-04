@@ -9,19 +9,28 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 
+import java.util.Collection;
 import java.util.List;
 
-public class CLASS extends UMLClassJetTransformer{
 
+public class CLASS extends UMLClassJetTransformer{
+	
 	public Artifact executeTemplate(UMLModel model, UMLClass klass) throws GenerationException{
 		BaseArtifact artifact = new BaseArtifact();
-		artifact.setContent(generate(model, klass));
+		String generatedContent = generate(model, klass, 0);
+		artifact.setContent(generatedContent);
 		artifact.createSourceName(klass);
 		return artifact;
 	}
-	
-	public String generate(UMLModel model, UMLClass klass)  throws GenerationException{
+
+	protected Collection<UMLClass> getAllClasses(UMLModel model){
+		return TransformerUtils.getAllParentClasses(model);		
+	}	
+
+	private String generate(UMLModel model, UMLClass klass, Integer level)  throws GenerationException{
 		return "";
 	}
+	
 }
