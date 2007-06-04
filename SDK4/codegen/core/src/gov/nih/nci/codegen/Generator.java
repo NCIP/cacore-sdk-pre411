@@ -107,8 +107,8 @@ public class Generator
 		{
 			StringBuilder buffer = new StringBuilder();
 			for(GeneratorError error:errors.getErrors())
-				buffer.append(error.toString());
-			log.error("Error in executing code generator :"+buffer.toString());
+				buffer.append("\n"+error.toString());
+			log.error(buffer.toString());
 			System.exit(-1);
 		}
 	}
