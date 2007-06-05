@@ -12,9 +12,31 @@ public class ObjectFactory
 {
 	private static Logger log = Logger.getLogger(ObjectFactory.class.getName());
 
-	private static XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("CodegenConfig.xml"));
+	private static XmlBeanFactory factory;
+	
+	private static Boolean initialized = false;
 
+	private static Object lock = new Object();
+	
 	private ObjectFactory() {}
+	
+	/**
+	 * Initializes the object factory from the <code>fileName</code> parameter
+	 * 
+	 * @param fileName Name of the file which contains the configuration for the codegen
+	 */
+	public static void initialize(String fileName) 
+	{
+		synchronized(lock)
+		{
+			if(!initialized)
+			{
+				initialized = true;
+				factory = new XmlBeanFactory(new ClassPathResource(fileName));
+			}
+		}
+	}
+	
 
 	/**
 	 * Get Object instance from the classname.
@@ -25,6 +47,10 @@ public class ObjectFactory
 	 */
 
 	public static Object getObject(String key) throws GenerationException{
+
+		if(!initialized)
+			throw new RuntimeException("Object factory not initialized; can not retrieve bean");
+		
 		try
 		{
 			return factory.getBean(key);

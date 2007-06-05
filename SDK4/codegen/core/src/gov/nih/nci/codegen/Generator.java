@@ -132,12 +132,20 @@ public class Generator
 	
 	/**
 	 * Executes the <code>Generator</code>
-	 * @param args
+	 * 
+	 * @param args First parameter for the command line argument should be the name of the file which contains the configuration for the codegen. If there are no command line parameters specified then the file name defaults to CodegenConfig.xml
 	 * @throws Exception
 	 */
 	public static void main(String args[]) throws Exception
 	{
+		String fileName = (args!=null && args.length >0) ? args[0] : "CodegenConfig.xml";
+		log.info("Initializing codegen configuration from "+fileName+"\n");
+
+		ObjectFactory.initialize(fileName);
 		Generator generator = (Generator)ObjectFactory.getObject("Generator");
+		log.info("Configuration read from the file\n");
+		log.info("Executing codegen\n");
 		generator.execute();
+		log.info("Codegen executin complete\n");		
 	}	
 }
