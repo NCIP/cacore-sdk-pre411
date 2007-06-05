@@ -60,7 +60,7 @@
 	*** Prepare source code
 	*********************************************************************** -->
 	<target name="prepare-source">
-		<SDKecho message="Executing child projects"/>
+		<SDKecho message="${ant.project.name}: Executing child projects"/>
 		<ant antfile="${codegen.templates.dir}\build.xml" target="compile-templates" inheritall="false" inheritrefs="false" />
 	</target>
 
@@ -70,7 +70,7 @@
 	*********************************************************************** -->
 	<target name="compile" depends="init,prepare-source" description="Compiles source code">
 		<SDKecho message="${ant.project.name}: Compiling source code"/>
-		<javac srcdir="${codegen.core.src.dir}:${codegen.templates.src.dir}" destdir="${build.classes.dir}">
+		<javac srcdir="${codegen.core.src.dir}:${codegen.templates.src.dir}" destdir="${build.classes.dir}" debug="true">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
@@ -83,6 +83,7 @@
 		<jar destfile="${dist.dir}\${file.output.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Main-Class" value="gov.nih.nci.codegen.Generator"/>
 			</manifest>
 		</jar>
 		<copy todir="${dist.dir}">
