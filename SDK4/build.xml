@@ -3,6 +3,162 @@
 
 	<description>Build script for caCORE SDK</description>
 
-	<property file="build.properties" />
+	<!--***********************************************************************
+	*** Load the build properties from the file
+	*********************************************************************** -->
+	<property file="conf/deploy.properties"  />
+	<property file="build.properties"  />
+	<property file="build.properties"  />
+	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
+	
+	<!--***********************************************************************
+	*** Import utility script
+	*********************************************************************** -->
+	<import file="build-scripts\build-utils.xml"/>
+	<import file="${codegen.dir}\build.xml"/>
+	
+	<!--***********************************************************************
+	*** CLASSPATH AND UNIX-STYLE BASEDIR PROPERTIES
+	*********************************************************************** -->
+	<path id="codegen.runtime">
+		<fileset dir="${codegen.dir}\dist">
+			<include name="**/*.jar"/>
+		</fileset>
+		<pathelement path="${output.codegen.config.dir}"/>
+	</path>
+	
+	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
+	<path id="basedir.path">
+		<pathelement path="${basedir}" />
+	</path>
+
+	<pathconvert targetos="unix" property="basedir.unix" refid="basedir.path" />
+
+	<available property="codegen-jar-present" file="${codegen.dir}/${codegen.dist.dir}/${codegen.file.output.name}"/>
+
+	
+	<!--***********************************************************************
+	*** HIDE/SHOW DB CONNECTION PROPERTIES TO BE USED IN HIBERNATE CONFIGURATION
+	*********************************************************************** -->
+	<condition property="JNDI_START" value="" else="${xml.comment.start}">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="JNDI_END" value="" else="${xml.comment.end}">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="DB_CONNECTION_START" value="${xml.comment.start}" else="">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="DB_CONNECTION_END" value="${xml.comment.end}" else="">
+		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	
+	<!--***********************************************************************
+	*** Prepares the directory structure
+	*********************************************************************** -->
+	<target name="init" >
+		<SDKecho message="${ant.project.name}: Preparing directories"/>
+		<mkdir dir="${output.dir}"/>
+		<mkdir dir="${output.project.dir}"/>
+		<mkdir dir="${output.conf.dir}"/>
+		<mkdir dir="${output.codegen.config.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.jar.dir}"/>
+	
+		<copy todir="${output.conf.dir}" overwrite="true">
+			<fileset dir="${conf.dir}">
+				<include name="**\*.*" />
+			</fileset>
+		</copy>
+		<replace dir="${output.codegen.config.dir}">
+			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
+			<replacefilter token="@XMI_FILE@" value="${XMI_FILE}" />
+			<replacefilter token="@NAMESPACE_PREFIX@" value="${NAMESPACE_PREFIX}" />	
+			<replacefilter token="@CACHE_PATH@" value="${CACHE_PATH}" />	
+			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_START@${xml.comment.end}" value="${JNDI_START}" />	
+			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_END@${xml.comment.end}" value="${JNDI_END}" />	
+			<replacefilter token="${xml.comment.start}@DB_CONNECTION_POOL_START@${xml.comment.end}" value="${DB_CONNECTION_START}" />	
+			<replacefilter token="${xml.comment.start}@DB_CONNECTION_POOL_END@${xml.comment.end}" value="${DB_CONNECTION_END}" />	
+			<replacefilter token="@DB_DRIVER@" value="${DB_DRIVER}" />	
+			<replacefilter token="@DB_CONNECTION_URL@" value="${DB_CONNECTION_URL}" />	
+			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
+			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
+		</replace>
+	
+	</target>
+
+	<!--***********************************************************************
+	*** Cleans the generated directories and files
+	*********************************************************************** -->
+	<target name="clean" description="Cleans the generated directories and files">
+		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
+		<delete dir="${output.dir}"/>
+	</target>
+
+	<!--***********************************************************************
+	*** Cleans the generated directories and files in addition to child projects
+	*********************************************************************** -->
+	<target name="clean-all" depends="clean" description="Cleans the child projects and generated directories and files">
+		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
+		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
+	</target>
+
+	<!--***********************************************************************
+	*** Prepare 
+	*********************************************************************** -->
+	<target name="prepare" depends="init" unless="codegen-jar-present">
+		<SDKecho message="${ant.project.name}: Preparing the child projects"/>
+		<ant antfile="${codegen.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
+	</target>
+	
+	<!--***********************************************************************
+	*** Runs the Codegen 
+	*********************************************************************** -->
+	<target name="codegen" depends="prepare" description="Runs the code generator">
+		<SDKecho message="${ant.project.name}: Running the code generator"/>
+		<java classname="gov.nih.nci.codegen.Generator" fork="true">
+			<arg value="${codegen.config.file}" />
+			<classpath refid="codegen.runtime" />
+		</java>
+	</target>
+
+	<!--***********************************************************************
+	*** Compiles the generated beans 
+	*********************************************************************** -->
+	<target name="compile-beans" depends="codegen" description="Compiles the generated beans">
+		<SDKecho message="${ant.project.name}: Compiling the generated beans"/>
+		<javac srcdir="${output.src.dir}" destdir="${build.classes.dir}" debug="true">
+			<include name="**/*.java"/>
+		</javac>
+	</target>
+
+	<!--***********************************************************************
+	*** Compiles the generated beans 
+	*********************************************************************** -->
+	<target name="package-artifacts" depends="compile-beans" description="Packages the generated artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the generated artifacts"/>
+		<jar destfile="${build.jar.dir}\${bean.file}" basedir="${build.classes.dir}">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+			</manifest>
+		</jar>
+		<jar destfile="${build.jar.dir}\${orm.file}" basedir="${output.src.dir}">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+			</manifest>
+			<include name="**/*.hbm.xml"/>
+			<include name="**/*.cfg.xml"/>
+			<include name="ehcache.xml"/>	
+		</jar>
+	</target>
+	
+	<!--***********************************************************************
+	*** Dumps the properties of the codegen  
+	*********************************************************************** -->
+	<target name="show-properties" description="Dumps a list of all properties currently set">
+		<echoproperties destfile="antproperties.txt"/>
+		<echo>Properties were dumped to 'antproperties.txt'</echo>
+	</target>
 	
 </project>
