@@ -3,11 +3,6 @@ package gov.nih.nci.codegen.handler;
 import gov.nih.nci.codegen.Artifact;
 import gov.nih.nci.codegen.ArtifactHandler;
 import gov.nih.nci.codegen.GenerationException;
-import gov.nih.nci.codegen.transformer.SchemaTransformer;
-import gov.nih.nci.codegen.util.TransformerUtils;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -102,6 +97,7 @@ public class FileHandler implements ArtifactHandler
 		String fName = prepareFileName(artifact);
 		try
 		{
+			log.debug("Writing an artifact to a file "+fName+" in "+outputDir+" directory");
 			File f = new File(outputDir,fName);
 			File p = f.getParentFile();
 			if (!p.exists())
@@ -111,6 +107,7 @@ public class FileHandler implements ArtifactHandler
 			FileWriter out = new FileWriter(f);
 			out.write(artifact.getContent());
 			out.close();
+			log.debug("Wrote an artifact to a file "+fName+" in "+outputDir+" directory");
 		}
 		catch (IOException e) 
 		{

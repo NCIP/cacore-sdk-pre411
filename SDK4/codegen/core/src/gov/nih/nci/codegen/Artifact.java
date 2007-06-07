@@ -1,6 +1,5 @@
 package gov.nih.nci.codegen;
 
-import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 
 public interface Artifact
 {
