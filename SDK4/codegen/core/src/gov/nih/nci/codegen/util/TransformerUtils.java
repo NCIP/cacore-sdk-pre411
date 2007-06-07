@@ -155,6 +155,40 @@ public class TransformerUtils
 		return name;
 	}
 
+
+	public static String getHibernateDataType(UMLAttribute attr)
+	{
+		UMLDatatype dataType = attr.getDatatype();
+		String name = dataType.getName();
+		if(dataType instanceof UMLClass)
+			name = getFQCN((UMLClass)dataType);
+		
+		if(name.startsWith("java.lang."))
+			name = name.substring("java.lang.".length());
+
+		if("int".equalsIgnoreCase(name) || "integer".equalsIgnoreCase(name))
+			return "integer";
+		if("double".equalsIgnoreCase(name))
+			return "double";
+		if("float".equalsIgnoreCase(name))
+			return "float";
+		if("long".equalsIgnoreCase(name))
+			return "long";
+		if("string".equalsIgnoreCase(name))
+			return "string";
+		if("char".equalsIgnoreCase(name) || "character".equalsIgnoreCase(name))
+			return "character";
+		if("boolean".equalsIgnoreCase(name) )
+			return "boolean";
+
+		if("date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name))
+			return "java.util.Date";
+
+		System.out.println("Type = "+name);
+		
+		return name;
+	}	
+	
 	public static String getGetterMethodName(UMLAttribute attr)
 	{
 		String name = attr.getName(); 
