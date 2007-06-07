@@ -71,6 +71,8 @@
 		<replace dir="${output.codegen.config.dir}">
 			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
 			<replacefilter token="@XMI_FILE@" value="${XMI_FILE}" />
+			<replacefilter token="@LOGICAL_MODEL@" value="${LOGICAL_MODEL}" />
+			<replacefilter token="@DATA_MODEL@" value="${DATA_MODEL}" />
 			<replacefilter token="@NAMESPACE_PREFIX@" value="${NAMESPACE_PREFIX}" />	
 			<replacefilter token="@CACHE_PATH@" value="${CACHE_PATH}" />	
 			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_START@${xml.comment.end}" value="${JNDI_START}" />	

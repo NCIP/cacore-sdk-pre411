@@ -22,6 +22,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -29,8 +30,8 @@ import org.apache.log4j.Logger;
 public class TransformerUtils
 {
 	private static Logger log = Logger.getLogger(TransformerUtils.class);
-	private static String BASE_PKG_LOGICAL_MODEL = "Logical View.Logical Model";
-	private static String BASE_PKG_DATA_MODEL = "Logical View.Data Model";
+	private static String BASE_PKG_LOGICAL_MODEL;
+	private static String BASE_PKG_DATA_MODEL;
 	private static String TV_ID_ATTR_COLUMN = "id-attribute";
 	private static String TV_MAPPED_ATTR_COLUMN = "mapped-attributes";
 	private static String TV_ASSOC_COLUMN = "implements-association";
@@ -39,6 +40,20 @@ public class TransformerUtils
 	private static String TV_CORRELATION_TABLE = "correlation-table";
 	
 	private static String STEREO_TYPE_TABLE = "table";
+	
+	static
+	{
+		try 
+		{
+			Properties prop = ((Properties)ObjectFactory.getObject("XMIFileProperties"));
+			BASE_PKG_LOGICAL_MODEL = prop.getProperty("Logical Model");
+			BASE_PKG_DATA_MODEL = prop.getProperty("Data Model");
+		}
+		catch (GenerationException e) 
+		{
+			log.fatal(e);
+		}
+	}
 	
 	public static String getEmptySpace(Integer count)
 	{
@@ -163,7 +178,7 @@ public class TransformerUtils
 		if("date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name))
 			return "java.util.Date";
 
-		System.out.println("Type = "+name);
+		log.error("Unknown data type = "+name);
 		
 		return name;
 	}

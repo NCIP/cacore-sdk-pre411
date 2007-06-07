@@ -35,6 +35,15 @@
 		<constructor-arg value="models/xmi/@XMI_FILE@"></constructor-arg>
 	</bean>
 
+	<bean name="XMIFileProperties" class="java.util.Properties">
+		<constructor-arg>
+			<props >
+				<prop key="Logical Model">@LOGICAL_MODEL@</prop>
+				<prop key="Data Model">@DATA_MODEL@</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+
 	<!-- 									 -->
 	<!--  Code Genration Validator			 -->
 	<!-- 									 -->
