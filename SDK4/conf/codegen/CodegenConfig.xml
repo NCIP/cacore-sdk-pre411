@@ -2,16 +2,49 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
+	<!-- 									 -->
+	<!--  Entry point for the Code Generator -->
+	<!-- 									 -->
+	<bean name="Generator" class="gov.nih.nci.codegen.Generator" singleton="false">
+		<constructor-arg ref="UMLModel"></constructor-arg>
+		<constructor-arg index="1">
+			<list>
+				<ref bean="DataModelValidator"/>
+				<ref bean="LogicalModelValidator"/>
+				<ref bean="ModelMappingValidator"/>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="2">
+			<list>
+				<ref bean="HibernateMappingTransformer"/>
+				<ref bean="BeanTransformer"/>
+				<ref bean="EHCacheTransformer"/>
+				<ref bean="HibernateCfgTransformer"/>
+				<ref bean="XmlMappingMarshallerTransformer"/>
+				<ref bean="XmlMappingUnmarshallerTransformer"/>
+				<ref bean="SchemaTransformer"/>				
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- 									 -->
+	<!--  XMI File Reader/UML Model Loadeer	 -->
+	<!-- 									 -->
+	<bean name="UMLModel" factory-bean="XMILoader" factory-method="getUMLModel" singleton="true"/>
 	<bean name="XMILoader" class="gov.nih.nci.codegen.UMLModelLoader" singleton="true">
 		<constructor-arg value="models/xmi/@XMI_FILE@"></constructor-arg>
 	</bean>
 
-	<bean name="UMLModel" factory-bean="XMILoader" factory-method="getUMLModel" singleton="true"/>
-
+	<!-- 									 -->
+	<!--  Code Genration Validator			 -->
+	<!-- 									 -->
 	<bean name="DataModelValidator" class="gov.nih.nci.codegen.validator.UMLDataModelValidator"/>
 	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator"/>
 	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator"/>
 
+	<!-- 									 -->
+	<!--  Transformers						 -->
+	<!-- 									 -->
 	<bean name="HibernateMappingTransformer" class="gov.nih.nci.codegen.transformer.jet.HibernateMappingTransformer">
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
@@ -130,27 +163,5 @@
 			</bean>
 		</property>
 	</bean>	
-		
-	<bean name="Generator" class="gov.nih.nci.codegen.Generator" singleton="false">
-		<constructor-arg ref="UMLModel"></constructor-arg>
-		<constructor-arg index="1">
-			<list>
-				<ref bean="DataModelValidator"/>
-				<ref bean="LogicalModelValidator"/>
-				<ref bean="ModelMappingValidator"/>
-			</list>
-		</constructor-arg>
-		<constructor-arg index="2">
-			<list>
-				<ref bean="HibernateMappingTransformer"/>
-				<ref bean="BeanTransformer"/>
-				<ref bean="EHCacheTransformer"/>
-				<ref bean="HibernateCfgTransformer"/>
-				<ref bean="XmlMappingMarshallerTransformer"/>
-				<ref bean="XmlMappingUnmarshallerTransformer"/>
-				<ref bean="SchemaTransformer"/>				
-			</list>
-		</constructor-arg>
-	</bean>
 
 </beans>
