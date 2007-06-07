@@ -34,9 +34,6 @@
 
 	<pathconvert targetos="unix" property="basedir.unix" refid="basedir.path" />
 
-	<available property="codegen-jar-present" file="${codegen.dir}/${codegen.dist.dir}/${codegen.file.output.name}"/>
-
-	
 	<!--***********************************************************************
 	*** HIDE/SHOW DB CONNECTION PROPERTIES TO BE USED IN HIBERNATE CONFIGURATION
 	*********************************************************************** -->
@@ -84,6 +81,7 @@
 			<replacefilter token="@DB_CONNECTION_URL@" value="${DB_CONNECTION_URL}" />	
 			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
 			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
+			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />	
 		</replace>
 	
 	</target>
@@ -94,6 +92,7 @@
 	<target name="clean" description="Cleans the generated directories and files">
 		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
 		<delete dir="${output.dir}"/>
+		<property name="clean-all-performed" value="true"/>
 	</target>
 
 	<!--***********************************************************************
@@ -107,7 +106,16 @@
 	<!--***********************************************************************
 	*** Prepare 
 	*********************************************************************** -->
-	<target name="prepare" depends="init" unless="codegen-jar-present">
+	<target name="prepare-condition" depends="init">
+		<SDKecho message="${ant.project.name}: Checking the condition for child project build"/>
+		<condition property="prepare-required">
+			<not>
+				<available file="${codegen.dir}/${codegen.dist.dir}/${codegen.file.output.name}"/>
+			</not>
+		</condition>
+	</target>
+
+	<target name="prepare" depends="prepare-condition" if="prepare-required">
 		<SDKecho message="${ant.project.name}: Preparing the child projects"/>
 		<ant antfile="${codegen.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
 	</target>
@@ -142,6 +150,7 @@
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 			</manifest>
+			<fileset dir="${output.src.dir}" includes="**/*.java" />
 		</jar>
 		<jar destfile="${build.jar.dir}\${orm.file}" basedir="${output.src.dir}">
 			<manifest>
