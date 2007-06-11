@@ -652,9 +652,9 @@ public class TransformerUtils
 		return correlationTable;
 	}
 
-	public static String getMappedColumnName(UMLClass table, String attrName) throws GenerationException
+	public static String getMappedColumnName(UMLClass table, String fullyQualifiedAttrName) throws GenerationException
 	{
-		return getColumnName(table,TV_MAPPED_ATTR_COLUMN,attrName,false,1,1);
+		return getColumnName(table,TV_MAPPED_ATTR_COLUMN,fullyQualifiedAttrName,false,1,1);
 	}
 	
 	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, Boolean throwException) throws GenerationException
@@ -754,7 +754,7 @@ public class TransformerUtils
 				}
 			}
 		}
-		if(count < minOccurence) throw new GenerationException("No value found for "+key+" tag in class : "+getFQCN(klass));
+		if(count < minOccurence) throw new GenerationException("No value of "+value+" found for "+key+" tag in class : "+getFQCN(klass));
 		if(count > maxOccurence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
 		
 		return result;

@@ -70,6 +70,11 @@ public class UMLLogicalModelValidator implements Validator
 				String otherClassName = TransformerUtils.getFQCN(((UMLClass)otherEnd.getUMLElement()));
 				if(!TransformerUtils.isIncluded((UMLClass)otherEnd.getUMLElement()))
 					errors.addError(new GeneratorError("Association belongs to the not included or excluded package for association between "+thisClassName +" and "+ otherClassName));
+				if(thisEnd.getRoleName()!=null && thisEnd.getRoleName().length()>0 && !Character.isLetter(thisEnd.getRoleName().charAt(0)))
+					errors.addError(new GeneratorError("Association role name starts with non-character value for association between "+thisClassName +" and "+ otherClassName));
+				if(otherEnd.getRoleName()!=null && otherEnd.getRoleName().length()>0 && !Character.isLetter(otherEnd.getRoleName().charAt(0)))
+					errors.addError(new GeneratorError("Association role name starts with non-character value for association between "+thisClassName +" and "+ otherClassName));
+				
 				if(thisEnd.getRoleName()==null || thisEnd.getRoleName().trim().length()==0 || otherEnd.getRoleName()==null || otherEnd.getRoleName().trim().length()==0 )
 					errors.addError(new GeneratorError("Association end name not specified for association between "+thisClassName +" and "+ otherClassName));
 				if((thisEnd.getRoleName()!= null && thisEnd.getRoleName().indexOf(' ') > 0 ) || (otherEnd.getRoleName()!= null && otherEnd.getRoleName().indexOf(' ') > 0 ))
@@ -115,6 +120,12 @@ public class UMLLogicalModelValidator implements Validator
 			String name = dataType.getName();
 			if(dataType instanceof UMLClass)
 				name = TransformerUtils.getFQCN((UMLClass)dataType);
+			if(name == null) name = "";
+			
+			if(name.trim().length() == 0)
+				errors.addError(new GeneratorError("Attribute type empty in "+thisClassName+": "+attribute.getName()));
+			if(name.indexOf(' ')>0)
+				errors.addError(new GeneratorError("Attribute type contains empty spaces in "+thisClassName+": "+attribute.getName()));
 			
 			if(name.startsWith("java.lang."))
 				name = name.substring("java.lang.".length());
