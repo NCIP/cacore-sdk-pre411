@@ -150,7 +150,7 @@ public class XmlMappingTransformer implements Transformer {
 			}
 		};
 
-		ArrayList<UMLClass> list = new ArrayList(classColl);
+		ArrayList<UMLClass> list = new ArrayList<UMLClass>(classColl);
 		Collections.sort(list, new caCOREComparator());
 		return classColl;
 	}
@@ -262,6 +262,8 @@ public class XmlMappingTransformer implements Transformer {
 			if (TransformerUtils.isMany2One(thisEnd, otherEnd)) {
 
 				log.debug("UML13Utils.isMany2One(thisEnd, otherEnd): " + true);
+				log.debug("lowerBound: " + TransformerUtils.getLowerBound(otherEnd));
+				log.debug("upperBound: " + TransformerUtils.getUpperBound(otherEnd));
 
 				Element field = new Element("field");
 				field.setAttribute("name", otherEnd.getRoleName() ); //otherEnd.getName());
@@ -282,6 +284,8 @@ public class XmlMappingTransformer implements Transformer {
 			} else if (TransformerUtils.isMany2Many(thisEnd, otherEnd) || TransformerUtils.isOne2Many(thisEnd, otherEnd)){
 				log.debug("UML13Utils.isMany2Many(thisEnd, otherEnd): " + TransformerUtils.isMany2Many(thisEnd, otherEnd));
 				log.debug("UML13Utils.isOne2Many(thisEnd, otherEnd): " + TransformerUtils.isOne2Many(thisEnd, otherEnd));
+				log.debug("lowerBound: " + TransformerUtils.getLowerBound(otherEnd));
+				log.debug("upperBound: " + TransformerUtils.getUpperBound(otherEnd));
 				Element field = new Element("field");
 				field.setAttribute("name", otherEnd.getRoleName() ); //otherEnd.getName());
 				String associationPackage = TransformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
