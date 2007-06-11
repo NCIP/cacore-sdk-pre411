@@ -662,7 +662,9 @@ public class TransformerUtils
 
 	public static boolean isLazyLoad(UMLClass klass, UMLAssociation association) throws GenerationException
 	{
-		return "yes".equalsIgnoreCase(getTagValue(klass,association, TV_LAZY_LOAD,null, 0,1))? true : false;
+		String temp = getTagValue(klass,association, TV_LAZY_LOAD,null, 0,1);
+		temp = (temp == null || temp.trim().length()==0) ? "yes" : temp;
+		return "yes".equalsIgnoreCase(temp)? true : false;
 	}
 	
 	private static String getTagValue(UMLClass klass, String key, String value, int minOccurence, int maxOccurence) throws GenerationException
