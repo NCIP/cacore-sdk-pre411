@@ -17,6 +17,6 @@ public class GeneratorError
 	
 	public String toString()
 	{
-		return message + ge.toString();
+		return message + ge;
 	}
 }

@@ -40,6 +40,8 @@
 			<props >
 				<prop key="Logical Model">@LOGICAL_MODEL@</prop>
 				<prop key="Data Model">@DATA_MODEL@</prop>
+				<prop key="Include Package">@INCLUDE_PACKAGE@</prop>
+				<prop key="Exclude Package">@EXCLUDE_PACKAGE@</prop>
 			</props>
 		</constructor-arg>
 	</bean>

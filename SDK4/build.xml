@@ -73,6 +73,8 @@
 			<replacefilter token="@XMI_FILE@" value="${XMI_FILE}" />
 			<replacefilter token="@LOGICAL_MODEL@" value="${LOGICAL_MODEL}" />
 			<replacefilter token="@DATA_MODEL@" value="${DATA_MODEL}" />
+			<replacefilter token="@INCLUDE_PACKAGE@" value="${INCLUDE_PACKAGE}" />
+			<replacefilter token="@EXCLUDE_PACKAGE@" value="${EXCLUDE_PACKAGE}" />
 			<replacefilter token="@NAMESPACE_PREFIX@" value="${NAMESPACE_PREFIX}" />	
 			<replacefilter token="@CACHE_PATH@" value="${CACHE_PATH}" />	
 			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_START@${xml.comment.end}" value="${JNDI_START}" />	

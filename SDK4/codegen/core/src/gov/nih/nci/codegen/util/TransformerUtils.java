@@ -32,6 +32,9 @@ public class TransformerUtils
 	private static Logger log = Logger.getLogger(TransformerUtils.class);
 	private static String BASE_PKG_LOGICAL_MODEL;
 	private static String BASE_PKG_DATA_MODEL;
+	private static String INCLUDE_PACKAGE;
+	private static String EXCLUDE_PACKAGE;
+	
 	private static String TV_ID_ATTR_COLUMN = "id-attribute";
 	private static String TV_MAPPED_ATTR_COLUMN = "mapped-attributes";
 	private static String TV_ASSOC_COLUMN = "implements-association";
@@ -46,13 +49,38 @@ public class TransformerUtils
 		try 
 		{
 			Properties prop = ((Properties)ObjectFactory.getObject("XMIFileProperties"));
-			BASE_PKG_LOGICAL_MODEL = prop.getProperty("Logical Model");
-			BASE_PKG_DATA_MODEL = prop.getProperty("Data Model");
+			BASE_PKG_LOGICAL_MODEL = prop.getProperty("Logical Model").trim();
+			BASE_PKG_DATA_MODEL = prop.getProperty("Data Model").trim();
+			
+			EXCLUDE_PACKAGE = prop.getProperty("Exclude Package").trim();
+			
+			String temp = prop.getProperty("Include Package").trim();
+			if(temp == null || temp.length()==0)
+				INCLUDE_PACKAGE = "";
+			else
+				INCLUDE_PACKAGE = temp;
+			
 		}
 		catch (GenerationException e) 
 		{
 			log.fatal(e);
 		}
+	}
+	
+	public static boolean isIncluded(UMLClass klass)
+	{
+		String fqcn = getFQCN(klass);
+		if(fqcn.indexOf(INCLUDE_PACKAGE) > 0 && fqcn.indexOf(EXCLUDE_PACKAGE)<=0)
+			return true;
+		return false;
+	}
+
+	public static boolean isIncluded(UMLPackage pkg)
+	{
+		String fullPkgName = getFullPackageName(pkg);
+		if(fullPkgName.indexOf(INCLUDE_PACKAGE) > 0 && fullPkgName.indexOf(EXCLUDE_PACKAGE)<=0)
+			return true;
+		return false;
 	}
 	
 	public static String getEmptySpace(Integer count)
@@ -506,11 +534,14 @@ public class TransformerUtils
 	
 	private static void getAllClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
 	{
-		for(UMLClass klass:rootPkg.getClasses())
+		if(isIncluded(rootPkg))
 		{
-			String pkgName = TransformerUtils.getFullPackageName(klass);
-			if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && !pkgName.startsWith("java.lang") && !pkgName.startsWith("java.util"))
-				classes.add(klass);
+			for(UMLClass klass:rootPkg.getClasses())
+			{
+				String pkgName = TransformerUtils.getFullPackageName(klass);
+				if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && isIncluded(klass))
+					classes.add(klass);
+			}
 		}
 		getAllClasses(rootPkg.getPackages(),classes);
 	}	
@@ -538,11 +569,14 @@ public class TransformerUtils
 	
 	private static void getAllParentClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
 	{
-		for(UMLClass klass:rootPkg.getClasses())
+		if(isIncluded(rootPkg))
 		{
-			String pkgName = TransformerUtils.getFullPackageName(klass);
-			if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && !pkgName.startsWith("java.lang") && !pkgName.startsWith("java.util") && ModelUtil.getSuperclasses(klass).length == 0)
-				classes.add(klass);
+			for(UMLClass klass:rootPkg.getClasses())
+			{
+				String pkgName = TransformerUtils.getFullPackageName(klass);
+				if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && isIncluded(klass) && ModelUtil.getSuperclasses(klass).length == 0)
+					classes.add(klass);
+			}
 		}
 		getAllParentClasses(rootPkg.getPackages(),classes);
 	}
