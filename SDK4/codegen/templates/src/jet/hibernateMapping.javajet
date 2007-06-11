@@ -35,12 +35,15 @@ if(level == 0){%>
 					List<UMLAssociationEnd> assocEnds = association.getAssociationEnds();
 					UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(currentKlass,assocEnds);
 					UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(currentKlass,assocEnds);
+					boolean lazy = TransformerUtils.isLazyLoad(klass, association);
+					
 					if(otherEnd.isNavigable())
 					{
 						UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
 						String assocKlassName = TransformerUtils.getFQCN(assocKlass);
 						if(TransformerUtils.isMany2Many(thisEnd,otherEnd))
 						{
+							String lazyValue = lazy == true ? "true" : "false";
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
 							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
 							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd);
@@ -49,35 +52,38 @@ if(level == 0){%>
 								throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
 							String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false ";
 							String joinTableName = correlationTable.getName();%>
-		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" table="<%=joinTableName%>" lazy="true" inverse="<%=inverseValue%>">
+		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" table="<%=joinTableName%>" lazy="<%=lazyValue%>" inverse="<%=inverseValue%>">
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><many-to-many class="<%=assocKlassName%>" column="<%=assocColumnName%>" />
 		<%=emptySpace%></set>
 						<%}else if(TransformerUtils.isOne2Many(thisEnd,otherEnd)){	//One to Many
+							String lazyValue = lazy == true ? "true" : "false";
 							UMLClass assocTable = TransformerUtils.getTable(assocKlass);
 							String keyColumnName = TransformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd);%>
-		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" lazy="true">
+		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" lazy="<%=lazyValue%>">
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><one-to-many class="<%=assocKlassName%>"/>
 		<%=emptySpace%></set>
 						<%}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
+								String lazyValue = lazy == true ? "proxy" : "false";
 								String keyColumnName = TransformerUtils.findAssociatedColumn(table,currentKlass,otherEnd);%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" lazy="proxy" />
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" lazy="<%=lazyValue%>" />
 						<%}else{	//One to One
+							String lazyValue = lazy == true ? "proxy" : "false";
 							String keyColumnName = TransformerUtils.findAssociatedColumn(table,currentKlass,otherEnd, false);
 							Boolean keyColumnPresent = (keyColumnName!=null && !"".equals(keyColumnName));
 							if(thisEnd.isNavigable())
 							{
 								if(keyColumnPresent){%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="proxy" />
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" />
 							<%	}else{%>
 		<%=emptySpace%><one-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" property-ref="<%=thisEnd.getRoleName()%>" />
 						<%		}
 							}else{
 								if(keyColumnPresent){%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="proxy" />
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" />
 							<%	}else {
 								    throw new GenerationException("One to one unidirectional mapping requires key column to be present in the source class");
 								}

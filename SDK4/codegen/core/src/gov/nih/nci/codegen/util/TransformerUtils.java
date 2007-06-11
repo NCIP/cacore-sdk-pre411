@@ -41,7 +41,7 @@ public class TransformerUtils
 	private static String TV_INVERSE_ASSOC_COLUMN = "inverse-of";
 	private static String TV_DISCR_COLUMN = "discriminator";
 	private static String TV_CORRELATION_TABLE = "correlation-table";
-	
+	private static String TV_LAZY_LOAD = "lazy-load";
 	private static String STEREO_TYPE_TABLE = "table";
 	
 	static
@@ -623,31 +623,9 @@ public class TransformerUtils
 	 */
 	public static UMLClass findCorrelationTable(UMLAssociation association, UMLModel model, UMLClass klass) throws GenerationException
 	{
-		String tvValue = null;
-		int count = 0;
-		for(UMLTaggedValue tv: association.getTaggedValues())
-		{
-			if (TV_CORRELATION_TABLE.equals(tv.getName()))
-			{
-				tvValue = tv.getValue();
-				count++;
-			}
-		}
-		if(count!=1)
-		{
-			List<UMLAssociationEnd> ends = association.getAssociationEnds();
-			UMLAssociationEnd thisEnd = getThisEnd(klass, ends);
-			UMLAssociationEnd otherEnd = getOtherEnd(klass, ends);
-			
-			String temp = ((UMLClass)(thisEnd.getUMLElement())).getName()+"."+otherEnd.getRoleName();
-			temp += "-->" +((UMLClass)(otherEnd.getUMLElement())).getName()+"."+thisEnd.getRoleName();
-			
-			if(count == 0 || tvValue == null || tvValue.trim().length() == 0) throw new GenerationException("No correlation table found for "+temp +" association");
-			if(count > 1) throw new GenerationException("More than one correlation table found for "+temp+" association");
-		}
-
-		UMLClass correlationTable = ModelUtil.findClass(model,BASE_PKG_DATA_MODEL+"."+tvValue);
-		if(correlationTable == null) throw new GenerationException("No correlation table found named : \""+tvValue+"\"");
+		String tableName = getTagValue(klass, association,TV_CORRELATION_TABLE, null,1,1);
+		UMLClass correlationTable = ModelUtil.findClass(model,BASE_PKG_DATA_MODEL+"."+tableName);
+		if(correlationTable == null) throw new GenerationException("No correlation table found named : \""+tableName+"\"");
 		
 		return correlationTable;
 	}
@@ -681,6 +659,11 @@ public class TransformerUtils
 	{
 		return getTagValue(klass,TV_DISCR_COLUMN,null, 1,1);
 	}
+
+	public static boolean isLazyLoad(UMLClass klass, UMLAssociation association) throws GenerationException
+	{
+		return "yes".equalsIgnoreCase(getTagValue(klass,association, TV_LAZY_LOAD,null, 0,1))? true : false;
+	}
 	
 	private static String getTagValue(UMLClass klass, String key, String value, int minOccurence, int maxOccurence) throws GenerationException
 	{
@@ -708,7 +691,7 @@ public class TransformerUtils
 			}
 		}
 		
-		if(count < minOccurence || result == null || result.trim().length() == 0) throw new GenerationException("No value found for "+key+" tag in class : "+getFQCN(klass));
+		if(count < minOccurence || (minOccurence>0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No value found for "+key+" tag in class : "+getFQCN(klass));
 		if(count > maxOccurence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
 		
 		return result;
@@ -756,6 +739,48 @@ public class TransformerUtils
 		}
 		if(count < minOccurence) throw new GenerationException("No value of "+value+" found for "+key+" tag in class : "+getFQCN(klass));
 		if(count > maxOccurence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
+		
+		return result;
+	}
+	
+	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, int minOccurence, int maxOccurence) throws GenerationException
+	{
+		
+		List <UMLAssociationEnd>ends = association.getAssociationEnds();
+		UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(klass, ends);
+		UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass, ends);
+		String thisClassName = TransformerUtils.getFQCN(((UMLClass)thisEnd.getUMLElement()));
+		String otherClassName = TransformerUtils.getFQCN(((UMLClass)otherEnd.getUMLElement()));
+			
+		
+		String result = null;
+		int count = 0;
+		for(UMLTaggedValue tv: association.getTaggedValues())
+		{
+			if (key.equals(tv.getName()))
+			{
+				String tvValue = tv.getValue();
+				String[] tvValues = tvValue.split(",");
+				for(String val:tvValues)
+				{
+					if(value==null)
+					{
+						count++;
+						result = val;
+					}
+					else if(value.equals(val))
+					{
+						count++;
+						result = val;
+					}
+				}
+			}
+		}
+		
+		
+		if(count < minOccurence || (minOccurence >0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No tag value of "+key+" found for association between "+thisClassName +" and "+ otherClassName +":"+count+":"+result);
+		
+		if(count > maxOccurence) throw new GenerationException("More than one tag values of "+key+" found for association between "+thisClassName +" and "+ otherClassName);
 		
 		return result;
 	}	
