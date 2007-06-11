@@ -146,6 +146,6 @@ public class Generator
 		log.info("Configuration read from the file\n");
 		log.info("Executing codegen\n");
 		generator.execute();
-		log.info("Codegen executin complete\n");		
+		log.info("Codegen execution complete\n");		
 	}	
 }
