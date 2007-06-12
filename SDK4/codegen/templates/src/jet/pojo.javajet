@@ -5,7 +5,7 @@ package <%=TransformerUtils.getFullPackageName(klass)%>;
 
 <%=TransformerUtils.getImports(klass)%>
 import java.io.Serializable;
-
+<%=TransformerUtils.getJavaDocs(klass)%>
 public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)%> implements Serializable
 {
 	/**
@@ -14,11 +14,14 @@ public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)
 	private static final long serialVersionUID = 1234567890L;
 
 	<%for(UMLAttribute attr:klass.getAttributes()){%>
+	<%=TransformerUtils.getJavaDocs(attr)%>
 	<%=attr.getVisibility().getName()%> <%=TransformerUtils.getDataType(attr)%> <%=attr.getName()%>;
+	<%=TransformerUtils.getGetterMethodJavaDocs(attr)%>
 	public <%=TransformerUtils.getDataType(attr)%> <%=TransformerUtils.getGetterMethodName(attr)%>(){
 		return <%=attr.getName()%>;
 	}
 
+	<%=TransformerUtils.getSetterMethodJavaDocs(attr)%>
 	public void <%=TransformerUtils.getSetterMethodName(attr)%>(<%=TransformerUtils.getDataType(attr)%> <%=attr.getName()%>){
 		this.<%=attr.getName()%> = <%=attr.getName()%>;
 	}
@@ -33,20 +36,25 @@ public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)
 			UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
 			if(TransformerUtils.isAssociationEndMany(otherEnd))
 			{%>
+	<%=TransformerUtils.getJavaDocs(klass, assoc)%>			
 	private Collection<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>;
+	<%=TransformerUtils.getGetterMethodJavaDocs(klass, assoc)%>
 	public Collection<<%=assocKlass.getName()%>> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
 		return <%=otherEnd.getRoleName()%>;
 	}
 
+	<%=TransformerUtils.getSetterMethodJavaDocs(klass, assoc)%>
 	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(Collection<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>){
 		this.<%=otherEnd.getRoleName()%> = <%=otherEnd.getRoleName()%>;
 	}
 		<%}else{%>
+	<%=TransformerUtils.getJavaDocs(klass, assoc)%>			
 	private <%=assocKlass.getName()%> <%=otherEnd.getRoleName()%>;
+	<%=TransformerUtils.getGetterMethodJavaDocs(klass, assoc)%>	
 	public <%=assocKlass.getName()%> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
 		return <%=otherEnd.getRoleName()%>;
 	}
-
+	<%=TransformerUtils.getSetterMethodJavaDocs(klass, assoc)%>
 	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(<%=assocKlass.getName()%> <%=otherEnd.getRoleName()%>){
 		this.<%=otherEnd.getRoleName()%> = <%=otherEnd.getRoleName()%>;
 	}
@@ -55,8 +63,12 @@ public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)
 	}
 
 	String idGetter = TransformerUtils.getClassIdGetterMthod(klass); 
-	if(idGetter!=null){
-	%>		
+	if(idGetter!=null){%>
+	/**
+	* Compares <code>obj</code> to it self and returns true if they both are same
+	*
+	* @param obj
+	**/
 	public boolean equals(Object obj)
 	{
 		if(obj instanceof <%=klass.getName() %>) 
@@ -68,6 +80,9 @@ public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)
 		return false;
 	}
 		
+	/**
+	* Returns hash code for the primary key of the object
+	**/
 	public int hashCode()
 	{
 		if(<%=idGetter%>() != null)

@@ -41,6 +41,8 @@ public class TransformerUtils
 	private static String TV_INVERSE_ASSOC_COLUMN = "inverse-of";
 	private static String TV_DISCR_COLUMN = "discriminator";
 	private static String TV_CORRELATION_TABLE = "correlation-table";
+	private static String TV_DOCUMENTATION = "documentation";
+	private static String TV_DESCRIPTION = "description";
 	private static String TV_LAZY_LOAD = "lazy-load";
 	private static String STEREO_TYPE_TABLE = "table";
 	
@@ -785,5 +787,96 @@ public class TransformerUtils
 		if(count > maxOccurence) throw new GenerationException("More than one tag values of "+key+" found for association between "+thisClassName +" and "+ otherClassName);
 		
 		return result;
+	}
+	
+	private static String getTagValue(Collection<UMLTaggedValue> tagValues, String key, int maxOccurence) throws GenerationException
+	{
+		StringBuilder temp = new StringBuilder();
+		
+		for(int i=0;i<maxOccurence;i++)
+		{
+			String searchKey = i==0 ? key : key + (i+1);
+			for(UMLTaggedValue tv:tagValues)
+			{
+				if(searchKey.equals(tv.getName()))
+				{
+					temp.append(tv.getValue());
+				}
+			}
+			
+		}
+		return temp.toString();
+	}
+	
+	private static String getJavaDocs(Collection<UMLTaggedValue> tagValues) throws GenerationException
+	{
+		String documentation = getTagValue(tagValues, TV_DOCUMENTATION, 8);
+		String description = getTagValue(tagValues, TV_DESCRIPTION, 8);		
+		
+		String temp = documentation == null || documentation.trim().length()==0 ? description : documentation; 
+		StringBuilder doc = new StringBuilder();
+		doc.append("	/**");
+		doc.append("\n	* ").append(temp);
+		doc.append("	**/");
+		return doc.toString();
+
+	}	
+	
+	public static String getJavaDocs(UMLClass klass) throws GenerationException 
+	{
+		return getJavaDocs(klass.getTaggedValues());
+	}
+
+	public static String getJavaDocs(UMLAttribute attr) throws GenerationException 
+	{
+		return getJavaDocs(attr.getTaggedValues());
+	}
+
+	public static String getJavaDocs(UMLClass klass, UMLAssociation assoc) throws GenerationException 
+	{
+		UMLAssociationEnd otherEnd = getOtherEnd(klass, assoc.getAssociationEnds());
+		StringBuilder doc = new StringBuilder();
+		doc.append("/**");
+		doc.append("\n	* An associated "+getFQCN(((UMLClass)otherEnd.getUMLElement()))+" object");
+		if(isAssociationEndMany(otherEnd))
+			doc.append("'s collection ");
+		doc.append("\n	**/\n");
+		return doc.toString();
+	}
+
+	public static String getGetterMethodJavaDocs(UMLAttribute attr) {
+		StringBuilder doc = new StringBuilder();
+		doc.append("/**");
+		doc.append("\n	* Retreives the value of "+attr.getName()+" attribue");
+		doc.append("\n	* @return ").append(attr.getName());
+		doc.append("\n	**/\n");
+		return doc.toString();
+	}
+
+	public static String getSetterMethodJavaDocs(UMLAttribute attr) {
+		StringBuilder doc = new StringBuilder();
+		doc.append("/**");
+		doc.append("\n	* Sets the value of "+attr.getName()+" attribue");
+		doc.append("\n	**/\n");
+		return doc.toString();
+	}
+
+	public static String getGetterMethodJavaDocs(UMLClass klass, UMLAssociation assoc) throws GenerationException {
+		UMLAssociationEnd otherEnd = getOtherEnd(klass, assoc.getAssociationEnds());
+		StringBuilder doc = new StringBuilder();
+		doc.append("/**");
+		doc.append("\n	* Retreives the value of "+otherEnd.getRoleName()+" attribue");
+		doc.append("\n	* @return ").append(otherEnd.getRoleName());
+		doc.append("\n	**/\n");
+		return doc.toString();
+	}
+
+	public static String getSetterMethodJavaDocs(UMLClass klass, UMLAssociation assoc) throws GenerationException {
+		UMLAssociationEnd otherEnd = getOtherEnd(klass, assoc.getAssociationEnds());
+		StringBuilder doc = new StringBuilder();
+		doc.append("/**");
+		doc.append("\n	* Sets the value of "+otherEnd.getRoleName()+" attribue");
+		doc.append("\n	**/\n");
+		return doc.toString();
 	}	
 }
