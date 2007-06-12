@@ -625,13 +625,22 @@ public class TransformerUtils
 	 */
 	public static UMLClass findCorrelationTable(UMLAssociation association, UMLModel model, UMLClass klass) throws GenerationException
 	{
-		String tableName = getTagValue(klass, association,TV_CORRELATION_TABLE, null,1,1);
+		return findCorrelationTable(association, model, klass, true);
+	}
+
+	public static UMLClass findCorrelationTable(UMLAssociation association, UMLModel model, UMLClass klass, boolean throwException) throws GenerationException
+	{
+		int minReq = throwException ? 1:0;
+		String tableName = getTagValue(klass, association,TV_CORRELATION_TABLE, null,minReq,1);
+
+		if(!throwException && (tableName == null || tableName.length() ==0)) return null;
+		
 		UMLClass correlationTable = ModelUtil.findClass(model,BASE_PKG_DATA_MODEL+"."+tableName);
 		if(correlationTable == null) throw new GenerationException("No correlation table found named : \""+tableName+"\"");
 		
 		return correlationTable;
 	}
-
+	
 	public static String getMappedColumnName(UMLClass table, String fullyQualifiedAttrName) throws GenerationException
 	{
 		return getColumnName(table,TV_MAPPED_ATTR_COLUMN,fullyQualifiedAttrName,false,1,1);
