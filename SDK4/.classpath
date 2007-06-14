@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="codegen/core/src"/>
 	<classpathentry kind="src" path="codegen/templates/build/src"/>
+	<classpathentry kind="src" path="output/example/conf/codegen"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="codegen/core/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="codegen/core/lib/dom4j-1.4.jar"/>
