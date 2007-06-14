@@ -11029,6 +11029,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Credit" xmi.id="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D" visibility="public" namespace="EAPK_EC900AB7_16D8_4886_B2B0_0EA11652DEF9" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11147,6 +11149,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="Payment" xmi.id="EAID_3B32C53B_66AF_4865_ACE8_5EF7FBEEE7C8" visibility="public" namespace="EAPK_EC900AB7_16D8_4886_B2B0_0EA11652DEF9" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11254,6 +11258,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="Cash" xmi.id="EAID_848B618E_4867_4115_B819_F79DA3272CC3" visibility="public" namespace="EAPK_EC900AB7_16D8_4886_B2B0_0EA11652DEF9" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11277,6 +11283,8 @@
 																						</UML:Class>
 																						<UML:Class name="Bank" xmi.id="EAID_99A644B0_2028_4462_8301_4D34931B9995" visibility="public" namespace="EAPK_EC900AB7_16D8_4886_B2B0_0EA11652DEF9" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11306,6 +11314,8 @@
 																										<UML:Classifier xmi.idref="EAID_61D84993_837B_48c3_9F63_E3020F52FA13"/>
 																									</UML:StructuralFeature.type>
 																									<UML:ModelElement.taggedValue>
+																									    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																									    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																										<UML:TaggedValue tag="type" value="Integer"/>
 																										<UML:TaggedValue tag="derived" value="0"/>
 																										<UML:TaggedValue tag="containment" value="Not Specified"/>
@@ -11373,6 +11383,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="UndergraduateStudent" xmi.id="EAID_371DF6AC_4101_463a_BE9C_2459CC2BB997" visibility="public" namespace="EAPK_75F1729A_C9FA_4b7b_8BC5_2B9EC6C4A1D4" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11428,6 +11440,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="Student" xmi.id="EAID_C5F04054_3FE0_4797_85F3_73247FAB88C1" visibility="public" namespace="EAPK_75F1729A_C9FA_4b7b_8BC5_2B9EC6C4A1D4" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11535,6 +11549,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="GraduateStudent" xmi.id="EAID_D774A82C_8C16_47df_A2AB_F5B84B8ADABB" visibility="public" namespace="EAPK_75F1729A_C9FA_4b7b_8BC5_2B9EC6C4A1D4" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11607,6 +11623,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Human" xmi.id="EAID_3F0B75DF_5CE4_4d8a_8B10_118473CF2879" visibility="public" namespace="EAPK_539B02A7_790D_473f_B9F6_E4CE367B40E6" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11689,6 +11707,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="Mammal" xmi.id="EAID_BF0A63FE_981F_4d5f_8FAC_8868DAA30AF1" visibility="public" namespace="EAPK_539B02A7_790D_473f_B9F6_E4CE367B40E6" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11785,6 +11805,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Professor" xmi.id="EAID_00F8EA6B_E027_4bad_B011_41830FF87842" visibility="public" namespace="EAPK_5AA107DB_21D5_4c34_8FC3_9787D76BB44A" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -11992,6 +12014,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="AssociateProfessor" xmi.id="EAID_12DBFC9B_D995_4251_96D0_6FB3EB85C0FB" visibility="public" namespace="EAPK_5AA107DB_21D5_4c34_8FC3_9787D76BB44A" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12042,6 +12066,8 @@
 																						</UML:Class>
 																						<UML:Class name="Assistant" xmi.id="EAID_5CA73A59_BD41_4920_B53C_AC571E123E64" visibility="public" namespace="EAPK_5AA107DB_21D5_4c34_8FC3_9787D76BB44A" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12117,6 +12143,8 @@
 																						</UML:Class>
 																						<UML:Class name="TenuredProfessor" xmi.id="EAID_60FEB210_B86D_4a29_B1FA_A96C64096F73" visibility="public" namespace="EAPK_5AA107DB_21D5_4c34_8FC3_9787D76BB44A" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12167,6 +12195,8 @@
 																						</UML:Class>
 																						<UML:Class name="AssistantProfessor" xmi.id="EAID_F1DCD13C_9301_4325_9B7F_3311941C133B" visibility="public" namespace="EAPK_5AA107DB_21D5_4c34_8FC3_9787D76BB44A" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12238,6 +12268,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="CRTMonitor" xmi.id="EAID_782AA84A_21F0_4a1d_AA92_64F753204759" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12320,6 +12352,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="LCDMonitor" xmi.id="EAID_9E6AD14D_C710_4a67_AAD8_6EFEEDFFC18A" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12402,6 +12436,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="Display" xmi.id="EAID_BD83C679_098A_46a0_B994_50A9478E9896" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12534,6 +12570,8 @@
 																						</UML:Generalization>
 																						<UML:Class name="Monitor" xmi.id="EAID_C7759A44_3482_4c56_97E7_0A7778155F35" visibility="public" namespace="EAPK_51B0635A_BCF3_4d6d_85E8_D8CEE6CDB832" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12675,6 +12713,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Project" xmi.id="EAID_8598F1F2_EE47_41a6_B3A0_A61E801D02BE" visibility="public" namespace="EAPK_E68C7F1A_4D8E_4fcb_839B_688943180828" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12787,6 +12827,8 @@
 																						</UML:Association>
 																						<UML:Class name="Employee" xmi.id="EAID_C266F257_44CD_4b19_9E33_23F63573B38F" visibility="public" namespace="EAPK_E68C7F1A_4D8E_4fcb_839B_688943180828" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12883,6 +12925,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Book" xmi.id="EAID_178351E2_A663_474e_AE08_943831F4CF2B" visibility="public" namespace="EAPK_1F65F8B6_8E3C_4af6_BB0D_C8764F42AA86" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -12995,6 +13039,8 @@
 																						</UML:Association>
 																						<UML:Class name="Author" xmi.id="EAID_775B56C3_D694_417a_A41E_2926FD5F3160" visibility="public" namespace="EAPK_1F65F8B6_8E3C_4af6_BB0D_C8764F42AA86" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																							
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -13140,6 +13186,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Chef" xmi.id="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E" visibility="public" namespace="EAPK_7B0F2C9C_9B6E_4182_A547_59D3F0C2CBB2" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -13251,6 +13299,8 @@
 																						</UML:Association>
 																						<UML:Class name="Restaurant" xmi.id="EAID_97A1477D_77DA_499c_B516_8FEAEDA36D04" visibility="public" namespace="EAPK_7B0F2C9C_9B6E_4182_A547_59D3F0C2CBB2" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -13417,6 +13467,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="HardDrive" xmi.id="EAID_7233AB7C_C607_4c28_825F_F2872AB280ED" visibility="public" namespace="EAPK_EB3E3A17_9150_4d17_B1C6_E69369F25BEA" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -13528,6 +13580,9 @@
 																						</UML:Association>
 																						<UML:Class name="Computer" xmi.id="EAID_8EC973CE_B07C_41b5_9B73_9CC6C5B663B6" visibility="public" namespace="EAPK_EB3E3A17_9150_4d17_B1C6_E69369F25BEA" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
+																							
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -13624,6 +13679,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Key" xmi.id="EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B" visibility="public" namespace="EAPK_90541191_3BE6_41cc_A777_A003F1EFD796" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -13735,6 +13792,8 @@
 																						</UML:Association>
 																						<UML:Class name="KeyChain" xmi.id="EAID_5C5D8562_D2C0_4b88_B6F7_534CF2D13B55" visibility="public" namespace="EAPK_90541191_3BE6_41cc_A777_A003F1EFD796" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -13923,6 +13982,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="OrderLine" xmi.id="EAID_2029ED90_8EE0_43bf_B569_3298D506D53D" visibility="public" namespace="EAPK_2460FA4A_3D5E_4a23_9C75_18920F6FE5B1" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -14034,6 +14095,8 @@
 																						</UML:Association>
 																						<UML:Class name="Product" xmi.id="EAID_A693FCC2_3A49_46d5_B053_4B7AC895C2F3" visibility="public" namespace="EAPK_2460FA4A_3D5E_4a23_9C75_18920F6FE5B1" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -14130,6 +14193,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Parent" xmi.id="EAID_AD703EC5_9168_4615_8D3E_9DC3D586D9A8" visibility="public" namespace="EAPK_FFE5DD0B_CACA_4d2b_88FF_0A37C8862AEA" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -14277,6 +14342,8 @@
 																						</UML:Association>
 																						<UML:Class name="Child" xmi.id="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9" visibility="public" namespace="EAPK_FFE5DD0B_CACA_4d2b_88FF_0A37C8862AEA" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -14373,6 +14440,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Person" xmi.id="EAID_2DA26850_8BCA_4c42_9186_B151F9ADB196" visibility="public" namespace="EAPK_874D5CC7_14C3_4aea_A525_2791C7A60CB0" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -14484,6 +14553,8 @@
 																						</UML:Association>
 																						<UML:Class name="Address" xmi.id="EAID_AB8D6FAC_AB89_4d65_98C2_6AD93982C3E0" visibility="public" namespace="EAPK_874D5CC7_14C3_4aea_A525_2791C7A60CB0" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -14672,6 +14743,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="AllDataType" xmi.id="EAID_4AF03E59_978D_4fa5_BE90_B671B9C4DF99" visibility="public" namespace="EAPK_F4B312E1_517A_4490_B652_7010C4FFE3DC" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -14918,6 +14991,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="Card" xmi.id="EAID_1D4C03D8_03CC_4f4e_A948_19A3B5DD3537" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -15091,6 +15166,8 @@
 																						</UML:Association>
 																						<UML:Class name="Deck" xmi.id="EAID_613B45B4_C464_42c1_BDEC_A7D2018B7412" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -15202,6 +15279,8 @@
 																						</UML:Association>
 																						<UML:Class name="Hand" xmi.id="EAID_DF711CE5_51FF_4575_821B_772EA4A3513D" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -15252,6 +15331,8 @@
 																						</UML:Class>
 																						<UML:Class name="Suit" xmi.id="EAID_E3BC9F7F_E85C_4f73_917A_E33725FD6DE7" visibility="public" namespace="EAPK_81688CA5_4110_48e8_BE26_A0F2861CC687" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -15348,6 +15429,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="StringKey" xmi.id="EAID_03B3EFF8_BF62_4846_8CB3_A23180474BD5" visibility="public" namespace="EAPK_54E20EEA_7C24_47cb_A255_BC7EEA2911B8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -15423,6 +15506,8 @@
 																						</UML:Class>
 																						<UML:Class name="IntegerKey" xmi.id="EAID_16714B4D_4F48_4dd9_8E31_D5D96279DC67" visibility="public" namespace="EAPK_54E20EEA_7C24_47cb_A255_BC7EEA2911B8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
@@ -15573,6 +15658,8 @@
 																						</UML:Class>
 																						<UML:Class name="DoubleKey" xmi.id="EAID_D07AC28E_7720_433a_AF3B_73884455AFF1" visibility="public" namespace="EAPK_54E20EEA_7C24_47cb_A255_BC7EEA2911B8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																								<UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>

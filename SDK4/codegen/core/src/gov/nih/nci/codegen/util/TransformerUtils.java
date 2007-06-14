@@ -1,7 +1,6 @@
 package gov.nih.nci.codegen.util;
 
 import gov.nih.nci.codegen.GenerationException;
-import gov.nih.nci.common.util.Constant;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -11,6 +10,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggableElement;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
@@ -44,6 +44,10 @@ public class TransformerUtils
 	private static String TV_DOCUMENTATION = "documentation";
 	private static String TV_DESCRIPTION = "description";
 	private static String TV_LAZY_LOAD = "lazy-load";
+	
+	private static String TV_CADSR_PUBLICID = "CADSR_ConceptualDomainPublicID";
+	private static String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
+	
 	private static String STEREO_TYPE_TABLE = "table";
 	
 	static
@@ -411,6 +415,20 @@ public class TransformerUtils
 		return finalMultiplicity;
 	}	
 	
+	public static String getLowerBound(UMLAssociationEnd otherEnd) {
+
+		int multiplicity = otherEnd.getLowMultiplicity();
+		String finalMultiplicity = new String();
+		if (multiplicity == -1) {
+			finalMultiplicity = "unbounded";
+		} else {
+			Integer x = new Integer(multiplicity);
+			
+			finalMultiplicity = x.toString();
+		}
+		return finalMultiplicity;
+	}	
+	
 	/**
 	 * @param thisEnd
 	 * @param otherEnd
@@ -640,11 +658,38 @@ public class TransformerUtils
 		
 		return correlationTable;
 	}
-	
+
 	public static String getMappedColumnName(UMLClass table, String fullyQualifiedAttrName) throws GenerationException
 	{
 		return getColumnName(table,TV_MAPPED_ATTR_COLUMN,fullyQualifiedAttrName,false,1,1);
 	}
+	
+
+	/**
+	 * @param tgElt The TaggableElement (UMLClass, UMLAttribute)
+	 * @return		String containing a concatenation of any, all caDSR 
+	 * 				tag values
+	 */
+	public static String getCaDSRAnnotationContent(UMLTaggableElement tgElt)
+	{
+		String publicID = getTagValue(tgElt, TV_CADSR_PUBLICID);
+		String version = getTagValue(tgElt, TV_CADSR_VERSION);		
+
+		if (publicID == null && version == null) {
+			return null;
+		}
+
+		StringBuffer sb = new StringBuffer();
+		
+		if (publicID != null)
+			sb.append(TV_CADSR_PUBLICID).append("=\"").append(publicID).append("\"; ");
+		
+		if (version != null)
+			sb.append(TV_CADSR_VERSION).append("=\"").append(version).append("\"");
+	
+		return sb.toString();
+
+	}	
 	
 	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, Boolean throwException) throws GenerationException
 	{
@@ -705,10 +750,24 @@ public class TransformerUtils
 		}
 		
 		if(count < minOccurence || (minOccurence>0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No value found for "+key+" tag in class : "+getFQCN(klass));
-		if(count > maxOccurence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
+		if(count > maxOccurence) throw new GenerationException("More than one value found for "+key+" tag in class : "+getFQCN(klass));
 		
 		return result;
 	}
+	
+	private static String getTagValue(UMLTaggableElement tgElt, String key) 
+	{
+
+		for(UMLTaggedValue tv: tgElt.getTaggedValues())
+		{
+			if (key.equals(tv.getName()))
+			{
+				return tv.getValue();
+			}
+		}
+		
+		return null;
+	}	
 	
 
 	private static String getColumnName(UMLClass klass, String key, String value,  boolean isValuePrefix, int minOccurence, int maxOccurence) throws GenerationException
@@ -796,7 +855,7 @@ public class TransformerUtils
 		if(count > maxOccurence) throw new GenerationException("More than one tag values of "+key+" found for association between "+thisClassName +" and "+ otherClassName);
 		
 		return result;
-	}
+	}	
 	
 	private static String getTagValue(Collection<UMLTaggedValue> tagValues, String key, int maxOccurence) throws GenerationException
 	{
