@@ -12,6 +12,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggableElement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -213,6 +214,8 @@ public class SchemaTransformer implements Transformer {
 
 		classE2.setAttribute("name", klass.getName());
 		mappingEl.addContent(classE2);
+		
+		addCaDSRAnnotation(klass, classE2, w3cNS);
 
 		if (superClassName!=null) {
 			log.debug("superClassName: " + superClassName);
@@ -267,6 +270,9 @@ public class SchemaTransformer implements Transformer {
 					String type = getName(TransformerUtils.getType(att));
 					log.debug("Attribute type: " + type);
 					attributeElement.setAttribute("type", type);
+					
+					addCaDSRAnnotation(att, attributeElement, w3cNS);
+					
 					classE2.addContent(attributeElement);
 				}
 			}
@@ -276,6 +282,19 @@ public class SchemaTransformer implements Transformer {
 				UMLAssociationEnd otherEnd = TransformerUtils.getOtherAssociationEnd(thisEnd);
 				addSequenceAssociationElement(sequence, klass,thisEnd, otherEnd,w3cNS);
 			}
+		}
+	}
+	
+	private void addCaDSRAnnotation(UMLTaggableElement tgElt, Element elt, Namespace w3cNS) {
+		String caDSRAnnotation = TransformerUtils.getCaDSRAnnotationContent(tgElt);
+		if (caDSRAnnotation != null){
+			Element annotationElt = new Element("annotation", w3cNS);
+			Element documentationElt = new Element("documentation", w3cNS);
+			
+			documentationElt.addContent(caDSRAnnotation);
+			annotationElt.addContent(documentationElt);
+			
+			elt.addContent(annotationElt);
 		}
 	}
 
