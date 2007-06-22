@@ -10,6 +10,10 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+/**
+ * @author Satish Patel
+ *
+ */
 public class FileHandler implements ArtifactHandler
 {
 	private static Logger log = Logger.getLogger(FileHandler.class);
@@ -115,6 +119,11 @@ public class FileHandler implements ArtifactHandler
 		}
 	}
 	
+	/**
+	 * Prepares the name of the file in which the artifact is to be stored
+	 * @param artifact
+	 * @return
+	 */
 	private String prepareFileName(Artifact artifact)
 	{
 		String fName = null;

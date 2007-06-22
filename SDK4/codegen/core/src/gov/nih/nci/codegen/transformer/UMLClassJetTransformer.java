@@ -12,6 +12,10 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
 import java.util.Collection;
 
+/**
+ * @author Satish Patel
+ *
+ */
 public abstract class UMLClassJetTransformer implements Transformer
 {
 	private ArtifactHandler artifactHandler;

@@ -5,13 +5,18 @@ import gov.nih.nci.codegen.util.TransformerUtils;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 
+/**
+ * 
+ * @author Satish Patel
+ */
 public class BaseArtifact implements Artifact
 {
 	private String content;
 	private String sourceName;
 	
-	/**
-	 * @return the content
+
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.codegen.Artifact#getContent()
 	 */
 	public String getContent()
 	{
@@ -25,15 +30,28 @@ public class BaseArtifact implements Artifact
 		this.content = content;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.codegen.Artifact#getSourceName()
+	 */
 	public String getSourceName() {
 		return sourceName;
 	}
 	
+	/**
+	 * Creates the source name for the artifact from the <code>klass</code>
+	 * 
+	 * @param klass
+	 */
 	public void createSourceName(UMLClass klass) {
 		sourceName = TransformerUtils.getFQCN(klass).replace('.','/');
 	}	
 	
 	
+	/**
+	 * Creates the source name for the artifact from the <code>pkg</code>
+	 *
+	 * @param pkg
+	 */
 	public void createSourceName(UMLPackage pkg) {
 		sourceName = TransformerUtils.getFullPackageName(pkg);
 	}		

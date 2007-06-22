@@ -11,10 +11,21 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Utility methods for assisting in the debugging
+ * 
+ * @author Satish Patel
+ *
+ */
 public class DebugUtils
 {
 	private static Logger log = Logger.getLogger(DebugUtils.class);
 	
+	/**
+	 * Logs the UML model information on the console
+	 * 
+	 * @param model
+	 */
 	public static void printModel(UMLModel model)
 	{
 		StringBuilder sb = new StringBuilder();

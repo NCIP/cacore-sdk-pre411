@@ -15,9 +15,43 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Validates the logical model (Object model) of the <code>model</code> passed in as a parameter
+ * Validation rules are as follows
+ * 
+ * <UL>
+ * <LI>Package name should not contain spaces</LI>
+ * <LI>Model should not contain duplicate classes</LI>
+ * <LI>Class name should be present</LI>
+ * <LI>Class name should not contain empty spaces</LI>
+ * <LI>Class name should start with a character</LI>
+ * <LI>Association end should have a role name</LI>
+ * <LI>Association end should not contain spaces</LI>
+ * <LI>Association end name should start with a character</LI> 
+ * <LI>Associated class should be present in the included package and not excluded</LI>
+ * <LI>Association can not be made to classes in java.lang and java.util packages</LI>
+ * <LI>Class should not contain duplicate associations (association ends which are not navigable are not counted)</LI>
+ * <LI>Attribute name should be present</LI>
+ * <LI>Attribute name should not contain empty spaces</LI>
+ * <LI>Attribute name should start with a character</LI>
+ * <LI>Class should not have duplicate attributes</LI>
+ * <LI>Attribute type should be present</LI>
+ * <LI>Attribute type should not contain empty spaces</LI>
+ * <LI>Attribute type should be one of the valid values</LI>
+ * <LI>Parent class of any class should be in the included package and not excluded</LI>
+ * </UL>
+ * 
+ * @author Satish Patel
+ *
+ */
 public class UMLLogicalModelValidator implements Validator
 {
 
+	/**
+	 * See description for the this class above
+	 *  
+	 * @see gov.nih.nci.codegen.Validator#validate(gov.nih.nci.ncicb.xmiinout.domain.UMLModel)
+	 */
 	public GeneratorErrors validate(UMLModel model)
 	{
 		GeneratorErrors errors = new GeneratorErrors();
@@ -84,17 +118,20 @@ public class UMLLogicalModelValidator implements Validator
 				if(otherClassName.startsWith("java.lang") || otherClassName.startsWith("java.util"))
 					errors.addError(new GeneratorError("Association to the wrapper class not allowed for association between "+thisClassName +" and "+ otherClassName));
 
-				for(UMLAssociation assoc: klass.getAssociations())
+				if (otherEnd.isNavigable())
 				{
-					List <UMLAssociationEnd>ends2 = association.getAssociationEnds();
-					if(ends!=ends2)
+					for(UMLAssociation assoc: klass.getAssociations())
 					{
-						UMLAssociationEnd thisEnd2 = TransformerUtils.getThisEnd(klass, ends2);
-						UMLAssociationEnd otherEnd2 = TransformerUtils.getOtherEnd(klass, ends2);
-						String thisClassName2 = TransformerUtils.getFQCN(((UMLClass)thisEnd2.getUMLElement()));
-						String otherClassName2 = TransformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));				
-						if(otherEnd.getRoleName()!=null && otherEnd.getRoleName().equals(otherEnd2.getRoleName()))
-							errors.addError(new GeneratorError("Duplicate association between "+thisClassName2 +" and "+ otherClassName2));
+						List <UMLAssociationEnd>ends2 = assoc.getAssociationEnds();
+						if(ends!=ends2)
+						{
+							UMLAssociationEnd thisEnd2 = TransformerUtils.getThisEnd(klass, ends2);
+							UMLAssociationEnd otherEnd2 = TransformerUtils.getOtherEnd(klass, ends2);
+							String thisClassName2 = TransformerUtils.getFQCN(((UMLClass)thisEnd2.getUMLElement()));
+							String otherClassName2 = TransformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));				
+							if(otherEnd.getRoleName()!=null && otherEnd.getRoleName().equals(otherEnd2.getRoleName()))
+								errors.addError(new GeneratorError("Duplicate association between "+thisClassName2 +" and "+ otherClassName2));
+						}
 					}
 				}
 			

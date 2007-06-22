@@ -8,6 +8,12 @@ import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 
 
+/**
+ * A simple object factory which retrieves objects from the pre-configured factory
+ * 
+ * @author Satish Patel
+ *
+ */
 public class ObjectFactory
 {
 	private static Logger log = Logger.getLogger(ObjectFactory.class.getName());

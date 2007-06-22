@@ -4,7 +4,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
 
 /**
- * TODO Javadocs
+ * Validates the UML model.  
  * @author Satish Patel
  *
  */
@@ -12,7 +12,9 @@ public interface Validator
 {
 	
 	/**
-	 * TODO Javadocs
+	 * Validates the UML model. If it finds any problem with the <code>model</model> then it puts appripriate error message in the
+	 * GeneratorErrors and returns it. If there are no errors, it returns empty GeneratorErrors object
+	 * 
 	 * @param model
 	 * @return
 	 */

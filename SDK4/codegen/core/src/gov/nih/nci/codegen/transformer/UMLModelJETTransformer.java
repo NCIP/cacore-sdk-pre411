@@ -10,6 +10,10 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
 import java.util.Map;
 
+/**
+ * @author Satish Patel
+ *
+ */
 public abstract class UMLModelJETTransformer implements Transformer
 {
 
