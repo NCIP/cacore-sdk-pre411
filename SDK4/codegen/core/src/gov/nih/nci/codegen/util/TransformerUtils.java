@@ -49,6 +49,8 @@ public class TransformerUtils
 	private static String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
 	
 	private static String STEREO_TYPE_TABLE = "table";
+
+	//private static String TV_TYPE = "type"; -- used to recognize CLOB
 	
 	static
 	{
@@ -119,6 +121,8 @@ public class TransformerUtils
 	{
 		if(path.startsWith(BASE_PKG_LOGICAL_MODEL+"."))
 			return path.substring(BASE_PKG_LOGICAL_MODEL.length()+1);
+		else if(path.startsWith(BASE_PKG_DATA_MODEL+"."))
+			return path.substring(BASE_PKG_DATA_MODEL.length()+1);
 		else
 			return path;
 	}
@@ -246,7 +250,7 @@ public class TransformerUtils
 		if("date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name))
 			return "java.util.Date";
 
-		System.out.println("Type = "+name);
+		log.info("Type = "+name);
 		
 		return name;
 	}	
@@ -289,7 +293,7 @@ public class TransformerUtils
 
 	public static Boolean isAssociationEndMany(UMLAssociationEnd assocEnd)
 	{
-		if((assocEnd.getHighMultiplicity()<1)||(assocEnd.getLowMultiplicity()<0)) 
+		if((assocEnd.getHighMultiplicity()<0)||(assocEnd.getLowMultiplicity()<0)) 
 			return true;
 		else
 			return false;
@@ -333,11 +337,16 @@ public class TransformerUtils
 		UMLClass table = getTable(klass);
 		String fqcn = getFQCN(klass);
 
-		UMLAttribute idCol = getColumn(table,TV_ID_ATTR_COLUMN, fqcn+".",true,0,1);
-		if(idCol != null) return idCol;
+		UMLAttribute idCol = getColumn(table,TV_ID_ATTR_COLUMN, fqcn,true,0,1);
+		String idAttrName = "id";
+		if(idCol != null)
+		{
+			String fqIdName = getTagValue(idCol.getTaggedValues(), TV_MAPPED_ATTR_COLUMN, 1);
+			idAttrName = fqIdName.substring(fqcn.length()+1);
+		}
 
 		for(UMLAttribute attribute:klass.getAttributes())
-			if("id".equals(attribute.getName()))
+			if(idAttrName.equals(attribute.getName()))
 				return attribute;
 
 		for(UMLGeneralization gen: klass.getGeneralizations())

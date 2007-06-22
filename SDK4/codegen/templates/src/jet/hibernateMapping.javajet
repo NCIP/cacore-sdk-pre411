@@ -125,7 +125,7 @@ if(level == 0){%>
 									if(keyColumnPresent){%>
 		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" />
 								<%	}else {
-									    throw new GenerationException("One to one unidirectional mapping requires key column to be present in the source class");
+									    throw new GenerationException("One to one unidirectional mapping requires key column to be present in the source class"+TransformerUtils.getFQCN(currentKlass));
 									}
 								}
 							}else{
@@ -162,7 +162,7 @@ if(level == 0){%>
 			<%=emptySpace%><%=generate(model, subKlass, level+1)%>
 		<%=emptySpace%></joined-subclass>
 		<%		}else{
-				String discriminatorValue = TransformerUtils.getDiscriminatorValue(klass);%>			
+				String discriminatorValue = TransformerUtils.getDiscriminatorValue(subKlass);%>			
 		<%=emptySpace%><subclass name="<%=subKlass.getName()%>" discriminator-value="<%=discriminatorValue%>">
 			<%=emptySpace%><%=generate(model, subKlass, level+1)%>
 		<%=emptySpace%></subclass>
