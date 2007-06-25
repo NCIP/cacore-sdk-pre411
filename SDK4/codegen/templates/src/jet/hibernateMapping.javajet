@@ -5,7 +5,7 @@
 String fqcn = TransformerUtils.getFQCN(klass);
 UMLClass table = TransformerUtils.getTable(klass);
 String emptySpace = TransformerUtils.getEmptySpace(level);
-String discriminatorColumnName = TransformerUtils.findDiscriminatingColumnName(fqcn, table);
+String discriminatorColumnName = TransformerUtils.findDiscriminatingColumnName(klass);
 if(level == 0){%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
@@ -14,24 +14,24 @@ if(level == 0){%>
 		<cache usage="read-write" />
 		<id name="<%=idAttr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(idAttr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+idAttr.getName())%>">
 			<generator class="assigned" />
-		</id>
-<%}
+		</id><%
 		if(discriminatorColumnName!=null && !discriminatorColumnName.equals("")){%>
-		<%=emptySpace%><discriminator column="<%=discriminatorColumnName%>" type="string"/>
-		<%}
+		<%=emptySpace%><discriminator column="<%=discriminatorColumnName%>" type="string"/><%
+		}
+}
 		UMLClass currentKlass = klass;
 		//do{
 			if(currentKlass.getAttributes().size()>0){%>
-		<%=emptySpace%><!-- Attributes mapping for the <%=currentKlass.getName()%> class -->
-				<%for(UMLAttribute attr:currentKlass.getAttributes()){
+		<%=emptySpace%><!-- Attributes mapping for the <%=currentKlass.getName()%> class --><%
+				for(UMLAttribute attr:currentKlass.getAttributes()){
 					if(attr != idAttr){%>
-		<%=emptySpace%><property name="<%=attr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(attr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+attr.getName())%>"/>
-				<%	}
+		<%=emptySpace%><property name="<%=attr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(attr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+attr.getName())%>"/><%
+					}
 				}
 			}
 			if(currentKlass.getAssociations().size()>0){%>
-		<%=emptySpace%><!-- Associations mapping for the <%=klass.getName()%> class -->
-				<%for(UMLAssociation association:currentKlass.getAssociations()){
+		<%=emptySpace%><!-- Associations mapping for the <%=klass.getName()%> class --><%
+				for(UMLAssociation association:currentKlass.getAssociations()){
 					List<UMLAssociationEnd> assocEnds = association.getAssociationEnds();
 					UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(currentKlass,assocEnds);
 					UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(currentKlass,assocEnds);
@@ -56,8 +56,8 @@ if(level == 0){%>
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><many-to-many class="<%=assocKlassName%>" column="<%=assocColumnName%>" />
-		<%=emptySpace%></set>
-						<%}else if(TransformerUtils.isOne2Many(thisEnd,otherEnd)){	//One to Many
+		<%=emptySpace%></set><%
+						}else if(TransformerUtils.isOne2Many(thisEnd,otherEnd)){	//One to Many
 							String lazyValue = lazy == true ? "true" : "false";
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
 							if (correlationTable == null) //One to Many - No Join Table
@@ -68,8 +68,8 @@ if(level == 0){%>
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><one-to-many class="<%=assocKlassName%>"/>
-		<%=emptySpace%></set>
-						<%	}else{ //One to Many - Join Table
+		<%=emptySpace%></set><%
+							}else{ //One to Many - Join Table
 								String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
 								String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd);
 								String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
@@ -81,17 +81,16 @@ if(level == 0){%>
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" not-null="true"/>
-		<%=emptySpace%></set>
-						<%	}%>
-
-						<%}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
+		<%=emptySpace%></set><%
+							}
+						}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
 							String lazyValue = lazy == true ? "proxy" : "false";
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
 							if (correlationTable == null) //Many to One - No Join Table
 							{
 								String keyColumnName = TransformerUtils.findAssociatedColumn(table,currentKlass,otherEnd);%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" lazy="<%=lazyValue%>" />
-						<%	}else{ // Many to One - Join Table
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" lazy="<%=lazyValue%>" /><%
+							}else{ // Many to One - Join Table
 								String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
 								String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd);
 								String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
@@ -103,8 +102,8 @@ if(level == 0){%>
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><many-to-many class="<%=assocKlassName%>" column="<%=assocColumnName%>" unique="true"/>
-		<%=emptySpace%></set>
-					<%		}
+		<%=emptySpace%></set><%
+							}
 						}else{	//One to One
 							String lazyValue = lazy == true ? "proxy" : "false";
 
@@ -117,14 +116,14 @@ if(level == 0){%>
 								if(thisEnd.isNavigable())
 								{
 									if(keyColumnPresent){%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" />
-								<%	}else{%>
-		<%=emptySpace%><one-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" property-ref="<%=thisEnd.getRoleName()%>" />
-							<%		}
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" /><%
+									}else{%>
+		<%=emptySpace%><one-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" property-ref="<%=thisEnd.getRoleName()%>" /><%
+									}
 								}else{
 									if(keyColumnPresent){%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" />
-								<%	}else {
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" /><%
+									}else {
 									    throw new GenerationException("One to one unidirectional mapping requires key column to be present in the source class"+TransformerUtils.getFQCN(currentKlass));
 									}
 								}
@@ -140,16 +139,15 @@ if(level == 0){%>
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" not-null="true" unique="true"/>
-		<%=emptySpace%></set>
-							<%}
+		<%=emptySpace%></set><%
+							}
 						}
 					}
 				}
 			}
 			currentKlass = TransformerUtils.getSuperClass(currentKlass);
 		//}while(currentKlass!=null && discriminatorColumnName!=null);
-		%>
-		<%for(UMLGeneralization gen:klass.getGeneralizations()){
+		for(UMLGeneralization gen:klass.getGeneralizations()){
 			UMLClass subKlass = (UMLClass)gen.getSubtype();
 			if(subKlass!=klass){
 				if(discriminatorColumnName == null || "".equals(discriminatorColumnName)){
@@ -158,15 +156,24 @@ if(level == 0){%>
 				String subFqcn = TransformerUtils.getFQCN(subKlass);
 				String keyColumnName = TransformerUtils.getMappedColumnName(subTable,subFqcn+"."+idAttr.getName());%>
 		<%=emptySpace%><joined-subclass name="<%=subKlass.getName()%>" table="<%=subTable.getName()%>" lazy="true">
-			<%=emptySpace%><key column="<%=keyColumnName%>" />
-			<%=emptySpace%><%=generate(model, subKlass, level+1)%>
-		<%=emptySpace%></joined-subclass>
-		<%		}else{
-				String discriminatorValue = TransformerUtils.getDiscriminatorValue(subKlass);%>			
+			<%=emptySpace%><key column="<%=keyColumnName%>" /><%=generate(model, subKlass, level+1)%>
+		<%=emptySpace%></joined-subclass><%
+				}else{
+					String discriminatorValue = TransformerUtils.getDiscriminatorValue(subKlass);
+					UMLClass subTable = TransformerUtils.getTable(subKlass);
+					if(subTable == table){%>
+		<%=emptySpace%><subclass name="<%=subKlass.getName()%>" discriminator-value="<%=discriminatorValue%>"><%=generate(model, subKlass, level+1)%>
+		<%=emptySpace%></subclass><%
+					}else{
+						String subFqcn = TransformerUtils.getFQCN(subKlass);
+						String keyColumnName = TransformerUtils.getMappedColumnName(subTable,subFqcn+"."+idAttr.getName());%>
 		<%=emptySpace%><subclass name="<%=subKlass.getName()%>" discriminator-value="<%=discriminatorValue%>">
-			<%=emptySpace%><%=generate(model, subKlass, level+1)%>
-		<%=emptySpace%></subclass>
-			<%	}
+			<%=emptySpace%><join table="<%=subTable.getName()%>">
+				<%=emptySpace%><key column="<%=keyColumnName%>" /><%=generate(model, subKlass, level+1)%>
+			<%=emptySpace%></join>
+		<%=emptySpace%></subclass><%
+					}
+				}
 			}
 		}%>
 <%if(level == 0){%>

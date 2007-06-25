@@ -715,8 +715,14 @@ public class TransformerUtils
 		return getColumnName(table,TV_INVERSE_ASSOC_COLUMN,getFQCN(klass) +"."+ thisEnd.getRoleName(),false,0,1);
 	}
 	
-	public static String findDiscriminatingColumnName(String fqcn, UMLClass table) throws GenerationException
+	public static String findDiscriminatingColumnName(UMLClass klass) throws GenerationException
 	{
+		UMLClass superKlass = klass;
+		UMLClass temp = klass;
+		while ((temp = getSuperClass(temp))!=null)
+			superKlass = temp;
+		UMLClass table = getTable(superKlass);
+		String fqcn = getFQCN(superKlass);
 		return getColumnName(table,TV_DISCR_COLUMN,fqcn,false,0,1);
 	}
 

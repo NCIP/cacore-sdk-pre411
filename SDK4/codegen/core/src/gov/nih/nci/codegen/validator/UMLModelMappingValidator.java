@@ -83,12 +83,11 @@ import java.util.Map;
  * <BR>Subclass validation rules are as follows
  * <UL>
  * <LI>Every subclass should have a mapping to a table.</LI>
- * <LI>All of the immidiate subclass of a class should be either in the same table or they each should be in different table</LI>
  * <LI>If all of the immidiate subclasses are to be persisted in the same table as the parent class then 
  * 	<UL>
  *		<LI>Each subclass should be marked with a distinct discriminating value</LI>
- *		<LI>Table corresponding to the parent class should have a column indicating the discriminating values for the subclass</LI>
- *		<LI>Table for the subclass should be the same as the table for the parent class</LI>
+ *		<LI>Table corresponding to the root class should have a column indicating the discriminating values for the subclass</LI>
+ *		<LI>The leaf level subclass can be persisted in a seperate table. However, the requirement to specify the discriminating value still holds</LI>
  * 	</UL>
  * </LI>
  * <LI>If all of the immidiate subclasses are to be persisted in the different table then the parent class then 
@@ -138,7 +137,7 @@ import java.util.Map;
 		try 
 		{
 			UMLAttribute idAttr = TransformerUtils.getClassIdAttr(klass);
-			String discriminatorColumnName = TransformerUtils.findDiscriminatingColumnName(fqcn, table);		
+			String discriminatorColumnName = TransformerUtils.findDiscriminatingColumnName(klass);		
 			if(discriminatorColumnName == null || "".equals(discriminatorColumnName))
 			{
 				for(UMLGeneralization gen:klass.getGeneralizations())
@@ -157,6 +156,7 @@ import java.util.Map;
 			else
 			{
 				Map<String, String> discriminatorValues = new HashMap<String, String>();
+				
 				for(UMLGeneralization gen:klass.getGeneralizations())
 				{
 					UMLClass subKlass = (UMLClass)gen.getSubtype();
@@ -169,7 +169,17 @@ import java.util.Map;
 						if(discriminatorValues.get(discriminatorValue)!= null)
 							errors.addError(new GeneratorError("Same discriminator value for "+subFqcn+" and "+discriminatorValues.get(discriminatorValue)+ " class"));
 						if(TransformerUtils.getTable(subKlass) != table)
-							errors.addError(new GeneratorError("When the discriminating column is present, the subclass and the parent class should be presisted in the same table : "+subFqcn));
+						{
+							for(UMLGeneralization subgen:klass.getGeneralizations())
+							{
+								UMLClass subSubKlass = (UMLClass)subgen.getSubtype();
+								if(subKlass!=subSubKlass && subSubKlass!=TransformerUtils.getSuperClass(subKlass))
+								{
+									errors.addError(new GeneratorError("When the discriminating column is present, the subclass and the parent class should be presisted in the same table unless subclass do not have any subclasses : "+subFqcn));
+								}
+							}
+							
+						}
 						discriminatorValues.put(discriminatorValue, subFqcn);
 						validateClass(model,subKlass, errors);
 					}
