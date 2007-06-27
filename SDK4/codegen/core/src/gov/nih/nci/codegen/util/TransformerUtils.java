@@ -702,7 +702,8 @@ public class TransformerUtils
 	
 	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, Boolean throwException) throws GenerationException
 	{
-		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass) +"."+ otherEnd.getRoleName(),false,0,1);
+		int min = throwException ? 1 :0;
+		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass) +"."+ otherEnd.getRoleName(),false,min,1);
 	}
 
 	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd) throws GenerationException
