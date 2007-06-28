@@ -30,6 +30,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.mmbase.util.Encode;
 
 /**
  * Produces an XML schema for the project UML Model
@@ -55,7 +56,7 @@ public class SchemaTransformer implements Transformer {
 	 */	
 	public GeneratorErrors execute(UMLModel model)
 	{
-
+		
 		// TODO :: Add error checking... or is that part of the validation process?
 		Hashtable<UMLPackage, Collection<UMLClass>> pkgColl = new Hashtable<UMLPackage, Collection<UMLClass>>();
 		List<UMLClass> classColl = new ArrayList<UMLClass>();
@@ -120,6 +121,7 @@ public class SchemaTransformer implements Transformer {
 			String relatedPackageName = TransformerUtils.getFullPackageName(klass);
 			log.debug("related package name: " + relatedPackageName + "; current package name: " + fQPkgName);
 			if(!relatedPackageName.equals(fQPkgName)) {
+				
 				String relatedURI = namespaceUriPrefix + relatedPackageName;
 				log.debug("relatedURI: " + relatedURI);
 				Namespace relatedNamespace = Namespace.getNamespace(relatedPackageName,relatedURI);
@@ -350,6 +352,12 @@ public class SchemaTransformer implements Transformer {
 	 * @param namespaceUriPrefix e.g.: gme://caCORE.caCORE/3.2
 	 */
 	public void setNamespaceUriPrefix(String namespaceUriPrefix) {
+		log.debug("***BEFORE****namespaceUriPrefix:" + namespaceUriPrefix);
+
+		Encode xmlEncoder = new Encode("ESCAPE_XML");
+		namespaceUriPrefix = xmlEncoder.encode(namespaceUriPrefix.replace(' ', '_'));
+		
+		log.debug("***AFTER****namespaceUriPrefix:" + namespaceUriPrefix);		
 		this.namespaceUriPrefix = namespaceUriPrefix;
 	}
 
