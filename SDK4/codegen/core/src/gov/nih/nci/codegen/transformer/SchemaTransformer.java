@@ -47,6 +47,8 @@ public class SchemaTransformer implements Transformer {
 	private GeneratorErrors generatorErrors = new GeneratorErrors();
 
 	private ArtifactHandler artifactHandler;
+	
+	private Encode xmlEncoder = new Encode("ESCAPE_XML");
 
 	private String namespaceUriPrefix;
 
@@ -124,7 +126,7 @@ public class SchemaTransformer implements Transformer {
 				
 				String relatedURI = namespaceUriPrefix + relatedPackageName;
 				log.debug("relatedURI: " + relatedURI);
-				Namespace relatedNamespace = Namespace.getNamespace(relatedPackageName,relatedURI);
+				Namespace relatedNamespace = Namespace.getNamespace(relatedPackageName,encode(relatedURI));
 				namespaces.add(relatedNamespace);
 			}
 		}
@@ -140,6 +142,7 @@ public class SchemaTransformer implements Transformer {
 			if(!relatedPackageName.equals(fQPkgName)) {
 				if (!tmpList.contains(relatedPackageName)) {
 					String relatedURI = namespaceUriPrefix + relatedPackageName;
+					log.debug("Import relatedURI: " + relatedURI);
 					Element importElement = new Element("import", w3cNS);
 					importElement.setAttribute("namespace",relatedURI);
 					importElement.setAttribute("schemaLocation", relatedPackageName+".xsd");
@@ -156,7 +159,7 @@ public class SchemaTransformer implements Transformer {
 		String caBIGNS_URI = namespaceUriPrefix+ fQPkgName;
 		Namespace w3cNS = Namespace.getNamespace("xs","http://www.w3.org/2001/XMLSchema");
 		Element schemaElem = new Element("schema", w3cNS);
-		Namespace caBIGNS = Namespace.getNamespace(caBIGNS_URI);
+		Namespace caBIGNS = Namespace.getNamespace(encode(caBIGNS_URI));
 		schemaElem.addNamespaceDeclaration(caBIGNS);
 		schemaElem.addNamespaceDeclaration(w3cNS);
 
@@ -352,13 +355,7 @@ public class SchemaTransformer implements Transformer {
 	 * @param namespaceUriPrefix e.g.: gme://caCORE.caCORE/3.2
 	 */
 	public void setNamespaceUriPrefix(String namespaceUriPrefix) {
-		log.debug("***BEFORE****namespaceUriPrefix:" + namespaceUriPrefix);
-
-		Encode xmlEncoder = new Encode("ESCAPE_XML");
-		namespaceUriPrefix = xmlEncoder.encode(namespaceUriPrefix.replace(' ', '_'));
-		
-		log.debug("***AFTER****namespaceUriPrefix:" + namespaceUriPrefix);		
-		this.namespaceUriPrefix = namespaceUriPrefix;
+		this.namespaceUriPrefix = namespaceUriPrefix.replace(" ", "_");
 	}
 
 
@@ -369,5 +366,11 @@ public class SchemaTransformer implements Transformer {
 	public void setArtifactHandler(ArtifactHandler artifactHandler)
 	{
 		this.artifactHandler = artifactHandler;
+	}
+	
+	private String encode(String namespaceUriPrefix){
+		
+		return xmlEncoder.encode(namespaceUriPrefix);
+		
 	}
 }
