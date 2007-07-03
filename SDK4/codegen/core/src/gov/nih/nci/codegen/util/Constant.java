@@ -6,9 +6,10 @@ package gov.nih.nci.codegen.util;
  * @version 1.0
  */
 public class Constant {
-	
+
+	public static final char COMMA=',';
 	public static final char DOT='.';
 	public static final char LEFT_BRACKET='[';
 	public static final char RIGHT_BRACKET=']';	
-
+	
 }

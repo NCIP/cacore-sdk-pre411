@@ -8,7 +8,6 @@
 	*********************************************************************** -->
 	<property file="conf/deploy.properties"  />
 	<property file="build.properties"  />
-	<property file="build.properties"  />
 	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
 	
 	<!--***********************************************************************
@@ -69,7 +68,7 @@
 				<include name="**\*.*" />
 			</fileset>
 		</copy>
-		<replace dir="${output.codegen.config.dir}">
+		<replace dir="${output.dir}">
 			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
 			<replacefilter token="@XMI_FILE@" value="${XMI_FILE}" />
 			<replacefilter token="@LOGICAL_MODEL@" value="${LOGICAL_MODEL}" />
@@ -86,8 +85,9 @@
 			<replacefilter token="@DB_CONNECTION_URL@" value="${DB_CONNECTION_URL}" />	
 			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
 			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
-			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />	
-		</replace>
+			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />
+			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}" />	
+		</replace>	
 	
 	</target>
 
@@ -147,7 +147,7 @@
 	</target>
 
 	<!--***********************************************************************
-	*** Compiles the generated beans 
+	*** Packages the generated artifacts 
 	*********************************************************************** -->
 	<target name="package-artifacts" depends="compile-beans" description="Packages the generated artifacts">
 		<SDKecho message="${ant.project.name}: Packaging the generated artifacts"/>

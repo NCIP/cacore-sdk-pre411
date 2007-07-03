@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -963,4 +965,41 @@ public class TransformerUtils
 		doc.append("\n	**/\n");
 		return doc.toString();
 	}	
+	
+	public static String reversePackageName(String s) {
+		StringTokenizer st = new StringTokenizer(s,".");
+		Vector<String> myVector = new Vector<String>();
+		StringBuffer myStringBuffer = new StringBuffer();
+		while (st.hasMoreTokens()) {
+			     String t = st.nextToken();
+			     myVector.add(t);
+
+	    }
+
+        for (int i = myVector.size(); i>0; i--) {
+			  myStringBuffer.append(myVector.elementAt(i-1));
+			  myStringBuffer.append(Constant.DOT);
+
+	    }
+	    int length1 = myStringBuffer.length();
+	    String finalString1 = myStringBuffer.substring(0,length1-1);
+        return finalString1;
+    }
+	
+	
+	
+	public static String getWSDDServiceValue(Collection<UMLClass> classColl){
+        StringBuffer nn1 = new StringBuffer();
+        for(UMLClass klass:classColl){
+			String pkgName = TransformerUtils.getFullPackageName(klass);
+			nn1.append(pkgName)
+			   .append(Constant.DOT)
+			   .append(klass.getName())
+			   .append(Constant.COMMA);
+		}
+        
+        // remove last Comma
+        return nn1.substring(0, nn1.length()-1);
+
+	}
 }

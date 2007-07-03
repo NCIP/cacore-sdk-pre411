@@ -1,0 +1,25 @@
+<%@ jet package="gov.nih.nci.codegen.transformer.jet" 
+        class="WSDDTransformer"
+        skeleton="ModelTransformerBase.skeleton" %>
+<%  
+	Collection<UMLClass> classColl = TransformerUtils.getAllClasses(model);
+	String pkgName;
+ %>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/"
+	xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+<handler name="CSMSOAPHandler" type="java:gov.nih.nci.system.webservice.CSMSOAPHandler"/>
+<service name="<%=(String)configurationParams.get("WEBSERVICE_NAME")%>" style="java:RPC" use="literal">
+	<requestFlow>
+		<handler name="CSMSOAPHandler" type="java:gov.nih.nci.system.webservice.CSMSOAPHandler"/>
+	</requestFlow>
+	<parameter name="className" value="gov.nih.nci.system.webservice.WSQuery"/>
+	<parameter name="allowedMethods" value="*"/>
+	<parameter name="extraClasses"
+	value="<%=TransformerUtils.getWSDDServiceValue(classColl)%>"/>
+<% for(UMLClass klass:classColl){
+	pkgName = TransformerUtils.getFullPackageName(klass);
+%>	
+	<beanMapping xmlns:myNS="urn:<%=TransformerUtils.reversePackageName(pkgName)%>"  qname="myNS:<%=klass.getName()%>" languageSpecificType="java:<%= pkgName + '.' + klass.getName()%>" />
+<% } %>		
+</service>
+</deployment>

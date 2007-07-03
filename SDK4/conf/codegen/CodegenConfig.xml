@@ -22,7 +22,8 @@
 				<ref bean="HibernateCfgTransformer"/>
 				<ref bean="XmlMappingMarshallerTransformer"/>
 				<ref bean="XmlMappingUnmarshallerTransformer"/>
-				<ref bean="SchemaTransformer"/>				
+				<ref bean="SchemaTransformer"/>	
+				<ref bean="WSDDTransformer"/>							
 			</list>
 		</constructor-arg>
 	</bean>
@@ -47,7 +48,7 @@
 	</bean>
 
 	<!-- 									 -->
-	<!--  Code Genration Validator			 -->
+	<!--  Code Generation Validator			 -->
 	<!-- 									 -->
 	<bean name="DataModelValidator" class="gov.nih.nci.codegen.validator.UMLDataModelValidator"/>
 	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator"/>
@@ -165,7 +166,7 @@
 	</bean>
 	
 	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
-		<property name="namespaceUriPrefix" value="gme://caCORE.caCORE/3.2" />
+		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="true"/>
@@ -175,4 +176,20 @@
 		</property>
 	</bean>	
 
+
+	<bean name="WSDDTransformer" class="gov.nih.nci.codegen.transformer.jet.WSDDTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+  				<property name="outputDir" value="@OUTPUTDIR@"/>	
+				<property name="fileName" value="deploy.wsdd"/>			
+			</bean>
+		</property>
+		<property name="configurationParams">
+			<map>
+				<entry key="WEBSERVICE_NAME" value="@WEBSERVICE_NAME@"/>
+			</map>
+		</property>			
+	</bean>	
+	
 </beans>
