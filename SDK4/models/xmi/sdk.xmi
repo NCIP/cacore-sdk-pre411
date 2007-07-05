@@ -28299,6 +28299,8 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="AllDataType" xmi.id="EAID_4AF03E59_978D_4fa5_BE90_B671B9C4DF99" visibility="public" namespace="EAPK_F4B312E1_517A_4490_B652_7010C4FFE3DC" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
+																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>
