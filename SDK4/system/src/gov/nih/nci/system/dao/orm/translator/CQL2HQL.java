@@ -28,11 +28,17 @@ import java.util.Map;
  * 
  */
 public class CQL2HQL {
-	public static final String TARGET_ALIAS = "xxTargetAliasxx";
-	public static final String SOURCE_ASSOC_ALIAS = "parent";
-	public static final String TARGET_ASSOC_ALIAS = "child";
-	private static Map predicateValues;
+	public  final String TARGET_ALIAS = "xxTargetAliasxx";
+	public  final String SOURCE_ASSOC_ALIAS = "parent";
+	public  final String TARGET_ASSOC_ALIAS = "child";
+	private  Map predicateValues;
 
+	private ClassCache classCache;
+	
+	public CQL2HQL(ClassCache classCache)
+	{
+		this.classCache = classCache;
+	}
 
 	/**
 	 * Translates a CQL query into an HQL string.  This translation process assumes the
@@ -47,14 +53,14 @@ public class CQL2HQL {
 	 * @return
 	 * @throws QueryException
 	 */
-	public static HQLCriteria translate(CQLQuery query, boolean eliminateSubclasses, boolean caseSensitive) throws QueryException {
+	public  HQLCriteria translate(CQLQuery query, boolean eliminateSubclasses, boolean caseSensitive) throws QueryException {
 		StringBuffer hql = new StringBuffer();
 		List parameters = new ArrayList();
 		processTarget(hql,parameters, query.getTarget(), eliminateSubclasses,caseSensitive);
 		return new HQLCriteria(hql.toString(),parameters);
 	}
 	
-	private static void processTarget(StringBuffer hql, List params, CQLObject target, boolean eliminateSubclasses, boolean caseSensitive) 
+	private  void processTarget(StringBuffer hql, List params, CQLObject target, boolean eliminateSubclasses, boolean caseSensitive) 
 		throws QueryException {
 		String objName = target.getName();
 		//hql.append("select distinct ").append(TARGET_ALIAS).append(" ");
@@ -102,7 +108,7 @@ public class CQL2HQL {
 	 * 		The object to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processObject(StringBuffer hql, List params, CQLObject obj, boolean caseSensitive) throws QueryException {
+	private  void processObject(StringBuffer hql, List params, CQLObject obj, boolean caseSensitive) throws QueryException {
 		String objName = obj.getName();
 		boolean andFlag = false;
 		hql.append("from ").append(objName);
@@ -144,7 +150,7 @@ public class CQL2HQL {
 	 * 		The attribute to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processAttribute(StringBuffer hql,  List params, String parentName, CQLAttribute attrib, boolean useAlias, boolean caseSensitive) throws QueryException {
+	private  void processAttribute(StringBuffer hql,  List params, String parentName, CQLAttribute attrib, boolean useAlias, boolean caseSensitive) throws QueryException {
 		String dataType = getDataType(parentName,attrib.getName());
 		CQLPredicate predicate = attrib.getPredicate();
 		String attribName = useAlias?TARGET_ALIAS+"."+attrib.getName():attrib.getName();
@@ -207,7 +213,7 @@ public class CQL2HQL {
 	 * 		The association to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processAssociation(StringBuffer hql,  List params, String parentName, CQLAssociation assoc, boolean useAlias, boolean caseSensitive) throws QueryException {
+	private  void processAssociation(StringBuffer hql,  List params, String parentName, CQLAssociation assoc, boolean useAlias, boolean caseSensitive) throws QueryException {
 		// get the role name of the association
 		String roleName = getRoleName(parentName, assoc);
 		String sourceRoleName = assoc.getSourceRoleName();
@@ -219,7 +225,7 @@ public class CQL2HQL {
 		}
 		if(roleName!=null)
 		{
-			if(ClassCache.isCollection(parentName,roleName))
+			if(classCache.isCollection(parentName,roleName))
 			{
 				if (useAlias) 
 					hql.append(TARGET_ALIAS).append(".");
@@ -242,7 +248,7 @@ public class CQL2HQL {
 		}
 		else if (sourceRoleName!=null)
 		{
-			if(ClassCache.isCollection(assoc.getName(),sourceRoleName))
+			if(classCache.isCollection(assoc.getName(),sourceRoleName))
 			{
 				if (useAlias) 
 					hql.append(TARGET_ALIAS).append(".");
@@ -285,7 +291,7 @@ public class CQL2HQL {
 	 * 		The group to process into HQL
 	 * @throws QueryException
 	 */
-	private static void processGroup(StringBuffer hql,  List params, String parentName, CQLGroup group, boolean useAlias, boolean caseSensitive) throws QueryException {
+	private  void processGroup(StringBuffer hql,  List params, String parentName, CQLGroup group, boolean useAlias, boolean caseSensitive) throws QueryException {
 		String logic = group.getLogicOperator().getValue();
 		
 		// flag indicating a logic clause is needed before adding further query parts
@@ -347,20 +353,20 @@ public class CQL2HQL {
 	 * 		The role name of the associated object
 	 * @throws QueryException
 	 */
-	private static String getRoleName(String parentName, CQLAssociation assoc) throws QueryException {
+	private  String getRoleName(String parentName, CQLAssociation assoc) throws QueryException {
 		String roleName = assoc.getTargetRoleName();
 		if (roleName == null) {
 			// determine role based on object's type
 			Class parentClass = null;
 			try {
-				parentClass = ClassCache.getClassFromCache(parentName);
+				parentClass = classCache.getClassFromCache(parentName);
 			} catch (Exception ex) {
 				throw new QueryException("Could not load class: " + ex.getMessage(), ex);
 			}
 			String associationTypeName = assoc.getName();
 			
 			// search the fields of the right type
-			List<String> typedFields = ClassCache.getFieldsOfTypeFromCache(parentClass, associationTypeName);
+			List<String> typedFields = classCache.getFieldsOfTypeFromCache(parentClass, associationTypeName);
 			if (typedFields.size() == 1) {
 				// found one and only one field
 				roleName = (String)typedFields.get(0); //.getName();
@@ -373,7 +379,7 @@ public class CQL2HQL {
 			
 			if (roleName == null) {
 				// search for a setter method
-				Method[] setters = ClassCache.getSettersForTypeFromCache(parentClass, associationTypeName);
+				Method[] setters = classCache.getSettersForTypeFromCache(parentClass, associationTypeName);
 				if (setters.length == 1) {
 					String temp = setters[0].getName().substring(3);
 					if (temp.length() == 1) {
@@ -400,7 +406,7 @@ public class CQL2HQL {
 	 * @param p
 	 * @return
 	 */
-	private static String convertPredicate(CQLPredicate p) {
+	private  String convertPredicate(CQLPredicate p) {
 		if (predicateValues == null) {
 			predicateValues = new HashMap();
 			predicateValues.put(CQLPredicate.EQUAL_TO, "=");
@@ -414,11 +420,11 @@ public class CQL2HQL {
 		return (String) predicateValues.get(p);
 	}
 
-	private static boolean existInheritance(String parent, String child) throws QueryException
+	private  boolean existInheritance(String parent, String child) throws QueryException
 	{
 		try {
-			Class parentClass= ClassCache.getClassFromCache(parent);
-			Class childClass= ClassCache.getClassFromCache(child);
+			Class parentClass= classCache.getClassFromCache(parent);
+			Class childClass= classCache.getClassFromCache(child);
 			if (childClass.getSuperclass().getName().equals(parent)
 					|| parentClass.getSuperclass().getName().equals(child))
 				return true;
@@ -436,12 +442,12 @@ public class CQL2HQL {
 	 * @return
 	 * @throws ClassNotFoundException 
 	 */
-	private static String getDataType(String className, String attribName) throws QueryException
+	private  String getDataType(String className, String attribName) throws QueryException
 	{
 		Field[] classFields;
 		try
 		{
-			classFields = ClassCache.getFields(ClassCache.getClassFromCache(className));
+			classFields = classCache.getFields(classCache.getClassFromCache(className));
 			for (int i=0; i<classFields.length;i++)
 			{
 				if(classFields[i].getName().equals(attribName))
