@@ -1,29 +1,24 @@
 package gov.nih.nci.system.dao.orm;
 
-import java.util.Iterator;
+import gov.nih.nci.system.util.ClassCache;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.PersistentClass;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
-public class DAOFactoryBean implements FactoryBean {
+public class ORMDAOFactoryBean implements FactoryBean {
 	
-	private static Logger log = Logger.getLogger(DAOFactoryBean.class.getName());
+	private static Logger log = Logger.getLogger(ORMDAOFactoryBean.class.getName());
 	
-	private DAOSessionFactoryBean sessionFactory;
 	private LocalSessionFactoryBean lsfb;
 	
 	private ORMDAOImpl ormDAO;
 
-	public DAOFactoryBean(String configLocation, boolean caseSensitive, int resultCountPerQuery) {	
-		super();
-		
-//		sessionFactory = new DAOSessionFactoryBean(configLocation);
+	public ORMDAOFactoryBean(ClassCache classCache, String configLocation, boolean caseSensitive, int resultCountPerQuery) {	
 		lsfb = new LocalSessionFactoryBean();
 		Resource resource = new ClassPathResource(configLocation);
 		lsfb.setConfigLocation(resource);
@@ -33,17 +28,7 @@ public class DAOFactoryBean implements FactoryBean {
 		} catch (Exception e){
 			log.error(e);
 		}
-		
-		
-		Configuration config = lsfb.getConfiguration();
-			
-		PersistentClass pClass;
-		for(Iterator iter = config.getClassMappings(); iter.hasNext();){
-			pClass = (PersistentClass)iter.next();
-			log.debug("pClass: " + pClass.getClassName());
-		}
-
-		ormDAO = new ORMDAOImpl((SessionFactory)lsfb.getObject(), config, caseSensitive, resultCountPerQuery);
+		ormDAO = new ORMDAOImpl((SessionFactory)lsfb.getObject(), (Configuration)lsfb.getConfiguration(), classCache, caseSensitive, resultCountPerQuery);
 	}
 	
 	public Object getObject() {
@@ -55,6 +40,6 @@ public class DAOFactoryBean implements FactoryBean {
 	}
 	
 	public boolean isSingleton(){
-		return false;
+		return true;
 	}
 }

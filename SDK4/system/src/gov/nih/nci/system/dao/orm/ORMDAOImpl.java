@@ -9,6 +9,7 @@ import gov.nih.nci.system.dao.orm.translator.NestedCriteria2HQL;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
+import gov.nih.nci.system.util.ClassCache;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,21 +39,19 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	private int resultCountPerQuery;
 	
 	private Configuration config;
+	private ClassCache classCache;
 	
-	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, boolean caseSensitive, int resultCountPerQuery) {
+	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, ClassCache classCache, boolean caseSensitive, int resultCountPerQuery) {
 		this.config = config;
 		this.setSessionFactory(sessionFactory);
 		this.caseSensitive = caseSensitive;
 		this.resultCountPerQuery = resultCountPerQuery;
+		this.classCache = classCache;
 	}
 
-	public Response query(Request request) throws DAOException {
-
-		
-		//getHibernateTemplate().getSessionFactory().openSession();
-		//Session session = this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+	public Response query(Request request) throws DAOException 
+	{
 		Session session = getSession(); 
-
 		Object obj = request.getRequest();
 
 		try
@@ -237,7 +236,8 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		Response rsp = new Response();
 		
-		HQLCriteria hqlCriteria = CQL2HQL.translate((CQLQuery)obj, false, caseSensitive); 
+		CQL2HQL converter = new CQL2HQL(classCache);
+		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive); 
 		String hql = hqlCriteria.getHqlString();
 		List params = hqlCriteria.getParameters();
 		log.info("CQL Query :"+hql);
@@ -267,29 +267,4 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		return rsp;		
 	}	
-	
-	public String toString(){
-		StringBuffer sb = new StringBuffer();
-		sb.append(ORMDAOImpl.class.getName()+"[\n");
-		sb.append("\tSessionFactory: " + getSessionFactory() + "\n");	
-		sb.append("]\n");		
-		
-		return sb.toString();
-	}
-
-//	 Sample calls
-//		public List getAllBrands() {
-//		    return this.getHibernateTemplate().find("from Brand brand");
-//		}
-//
-//		public void save(final Brand brand){
-//		    getHibernateTemplate().execute( new HibernateCallback()
-//		    {
-//		        public Object doInHibernate(Session session)
-//		         {
-//		            session.save(brand);
-//		             return null;
-//		         }
-//		    });
-//		}	
 }
