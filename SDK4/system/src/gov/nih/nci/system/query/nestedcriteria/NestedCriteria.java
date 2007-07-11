@@ -5,20 +5,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * @author zengje
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * This class holds the nested criteria in the linked list format
+ * 
+ * @author Satish Patel
  */
 public class NestedCriteria implements Serializable{
 
 	/**
-	 * 
+	 * Default serial version ID
 	 */
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
 	private String targetObjectName;
 	private String sourceObjectName;
 	private String roleName;
@@ -83,6 +79,7 @@ public class NestedCriteria implements Serializable{
 	{
 		return this.sourceObjectList;
 	}
+	
 	public void addSourceObject(Object obj)
 	{
 		sourceObjectList.add(obj);
@@ -110,8 +107,5 @@ public class NestedCriteria implements Serializable{
 	public NestedCriteria() {
 
 	}
-	
-	
-	
 }
 
