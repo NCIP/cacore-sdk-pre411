@@ -1,11 +1,11 @@
 package gov.nih.nci.system.dao.orm;
 
-import gov.nih.nci.dao.orm.translator.CQL2HQL;
-import gov.nih.nci.dao.orm.translator.NestedCriteria2HQL;
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
+import gov.nih.nci.system.dao.orm.translator.CQL2HQL;
+import gov.nih.nci.system.dao.orm.translator.NestedCriteria2HQL;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
