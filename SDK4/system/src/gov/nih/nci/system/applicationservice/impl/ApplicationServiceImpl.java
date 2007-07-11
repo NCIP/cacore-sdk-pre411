@@ -1,6 +1,5 @@
 package gov.nih.nci.system.applicationservice.impl;
 
-import gov.nih.nci.dao.orm.translator.Path2NestedCriteria;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.dao.DAO;
@@ -8,6 +7,7 @@ import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.QueryException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
+import gov.nih.nci.system.dao.orm.translator.Path2NestedCriteria;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
