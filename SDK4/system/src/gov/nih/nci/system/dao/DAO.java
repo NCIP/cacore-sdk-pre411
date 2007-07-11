@@ -1,7 +1,9 @@
 package gov.nih.nci.system.dao;
 
+import java.util.List;
+
 /**
- * @author Satish Patel
+ * @author Satish Patel, Dan Dumitru
  */
 public interface DAO {
 
@@ -14,5 +16,7 @@ public interface DAO {
 	 * @throws DAOException
 	 */
 	public Response query(Request request) throws DAOException, Exception;
+	
+	public List<String> getAllClassNames();
 
 }

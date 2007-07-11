@@ -13,9 +13,9 @@ public class Request implements java.io.Serializable
 	private String domainObjectName;
 	private Hashtable config;
 	private Boolean isCount;
-	private Boolean caseSensitivity;
+//	private Boolean caseSensitivity;
 	private Integer firstRow;
-	private Integer recordsCount;
+//	private Integer recordsCount;
 	
 	/**
 	 * Creates a Request instance
@@ -104,22 +104,22 @@ public class Request implements java.io.Serializable
 	{
 	    return this.firstRow;
 	}
-	/**
-	 * Set recordsCount value
-	 * @param rc
-	 */
-	public void setRecordsCount(Integer rc)
-	{
-	    this.recordsCount = rc;
-	}
-	/**
-	 * 
-	 * @return recordsCount value
-	 */
-	public Integer getRecordsCount()
-	{
-	    return this.recordsCount;
-	}
+//	/**
+//	 * Set recordsCount value
+//	 * @param rc
+//	 */
+//	public void setRecordsCount(Integer rc)
+//	{
+//	    this.recordsCount = rc;
+//	}
+//	/**
+//	 * 
+//	 * @return recordsCount value
+//	 */
+//	public Integer getRecordsCount()
+//	{
+//	    return this.recordsCount;
+//	}
 
 	/**
 	 * Return isCount value
@@ -138,13 +138,13 @@ public class Request implements java.io.Serializable
 	    this.isCount = b;
 	}
 
-	public Boolean getCaseSensitivity()
-	{
-		return caseSensitivity;
-	}
-
-	public void setCaseSensitivity(Boolean caseSensitivity)
-	{
-		this.caseSensitivity = caseSensitivity;
-	}
+//	public Boolean getCaseSensitivity()
+//	{
+//		return caseSensitivity;
+//	}
+//
+//	public void setCaseSensitivity(Boolean caseSensitivity)
+//	{
+//		this.caseSensitivity = caseSensitivity;
+//	}
 }
