@@ -30,45 +30,45 @@ public class ClassCache {
 
 	private static Logger log = Logger.getLogger(ClassCache.class);
 
-	private static List<String> allPackageNamesCache = new ArrayList<String>();
-	private static Map<String,List<String>> pkgClassNamesCache = new HashMap<String,List<String>>();
+	private List<String> allPackageNamesCache = new ArrayList<String>();
+	private Map<String,List<String>> pkgClassNamesCache = new HashMap<String,List<String>>();
 
-	private static Map<String,Class> classCache = new HashMap<String,Class>();
-	private static Map<String,DAO> daoCache = new HashMap<String,DAO>();	
-	private static List<String>allQualClassNames = new ArrayList<String>();	
-	private static List<String>allUnqualClassNames = new ArrayList<String>();
-	private static Map<String,String> pkgNameForClassCache = new HashMap<String,String>();
-	private static Map<String,List<String>> classAssociationsCache = new HashMap<String,List<String>>();
+	private Map<String,Class> classCache = new HashMap<String,Class>();
+	private Map<String,DAO> daoCache = new HashMap<String,DAO>();	
+	private List<String>allQualClassNames = new ArrayList<String>();	
+	private List<String>allUnqualClassNames = new ArrayList<String>();
+	private Map<String,String> pkgNameForClassCache = new HashMap<String,String>();
+	private Map<String,List<String>> classAssociationsCache = new HashMap<String,List<String>>();
 
-	private static Map<String,List<String>> allFieldsCache = new HashMap<String,List<String>>();	
-	private static Map<String,List<Field>> nonPrimitiveFieldsCache = new HashMap<String,List<Field>>();
+	private Map<String,List<String>> allFieldsCache = new HashMap<String,List<String>>();	
+	private Map<String,List<Field>> nonPrimitiveFieldsCache = new HashMap<String,List<Field>>();
 
-	private static List<DAO> daoList;
+	private List<DAO> daoList;
 
 	//TODO :: Redo Original Below 
-	private static Map<String,List<String>> fieldCache = new HashMap<String,List<String>>();	
+	private Map<String,List<String>> fieldCache = new HashMap<String,List<String>>();	
 
 	//TODO :: Complete Type Safety changes
-	private static Map setterMethodCache;
+	private Map setterMethodCache;
 
-	public static List<String>getPkgClassNames(String packageName){
+	public List<String>getPkgClassNames(String packageName){
 		return (List<String>)pkgClassNamesCache.get(packageName);
 	}
 
 
-	public static List<String>getAllQualClassNames(){
+	public List<String>getAllQualClassNames(){
 		return allQualClassNames;
 	}		
 
-	public static List<String>getAllUnqualClassNames(){
+	public List<String>getAllUnqualClassNames(){
 		return allUnqualClassNames;
 	}	
 
-	public static List<String>getAllPackageNames(){
+	public List<String>getAllPackageNames(){
 		return (List<String>)allPackageNamesCache;
 	}
 
-	public static Class getClassFromCache(String className) throws ClassNotFoundException
+	public Class getClassFromCache(String className) throws ClassNotFoundException
 	{
 		Class klass=null;
 
@@ -83,11 +83,11 @@ public class ClassCache {
 		return klass;
 	}
 
-	public static String getPkgNameForClass(String unqualClassName){
+	public String getPkgNameForClass(String unqualClassName){
 		return pkgNameForClassCache.get(unqualClassName.toLowerCase());
 	}
 
-	public static List<String> getFieldsOfTypeFromCache(Class klass, String typeName) 
+	public List<String> getFieldsOfTypeFromCache(Class klass, String typeName) 
 	{
 		String key = klass.getName() + "," + typeName;
 
@@ -100,7 +100,7 @@ public class ClassCache {
 		return fieldCollection;
 	}
 
-	public static Method[] getSettersForTypeFromCache(Class klass, String name)
+	public Method[] getSettersForTypeFromCache(Class klass, String name)
 	{
 		String key = klass.getName()+","+name;
 		if(setterMethodCache == null) setterMethodCache = new HashMap();
@@ -122,7 +122,7 @@ public class ClassCache {
 	 * 		The name of the type to search for
 	 * @return
 	 */
-	public static List<String> getFieldsOfType(Class clazz, String typeName) {
+	public List<String> getFieldsOfType(Class clazz, String typeName) {
 		Set<Field> allFields = new HashSet<Field>();
 		Class checkClass = clazz;
 		while (checkClass != null) {
@@ -145,7 +145,7 @@ public class ClassCache {
 	}
 
 
-	private static Method[] getSettersForType(Class clazz, String typeName) {
+	private Method[] getSettersForType(Class clazz, String typeName) {
 		Set<Method> allMethods = new HashSet<Method>();
 		Class checkClass = clazz;
 		while (checkClass != null) {
@@ -177,7 +177,7 @@ public class ClassCache {
 	 * 		The class to explore for fields
 	 * @return
 	 */
-	public static Field[] getFields(Class clazz) {
+	public Field[] getFields(Class clazz) {
 		Set<Field> allFields = new HashSet<Field>();
 		Class checkClass = clazz;
 		while (checkClass != null) {
@@ -199,7 +199,7 @@ public class ClassCache {
 	 * @return
 	 * @throws ClassNotFoundException 
 	 */
-	public static String getDataType(String className, String attribName) throws QueryException
+	public String getDataType(String className, String attribName) throws QueryException
 	{
 		Field[] classFields;
 		try
@@ -218,7 +218,7 @@ public class ClassCache {
 		}
 	}
 
-	public static boolean isCollection(String className, String attribName) throws QueryException
+	public boolean isCollection(String className, String attribName) throws QueryException
 	{
 		Field[] classFields;
 		try
@@ -243,7 +243,7 @@ public class ClassCache {
 		}
 	}
 
-	protected static List<String>getAllFieldNames(String className){
+	protected List<String>getAllFieldNames(String className){
 
 		List<String> tmpFieldCache = null;
 
@@ -261,7 +261,7 @@ public class ClassCache {
 	 * @param className
 	 * @return List of all fields for the given class
 	 */
-	private static List<String> cacheAllFieldNames(Class klass)
+	private List<String> cacheAllFieldNames(Class klass)
 	{
 		List<String> fieldNames = new ArrayList<String>();
 
@@ -289,7 +289,7 @@ public class ClassCache {
 
 	}	
 
-	protected static List<Field>getNonPrimitiveFields(String className){
+	protected List<Field>getNonPrimitiveFields(String className){
 
 		List<Field> tmpFieldCache = nonPrimitiveFieldsCache.get(className);
 
@@ -301,7 +301,7 @@ public class ClassCache {
 	 * @param className
 	 * @return List of all fields for the given class
 	 */
-	private static List<Field> cacheNonPrimitiveFieldNames(Class klass)
+	private List<Field> cacheNonPrimitiveFieldNames(Class klass)
 	{
 		List<Field> tmpFields = new ArrayList<Field>();
 
@@ -329,11 +329,11 @@ public class ClassCache {
 		return tmpFields;
 	}	
 
-	public static List<String> getAssociations(String className) {
+	public List<String> getAssociations(String className) {
 
 		String qualClassName = null;
 		if(className.indexOf(".") < 1) {
-			String packageName = ClassCache.getPkgNameForClass(className);
+			String packageName = getPkgNameForClass(className);
 			qualClassName = packageName + "." + className;
 		} else {
 			qualClassName = className;
@@ -342,13 +342,13 @@ public class ClassCache {
 	}
 
 
-	private static List<String> cacheAssociations(String className) {
+	private List<String> cacheAssociations(String className) {
 		String qualClassName = null;
 
 		//Get the package name for the qualified classname
 		String packageName = null;
 		if(className.indexOf(".") < 1){
-			packageName = ClassCache.getPkgNameForClass(className);
+			packageName = getPkgNameForClass(className);
 			qualClassName = packageName + "." + className;
 		} else {
 			qualClassName = className;
@@ -357,7 +357,7 @@ public class ClassCache {
 		log.debug("Qualified Class name: " + qualClassName);
 		log.debug("packageName: " + packageName);	
 
-		List<Field> fields = ClassCache.getNonPrimitiveFields(qualClassName);
+		List<Field> fields = getNonPrimitiveFields(qualClassName);
 
 		HashSet<String> roleNames = new HashSet<String>();
 		roleNames.add(qualClassName);
@@ -429,7 +429,7 @@ public class ClassCache {
 		return roles;
 	}
 
-	protected static boolean isSearchable(String fieldType){
+	protected boolean isSearchable(String fieldType){
 		boolean isSearchable=false;
 
 		if(fieldType.equals("java.lang.Long") || 
@@ -447,11 +447,11 @@ public class ClassCache {
 	}
 
 
-	private static String locateClass(String beanName, String packageName){
+	private String locateClass(String beanName, String packageName){
 		String className = null;
 
 		try {
-			Class klass = ClassCache.getClassFromCache(beanName);
+			Class klass = getClassFromCache(beanName);
 			if (klass != null){
 				className = klass.getName();
 				log.debug("Found Class " + className + " for bean " + beanName);
@@ -460,7 +460,7 @@ public class ClassCache {
 			return null;
 		}
 
-		String packageNameFromCache = ClassCache.getPkgNameForClass(beanName);
+		String packageNameFromCache = getPkgNameForClass(beanName);
 		log.debug("packageNameFromCache: " + packageNameFromCache + " for bean name: " + beanName);
 		if (!packageName.equalsIgnoreCase(packageNameFromCache)){
 			return null;
@@ -474,7 +474,7 @@ public class ClassCache {
 	 * @param resultClass - Specifies the class name
 	 * @return - returns all the fields of a class
 	 */
-	public static Field[] getAllFields(Class klass){
+	public Field[] getAllFields(Class klass){
 		List<Field> fieldList = new ArrayList<Field>();
 		try{
 			getAllFields(klass, fieldList);
@@ -489,7 +489,7 @@ public class ClassCache {
 		return fields;
 	}	
 
-	private static void getAllFields(Class klass, List<Field> fieldList){
+	private void getAllFields(Class klass, List<Field> fieldList){
 
 		if ( klass == null || 
 				klass.getName().equalsIgnoreCase("java.lang.Object") ||
@@ -519,13 +519,11 @@ public class ClassCache {
 	 * 					Called by the Spring Framework.  See ApplicationConfig for more details.
 	 */
 	public void setDaoList(List<DAO> daoList) {
-		ClassCache.daoList = daoList;
-
+		this.daoList = daoList;
 		initialize();
-
 	}	
 
-	public static DAO getDAOForClass(String qualClassName){
+	public DAO getDAOForClass(String qualClassName){
 		
 		return daoCache.get(qualClassName);
 	}
@@ -542,7 +540,7 @@ public class ClassCache {
 		return fieldGenericType;
 	}
 
-	private static void initialize() { // initialize with a list of the classes obtained from each DAO class within the System
+	private void initialize() { // initialize with a list of the classes obtained from each DAO class within the System
 
 		String unqualifiedClassName = null;
 		Class klass = null;
