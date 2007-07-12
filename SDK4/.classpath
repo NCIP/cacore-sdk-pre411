@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="codegen/core/src"/>
-	<classpathentry kind="src" path="codegen/templates/build/src"/>
-	<classpathentry kind="src" path="output/example/conf/codegen"/>
 	<classpathentry kind="src" path="system/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="codegen/core/lib/commons-logging-1.1.jar"/>
@@ -26,5 +24,9 @@
 	<classpathentry kind="lib" path="system/lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="system/lib/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="system/lib/spring.jar"/>
+	<classpathentry kind="lib" path="codegen/core/lib/backport-util-concurrent.jar"/>
+	<classpathentry kind="lib" path="codegen/core/lib/mmbase.jar"/>
+	<classpathentry kind="lib" path="system/lib/acegi-security-1.0.3.jar"/>
+	<classpathentry kind="lib" path="system/lib/commons-codec-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
