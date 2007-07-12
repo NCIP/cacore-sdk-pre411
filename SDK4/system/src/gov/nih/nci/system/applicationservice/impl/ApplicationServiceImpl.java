@@ -2,9 +2,9 @@ package gov.nih.nci.system.applicationservice.impl;
 
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.client.proxy.ListProxy;
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
-import gov.nih.nci.system.dao.QueryException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
 import gov.nih.nci.system.dao.orm.translator.Path2NestedCriteria;
@@ -12,7 +12,6 @@ import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.util.ClassCache;
-import gov.nih.nci.system.util.ListProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.impl.CriteriaImpl;
 
 /**
  * Implementation for the methods in the service layer
@@ -35,131 +35,50 @@ public class ApplicationServiceImpl implements ApplicationService {
 	private static Logger log = Logger.getLogger(ApplicationServiceImpl.class.getName());
 
 	/**
-	 * Default constructor
+	 * Default constructor. Cache is required and is expected to have a collection of DAO
 	 * 
-	 * @param model
-	 * @param validators
-	 * @param transformers
 	 */
 	public ApplicationServiceImpl(ClassCache classCache)
 	{
 		this.classCache = classCache;
 	}
-
-
-	/**
-	 * @param criteria
-	 * @return total count for the query
-	 * @throws ApplicationException
-	 * 
-	 */
-	public int getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
-		Integer count = null;
-		Response response = new Response();
-		Request request = new Request(criteria);
-		request.setIsCount(Boolean.TRUE);
-		request.setDomainObjectName(targetClassName);
-
-		response = query(request);
-		count = response.getRowCount();
-
-		if (count != null)
-			return count.intValue();
-		else
-			return 0;
-	}
 	
 	public List<Object> query(DetachedCriteria detachedCriteria, String targetClassName) throws ApplicationException {
-		return privateQuery((Object) detachedCriteria, targetClassName);
+		return query(detachedCriteria);
 	}
 
-	private List query(NestedCriteria nestedCriteria, String targetClassName) throws ApplicationException {
-		return privateQuery((Object) nestedCriteria, targetClassName);
+	public List<Object> query(DetachedCriteria detachedCriteria) throws ApplicationException {
+		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
+		String targetClassName = crit.getEntityOrClassName();
+		return privateQuery(detachedCriteria, targetClassName);
 	}
 
 	public List<Object> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
-		return privateQuery((Object) hqlCriteria, targetClassName);
+		return query(hqlCriteria);
 	}
 
+	public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
+		String hql = hqlCriteria.getHqlString();
+		int index = hql.indexOf(" from ");
+		hql = hql.substring(index).trim()+" ";
+		String targetClassName = hql.substring(hql.indexOf(index,' ')).trim();
+		return privateQuery(hqlCriteria, targetClassName);
+	}
+	
 	public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
-		return privateQuery((Object) cqlQuery, targetClassName);
-	}
-	/**
-	 * Gets the result list for the specified Hibernate Criteria from the
-	 * HTTPClient.
-	 * 
-	 * @param criteria
-	 *            Specified Hibernate criteria
-	 * @return gets the result list
-	 * @throws ApplicationException
-	 */
-
-	private List<Object> privateQuery(Object criteria, String targetClassName) throws ApplicationException {
-
-		List<Object> results = null;
-		List<Object> resultList = new ListProxy();
-		
-		Response response = new Response();
-		Request request = new Request(criteria);
-		request.setIsCount(Boolean.FALSE);
-		request.setFirstRow(0);
-
-		request.setDomainObjectName(targetClassName);
-
-		response = query(request);
-		results = (List) response.getResponse();
-
-		resultList.clear();
-
-		// Set the value for ListProxy
-		if (results != null) {
-			resultList.addAll(results);
-		}
-		
-		log.debug("resultList.size(): " + resultList.size());
-		log.debug("response.getRowCount(): " + response.getRowCount());
-		
-		ListProxy myProxy = (ListProxy) resultList;
-		myProxy.setOriginalStart(0);
-		
-		// TODO :: determine if the following assignment is accurate
-		myProxy.setMaxRecordsPerQuery(response.getRowCount());
-		myProxy.setOriginalCriteria(criteria);
-		myProxy.setTargetClassName(targetClassName);
-
-		return resultList;
-
+		return query(cqlQuery);
 	}
 
-	/**
-	 * @param criteria
-	 * @param firstRow
-	 * @param resultsPerQuery
-	 * @param targetClassName
-	 * @return List
-	 * @throws ApplicationException
-	 */
-	public List<Object> query(Object criteria, int firstRow, int resultsPerQuery, String targetClassName) throws ApplicationException {
-		List<Object> results = null;
-		
-		Response response = new Response();
-		Request request = new Request(criteria);
-		
-		request.setIsCount(Boolean.valueOf(false));
-		request.setFirstRow(new Integer(firstRow));
-		request.setDomainObjectName(targetClassName);
-
-		response = query(request);
-		results = (List) response.getResponse();
-
-		return results;
+	public List<Object> query(CQLQuery cqlQuery) throws ApplicationException {
+		return privateQuery(cqlQuery, cqlQuery.getTarget().getName());
 	}
 
+	
 	public List<Object> search(Class targetClass, Object obj) throws ApplicationException {
 		return search(targetClass.getName(), obj);
 	}
 
-	public List<Object> search(Class targetClass, List objList) throws ApplicationException {
+	public List<Object> search(Class targetClass, List<Object> objList) throws ApplicationException {
 		return search(targetClass.getName(), objList);
 	}
 
@@ -169,13 +88,36 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return search(path, list);
 	}
 
-	public List search(String path, List objList) throws ApplicationException {
+	protected List<Object> query(NestedCriteria nestedCriteria, String targetClassName) throws ApplicationException {
+		return privateQuery((Object) nestedCriteria, targetClassName);
+	}
+
+	
+	public List<Object> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException {
+		Request request = new Request(criteria);
+		
+		request.setIsCount(Boolean.valueOf(false));
+		request.setFirstRow(firstRow);
+		request.setDomainObjectName(targetClassName);
+
+		Response response = query(request);
+		List<Object> results = (List<Object>) response.getResponse();
+
+		return results;
+	}
+
+	public List<Object> search(String path, List<Object> objList) throws ApplicationException {
 
 		try{
-			List pathList = preparePathList(path);
+			List<String> pathList = new ArrayList<String>();
+
+			StringTokenizer tokens = new StringTokenizer(path, ",");
+			while (tokens.hasMoreTokens()) {
+				pathList.add(tokens.nextToken().trim());
+			}
 
 			NestedCriteria crit = Path2NestedCriteria.createNestedCriteria(pathList, objList);
-			List results = query(crit, crit.getTargetObjectName());
+			List<Object> results = query(crit, crit.getTargetObjectName());
 
 			return results;
 		}
@@ -187,32 +129,63 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 	}
 
-	private List preparePathList(String path)
-	{
-		List pathList = new ArrayList();
+	public Integer getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
+		Integer count = null;
+		Response response = new Response();
+		Request request = new Request(criteria);
+		request.setIsCount(Boolean.TRUE);
+		request.setDomainObjectName(targetClassName);
 
-		StringTokenizer tokens = new StringTokenizer(path, ",");
-		while (tokens.hasMoreTokens()) {
-			pathList.add(tokens.nextToken().trim());
-		}
-		return pathList;
+		response = query(request);
+		count = response.getRowCount();
+
+		if (count != null)
+			return count;
+		else
+			return 0;
+	}	
+	
+	public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
+		
+		String hql = "select obj."+associationName+" from "+source.getClass().getName()+" obj where obj = ?";
+		List params = new ArrayList();
+		params.add(source);
+		HQLCriteria criteria = new HQLCriteria(hql,params);
+		return query(criteria);
 	}
-
-	public static String getFullQName(String name) throws ApplicationException {
-		try {
-			Class.forName(name);
-		} catch (ClassNotFoundException e) {
-			log.error("ERROR: Class " + name + " does not exist.  Please check the package and class name.",e);
-			throw new QueryException("ERROR: Class " + name + " does not exist.  Please check the package and class name.",e);
-		}
-
-		return name;
-	}
-
-
-	private Response query(Request request) throws ApplicationException
+	
+	protected List<Object> privateQuery(Object criteria, String targetClassName) throws ApplicationException 
 	{
+		
+		Request request = new Request(criteria);
+		request.setIsCount(Boolean.FALSE);
+		request.setFirstRow(0);
+		request.setDomainObjectName(targetClassName);
 
+		Response response = query(request);
+		List<Object> results = (List<Object>) response.getResponse();
+
+		ListProxy resultList = new ListProxy();
+
+		// Set the value for ListProxy
+		if (results != null) {
+			resultList.addAll(results);
+		}
+		
+		log.debug("resultList.size(): " + resultList.size());
+		log.debug("response.getRowCount(): " + response.getRowCount());
+		
+		resultList.setOriginalStart(0);
+		resultList.setMaxRecordsPerQuery(response.getRowCount());
+		resultList.setOriginalCriteria(criteria);
+		resultList.setTargetClassName(targetClassName);
+
+		return resultList;
+
+	}	
+
+	protected Response query(Request request) throws ApplicationException
+	{
 		String domainObjectName = request.getDomainObjectName();
 		if (domainObjectName == null || domainObjectName.equals("")){
 			throw new ApplicationException("No Domain Object name specified in the request; unable to locate corresponding DAO");
@@ -221,7 +194,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 		// TODO :: make classCache instance based (i.e., non-static methods)
 		DAO dao = classCache.getDAOForClass(request.getDomainObjectName());
 		
-		System.out.println("**** DAO: " + dao);
+		if(dao == null)
+			throw new ApplicationException("Could not obtain DAO for: "+request.getDomainObjectName());
 		
 		try
 		{
@@ -238,24 +212,4 @@ public class ApplicationServiceImpl implements ApplicationService {
 			throw new ApplicationException("Exception in Base Delegate while getting datasource information: ", exception);
 		}
 	}
-
-	public ClassCache getClassCache() {
-		return classCache;
-	}
-
-
-	public void setClassCache(ClassCache classCache) {
-		this.classCache = classCache;
-	}
-
-	public String toString(){
-		StringBuffer sb = new StringBuffer();
-		sb.append("\nApplicationServiceImpl[");
-		sb.append("\n\tclassCache: " + classCache);
-		sb.append("\n]");		
-
-		return sb.toString();
-	}
-
 }
-
