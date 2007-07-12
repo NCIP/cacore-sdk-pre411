@@ -29,8 +29,6 @@ public class ListProxy extends ArrayList implements Set {
 	// some stuff to tell us about the orginal query
 	private Object originalCrit_;
 
-	private String serverAddress_;
-
 	private int originalStart_;
 
 	private int maxRecordsPerQuery_;
@@ -61,12 +59,12 @@ public class ListProxy extends ArrayList implements Set {
 				realSize_ = listChunk_.size();
 			} else {
 				int rowCount = listChunk_.size();
-				System.out.println("rowCount: " + rowCount);
+				//System.out.println("rowCount: " + rowCount);
 // TODO ::				ApplicationService appService = ApplicationServiceProvider.getApplicationService();
 				try {
 					// Data larger than the max query size.  Must determine the 
 					// actual size
-					System.out.println("rowCount: " + rowCount + "; " + "maxRecordsPerQuery_: " + maxRecordsPerQuery_);
+					//System.out.println("rowCount: " + rowCount + "; " + "maxRecordsPerQuery_: " + maxRecordsPerQuery_);
 					if (rowCount == maxRecordsPerQuery_)
 						rowCount = appService.getQueryRowCount(originalCrit_,
 								targetClassName);
@@ -110,8 +108,7 @@ public class ListProxy extends ArrayList implements Set {
 				for (;;) {
 					List ls = new ArrayList();
 					try {
-						ls = appService.query(originalCrit_, firstResult,
-								maxRecordsPerQuery_, targetClassName);
+						ls = appService.query(originalCrit_, firstResult, targetClassName);
 						if (ls.size() <= 0) // there are no more records in
 											// database
 							break;
@@ -228,8 +225,7 @@ public class ListProxy extends ArrayList implements Set {
 				for (;;) {
 					List ls = new ArrayList();
 					try {
-						ls = appService.query(originalCrit_, firstResult,
-								recordsCount, targetClassName);
+						ls = appService.query(originalCrit_, firstResult,targetClassName);
 						if (ls.size() <= 0) // there are no more records in database
 							break;
 						computedResult = ls.contains(c);
@@ -353,8 +349,7 @@ public class ListProxy extends ArrayList implements Set {
 				originalStart_ = index;
 				try {
 
-					List ls = appService.query(originalCrit_, originalStart_,
-							maxRecordsPerQuery_, targetClassName);
+					List ls = appService.query(originalCrit_, originalStart_, targetClassName);
 					listChunk_.clear();
 
 					listChunk_.addAll(ls);
@@ -366,8 +361,7 @@ public class ListProxy extends ArrayList implements Set {
 			} else if (index < firstRow) {// first row is at 2003, index is 4
 				originalStart_ = index;
 				try {
-					List ls1 = appService.query(originalCrit_, originalStart_,
-							maxRecordsPerQuery_, targetClassName);
+					List ls1 = appService.query(originalCrit_, originalStart_,targetClassName);
 					listChunk_.clear();
 					listChunk_.addAll(ls1);
 					return listChunk_.get(index - originalStart_);
@@ -493,25 +487,12 @@ public class ListProxy extends ArrayList implements Set {
 		if (hasAllRecords_) {
 			return listChunk_.subList(fromIndex, toIndex);
 		} else {
-			if (fromIndex < 0)
-				throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-			if (toIndex > realSize_)
-				throw new IndexOutOfBoundsException("toIndex = " + toIndex);
-			if (fromIndex > toIndex)
-				throw new IllegalArgumentException("fromIndex(" + fromIndex
-						+ ") > toIndex(" + toIndex + ')');
-
-//	TODO ::		ApplicationService appService = ApplicationServiceProvider.getApplicationService();
-
-			List ls = new ArrayList();
 			try {
-				ls = appService.query(originalCrit_, fromIndex, toIndex
-						- fromIndex, targetClassName);
-
-			} catch (Exception ex) {
-				log.error("Exception: " + ex.getMessage());
+				throw new Exception("List subList(int fromIndex, int toIndex): This feature is not yet implemented in this version.");
+			} catch (Exception e) {
+				log.error(e);
 			}
-			return ls;
+			return new ArrayList();
 		}
 	}
 
@@ -590,20 +571,6 @@ public class ListProxy extends ArrayList implements Set {
 		realSize_ = realSize;
 	}
 
-	/**
-	 * @return Returns the serverAddress.
-	 */
-	public String getServerAddress() {
-		return serverAddress_;
-	}
-
-	/**
-	 * @param serverAddress
-	 *            The serverAddress to set.
-	 */
-	public void setServerAddress(String serverAddress) {
-		serverAddress_ = serverAddress;
-	}
 
 	private void RangeCheck(int index) {
 		if (index >= realSize_)
