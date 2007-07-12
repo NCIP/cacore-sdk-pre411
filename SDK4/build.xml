@@ -9,12 +9,14 @@
 	<property file="conf/deploy.properties"  />
 	<property file="build.properties"  />
 	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
+	<property file="${system.dir}/build.properties" prefix="system"  />
 	
 	<!--***********************************************************************
 	*** Import utility script
 	*********************************************************************** -->
 	<import file="build-scripts\build-utils.xml"/>
 	<import file="${codegen.dir}\build.xml"/>
+	<import file="${system.dir}\build.xml"/>
 	
 	<!--***********************************************************************
 	*** CLASSPATH AND UNIX-STYLE BASEDIR PROPERTIES
@@ -62,6 +64,12 @@
 		<mkdir dir="${build.classes.dir}"/>
 		<mkdir dir="${build.jar.dir}"/>
 		<mkdir dir="${build.doc.dir}"/>
+		<mkdir dir="${package.dir}"/>
+		<mkdir dir="${package.client.remote.dir}"/>
+		<mkdir dir="${package.client.remote.lib.dir}"/>
+		<mkdir dir="${package.client.local.dir}"/>
+		<mkdir dir="${package.client.local.lib.dir}"/>
+		<mkdir dir="${package.system.dir}"/>
 	
 		<copy todir="${output.conf.dir}" overwrite="true">
 			<fileset dir="${conf.dir}">
@@ -106,29 +114,49 @@
 	<target name="clean-all" depends="clean" description="Cleans the child projects and generated directories and files">
 		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
 		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
+		<ant antfile="${system.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
 	</target>
 
 	<!--***********************************************************************
 	*** Prepare 
 	*********************************************************************** -->
-	<target name="prepare-condition" depends="init">
-		<SDKecho message="${ant.project.name}: Checking the condition for child project build"/>
-		<condition property="prepare-required">
+	<target name="prepare-condition-codegen" depends="init">
+		<SDKecho message="${ant.project.name}: Checking the condition for codegen project build"/>
+		<condition property="prepare-required-codegen">
 			<not>
 				<available file="${codegen.dir}/${codegen.dist.dir}/${codegen.file.output.name}"/>
 			</not>
 		</condition>
 	</target>
 
-	<target name="prepare" depends="prepare-condition" if="prepare-required">
-		<SDKecho message="${ant.project.name}: Preparing the child projects"/>
+	<target name="prepare-codegen" depends="prepare-condition-codegen" if="prepare-required-codegen">
+		<SDKecho message="${ant.project.name}: Preparing the codegen project"/>
 		<ant antfile="${codegen.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
 	</target>
+
+	<target name="prepare-condition-system" depends="init">
+		<SDKecho message="${ant.project.name}: Checking the condition for system project build"/>
+		<condition property="prepare-required-system">
+			<and>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.client.name}"/></not>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.core.name}"/></not>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.web.name}"/></not>
+				<not><available file="${system.dir}/${system.dist.dir}/${system.file.output.ws.name}"/></not>
+			</and>
+		</condition>
+	</target>
+
+	<target name="prepare-system" depends="prepare-condition-system" if="prepare-required-system">
+		<SDKecho message="${ant.project.name}: Preparing the system project"/>
+		<ant antfile="${system.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
+	</target>
+	
+	<target name="prepare" depends="prepare-codegen,prepare-system"/>
 	
 	<!--***********************************************************************
 	*** Runs the Codegen 
 	*********************************************************************** -->
-	<target name="codegen" depends="prepare" description="Runs the code generator">
+	<target name="codegen" depends="prepare-codegen" description="Runs the code generator">
 		<SDKecho message="${ant.project.name}: Running the code generator"/>
 		<java classname="gov.nih.nci.codegen.Generator" fork="true">
 			<arg value="${codegen.config.file}" />
@@ -149,7 +177,7 @@
 	<!--***********************************************************************
 	*** Packages the generated artifacts 
 	*********************************************************************** -->
-	<target name="package-artifacts" depends="compile-beans" description="Packages the generated artifacts">
+	<target name="package-codegen-artifacts" depends="compile-beans, prepare-system" description="Packages the generated artifacts">
 		<SDKecho message="${ant.project.name}: Packaging the generated artifacts"/>
 		<jar destfile="${build.jar.dir}\${bean.file}" basedir="${build.classes.dir}">
 			<manifest>
@@ -167,6 +195,60 @@
 		</jar>
 	</target>
 
+	<target name="package-system" depends="package-remote-client,package-local-client,package-webapp" description="Packages the system">
+		<SDKecho message="${ant.project.name}: Packaging the system artifacts"/>
+		<mkdir dir="${package.client.remote.dir}"/>
+		<mkdir dir="${package.client.local.dir}"/>
+		<mkdir dir="${package.system.dir}"/>
+	</target>	
+
+	<target name="package-remote-client" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the remote client"/>
+		<copy todir="${package.client.remote.lib.dir}">
+			<fileset dir="${system.dir}\${system.dist.dir}">
+				<include name="${system.file.output.client.name}"/>
+				<include name="commons-logging*.*"/>
+				<include name="log4j*.*"/>
+				<include name="spring*.*"/>
+				<include name="cglib*.*"/>
+				<include name="asm*.*"/>
+				<include name="hibernate*.*"/>
+				<include name="antlr*.*"/>
+				<include name="acegi*.*"/>
+				<include name="commons-codec*.*"/>
+			</fileset>
+			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
+		</copy>
+	</target>
+
+	<target name="package-local-client" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the local client"/>
+		<copy todir="${package.client.local.lib.dir}">
+			<fileset dir="${system.dir}\${system.dist.dir}">
+				<exclude name="${system.file.output.web.name}"/>
+				<exclude name="${system.file.output.ws.name}"/>
+			</fileset>
+			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
+			<fileset dir="${build.jar.dir}" includes="${orm.file}" />
+		</copy>
+	</target>	
+
+	<target name="package-webapp" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the webapp"/>
+		<war destfile="${package.system.dir}\${PROJECT_NAME}.war" webxml="">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+			</manifest>
+			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar"/>
+			<lib dir="${build.jar.dir}" includes="${bean.file}" />
+			<lib dir="${build.jar.dir}" includes="${orm.file}" />
+			<fileset dir="${system.dir}\${system.web.dir}"/>
+			<fileset dir="${build.dir}">
+				<include name="docs/**/*"/>
+			</fileset>
+		</war>
+	</target>	
+	
 	<!--***********************************************************************
 	*** Generates documentation for the Java Beans
 	*********************************************************************** -->
@@ -184,7 +266,7 @@
 	<!--***********************************************************************
 	*** Generates documentation for the Java Beans
 	*********************************************************************** -->
-	<target name="build-system" depends="package-artifacts, doc" description="Generates complete system">
+	<target name="build-system" depends="package-codegen-artifacts, doc, package-system" description="Generates complete system">
 		<SDKecho message="${ant.project.name}: Completed the system build"/>
 	</target>
 
