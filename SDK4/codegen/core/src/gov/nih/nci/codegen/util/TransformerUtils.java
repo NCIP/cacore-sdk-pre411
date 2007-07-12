@@ -169,7 +169,7 @@ public class TransformerUtils
 		{ 
 			String superPkg = getFullPackageName(superClasses[0]);
 			if(!pkgName.equals(superPkg))
-				importList.add(getFullPackageName(superClasses[0]));
+				importList.add(getFQCN(superClasses[0]));
 		}
 		
 		for(UMLAssociation association: klass.getAssociations())
@@ -177,9 +177,9 @@ public class TransformerUtils
 			List<UMLAssociationEnd> assocEnds = association.getAssociationEnds();
 			UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass,assocEnds);
 			
-			String assocPkg = getFullPackageName ((UMLClass)otherEnd.getUMLElement());
-			if(!pkgName.equals(assocPkg) && !importList.contains(assocPkg))
-				importList.add(assocPkg);
+			String assocKlass = getFQCN ((UMLClass)otherEnd.getUMLElement());
+			if(!pkgName.equals(getFullPackageName ((UMLClass)otherEnd.getUMLElement())) && !importList.contains(assocKlass))
+				importList.add(assocKlass);
 			if(isAssociationEndMany(otherEnd) && otherEnd.isNavigable()&& !importList.contains("java.util.Collection"))
 				importList.add("java.util.Collection");
 		}
