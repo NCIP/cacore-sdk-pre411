@@ -113,7 +113,7 @@ public class ApplicationServiceProvider
 		Map<String,Object> serviceInfoMap = (Map<String, Object>) ctx.getBean(service);
 		
 		if(serviceInfoMap == null)
-			throw new Exception("Change the damn configuration file!!!");
+			throw new Exception("Change the configuration file!!!");
 		
 		//Initialized instances found in the configuration
 		ApplicationService as = (ApplicationService)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
@@ -128,7 +128,7 @@ public class ApplicationServiceProvider
 
 		//URL_KEY must be present if the user is trying to use the url to reach the service
 		if(serviceInfo==null ||(url == null && serviceInfo.indexOf("URL_KEY")>0) || (url!=null && serviceInfo.indexOf("URL_KEY")<0))
-			throw new Exception("Change the damn configuration file!!!");
+			throw new Exception("Change the configuration file!!!");
 		
 		//Resetting the URL as URL_KEY is absent in the configuration
 		if(serviceInfo.indexOf("URL_KEY") <0 || url == null)
@@ -157,7 +157,7 @@ public class ApplicationServiceProvider
 		
 		//Make sure the configuration has the required objects present
 		if(as==null || (secured && ap==null))
-			throw new Exception("Change the damn configuration file!!!");
+			throw new Exception("Change the configuration file!!!");
 
 		synchronized (lock){
 			//Store the services in the map. Improves performance for next time access
