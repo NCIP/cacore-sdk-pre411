@@ -17,7 +17,8 @@ public class SystemConstant {
 	public static final char 	QUESTION_MARK='?';	
 	public static final char 	LEFT_BRACKET='[';
 	public static final char 	RIGHT_BRACKET=']';	
-	public static final char 	SPACE=' ';		
+	public static final char 	SPACE=' ';	
+	public static final char 	SEMICOLON=';';	
 	
 	public static final String 	AMPERSAND_STR="&";
 	public static final String  BACK_SLASH="\\";		
