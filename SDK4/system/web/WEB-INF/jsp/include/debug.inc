@@ -1,7 +1,4 @@
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="javax.servlet.http.HttpUtils" %>
-<%@ page import="java.io.*" %>
 <%@ page import="java.util.*" %>
 
 <% out.println("########################  BEGIN Request Debugging #########################"); %>
@@ -37,8 +34,6 @@ while(enumeration.hasMoreElements()){
   out.println(key + " : " + klass + " : "  + value + " | "); 
 }
 
-//out.println("Value Stack size: " + ((com.opensymphony.xwork2.util.OgnlValueStack)request.getAttribute("struts.valueStack")).size()); 
-//out.println("peek(): " + ((com.opensymphony.xwork2.util.OgnlValueStack)request.getAttribute("struts.valueStack")).peek().getClass().getName()); 
 %>
 </pre>
 
