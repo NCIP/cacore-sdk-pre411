@@ -3,7 +3,7 @@
 
 	<context-param>
 	    <param-name>cacoreFormat.xsl</param-name>
-		<param-value>xslt/cacoreFormat.xsl</param-value>
+		<param-value>/WEB-INF/cacoreFormat.xsl</param-value>
 	</context-param>
 	<context-param>
 		<param-name>rowCounter</param-name>
