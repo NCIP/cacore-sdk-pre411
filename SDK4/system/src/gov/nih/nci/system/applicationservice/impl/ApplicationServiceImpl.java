@@ -186,12 +186,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	protected Response query(Request request) throws ApplicationException
 	{
+		request.setClassCache(classCache);
 		String domainObjectName = request.getDomainObjectName();
 		if (domainObjectName == null || domainObjectName.equals("")){
 			throw new ApplicationException("No Domain Object name specified in the request; unable to locate corresponding DAO");
 		}
 		
-		// TODO :: make classCache instance based (i.e., non-static methods)
 		DAO dao = classCache.getDAOForClass(request.getDomainObjectName());
 		
 		if(dao == null)

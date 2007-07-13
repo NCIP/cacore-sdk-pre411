@@ -1,5 +1,7 @@
 package gov.nih.nci.system.dao;
 
+import gov.nih.nci.system.util.ClassCache;
+
 import java.util.Hashtable;
 /**
  * Provides various methods to submit a query request to a specified datasource
@@ -16,6 +18,7 @@ public class Request implements java.io.Serializable
 //	private Boolean caseSensitivity;
 	private Integer firstRow;
 //	private Integer recordsCount;
+	private ClassCache classCache;
 	
 	/**
 	 * Creates a Request instance
@@ -138,6 +141,14 @@ public class Request implements java.io.Serializable
 	    this.isCount = b;
 	}
 
+	public ClassCache getClassCache() {
+		return classCache;
+	}
+
+	public void setClassCache(ClassCache classCache) {
+		this.classCache = classCache;
+	}
+
 //	public Boolean getCaseSensitivity()
 //	{
 //		return caseSensitivity;
@@ -147,4 +158,5 @@ public class Request implements java.io.Serializable
 //	{
 //		this.caseSensitivity = caseSensitivity;
 //	}
+	
 }

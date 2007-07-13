@@ -18,7 +18,7 @@ public class ORMDAOFactoryBean implements FactoryBean {
 	
 	private ORMDAOImpl ormDAO;
 
-	public ORMDAOFactoryBean(ClassCache classCache, String configLocation, boolean caseSensitive, int resultCountPerQuery) {	
+	public ORMDAOFactoryBean(String configLocation, boolean caseSensitive, int resultCountPerQuery) {	
 		lsfb = new LocalSessionFactoryBean();
 		Resource resource = new ClassPathResource(configLocation);
 		lsfb.setConfigLocation(resource);
@@ -28,7 +28,7 @@ public class ORMDAOFactoryBean implements FactoryBean {
 		} catch (Exception e){
 			log.error(e);
 		}
-		ormDAO = new ORMDAOImpl((SessionFactory)lsfb.getObject(), (Configuration)lsfb.getConfiguration(), classCache, caseSensitive, resultCountPerQuery);
+		ormDAO = new ORMDAOImpl((SessionFactory)lsfb.getObject(), (Configuration)lsfb.getConfiguration(), caseSensitive, resultCountPerQuery);
 	}
 	
 	public Object getObject() {

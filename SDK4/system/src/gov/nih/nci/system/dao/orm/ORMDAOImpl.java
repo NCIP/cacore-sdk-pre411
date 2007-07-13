@@ -39,14 +39,12 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	private int resultCountPerQuery;
 	
 	private Configuration config;
-	private ClassCache classCache;
 	
-	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, ClassCache classCache, boolean caseSensitive, int resultCountPerQuery) {
+	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, boolean caseSensitive, int resultCountPerQuery) {
 		this.config = config;
 		this.setSessionFactory(sessionFactory);
 		this.caseSensitive = caseSensitive;
 		this.resultCountPerQuery = resultCountPerQuery;
-		this.classCache = classCache;
 	}
 
 	public Response query(Request request) throws DAOException 
@@ -236,7 +234,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		Response rsp = new Response();
 		
-		CQL2HQL converter = new CQL2HQL(classCache);
+		CQL2HQL converter = new CQL2HQL(request.getClassCache());
 		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive); 
 		String hql = hqlCriteria.getHqlString();
 		List params = hqlCriteria.getParameters();
