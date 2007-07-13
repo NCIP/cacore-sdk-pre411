@@ -72,21 +72,35 @@ public class ClassCache {
 	{
 		Class klass=null;
 
-		klass = (Class)classCache.get(className.toLowerCase());
+		klass = (Class)classCache.get(className);
 		if(klass==null)
 		{
-			log.warn("Class '" + className + "' not found in ClassCache; will try to add it, if it exists");
-			klass = Class.forName(className);
-			classCache.put(className, klass);
+			log.warn("Class " + className + " not found in ClassCache");
+			throw new ClassNotFoundException();
 		}
 
 		return klass;
 	}
 
-	public String getPkgNameForClass(String unqualClassName){
-		return pkgNameForClassCache.get(unqualClassName.toLowerCase());
+	public String getPkgNameForClass(String className){
+		return pkgNameForClassCache.get(className.toLowerCase());
 	}
 
+	public boolean isPackageNameValid(String packageName) {
+		return ((getPkgClassNames(packageName) != null));
+	}
+
+	public boolean isClassNameValid(String className) {
+		
+		try {
+			getClassFromCache(className);
+		} catch(ClassNotFoundException e){
+			return false;
+		}
+		
+		return true;
+	}	
+	
 	public List<String> getFieldsOfTypeFromCache(Class klass, String typeName) 
 	{
 		String key = klass.getName() + "," + typeName;
@@ -566,6 +580,7 @@ public class ClassCache {
 				log.debug("Unqualified class name: " + unqualifiedClassName);
 
 				// Cache the package name for each klass
+				pkgNameForClassCache.put(klassName.toLowerCase(), packageName);			
 				pkgNameForClassCache.put(unqualifiedClassName.toLowerCase(), packageName);
 				nonPrimitiveFieldsCache.put(klassName, cacheNonPrimitiveFieldNames(klass));			
 			}
@@ -587,6 +602,7 @@ public class ClassCache {
 
 					allFieldsCache.put(klassName, cacheAllFieldNames(klass));
 
+// TODO :: Implement Error handling in case of duplicate class/package entries
 					log.debug("Adding class " + klass.getName() + " to Class Cache.");
 					classCache.put(klassName, klass);
 					classCache.put(klassName.toLowerCase(), klass);
