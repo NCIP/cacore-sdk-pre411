@@ -23,4 +23,7 @@ public class SystemConstant {
 	public static final String  BACK_SLASH="\\";		
 	public static final String 	COMMA_STR=",";
 	public static final String 	FORWARD_SLASH_STR="/";
+	
+    public static final String 	XLINK_URL = "http://www.w3.org/1999/xlink";
+	
 }
