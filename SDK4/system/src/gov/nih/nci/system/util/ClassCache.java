@@ -257,7 +257,7 @@ public class ClassCache {
 		}
 	}
 
-	protected List<String>getAllFieldNames(String className){
+	public List<String>getAllFieldNames(String className){
 
 		List<String> tmpFieldCache = null;
 
@@ -443,7 +443,7 @@ public class ClassCache {
 		return roles;
 	}
 
-	protected boolean isSearchable(String fieldType){
+	public boolean isSearchable(String fieldType){
 		boolean isSearchable=false;
 
 		if(fieldType.equals("java.lang.Long") || 
