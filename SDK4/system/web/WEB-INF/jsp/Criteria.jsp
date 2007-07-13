@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
-<%@ page import="gov.nih.nci.common.util.*,
+<%@ page import="gov.nih.nci.system.web.JSPUtils,
 				 java.lang.reflect.*,
 				 java.util.*" %> 
 			 
@@ -19,7 +19,7 @@ if(className != null)
 {
 	try
 	{	
-		jspUtils = JSPUtils.getJSPUtils(config);
+		jspUtils = JSPUtils.getJSPUtils(config.getServletContext());
 		fieldNames = jspUtils.getSearchableFields(className);
 		domainNames = jspUtils.getAssociations(className);
 		
