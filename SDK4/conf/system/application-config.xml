@@ -17,10 +17,9 @@
 	</bean>
 		
 	<bean name="ORMDAOFactory" class="gov.nih.nci.system.dao.orm.ORMDAOFactoryBean">
-		<constructor-arg ref="ClassCache"></constructor-arg> <!-- ClassCache instance -->
-		<constructor-arg value="hibernate.cfg.xml" index="1"></constructor-arg> <!-- configLocation -->
-		<constructor-arg value="false" index="2"></constructor-arg>  <!-- caseSensitive -->
-		<constructor-arg value="5000" index="3"></constructor-arg>	<!-- resultCountPerQuery -->			
+		<constructor-arg value="hibernate.cfg.xml"></constructor-arg> <!-- configLocation -->
+		<constructor-arg value="false" index="1"></constructor-arg>  <!-- caseSensitive -->
+		<constructor-arg value="5000" index="2"></constructor-arg>	<!-- resultCountPerQuery -->			
 	</bean>
 	
 </beans>
