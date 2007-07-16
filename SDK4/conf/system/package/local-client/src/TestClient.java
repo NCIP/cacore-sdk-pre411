@@ -32,30 +32,32 @@ public class TestClient
 		for(Class klass:classList)
 		{
 			Object o = klass.newInstance();
+			System.out.println("Searching for "+klass.getName());
+			if(klass.getName()!="gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType" && klass.getName()!="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card" )
+			{
 			Collection results = appService.search(klass, o);
 			for(Object obj : results)
 			{
 				printObject(obj, klass);
 				break;
 			}
+			}
 		}
 	}
 	
 	private void printObject(Object obj, Class klass) throws Exception {
-		System.out.println(obj.getClass().getName());
-
+		System.out.println("Printing "+ obj.getClass().getName());
 		Method[] methods = klass.getMethods();
 		for(Method method:methods)
 		{
 			if(method.getName().startsWith("get") && !method.getName().equals("getClass"))
 			{
-				//System.out.println("\t"+method.getName());
+				System.out.print("\t"+method.getName().substring(3)+":");
 				Object val = method.invoke(obj, (Object[])null);
-				System.out.println("Got the value; type= "+val.getClass().getName());
-				if(!(val instanceof org.hibernate.proxy.HibernateProxy) && !(val instanceof java.util.Set))
-					System.out.println("\t"+method.getName().substring(3)+":"+val);
+				if(val instanceof java.util.Set)
+					System.out.println("size="+((Collection)val).size());
 				else
-					System.out.println("\t"+method.getName().substring(3)+":proxy");
+					System.out.println(val);
 			}
 		}
 	}

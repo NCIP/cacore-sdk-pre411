@@ -51,7 +51,6 @@ public class ProxyHelperImpl implements ProxyHelper
 	}
 	
 	public Object lazyLoad(ApplicationService as, MethodInvocation invocation) throws Throwable{
-		System.out.println("Initializing Proxy");
 	    Object bean = invocation.getThis();
 	    Method method = invocation.getMethod();
 	    String methodName = method.getName();
@@ -62,11 +61,15 @@ public class ProxyHelperImpl implements ProxyHelper
     		fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
     		Object obj = as.getAssociation(createClone(bean),fieldName);
     		Object value = obj;
-    		Field field = bean.getClass().getDeclaredField(fieldName);
     		
-    		System.out.println("field.getType().getName()"+field.getType().getName());
-    		if(!field.getType().getName().equalsIgnoreCase("java.lang.Collection"))
+    		Field field = getField(bean, fieldName); 
+
+    		if(obj instanceof ListProxy)
+    			((ListProxy)obj).setAppService(as);
+    			
+    		if(!field.getType().getName().equalsIgnoreCase("java.util.Collection"))
     		{
+    			Class<?> x = field.getType();
     			Collection results = (Collection)obj;
     			if(results.size() == 1)
     				value = results.iterator().next();
@@ -75,22 +78,60 @@ public class ProxyHelperImpl implements ProxyHelper
     			else
     				throw new Exception("Invalid data obtained from the database for the "+fieldName+" attribute of the "+bean.getClass().getName());
     		}
-    		
 
     		Class[] params =  new Class[]{field.getType()};
-	    	Method setter = bean.getClass().getDeclaredMethod("set"+method.getName().substring(3),params);
-	    	System.out.println("Setter = "+setter.getName());
+	    	Method setter = getMethod(bean,"set"+method.getName().substring(3), params);
 	    	if(setter != null && params!=null && params.length==1)
-	    	{
-	    		System.out.println("vale type"+value.getClass().getName());
 	    		setter.invoke(bean, new Object[]{value});
-	    	}
+
 	    	return value;
 	    }
     	
     	return null;
 	}
 	
+	private Method getMethod(Object bean, String methodName, Class[] params) {
+		Method method = null;
+		if(bean == null) return null;
+		
+		Class klass = bean.getClass();
+		while(klass!=null && klass!= Object.class)
+		{
+			try {
+				method = klass.getDeclaredMethod(methodName,params);
+			} catch (SecurityException e) {
+			} catch (NoSuchMethodException e) {
+			}
+			if(method!=null) 
+				break;;
+			klass = klass.getSuperclass();
+		}
+		if(method==null) 
+			System.out.println("Error:");
+		return method;
+	}
+
+	private Field getField(Object bean, String fieldName) {
+		Field field = null;
+		if(bean == null) return null;
+		
+		Class klass = bean.getClass();
+		while(klass!=null && klass!= Object.class)
+		{
+			try {
+				field = klass.getDeclaredField(fieldName);
+			} catch (SecurityException e) {
+			} catch (NoSuchFieldException e) {
+			}
+			if(field!=null) 
+				break;;
+			klass = klass.getSuperclass();
+		}
+		if(field==null) 
+			System.out.println("Error:");
+		return field;
+	}
+
 	private Object createClone(Object source)
 	{
 		try 
