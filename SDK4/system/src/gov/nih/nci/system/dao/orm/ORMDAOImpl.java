@@ -203,6 +203,13 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		Response rsp = new Response();
 		
 		Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
+		if(obj.getParameters()!=null && obj.getParameters().size()>0)
+		{
+			int count=0;
+			for(Object param:obj.getParameters())
+				hqlQuery.setParameter(count++, param);
+		}
+			
 		log.info("HQL Criteria Query :"+hqlQuery.getQueryString());
 		if(isCount != null && isCount.booleanValue())
 	    {

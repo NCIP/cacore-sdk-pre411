@@ -15,6 +15,7 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar"/>
 		</fileset>
+		<pathelement path="${conf.dir}"/>
 		<pathelement path="${build.dir}"/>
 	</path>
 	

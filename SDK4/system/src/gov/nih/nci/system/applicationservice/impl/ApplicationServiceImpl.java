@@ -12,6 +12,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.util.ClassCache;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -59,8 +60,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
 		String hql = hqlCriteria.getHqlString();
 		int index = hql.indexOf(" from ");
-		hql = hql.substring(index).trim()+" ";
-		String targetClassName = hql.substring(hql.indexOf(index,' ')).trim();
+		hql = hql.substring(index+" from ".length()).trim()+" ";
+		System.out.println("HQL :"+hql);
+		String targetClassName = hql.substring(0,hql.indexOf(' ')).trim();
+		System.out.println("targetClassName :"+targetClassName);
 		return privateQuery(hqlCriteria, targetClassName);
 	}
 	
@@ -139,6 +142,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
 		
 		String hql = "select obj."+associationName+" from "+source.getClass().getName()+" obj where obj = ?";
+		
 		List params = new ArrayList();
 		params.add(source);
 		HQLCriteria criteria = new HQLCriteria(hql,params);

@@ -11,9 +11,9 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="interceptor" class="gov.nih.nci.system.applicationservice.ApplicationServiceProxy" singleton="true">
+	<bean id="interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="true">
 		<property name="proxyFactory">
-			<bean class="gov.nih.nci.system.applicationservice.ProxyUtilsImpl"/>
+			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl"/>
 		</property>
 	</bean>
 	
@@ -49,9 +49,8 @@
 	</bean>
 		
 	<bean name="ORMDAOFactory" class="gov.nih.nci.system.dao.orm.ORMDAOFactoryBean">
-		<constructor-arg ref="ClassCache"></constructor-arg> <!-- ClassCache instance -->
-		<constructor-arg value="hibernate.cfg.xml" index="1"/><!-- configLocation -->
-		<constructor-arg value="false" index="2"/><!-- caseSensitive -->
-		<constructor-arg value="5000" index="3"/><!-- resultCountPerQuery -->			
+		<constructor-arg value="hibernate.cfg.xml" index="0"/><!-- configLocation -->
+		<constructor-arg value="false" index="1"/><!-- caseSensitive -->
+		<constructor-arg value="5000" index="2"/><!-- resultCountPerQuery -->			
 	</bean>
 </beans>
