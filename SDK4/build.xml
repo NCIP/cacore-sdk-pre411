@@ -219,6 +219,9 @@
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 		</copy>
+		<copy todir="${package.client.remote.dir}">
+			<fileset dir="${system.config.client.remote.dir}"/>
+		</copy>
 	</target>
 
 	<target name="package-local-client" depends="package-codegen-artifacts">
@@ -230,6 +233,9 @@
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 			<fileset dir="${build.jar.dir}" includes="${orm.file}" />
+		</copy>
+		<copy todir="${package.client.local.dir}">
+			<fileset dir="${system.config.client.local.dir}"/>
 		</copy>
 	</target>	
 
