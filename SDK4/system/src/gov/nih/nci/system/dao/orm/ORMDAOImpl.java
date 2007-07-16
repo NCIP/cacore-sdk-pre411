@@ -177,7 +177,6 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			        query.setFirstResult(firstRow.intValue());				    		
 		    	}
 		    	
-		    	System.out.println("resultCountPerQuery: " + resultCountPerQuery);
 		    	query.setMaxResults(resultCountPerQuery);
 
 		    	rs = query.list();

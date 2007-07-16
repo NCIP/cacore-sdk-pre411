@@ -61,9 +61,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		String hql = hqlCriteria.getHqlString();
 		int index = hql.indexOf(" from ");
 		hql = hql.substring(index+" from ".length()).trim()+" ";
-		System.out.println("HQL :"+hql);
 		String targetClassName = hql.substring(0,hql.indexOf(' ')).trim();
-		System.out.println("targetClassName :"+targetClassName);
 		return privateQuery(hqlCriteria, targetClassName);
 	}
 	
