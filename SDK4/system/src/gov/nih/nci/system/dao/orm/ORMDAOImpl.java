@@ -6,9 +6,11 @@ import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
 import gov.nih.nci.system.dao.orm.translator.CQL2HQL;
 import gov.nih.nci.system.dao.orm.translator.NestedCriteria2HQL;
+import gov.nih.nci.system.dao.orm.translator.Path2NestedCriteria;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
+import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.util.ClassCache;
 
 import java.util.ArrayList;
@@ -58,8 +60,8 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			
 			if (obj instanceof DetachedCriteria) {				
 				return query(request, session, (DetachedCriteria) obj); 	
-			} else if (obj instanceof NestedCriteria) {
-				return query(request, session, (NestedCriteria) obj); 	
+			} else if (obj instanceof NestedCriteriaPath) {
+				return query(request, session, (NestedCriteriaPath) obj); 	
 			} else if (obj instanceof HQLCriteria){
 				return query(request, session, (HQLCriteria) obj);
 			} else if (obj instanceof CQLQuery){
@@ -142,7 +144,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		return rsp;
 	}	
 	
-	private Response query(Request request, Session session, NestedCriteria obj) throws Exception	
+	private Response query(Request request, Session session, NestedCriteriaPath obj) throws Exception	
 	{
 		List rs = null;
 		Integer rowCount = null;
@@ -153,8 +155,9 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		Response rsp = new Response();
 		
-		log.debug("ORMDAOImpl.query: it is a NestedCriteria Object ....");		
-		NestedCriteria2HQL converter = new NestedCriteria2HQL((NestedCriteria)obj, config, session, caseSensitive);
+		log.debug("ORMDAOImpl.query: it is a NestedCriteriaPath Object ....");	
+		NestedCriteria nc = Path2NestedCriteria.createNestedCriteria(obj.getpathString(), obj.getParameters(), request.getClassCache());
+		NestedCriteria2HQL converter = new NestedCriteria2HQL(nc, config, session, caseSensitive);
 		query = converter.translate();
 		log.info("HQL Query :"+query.getQueryString());
 		if (query != null)

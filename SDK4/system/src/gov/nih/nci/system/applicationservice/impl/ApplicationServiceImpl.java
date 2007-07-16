@@ -7,10 +7,9 @@ import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
-import gov.nih.nci.system.dao.orm.translator.Path2NestedCriteria;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
+import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.util.ClassCache;
 
 import java.util.ArrayList;
@@ -88,11 +87,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return search(path, list);
 	}
 
-	protected List<Object> query(NestedCriteria nestedCriteria, String targetClassName) throws ApplicationException {
-		return privateQuery((Object) nestedCriteria, targetClassName);
-	}
-
-	
 	public List<Object> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException {
 		Request request = new Request(criteria);
 		
@@ -109,15 +103,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public List<Object> search(String path, List<Object> objList) throws ApplicationException {
 
 		try{
-			List<String> pathList = new ArrayList<String>();
-
+			String targetClassName = "";
 			StringTokenizer tokens = new StringTokenizer(path, ",");
-			while (tokens.hasMoreTokens()) {
-				pathList.add(tokens.nextToken().trim());
-			}
-
-			NestedCriteria crit = Path2NestedCriteria.createNestedCriteria(pathList, objList);
-			List<Object> results = query(crit, crit.getTargetObjectName());
+			targetClassName = tokens.nextToken().trim();
+			
+			NestedCriteriaPath crit = new NestedCriteriaPath(path,objList);
+			List<Object> results = privateQuery((Object)crit, targetClassName);
 
 			return results;
 		}

@@ -1,10 +1,13 @@
 package gov.nih.nci.system.dao.orm.translator;
 
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
+import gov.nih.nci.system.util.ClassCache;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
@@ -12,9 +15,16 @@ public class Path2NestedCriteria
 {
 	private static Logger log = Logger.getLogger(Path2NestedCriteria.class);
 	
-	public static NestedCriteria createNestedCriteria(List pathList, List objList) throws Exception {
+	public static NestedCriteria createNestedCriteria(String path, List objList, ClassCache cache) throws Exception {
+		
+		List<String> pathList = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(path, ",");
+		while (tokens.hasMoreTokens()) {
+			pathList.add(tokens.nextToken().trim());
+		}
+		
 		NestedCriteria criteria = null;
-		Stack stack1 = new Stack();
+		Stack<String> stack1 = new Stack<String>();
 	
 		for(int i = 0; i< pathList.size(); i++)
 			stack1.push(pathList.get(i));
