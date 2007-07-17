@@ -46,6 +46,7 @@ public class TransformerUtils
 	private static String TV_DOCUMENTATION = "documentation";
 	private static String TV_DESCRIPTION = "description";
 	private static String TV_LAZY_LOAD = "lazy-load";
+	private static String TV_TYPE="type";
 	
 	private static String TV_CADSR_PUBLICID = "CADSR_ConceptualDomainPublicID";
 	private static String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
@@ -224,8 +225,14 @@ public class TransformerUtils
 	}
 
 
-	public static String getHibernateDataType(UMLAttribute attr)
+	public static String getHibernateDataType(UMLClass klass, UMLAttribute attr) throws GenerationException
 	{
+		String fqcn = getFQCN(klass);
+		UMLClass table = getTable(klass);
+		UMLAttribute col = getMappedColumn(table,fqcn+"."+attr.getName());
+		
+		Boolean isClob = "CLOB".equalsIgnoreCase(getTagValue(col.getTaggedValues(),TV_TYPE, 1));
+		
 		UMLDatatype dataType = attr.getDatatype();
 		String name = dataType.getName();
 		if(dataType instanceof UMLClass)
@@ -234,6 +241,10 @@ public class TransformerUtils
 		if(name.startsWith("java.lang."))
 			name = name.substring("java.lang.".length());
 
+		if(isClob && "string".equalsIgnoreCase(name))
+			return "gov.nih.nci.system.util.StringClobType";
+		if(isClob && !"string".equalsIgnoreCase(name))
+			throw new GenerationException("Can not map CLOB to anything other than String");
 		if("int".equalsIgnoreCase(name) || "integer".equalsIgnoreCase(name))
 			return "integer";
 		if("double".equalsIgnoreCase(name))
@@ -677,6 +688,10 @@ public class TransformerUtils
 		return getColumnName(table,TV_MAPPED_ATTR_COLUMN,fullyQualifiedAttrName,false,1,1);
 	}
 	
+	public static UMLAttribute getMappedColumn(UMLClass table, String fullyQualifiedAttrName) throws GenerationException
+	{
+		return getColumn(table,TV_MAPPED_ATTR_COLUMN,fullyQualifiedAttrName,false,1,1);
+	}
 
 	/**
 	 * @param tgElt The TaggableElement (UMLClass, UMLAttribute)
