@@ -77,20 +77,21 @@ if(level == 0){%>
 									throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
 								String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false ";
 								String joinTableName = correlationTable.getName();%>
-		<%=emptySpace%><join table="<%=joinTableName%>" lazy="<%=lazyValue%>" inverse="<%=inverseValue%>" optional="true">
+		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" table="<%=joinTableName%>" lazy="<%=lazyValue%>">
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
-			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" not-null="true"/>
+			<%=emptySpace%><many-to-many class="<%=assocKlassName%>" column="<%=assocColumnName%>" unique="true"/>
 		<%=emptySpace%></set><%
 							}
 						}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
-							String lazyValue = lazy == true ? "proxy" : "false";
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
 							if (correlationTable == null) //Many to One - No Join Table
 							{
+								String lazyValue = lazy == true ? "proxy" : "false";							
 								String keyColumnName = TransformerUtils.findAssociatedColumn(table,currentKlass,otherEnd);%>
 		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" lazy="<%=lazyValue%>" /><%
 							}else{ // Many to One - Join Table
+								String lazyValue = lazy == true ? "true" : "false";
 								String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
 								String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd);
 								String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
@@ -98,11 +99,10 @@ if(level == 0){%>
 									throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
 								String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false ";
 								String joinTableName = correlationTable.getName();%>
-		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" table="<%=joinTableName%>" lazy="<%=lazyValue%>">
-			<%=emptySpace%><cache usage="read-write" />
+		<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
-			<%=emptySpace%><many-to-many class="<%=assocKlassName%>" column="<%=assocColumnName%>" unique="true"/>
-		<%=emptySpace%></set><%
+			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" not-null="true"/>
+		<%=emptySpace%></join><%
 							}
 						}else{	//One to One
 							String lazyValue = lazy == true ? "proxy" : "false";
@@ -135,11 +135,10 @@ if(level == 0){%>
 									throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
 								String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false ";
 								String joinTableName = correlationTable.getName();%>
-		<%=emptySpace%><join table="<%=joinTableName%>" lazy="<%=lazyValue%>" inverse="<%=inverseValue%>" optional="true">
-			<%=emptySpace%><cache usage="read-write" />
+		<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" not-null="true" unique="true"/>
-		<%=emptySpace%></set><%
+		<%=emptySpace%></join><%
 							}
 						}
 					}

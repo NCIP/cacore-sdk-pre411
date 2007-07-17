@@ -33,14 +33,17 @@ public class TestClient
 		{
 			Object o = klass.newInstance();
 			System.out.println("Searching for "+klass.getName());
-			if(klass.getName()!="gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType" && klass.getName()!="gov.nih.nci.cacoresdk.domain.other.levelassociation.Card" )
+			try
 			{
-			Collection results = appService.search(klass, o);
-			for(Object obj : results)
+				Collection results = appService.search(klass, o);
+				for(Object obj : results)
+				{
+					printObject(obj, klass);
+					break;
+				}
+			}catch(Exception e)
 			{
-				printObject(obj, klass);
-				break;
-			}
+				System.out.println(">>>"+e.getMessage());
 			}
 		}
 	}

@@ -165,7 +165,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			if(isCount != null && isCount.booleanValue())
 		    {			
 				log.debug("ORMDAOImpl.  isCount .... .... | converter.getCountQuery() = " + converter.getCountQuery().getQueryString());
-				rowCount = (Integer)converter.getCountQuery().uniqueResult();
+				rowCount = Integer.parseInt(converter.getCountQuery().uniqueResult()+"");
 				log.debug("ORMDAOImpl HQL ===== count = " + rowCount);		
 				rsp.setRowCount(rowCount);
 			}

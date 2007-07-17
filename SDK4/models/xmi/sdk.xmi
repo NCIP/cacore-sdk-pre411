@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-06-27 10:49:03">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-07-17 14:51:56">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -27142,7 +27142,7 @@
 																										<UML:TaggedValue tag="ea_targetID" value="1034"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={6A886F67-24E3-428d-ABBA-0E9F7D62FD70}$XID;$NAM=CustomProperties$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={184C23FB-E165-48d2-A0D9-D9AFC573EA99}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																										<UML:TaggedValue tag="virtualInheritance" value="0"/>
-																										<UML:TaggedValue tag="correlation_table" value="CHAIN_PENDANT" xmi.id="EAID_F46182F6_9066_4622_B117_C989E5FB33FA"/>
+																										<UML:TaggedValue tag="correlation-table" value="CHAIN_PENDANT" xmi.id="EAID_F18F7375_5305_4977_BA8B_9227BC1BF129"/>
 																									</UML:ModelElement.taggedValue>
 																									<UML:Association.connection>
 																										<UML:AssociationEnd visibility="public" multiplicity="1" name="chain" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_7A1D9ED9_4BF4_4958_A62D_68F9EEF29182">
@@ -28299,8 +28299,6 @@
 																					<UML:Namespace.ownedElement>
 																						<UML:Class name="AllDataType" xmi.id="EAID_4AF03E59_978D_4fa5_BE90_B671B9C4DF99" visibility="public" namespace="EAPK_F4B312E1_517A_4490_B652_7010C4FFE3DC" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
-																							    <UML:TaggedValue tag="CADSR_ConceptualDomainPublicID" xmi.id="EAID_3921E178_A35C_42c8_9D31_3EBC01D82464" value="2178532" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />
-																							    <UML:TaggedValue tag="CADSR_ConceptualDomainVersion" xmi.id="EAID_57162614_55E4_49c7_892D_5824AF29F882" value="1" modelElement="EAID_14C19CDF_D21B_4620_B80D_401F67840144" />																																														
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
 																								<UML:TaggedValue tag="ea_ntype" value="0"/>

@@ -165,14 +165,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 			resultList.addAll(results);
 		}
 		
-		log.debug("resultList.size(): " + resultList.size());
-		log.debug("response.getRowCount(): " + response.getRowCount());
-		
 		resultList.setOriginalStart(0);
 		resultList.setMaxRecordsPerQuery(response.getRowCount());
 		resultList.setOriginalCriteria(criteria);
 		resultList.setTargetClassName(targetClassName);
-
+		
+		log.debug("response.getRowCount(): " + response.getRowCount());
+		
 		return resultList;
 
 	}	

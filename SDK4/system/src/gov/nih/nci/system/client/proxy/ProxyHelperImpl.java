@@ -16,6 +16,9 @@ public class ProxyHelperImpl implements ProxyHelper
 {
 	public Object convertToProxy(ApplicationService as, Object obj) 
 	{
+		if(obj instanceof ListProxy)
+			((ListProxy)obj).setAppService(as);
+		
 		  if(obj instanceof java.util.Collection)
 		    	return convertToProxy(as,(Collection)obj);
 		    else
