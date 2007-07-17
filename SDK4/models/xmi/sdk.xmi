@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-07-17 14:51:56">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-07-17 17:31:27">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -43,7 +43,7 @@
 										<UML:TaggedValue tag="package" value="EAPK_6318152E_A62D_4c4d_BE2E_1F237D6F09C1"/>
 										<UML:TaggedValue tag="date_created" value="2006-10-24 11:06:38"/>
 										<UML:TaggedValue tag="date_modified" value="2006-10-24 11:06:38"/>
-										<UML:TaggedValue tag="genfile" value="C:\Documents and Settings\patelsa\Desktop\SDKDataModel.SQL"/>
+										<UML:TaggedValue tag="genfile" value="C:\Documents and Settings\patelsat\Desktop\SDKDataModel"/>
 										<UML:TaggedValue tag="gentype" value="Java"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package2" value="EAID_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8"/>
@@ -5795,7 +5795,6 @@
 												<UML:TaggedValue tag="ea_guid" value="{EBE4646F-2999-40e8-B0BA-CFF26C3E3686}"/>
 												<UML:TaggedValue tag="ea_localid" value="1379"/>
 												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey.mykey" xmi.id="EAID_56E8007C_C57C_4A08_AB6A_042B30B574D3"/>
-												<UML:TaggedValue tag="id-attribute" value="gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey" xmi.id="EAID_6A3B0619_C82B_499f_8915_E74EBCFD96FE"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -29930,6 +29929,7 @@
 																										<UML:TaggedValue tag="ea_guid" value="{DFA6C2F7-F1D9-4e0d-889E-640F5C2FF07C}"/>
 																										<UML:TaggedValue tag="ea_localid" value="1699"/>
 																										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
+																										<UML:TaggedValue tag="id-attribute" value="gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey" xmi.id="EAID_599A9305_8E52_4707_BA27_4B3174BD879F"/>
 																									</UML:ModelElement.taggedValue>
 																								</UML:Attribute>
 																								<UML:Attribute name="name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">

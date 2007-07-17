@@ -320,6 +320,8 @@ public class TransformerUtils
 
 	public static String getClassIdGetterMthod(UMLClass klass) throws GenerationException
 	{
+		String idAttrName = getClassIdAttrName(klass);
+		if (idAttrName == null) return null;
 		return "get"+firstCharUpper(getClassIdAttrName(klass));
 	}
 
@@ -331,36 +333,36 @@ public class TransformerUtils
 	
 	public static String getClassIdAttrName(UMLClass klass) throws GenerationException
 	{
+		UMLAttribute idAttr = getClassIdAttr(klass);
+		if (idAttr == null) return null;
+		
 		return getClassIdAttr(klass).getName();
 	}
 
 	public static UMLAttribute getClassIdAttr(UMLClass klass) throws GenerationException
 	{
-		UMLClass table = getTable(klass);
 		String fqcn = getFQCN(klass);
 
-		UMLAttribute idCol = getColumn(table,TV_ID_ATTR_COLUMN, fqcn,true,0,1);
+		UMLAttribute idAttr = getColumn(klass,TV_ID_ATTR_COLUMN, fqcn,true,0,1);
+		
+		if(idAttr !=null) return idAttr;
+		
 		String idAttrName = "id";
-		if(idCol != null)
-		{
-			String fqIdName = getTagValue(idCol.getTaggedValues(), TV_MAPPED_ATTR_COLUMN, 1);
-			idAttrName = fqIdName.substring(fqcn.length()+1);
-		}
-
 		for(UMLAttribute attribute:klass.getAttributes())
 			if(idAttrName.equals(attribute.getName()))
 				return attribute;
 
 		for(UMLGeneralization gen: klass.getGeneralizations())
 		{
-			if(gen.getSubtype() == klass)
+			if(gen.getSubtype() == klass && gen.getSupertype() != klass)
 			{
 				UMLAttribute superId = getClassIdAttr(gen.getSupertype());
 				if(superId != null)
 					return superId;
 			}
 		}
-		throw new GenerationException("No column found that maps to the primary key identifier for class : "+fqcn);
+		return null;
+		//throw new GenerationException("No attribute found that maps to the primary key identifier for class : "+fqcn);
 	}
 	
 	// TODO :: add method to UMLAttribute instead?  However, would alter existing interface...
