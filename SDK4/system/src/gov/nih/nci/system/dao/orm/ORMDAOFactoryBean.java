@@ -1,6 +1,6 @@
 package gov.nih.nci.system.dao.orm;
 
-import gov.nih.nci.system.util.ClassCache;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -18,16 +18,24 @@ public class ORMDAOFactoryBean implements FactoryBean {
 	
 	private ORMDAOImpl ormDAO;
 
-	public ORMDAOFactoryBean(String configLocation, boolean caseSensitive, int resultCountPerQuery) {	
+	public ORMDAOFactoryBean(String configLocation, Properties systemProperties) throws Exception {	
 		lsfb = new LocalSessionFactoryBean();
 		Resource resource = new ClassPathResource(configLocation);
 		lsfb.setConfigLocation(resource);
 		
+		boolean caseSensitive;
+		int resultCountPerQuery;
+		
 		try {
+			caseSensitive = Boolean.parseBoolean(systemProperties.getProperty("caseSensitive"));
+			resultCountPerQuery = Integer.parseInt(systemProperties.getProperty("resultCountPerQuery"));
+			
 			lsfb.afterPropertiesSet();
 		} catch (Exception e){
 			log.error(e);
+			throw e;
 		}
+		
 		ormDAO = new ORMDAOImpl((SessionFactory)lsfb.getObject(), (Configuration)lsfb.getConfiguration(), caseSensitive, resultCountPerQuery);
 	}
 	

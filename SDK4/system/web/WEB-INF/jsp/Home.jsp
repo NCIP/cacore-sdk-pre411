@@ -38,7 +38,7 @@
                     
                     <!-- banner begins -->
                     <tr>
-                      <td class="bannerHome"><img src="images/bannerHome2.gif"></td>
+                      <td class="bannerHome"><img src="images/bannerHome.gif"></td>
                     </tr>
                     <!-- banner begins -->
                     
@@ -96,42 +96,7 @@
 	                                
 	                                <!-- login/continue form begins -->
 	                                <tr>
-	                                  <td valign="top">
-	                                          
-<%
-	                                          	gov.nih.nci.system.server.mgmt.SecurityEnabler securityEnabler =  new gov.nih.nci.system.server.mgmt.SecurityEnabler(Constant);
-	                                          	if (securityEnabler.getSecurityLevel() > 0)	      
-	                                          	{
-	                                          %>
-                                  
-	                                    <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" class="sidebarSection">	
-	                                      <tr>
-	                                        <td class="sidebarTitle" height="20"><s:text name="home.login"/></td>
-	                                      </tr>
-	                                      <tr>
-	                                        <td class="sidebarContent">
-	                                        <s:form method="post" action="Login.action" name="loginForm" theme="css_xhtml">   	
-	                                          <table cellpadding="2" cellspacing="0" border="0">
-	                                          
-	                                            <tr>
-	                                              <td class="sidebarLogin" align="left"><s:text name="home.loginID"/></td>
-	                                              <td class="formFieldLogin"><s:textfield name="username" cssClass="formField" size="14" /></td>
-	                                            </tr>
-	                                            <tr>
-	                                              <td class="sidebarLogin" align="left"><s:text name="home.password"/></td>
-	                                              <td class="formFieldLogin"><s:password name="password" cssClass="formField" size="14" /></td>
-	                                            </tr>
-	                                            <tr>
-	                                              <td>&nbsp;</td>
-	                                              <td><s:submit cssClass="actionButton" type="submit" value="Login" /></td>
-	                                            </tr>
-	                                          </table>
-											</s:form>		                                          
-	                                        </td>
-	                                      </tr>	  
-	                                    </table>	                                       
-	<%} else {%>
-
+	                                  <td valign="top">                                          
 	                                    <table summary="" cellpadding="2" cellspacing="0" border="0" width="100%" class="sidebarSection">							  			
 	                                      <tr>
 	                                        <td class="sidebarTitle" height="20">SELECT CRITERIA</td>
@@ -144,7 +109,6 @@
 	                                        </td>
 	                                      </tr>	  
 	                                    </table>                                                                  	
-	<%} %>
 	                                  </td>
 	                                </tr>
 	                                <!-- login ends -->
@@ -163,7 +127,6 @@
 													<li>New hierarchical package/class browsing</li>
 													<li>New single-session authentication</li>
 												</ul>
-
 											</td>
 	                                      </tr>
 	                                    </table>

@@ -38,7 +38,7 @@
 
 	<bean name="XMIFileProperties" class="java.util.Properties">
 		<constructor-arg>
-			<props >
+			<props>
 				<prop key="Logical Model">@LOGICAL_MODEL@</prop>
 				<prop key="Data Model">@DATA_MODEL@</prop>
 				<prop key="Include Package">@INCLUDE_PACKAGE@</prop>

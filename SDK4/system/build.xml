@@ -56,6 +56,9 @@
 		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true">
 			<classpath refid="classpath"/>
 		</javac>
+		<copy todir="${build.classes.dir}">
+			<fileset dir="${src.dir}" includes="gov/nih/nci/system/web/struts/action/package.properties"/>
+		</copy>
 	</target>
 
 	<!--***********************************************************************

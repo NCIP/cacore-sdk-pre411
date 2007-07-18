@@ -75,11 +75,18 @@ public class ClassCache {
 		klass = (Class)classCache.get(className);
 		if(klass==null)
 		{
-			log.warn("Class " + className + " not found in ClassCache");
+			log.debug("Class " + className + " not found in ClassCache");
 			throw new ClassNotFoundException();
 		}
 
 		return klass;
+	}
+	
+	public String getQualifiedClassName(String className) throws ClassNotFoundException {
+		Class klass = getClassFromCache(className.toLowerCase());
+		
+		log.debug("Qualified class name: " + klass.getName());
+		return klass.getName();
 	}
 
 	public String getPkgNameForClass(String className){
@@ -204,8 +211,28 @@ public class ClassCache {
 		Field[] fieldArray = new Field[allFields.size()];
 		allFields.toArray(fieldArray);
 		return fieldArray;
-	}	
-
+	}
+	
+	/**
+	 * Gets the data type of a particular field of the class
+	 * @param className
+	 * @param fieldName
+	 * @return
+	 * @throws ClassNotFoundException 
+	 */
+	public String getReturnType(String className, String fieldName) throws ClassNotFoundException
+	{
+		Field[] classFields;
+		classFields = getFields(getClassFromCache(className));
+		for (int i=0; i<classFields.length;i++)
+		{
+			if(classFields[i].getName().equals(fieldName))
+				return getReturnType(classFields[i].getGenericType().toString());
+		}
+		return "";
+	}
+	
+	
 	/**
 	 * Gets the data type of a particular field of the class
 	 * @param className
@@ -287,7 +314,6 @@ public class ClassCache {
 			{
 				fields[i].setAccessible(true);
 				fieldType = fields[i].getType().getName();
-				log.debug("Class: " + klass.getName() + "; Field: " + fields[i].getName() + "; FieldType: " + fieldType + "; FieldGenericType: " + getReturnType(fields[i].getGenericType().toString()));
 
 				if (isSearchable(fieldType))
 				{
@@ -530,7 +556,7 @@ public class ClassCache {
 
 	/**
 	 * @param daoList 	A list of DAO's for which Class metadata should be generated and cached.
-	 * 					Called by the Spring Framework.  See ApplicationConfig for more details.
+	 * 					Called by the Spring Framework.  See application-config.xml for more details.
 	 */
 	public void setDaoList(List<DAO> daoList) {
 		this.daoList = daoList;
@@ -543,7 +569,7 @@ public class ClassCache {
 	}
 
 	
-	public static String getReturnType(String fieldGenericType){
+	public String getReturnType(String fieldGenericType){
 		log.debug("fieldGenericType: " + fieldGenericType);
 		int begin = fieldGenericType.indexOf('<');
 		int end = fieldGenericType.indexOf('>'); 
@@ -554,7 +580,10 @@ public class ClassCache {
 		return fieldGenericType;
 	}
 
-	private void initialize() { // initialize with a list of the classes obtained from each DAO class within the System
+	/**
+	 * initialize with a list of the classes obtained from each DAO class within the System
+	 */
+	private void initialize() { 
 
 		String unqualifiedClassName = null;
 		Class klass = null;

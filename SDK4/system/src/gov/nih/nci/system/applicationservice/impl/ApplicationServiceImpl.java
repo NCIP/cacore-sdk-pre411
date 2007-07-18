@@ -12,7 +12,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.util.ClassCache;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -141,7 +140,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		
 		String hql = "select obj."+associationName+" from "+source.getClass().getName()+" obj where obj = ?";
 		
-		List params = new ArrayList();
+		List<Object> params = new ArrayList<Object>();
 		params.add(source);
 		HQLCriteria criteria = new HQLCriteria(hql,params);
 		return query(criteria);

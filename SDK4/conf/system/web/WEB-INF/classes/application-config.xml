@@ -15,11 +15,23 @@
 			</list>
 		</property>		
 	</bean>
-		
+	
+	<bean name="SystemProperties" class="java.util.Properties">
+		<constructor-arg>
+			<props>
+				<prop key="caseSensitive">false</prop>
+				<prop key="configLocation">hibernate.cfg.xml</prop>
+				<prop key="resultCountPerQuery">5000</prop>
+				<prop key="resultOutputFormatter">resultOutputFormatter.xsl</prop>
+				<prop key="rowCounter">200</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+			
 	<bean name="ORMDAOFactory" class="gov.nih.nci.system.dao.orm.ORMDAOFactoryBean">
 		<constructor-arg value="hibernate.cfg.xml"></constructor-arg> <!-- configLocation -->
-		<constructor-arg value="false" index="1"></constructor-arg>  <!-- caseSensitive -->
-		<constructor-arg value="5000" index="2"></constructor-arg>	<!-- resultCountPerQuery -->			
+		<constructor-arg ref="SystemProperties"></constructor-arg>
 	</bean>
+
 	
 </beans>
