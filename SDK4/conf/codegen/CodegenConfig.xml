@@ -31,18 +31,20 @@
 	<!-- 									 -->
 	<!--  XMI File Reader/UML Model Loadeer	 -->
 	<!-- 									 -->
-	<bean name="UMLModel" factory-bean="XMILoader" factory-method="getUMLModel" singleton="true"/>
-	<bean name="XMILoader" class="gov.nih.nci.codegen.UMLModelLoader" singleton="true">
-		<constructor-arg value="models/xmi/@XMI_FILE@"></constructor-arg>
+	<bean name="UMLModel" factory-bean="UMLModelLoader" factory-method="getUMLModel" singleton="true"/>
+	<bean name="UMLModelLoader" class="gov.nih.nci.codegen.UMLModelLoader" singleton="true">
+		<constructor-arg value="models/@MODEL_FILE@"></constructor-arg>
+		<constructor-arg value="@MODEL_FILE_TYPE@"></constructor-arg>
 	</bean>
 
-	<bean name="XMIFileProperties" class="java.util.Properties">
+	<bean name="UMLModelFileProperties" class="java.util.Properties">
 		<constructor-arg>
 			<props>
 				<prop key="Logical Model">@LOGICAL_MODEL@</prop>
 				<prop key="Data Model">@DATA_MODEL@</prop>
 				<prop key="Include Package">@INCLUDE_PACKAGE@</prop>
 				<prop key="Exclude Package">@EXCLUDE_PACKAGE@</prop>
+				<prop key="Exclude Name">@EXCLUDE_NAME@</prop>
 			</props>
 		</constructor-arg>
 	</bean>

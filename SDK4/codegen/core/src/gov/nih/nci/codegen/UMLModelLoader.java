@@ -26,10 +26,10 @@ public class UMLModelLoader
 	
 	private boolean printModel;
 	
-	public UMLModelLoader(String xmiFileName)
+	public UMLModelLoader(String fileName, String fileType) throws GenerationException
 	{
 		if(model!=null) return;
-		loadModel(xmiFileName);
+		loadModel(fileName, fileType);
 		
 		if(printModel)
 			DebugUtils.printModel(model);			
@@ -40,12 +40,19 @@ public class UMLModelLoader
 		return model;
 	}
 
-	private void loadModel(String xmiFileName)
+	private void loadModel(String xmiFileName, String fileType) throws GenerationException
 	{
 		
 		log.debug("Reading XMI File");
 		
-		XmiInOutHandler xmiHandler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
+		XmiInOutHandler xmiHandler;
+		if("EA".equalsIgnoreCase(fileType))
+			xmiHandler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
+		else if("ARGO".equalsIgnoreCase(fileType))
+			xmiHandler = XmiHandlerFactory.getXmiHandler(HandlerEnum.ArgoUMLDefault);
+		else
+			throw new GenerationException("Can not instantiate UML Model Loader for specified file type :"+fileType);
+			
 		try
 		{
 			xmiHandler.load(xmiFileName);

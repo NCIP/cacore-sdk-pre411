@@ -36,6 +36,10 @@ public class TransformerUtils
 	private static String BASE_PKG_DATA_MODEL;
 	private static String INCLUDE_PACKAGE;
 	private static String EXCLUDE_PACKAGE;
+	private static String EXCLUDE_NAME;
+	private static Set<String> INCLUDE_PACKAGE_NAMES = new HashSet<String>();
+	private static Set<String> EXCLUDE_PACKAGE_NAMES = new HashSet<String>();
+	private static Set<String> EXCLUDE_NAMES = new HashSet<String>();
 	
 	private static String TV_ID_ATTR_COLUMN = "id-attribute";
 	private static String TV_MAPPED_ATTR_COLUMN = "mapped-attributes";
@@ -59,18 +63,20 @@ public class TransformerUtils
 	{
 		try 
 		{
-			Properties prop = ((Properties)ObjectFactory.getObject("XMIFileProperties"));
-			BASE_PKG_LOGICAL_MODEL = prop.getProperty("Logical Model").trim();
-			BASE_PKG_DATA_MODEL = prop.getProperty("Data Model").trim();
+			Properties prop = ((Properties)ObjectFactory.getObject("UMLModelFileProperties"));
+			BASE_PKG_LOGICAL_MODEL = prop.getProperty("Logical Model") == null ? "" :prop.getProperty("Logical Model").trim();
+			BASE_PKG_DATA_MODEL = prop.getProperty("Data Model")==null ? "" : prop.getProperty("Data Model").trim();
 			
-			EXCLUDE_PACKAGE = prop.getProperty("Exclude Package").trim();
+			EXCLUDE_PACKAGE = prop.getProperty("Exclude Package")==null ? "" : prop.getProperty("Exclude Package").trim();
+			INCLUDE_PACKAGE = prop.getProperty("Include Package")==null ? "" : prop.getProperty("Include Package").trim();
+			EXCLUDE_NAME = prop.getProperty("Exclude Name")==null ? "" : prop.getProperty("Exclude Name").trim();
 			
-			String temp = prop.getProperty("Include Package").trim();
-			if(temp == null || temp.length()==0)
-				INCLUDE_PACKAGE = "";
-			else
-				INCLUDE_PACKAGE = temp;
-			
+			for(String excludeToken:EXCLUDE_PACKAGE.split(","))
+				EXCLUDE_PACKAGE_NAMES.add(excludeToken);
+			for(String includeToken:INCLUDE_PACKAGE.split(","))
+				INCLUDE_PACKAGE_NAMES.add(includeToken);
+			for(String excludeToken:EXCLUDE_NAME.split(","))
+				EXCLUDE_NAMES.add(excludeToken);
 		}
 		catch (GenerationException e) 
 		{
@@ -81,17 +87,34 @@ public class TransformerUtils
 	public static boolean isIncluded(UMLClass klass)
 	{
 		String fqcn = getFQCN(klass);
-		if(fqcn.indexOf(INCLUDE_PACKAGE) > 0 && fqcn.indexOf(EXCLUDE_PACKAGE)<=0)
+		String pkgName = getFullPackageName(klass);
+
+		if(INCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_NAMES.contains(fqcn))
 			return true;
-		return false;
+
+		boolean included = false;
+		for(String includePkg: INCLUDE_PACKAGE_NAMES)
+			included |= (fqcn.indexOf(includePkg) > 0);
+		for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
+			included &= (fqcn.indexOf(excludePkg) < 0);
+		included &= !EXCLUDE_NAMES.contains(fqcn);
+		
+		return included;
 	}
 
 	public static boolean isIncluded(UMLPackage pkg)
 	{
-		String fullPkgName = getFullPackageName(pkg);
-		if(fullPkgName.indexOf(INCLUDE_PACKAGE) > 0 && fullPkgName.indexOf(EXCLUDE_PACKAGE)<=0)
+		String pkgName = getFullPackageName(pkg);
+		if(INCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_PACKAGE_NAMES.contains(pkgName))
 			return true;
-		return false;
+		
+		boolean included = false;
+		for(String includePkg: INCLUDE_PACKAGE_NAMES)
+			included |= (pkgName.indexOf(includePkg) > 0);
+		for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
+			included &= (pkgName.indexOf(excludePkg) < 0);
+
+		return included;
 	}
 	
 	public static String getEmptySpace(Integer count)
