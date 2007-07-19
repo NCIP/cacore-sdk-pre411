@@ -41,6 +41,14 @@ taglib>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
+	<servlet>
+		<servlet-name>httpinvoker</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>	
+
     <servlet>
         <servlet-name>AxisServlet</servlet-name>
         <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class> 
@@ -56,6 +64,12 @@ taglib>
     	<servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>        	
     </servlet>
     
+    
+	<servlet-mapping>
+		<servlet-name>httpinvoker</servlet-name>
+		<url-pattern>/http/*</url-pattern>
+	</servlet-mapping>
+        
     <servlet-mapping>
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>/ws/AxisServlet</url-pattern>
