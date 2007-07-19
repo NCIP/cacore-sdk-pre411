@@ -207,15 +207,20 @@
 		<copy todir="${package.client.remote.lib.dir}">
 			<fileset dir="${system.dir}\${system.dist.dir}">
 				<include name="${system.file.output.client.name}"/>
+			</fileset>
+			
+			<fileset dir="${system.dir}\${system.lib.dir}">
+				<include name="${system.file.output.client.name}"/>
+				<include name="acegi*.*"/>
+				<include name="asm*.*"/>
+				<include name="antlr*.*"/>
+				<include name="cglib*.*"/>
+				<include name="commons-codec*.*"/>
+				<include name="commons-collection*.*"/>
 				<include name="commons-logging*.*"/>
+				<include name="hibernate*.*"/>
 				<include name="log4j*.*"/>
 				<include name="spring*.*"/>
-				<include name="cglib*.*"/>
-				<include name="asm*.*"/>
-				<include name="hibernate*.*"/>
-				<include name="antlr*.*"/>
-				<include name="acegi*.*"/>
-				<include name="commons-codec*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 		</copy>
@@ -228,8 +233,26 @@
 		<SDKecho message="${ant.project.name}: Packaging the local client"/>
 		<copy todir="${package.client.local.lib.dir}">
 			<fileset dir="${system.dir}\${system.dist.dir}">
-				<exclude name="${system.file.output.web.name}"/>
-				<exclude name="${system.file.output.ws.name}"/>
+				<include name="${system.file.output.client.name}"/>
+				<include name="${system.file.output.core.name}"/>
+			</fileset>
+			<fileset dir="${system.dir}\${system.lib.dir}">
+				<include name="${system.file.output.client.name}"/>
+				<include name="acegi*.*"/>
+				<include name="asm*.*"/>
+				<include name="antlr*.*"/>
+				<include name="c3p0*.*"/>
+				<include name="cglib*.*"/>
+				<include name="commons-codec*.*"/>
+				<include name="commons-collection*.*"/>
+				<include name="commons-logging*.*"/>
+				<include name="dom4j*.*"/>
+				<include name="ehcache*.*"/>
+				<include name="hibernate*.*"/>
+				<include name="jta*.*"/>	
+				<include name="log4j*.*"/>
+				<include name="ojdbc*.*"/>
+				<include name="spring*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 			<fileset dir="${build.jar.dir}" includes="${orm.file}" />
@@ -245,9 +268,10 @@
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 			</manifest>
-			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar" excludes="servlet.jar" />
+			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar"/>
 			<lib dir="${build.jar.dir}" includes="${bean.file}" />
 			<lib dir="${build.jar.dir}" includes="${orm.file}" />
+			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar" excludes="servlet.jar"/>
 			<fileset dir="${build.conf.system.web.dir}">
 				<include name="**/*"/>
 				<exclude name="**/web.xml"/>
