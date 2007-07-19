@@ -459,6 +459,8 @@ public class TransformerUtils
 	 * @return
 	 */
 	public static boolean isMany2One(UMLAssociationEnd thisEnd, UMLAssociationEnd otherEnd) {
+		if((thisEnd.getRoleName().equals("buttonCollection")) || otherEnd.getRoleName().equals("buttonCollection"))
+				System.out.println("");
 		return isAssociationEndMany(thisEnd) && !isAssociationEndMany(otherEnd);
 	}	
 	/**
@@ -467,6 +469,8 @@ public class TransformerUtils
 	 * @return
 	 */
 	public static boolean isOne2Many(UMLAssociationEnd thisEnd,UMLAssociationEnd otherEnd) {
+		if((thisEnd.getRoleName().equals("buttonCollection")) || otherEnd.getRoleName().equals("buttonCollection"))
+			System.out.println("");
 		return !isAssociationEndMany(thisEnd) && isAssociationEndMany(otherEnd);
 	}
 	
@@ -719,15 +723,42 @@ public class TransformerUtils
 
 	}	
 	
-	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, Boolean throwException) throws GenerationException
+	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, UMLClass assocKlass, UMLAssociationEnd thisEnd, Boolean throwException, Boolean isJoin) throws GenerationException
 	{
-		int min = throwException ? 1 :0;
-		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass) +"."+ otherEnd.getRoleName(),false,min,1);
-	}
+		String col1 = getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass) +"."+ otherEnd.getRoleName(),false,0,1);
+		String col2 = getColumnName(table,TV_ASSOC_COLUMN,getFQCN(assocKlass) +"."+ thisEnd.getRoleName(),false,0,1);
+		String col3 = getColumnName(table,TV_INVERSE_ASSOC_COLUMN,getFQCN(assocKlass) +"."+ thisEnd.getRoleName(),false,0,1);
+		
+		if("".equals(col1)) col1=null;
+		if("".equals(col2)) col2=null;
+		if("".equals(col3)) col3=null;
+		
+		if((col1==null && col3==null && isJoin && throwException) || (col1==null && col2==null && !isJoin && throwException))
+			throw new GenerationException("Could not determine the column for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
+		/*if(col1!=null && col2!=null && !col1.equals(col2))
+			throw new GenerationException("More than one column found for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
+		if(col1!=null && col3!=null && !col1.equals(col3))
+			throw new GenerationException("More than one column found for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
+		if(col2!=null && col3!=null && !col2.equals(col3))
+			throw new GenerationException("More than one column found for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
+		*/
+		if(isJoin)
+		{
+			return col1==null ? col3 : col1;
+		}
+		else
+		{
+			return col1==null ? col2 : col1;
+			
+		}
+/*		if(col1!=null) return col1;
+		else if (col3!=null) return col3;
+		else return col2;
+*/	}
 
-	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd) throws GenerationException
+	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, UMLClass assocKlass, UMLAssociationEnd thisEnd, Boolean isJoin) throws GenerationException
 	{
-		return findAssociatedColumn(table,klass, otherEnd, true);
+		return findAssociatedColumn(table,klass, otherEnd, assocKlass, thisEnd, true, isJoin);
 	}
 
 	public static String findInverseColumnValue(UMLClass table,UMLClass klass, UMLAssociationEnd thisEnd) throws GenerationException

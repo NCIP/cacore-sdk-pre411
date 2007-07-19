@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-07-17 17:31:27">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-07-19 12:21:41">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -3238,7 +3238,7 @@
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{4CF8D0FD-AE1C-48b6-B948-8D785EED1668}"/>
 												<UML:TaggedValue tag="ea_localid" value="1357"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant.professor" xmi.id="EAID_749C7AC6_542E_43E3_854C_48048B1A8936"/>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor.assistantCollection" xmi.id="EAID_749C7AC6_542E_43E3_854C_48048B1A8936"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="FK_ASSISTANT_PROFESSOR" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -3659,7 +3659,7 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{19707C28-73A1-4838-8ACB-CE652214F479}"/>
 												<UML:TaggedValue tag="ea_localid" value="1360"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle.bag" xmi.id="EAID_CCF90474_CA8B_4bf3_8ABD_E057FFD8E412"/>
+												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag.handle" xmi.id="EAID_77B12AF0_F550_441f_9F09_C64E9AD70A94"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="HANDLE_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3688,7 +3688,6 @@
 												<UML:TaggedValue tag="ea_guid" value="{87914F83-5AA8-4fbb-B801-2E3B0DD13EDB}"/>
 												<UML:TaggedValue tag="ea_localid" value="1361"/>
 												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag.handle" xmi.id="EAID_45ADD144_189C_487a_B470_B75C8E445DDE"/>
-												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle.bag" xmi.id="EAID_9576503F_B8DC_4808_831D_5EF6E3DC2415"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="FK_BAG_HANDLE_BAG" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -4843,7 +4842,7 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{F34FEC25-F127-4f4b-8857-E1D2281E8F77}"/>
 												<UML:TaggedValue tag="ea_localid" value="1371"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Album.songCollection" xmi.id="EAID_D9C5E1BD_D6D7_4bc2_BF98_CFA4F99BC057"/>
+												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Song.album" xmi.id="EAID_034FA925_135F_49e7_B6CF_1EE3432C8B35"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="PK_ALBUM_SONG" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -6155,7 +6154,7 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{91518FE2-28F0-4425-8A2D-B6C51E6C6393}"/>
 												<UML:TaggedValue tag="ea_localid" value="1383"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw.bride" xmi.id="EAID_96A9C72F_07DF_4194_874A_158CC23F4B22"/>
+												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride.mother" xmi.id="EAID_3EBFF3F1_2ED9_475d_B3E0_6352F215E7EC"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="IN_LAW_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -6183,7 +6182,6 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{4DDA068C-BC9D-42a7-92DD-460BAEF58FC6}"/>
 												<UML:TaggedValue tag="ea_localid" value="1384"/>
-												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw.bride" xmi.id="EAID_D25AAC10_1F55_419c_9BE8_4B62940C9E86"/>
 												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride.mother" xmi.id="EAID_EAB4825E_BB48_4c79_8798_D3A7379DCB56"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
@@ -10440,7 +10438,7 @@
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{2FE18FF8-8151-469a-8FD1-BC52F695D841}"/>
 												<UML:TaggedValue tag="ea_localid" value="1440"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key.keyRing" xmi.id="EAID_E6850C24_812F_41D3_973D_622AE2D2CFE0"/>
+												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain.keyCollection" xmi.id="EAID_E6850C24_812F_41D3_973D_622AE2D2CFE0"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="FK_KEY_KEYCHAIN" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -14414,7 +14412,7 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{2CB1D071-50A3-4638-91B2-90CEC7EA5B5D}"/>
 												<UML:TaggedValue tag="ea_localid" value="1483"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Button.shirt" xmi.id="EAID_757B4DF0_8F2F_49e4_9B25_12DE31CCA397"/>
+												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.withjoin.Shirt.buttonCollection" xmi.id="EAID_7F647F0D_4C4C_4b00_9B7B_BCFE740B2D83"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="BUTTON_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -15132,7 +15130,7 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{C8865078-3967-4fc5-ADBB-D82F62FAA918}"/>
 												<UML:TaggedValue tag="ea_localid" value="1489"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw.bride" xmi.id="EAID_3F66903F_79C7_4e03_8F2D_D6A1598C7009"/>
+												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride.father" xmi.id="EAID_5961805C_617F_4046_AC97_73092637E739"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="IN_LAW_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -15161,7 +15159,6 @@
 												<UML:TaggedValue tag="ea_guid" value="{7ACE12EF-183F-47c3-959B-92780072DEDC}"/>
 												<UML:TaggedValue tag="ea_localid" value="1490"/>
 												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride.father" xmi.id="EAID_7DA5889F_9510_487b_91A8_32D43DB5221A"/>
-												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw.bride" xmi.id="EAID_D00D1F75_4CAA_4522_9CB3_E7A49ABDE3D4"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="FK_BRIDE_FATHER_IN_LAW_BRIDE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -19808,7 +19805,6 @@
 												<UML:TaggedValue tag="ea_guid" value="{4ED55155-385F-48c8-8BD1-E25D96EA4646}"/>
 												<UML:TaggedValue tag="ea_localid" value="1540"/>
 												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book.authorCollection" xmi.id="EAID_4A5D5B0E_C44E_409E_A568_F86C55F63C94"/>
-												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author.bookCollection" xmi.id="EAID_B1ABF6FF_8550_41CA_937E_BE03717BAAC6"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="BOOK_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -19835,7 +19831,7 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{17821D98-FCFF-45ec-972E-328A28B0A59C}"/>
 												<UML:TaggedValue tag="ea_localid" value="1541"/>
-												<UML:TaggedValue tag="implements-association" value="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author.bookCollection" xmi.id="EAID_92E7BF90_E1AB_477F_A0B9_A70840E08AF5"/>
+												<UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book.authorCollection" xmi.id="EAID_50E5CC1D_F044_4848_8406_DB49A100EFEE"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Operation name="FK_AUTHOR_BOOK_AUTHOR" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -20858,7 +20854,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="950"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=1c00;LNK=5e48;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=1c00;LNK=81bc;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={F36E7835-6767-4d28-ACA1-D25EF4631748}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={0F0E92DD-E304-40aa-9ADE-4BEB771EAF2D}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -20912,7 +20908,7 @@
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="0..*" name="creditCardCollection" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D">
+																								<UML:AssociationEnd visibility="public" multiplicity="0..*" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -21106,7 +21102,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="953"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=e142;LNK=5e48;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=e142;LNK=81bc;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={A978FFB0-0839-4f7e-A8C4-21EB741F0691}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={99A644B0-2028-4462-8301-4D34931B9995}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -21362,7 +21358,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="956"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="ATT=7660;LNK=2e38;"/>
+																										<UML:TaggedValue tag="eventflags" value="ATT=7660;LNK=a503;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={377DD940-923A-45c0-8BF2-70C00B6C2082}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={DB8B1781-754E-4e83-B780-F316B364C451}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -21441,7 +21437,7 @@
 																										<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																									</UML:ModelElement.taggedValue>
 																									<UML:Association.connection>
-																										<UML:AssociationEnd visibility="public" multiplicity="*" name="shoesCollection" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_DF13C79C_9FDF_4de7_BD1E_0240185CFFB3">
+																										<UML:AssociationEnd visibility="public" multiplicity="*" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_DF13C79C_9FDF_4de7_BD1E_0240185CFFB3">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="source"/>
@@ -21472,7 +21468,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="957"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="ATT=00a5;LNK=1a93;"/>
+																										<UML:TaggedValue tag="eventflags" value="ATT=00a5;LNK=a503;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={CE8EF71E-C0D4-40a0-A664-EEDD62916415}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={DF13C79C-9FDF-4de7-BD1E-0240185CFFB3}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -22462,7 +22458,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="971"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=1114;LNK=fe33;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=1114;LNK=5155;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={5BDBAA34-DC4C-4302-A478-0A418B435C13}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={00F8EA6B-E027-4bad-B011-41830FF87842}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -22541,7 +22537,7 @@
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="1" name="professor" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_00F8EA6B_E027_4bad_B011_41830FF87842">
+																								<UML:AssociationEnd visibility="public" multiplicity="1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_00F8EA6B_E027_4bad_B011_41830FF87842">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -22719,7 +22715,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="973"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=fff4;LNK=2ecc;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=fff4;LNK=5155;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={3760E66C-C5C0-4947-AA39-B27D6F4ABBE1}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={5CA73A59-BD41-4920-B53C-AC571E123E64}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -24950,7 +24946,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1005"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=84df;LNK=54dd;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=84df;LNK=e21d;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={DBC751CB-96DA-4b27-A732-1792B925BD90}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={178351E2-A663-474e-AE08-943831F4CF2B}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -25030,7 +25026,7 @@
 																								<UML:TaggedValue tag="correlation-table" value="AUTHOR_BOOK" xmi.id="EAID_66E1BD36_D958_44c4_B6A7_6A6F6EBC6988"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="0..*" name="bookCollection" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_178351E2_A663_474e_AE08_943831F4CF2B">
+																								<UML:AssociationEnd visibility="public" multiplicity="0..*" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_178351E2_A663_474e_AE08_943831F4CF2B">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -25062,7 +25058,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1006"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=cf65;LNK=54ed;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=cf65;LNK=e21d;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={A6ECF150-3117-46fc-8135-4D11C713A306}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={775B56C3-D694-417a-A41E-2926FD5F3160}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -25207,7 +25203,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1008"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=a5a7;LNK=a32c;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=a5a7;LNK=0b7a;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B61F655F-B2ED-4e9e-8B93-0276A20DF784}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={29924AF0-3BB6-4c6f-8F06-17F1530B416E}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -25286,7 +25282,7 @@
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="1..*" name="chefCollection" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E">
+																								<UML:AssociationEnd visibility="public" multiplicity="1..*" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -25344,7 +25340,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1009"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=c9b4;LNK=a33c;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=c9b4;LNK=0b7a;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B661CB40-010F-4939-B1EE-B453EF58D3CF}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={97A1477D-77DA-499c-B516-8FEAEDA36D04}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -25436,7 +25432,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1011"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=3539;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=33e2;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={C3ABF812-2188-4e4c-BAC6-DDC8BA0A48DB}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={0C0D26AA-6F2C-48c2-BE76-D4E5A4B50C96}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -25522,7 +25518,7 @@
 																												<UML:TaggedValue tag="ea_end" value="source"/>
 																											</UML:ModelElement.taggedValue>
 																										</UML:AssociationEnd>
-																										<UML:AssociationEnd visibility="public" multiplicity="*" name="songCollection" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_E28B033A_B5A6_4ec5_A5F9_0AF41625877D">
+																										<UML:AssociationEnd visibility="public" multiplicity="*" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_E28B033A_B5A6_4ec5_A5F9_0AF41625877D">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="target"/>
@@ -25547,7 +25543,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1012"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=3539;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=33e2;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={5AAA1AB5-C4A8-499e-A6AE-582C60F89DF9}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={E28B033A-B5A6-4ec5-A5F9-0AF41625877D}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -26305,7 +26301,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1022"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=1fb1;LNK=a291;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=1fb1;LNK=9bee;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B47E68D5-2525-4780-ADA0-671ECE99C9B6}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={024059C8-1B42-42ec-AB1D-FCA70ECC0E0B}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -26384,7 +26380,7 @@
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="1" name="keyRing" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_5C5D8562_D2C0_4b88_B6F7_534CF2D13B55">
+																								<UML:AssociationEnd visibility="public" multiplicity="1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_5C5D8562_D2C0_4b88_B6F7_534CF2D13B55">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -26416,7 +26412,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1023"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=8774;LNK=a282;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=8774;LNK=9bde;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={694FF5DE-4350-4ef6-979C-69823B41C72F}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={5C5D8562-D2C0-4b88-B6F7-534CF2D13B55}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -26534,7 +26530,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1025"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=5a44;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=f014;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={1C16C44C-42C9-48fa-A4EA-4AB4E580A30F}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={43F17C30-FE26-4f70-A7E0-081019697EF8}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -26595,7 +26591,7 @@
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="style" value="3"/>
 																										<UML:TaggedValue tag="ea_type" value="Association"/>
-																										<UML:TaggedValue tag="direction" value="Unspecified"/>
+																										<UML:TaggedValue tag="direction" value="Source -&gt; Destination"/>
 																										<UML:TaggedValue tag="linemode" value="3"/>
 																										<UML:TaggedValue tag="linecolor" value="-1"/>
 																										<UML:TaggedValue tag="linewidth" value="0"/>
@@ -26614,13 +26610,13 @@
 																										<UML:TaggedValue tag="correlation-table" value="SHIRT_BUTTON" xmi.id="EAID_35149D8A_1BCB_4182_9FED_9EFDD730B66C"/>
 																									</UML:ModelElement.taggedValue>
 																									<UML:Association.connection>
-																										<UML:AssociationEnd visibility="public" multiplicity="0" name="shirt" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_43F17C30_FE26_4f70_A7E0_081019697EF8">
+																										<UML:AssociationEnd visibility="public" multiplicity="0" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_43F17C30_FE26_4f70_A7E0_081019697EF8">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="source"/>
 																											</UML:ModelElement.taggedValue>
 																										</UML:AssociationEnd>
-																										<UML:AssociationEnd visibility="public" multiplicity="1.." name="buttonCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_7ED8208F_0BDC_496e_901A_343AB0932A2E">
+																										<UML:AssociationEnd visibility="public" multiplicity="*" name="buttonCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_7ED8208F_0BDC_496e_901A_343AB0932A2E">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="target"/>
@@ -26645,7 +26641,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1026"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=5a44;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=f014;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={F72AAE31-7A07-4b1f-8B96-C1E09E5D8CF8}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={7ED8208F-0BDC-496e-901A-343AB0932A2E}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -27299,7 +27295,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1035"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=3263;LNK=f211;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=3263;LNK=4b3f;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={9F9A0D7E-8271-4412-81DC-BEB3456AD2DC}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={AD703EC5-9168-4615-8D3E-9DC3D586D9A8}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -27378,7 +27374,7 @@
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="1" name="child" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9">
+																								<UML:AssociationEnd visibility="public" multiplicity="1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -27414,7 +27410,7 @@
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="1" name="child" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9">
+																								<UML:AssociationEnd visibility="public" multiplicity="1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -27446,7 +27442,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1036"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=ea6d;LNK=f201;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=ea6d;LNK=4b3f;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={5DEFBE5A-67DC-42ea-8277-35B51FE5EE08}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={F1BCE88D-CB0D-4552-8958-81854FCFABF9}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -27538,7 +27534,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1038"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=ad25;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=62e7;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={2F77F599-75F3-4095-9B51-121B1D4DDAEE}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={4AE4D452-0643-423c-9D55-226DE635EDCB}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -27618,7 +27614,7 @@
 																										<UML:TaggedValue tag="correlation-table" value="BRIDE_FATHER_IN_LAW" xmi.id="EAID_BBFD1049_E9B4_49f7_BBB7_CCC8AFF493FA"/>
 																									</UML:ModelElement.taggedValue>
 																									<UML:Association.connection>
-																										<UML:AssociationEnd visibility="public" multiplicity="0..1" name="bride" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD">
+																										<UML:AssociationEnd visibility="public" multiplicity="0..1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="source"/>
@@ -27655,7 +27651,7 @@
 																										<UML:TaggedValue tag="correlation-table" value="BRIDE_MOTHER_IN_LAW" xmi.id="EAID_F7E47507_4486_4ddf_BF13_F0FFD3F1747A"/>
 																									</UML:ModelElement.taggedValue>
 																									<UML:Association.connection>
-																										<UML:AssociationEnd visibility="public" name="bride" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD">
+																										<UML:AssociationEnd visibility="public" multiplicity="1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_978ACAFD_E5BF_4d08_949E_980278DB7ADD">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="source"/>
@@ -27686,7 +27682,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1039"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=ad25;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=62e7;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={52D4A66D-B900-403d-BB32-F92B93DB7C9D}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={978ACAFD-E5BF-4d08-949E-980278DB7ADD}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -27784,7 +27780,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1040"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=37b7;LNK=f0c2;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=37b7;LNK=21ae;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={78F99156-D6F9-45e8-9131-0997AC3368A3}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={2DA26850-8BCA-4c42-9186-B151F9ADB196}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -27863,7 +27859,7 @@
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
-																								<UML:AssociationEnd visibility="public" multiplicity="1" name="person" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_2DA26850_8BCA_4c42_9186_B151F9ADB196">
+																								<UML:AssociationEnd visibility="public" multiplicity="1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_2DA26850_8BCA_4c42_9186_B151F9ADB196">
 																									<UML:ModelElement.taggedValue>
 																										<UML:TaggedValue tag="containment" value="Unspecified"/>
 																										<UML:TaggedValue tag="ea_end" value="source"/>
@@ -27895,7 +27891,7 @@
 																								<UML:TaggedValue tag="status" value="Proposed"/>
 																								<UML:TaggedValue tag="ea_localid" value="1041"/>
 																								<UML:TaggedValue tag="ea_eleType" value="element"/>
-																								<UML:TaggedValue tag="eventflags" value="ATT=9652;LNK=f0d2;"/>
+																								<UML:TaggedValue tag="eventflags" value="ATT=9652;LNK=21ae;"/>
 																								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={BFC2088A-BD73-4a29-BB85-26EDAF16E4F9}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={AB8D6FAC-AB89-4d65-98C2-6AD93982C3E0}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																							</UML:ModelElement.taggedValue>
@@ -28013,7 +28009,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1043"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=7cce;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=6cd1;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={358B3462-BE83-49bc-9F81-00F6FDB94196}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={D6630603-D640-4865-B78B-FD2D5878ACD0}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -28093,7 +28089,7 @@
 																										<UML:TaggedValue tag="correlation-table" value="BAG_HANDLE" xmi.id="EAID_EDFE3B3D_D6BD_4956_91F5_0133517F2AC6"/>
 																									</UML:ModelElement.taggedValue>
 																									<UML:Association.connection>
-																										<UML:AssociationEnd visibility="public" multiplicity="0..1" name="bag" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_E29943AF_01E3_4933_8D13_9C1DBD97B3FB">
+																										<UML:AssociationEnd visibility="public" multiplicity="0..1" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_E29943AF_01E3_4933_8D13_9C1DBD97B3FB">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="source"/>
@@ -28124,7 +28120,7 @@
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1044"/>
 																										<UML:TaggedValue tag="ea_eleType" value="element"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=7cce;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=6cd1;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={A794B7CA-4D81-4537-8119-74DFA1DC4F6F}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={E29943AF-01E3-4933-8D13-9C1DBD97B3FB}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -30638,7 +30634,7 @@
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="author" value="The Administrator"/>
 				<UML:TaggedValue tag="created_date" value="2006-10-24 15:15:06"/>
-				<UML:TaggedValue tag="modified_date" value="2007-06-22 12:08:23"/>
+				<UML:TaggedValue tag="modified_date" value="2007-07-19 11:10:00"/>
 				<UML:TaggedValue tag="package" value="EAPK_13C2A393_A2C6_4d7c_9441_319ED9A21FBA"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
@@ -30647,7 +30643,7 @@
 				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=1282;Top=877;Right=1557;Bottom=1074;" subject="EAID_A42290A8_B76F_499f_8A50_9F01885BDEC2" seqno="1" style="DUID=801FFE67;"/>
+				<UML:DiagramElement geometry="Left=1284;Top=877;Right=1559;Bottom=1074;" subject="EAID_A42290A8_B76F_499f_8A50_9F01885BDEC2" seqno="1" style="DUID=801FFE67;"/>
 				<UML:DiagramElement geometry="Left=798;Top=905;Right=1077;Bottom=1102;" subject="EAID_49C6D154_6B56_4412_9754_F3FF93315A77" seqno="2" style="DUID=C4B082C6;"/>
 				<UML:DiagramElement geometry="Left=1140;Top=1251;Right=1289;Bottom=1366;" subject="EAID_21C905E6_09FC_44b9_B1FC_7B56FE88E596" seqno="3" style="DUID=2D600BF4;"/>
 				<UML:DiagramElement geometry="Left=1130;Top=619;Right=1272;Bottom=734;" subject="EAID_5625A75F_9BA0_47e4_93DA_D9B46A6D69ED" seqno="4" style="DUID=61AB90F8;"/>
@@ -30721,13 +30717,13 @@
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="author" value="The Administrator"/>
 				<UML:TaggedValue tag="created_date" value="2006-11-09 17:08:46"/>
-				<UML:TaggedValue tag="modified_date" value="2007-06-21 14:24:23"/>
+				<UML:TaggedValue tag="modified_date" value="2007-07-19 11:25:04"/>
 				<UML:TaggedValue tag="package" value="EAPK_13C2A393_A2C6_4d7c_9441_319ED9A21FBA"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
 				<UML:TaggedValue tag="ea_localid" value="54"/>
 				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=799;DocSize.cy=1067;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=1;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=;ExplicitNavigability=0;"/>
-				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;Layout=;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
+				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
 				<UML:DiagramElement geometry="Left=536;Top=616;Right=677;Bottom=731;" subject="EAID_2E2C2518_FA4E_411d_A303_C3983790169A" seqno="1" style="DUID=6BBE59D9;"/>
@@ -30745,17 +30741,17 @@
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="author" value="The Administrator"/>
 				<UML:TaggedValue tag="created_date" value="2006-10-24 12:11:26"/>
-				<UML:TaggedValue tag="modified_date" value="2007-06-22 20:29:51"/>
+				<UML:TaggedValue tag="modified_date" value="2007-07-19 10:33:02"/>
 				<UML:TaggedValue tag="package" value="EAPK_CB699A04_2FDB_43de_9F15_2FBB5DA90527"/>
 				<UML:TaggedValue tag="type" value="Logical"/>
 				<UML:TaggedValue tag="swimlanes" value="locked=false;orientation=0;width=0;inbar=false;names=false;color=0;bold=false;fcol=0;;cls=0;"/>
 				<UML:TaggedValue tag="ea_localid" value="55"/>
 				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=0;PPgs.cy=0;DocSize.cx=799;DocSize.cy=1067;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=1;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=;ExplicitNavigability=0;"/>
-				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;"/>
+				<UML:TaggedValue tag="styleex" value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;TDurLow=0;TDurHigh=100;TDurUnit=;TDurHide=0;TConnectorNotation=;TExplicitNavigability=0;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=1451;Top=615;Right=1558;Bottom=685;" subject="EAID_C47FB911_44C9_406b_91EB_6A61BABBC9EA" seqno="1" style="DUID=6615E8F8;LBL=;"/>
-				<UML:DiagramElement geometry="Left=1275;Top=619;Right=1403;Bottom=689;" subject="EAID_1852F1E9_F317_4c7c_AC18_D5FEB12D9FB0" seqno="2" style="DUID=18B3A429;LBL=;"/>
+				<UML:DiagramElement geometry="Left=1423;Top=617;Right=1530;Bottom=687;" subject="EAID_C47FB911_44C9_406b_91EB_6A61BABBC9EA" seqno="1" style="DUID=6615E8F8;LBL=;"/>
+				<UML:DiagramElement geometry="Left=1247;Top=619;Right=1375;Bottom=689;" subject="EAID_1852F1E9_F317_4c7c_AC18_D5FEB12D9FB0" seqno="2" style="DUID=18B3A429;LBL=;"/>
 				<UML:DiagramElement geometry="Left=1451;Top=465;Right=1541;Bottom=535;" subject="EAID_9974BB75_A1C7_45fb_905B_5F6E387FF461" seqno="3" style="DUID=407E28EE;LBL=;"/>
 				<UML:DiagramElement geometry="Left=1313;Top=465;Right=1403;Bottom=535;" subject="EAID_5BADA45A_1766_4847_B60A_55E867A29D2F" seqno="4" style="DUID=5D10E36D;LBL=;"/>
 				<UML:DiagramElement geometry="Left=1323;Top=327;Right=1421;Bottom=397;" subject="EAID_0E249559_1FE4_4c11_81C1_8E5E2B50EAD1" seqno="5" style="DUID=99259FC6;LBL=;"/>
@@ -30814,8 +30810,8 @@
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_542CA101_F856_48b7_A29F_70BD24061197" style="Mode=3;EOID=99259FC6;SOID=407E28EE;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_677C4A41_E221_417f_9BEE_4E22692AB76C" style="Mode=3;EOID=5D10E36D;SOID=18B3A429;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_B05E169E_522F_49fe_AF5B_20630E2070FB" style="Mode=2;EOID=098E3373;SOID=6495586A;Hidden=0;"/>
-				<UML:DiagramElement geometry="EDGE=2;$LLB=CX=16:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=CX=57:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMT=;LMB=;LRT=CX=103:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=26:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;Path=;" subject="EAID_DD6FBBE0_A141_4524_A096_1662E229AA3E" style="Mode=2;EOID=1A009B99;SOID=D376E324;Hidden=0;"/>
-				<UML:DiagramElement geometry="EDGE=2;$LLB=CX=26:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=CX=112:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMT=;LMB=;LRT=CX=71:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=16:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;Path=;" subject="EAID_62F19555_86B0_4490_99C9_7C327D01A2FF" style="Mode=2;EOID=4138E02A;SOID=0AF97049;Hidden=0;"/>
+				<UML:DiagramElement geometry="EDGE=2;$LLB=CX=16:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=;LMT=;LMB=;LRT=CX=103:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=26:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;Path=;" subject="EAID_DD6FBBE0_A141_4524_A096_1662E229AA3E" style="Mode=2;EOID=1A009B99;SOID=D376E324;Hidden=0;"/>
+				<UML:DiagramElement geometry="EDGE=2;$LLB=CX=26:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=;LMT=;LMB=;LRT=CX=71:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=16:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;Path=;" subject="EAID_62F19555_86B0_4490_99C9_7C327D01A2FF" style="Mode=2;EOID=4138E02A;SOID=0AF97049;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_E3B70B79_00AA_4cc1_9BA9_F94A63297A5C" style="Mode=3;EOID=C51BD2C5;SOID=0AF97049;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_F066E759_B7F0_471a_87DA_558102615B00" style="Mode=3;EOID=8783B88F;SOID=4CF1E179;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_D4175EB7_490A_415b_B4E0_E359C79EF26F" style="Mode=3;EOID=8783B88F;SOID=6AF56C13;Hidden=0;"/>
@@ -30828,7 +30824,7 @@
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_196BAAF8_17DB_409d_89E7_D98490EE8496" style="Mode=3;EOID=FA17D49B;SOID=CB64BDCA;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_5CF2F699_4407_4a5a_8192_F434CF7AB662" style="Mode=3;EOID=FA17D49B;SOID=65F190D8;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_99E92632_8353_40d9_8CC6_C0974741C03D" style="Mode=3;EOID=E70D3CDD;SOID=F22D98C9;Hidden=0;"/>
-				<UML:DiagramElement geometry="EDGE=2;$LLB=CX=14:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=CX=90:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LMT=;LMB=;LRT=CX=56:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=16:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;Path=;" subject="EAID_76516F95_5FCC_4b90_9D13_CD61C224383A" style="Mode=3;EOID=1E9993B5;SOID=F22D98C9;Hidden=0;"/>
+				<UML:DiagramElement geometry="EDGE=2;SX=-2;SY=0;EX=-2;EY=0;$LLB=CX=14:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LLT=;LMT=;LMB=;LRT=CX=56:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;LRB=CX=16:CY=15:OX=0:OY=0:HDN=0:BLD=0:ITA=0:UND=0:CLR=-1:ALN=0:DIR=0:ROT=0;Path=;" subject="EAID_76516F95_5FCC_4b90_9D13_CD61C224383A" style="Mode=3;EOID=1E9993B5;SOID=F22D98C9;Hidden=0;"/>
 				<UML:DiagramElement geometry="EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;Path=;" subject="EAID_AE8518B8_E8DA_40ab_818A_4CF243FB09EA" style="Mode=3;EOID=D376E324;SOID=342A85F3;Hidden=0;"/>
 			</UML:Diagram.element>
 		</UML:Diagram>

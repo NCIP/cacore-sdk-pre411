@@ -25,8 +25,8 @@ import java.util.List;
  * <LI>Class name should be present</LI>
  * <LI>Class name should not contain empty spaces</LI>
  * <LI>Class name should start with a character</LI>
- * <LI>Association end should have a role name</LI>
- * <LI>Association end should not contain spaces</LI>
+ * <LI>Navigable association end must have a role name</LI>
+ * <LI>Association end must not contain spaces</LI>
  * <LI>Association end name should start with a character</LI> 
  * <LI>Associated class should be present in the included package and not excluded</LI>
  * <LI>Association can not be made to classes in java.lang and java.util packages</LI>
@@ -109,7 +109,7 @@ public class UMLLogicalModelValidator implements Validator
 				if(otherEnd.getRoleName()!=null && otherEnd.getRoleName().length()>0 && !Character.isLetter(otherEnd.getRoleName().charAt(0)))
 					errors.addError(new GeneratorError("Association role name starts with non-character value for association between "+thisClassName +" and "+ otherClassName));
 				
-				if(thisEnd.getRoleName()==null || thisEnd.getRoleName().trim().length()==0 || otherEnd.getRoleName()==null || otherEnd.getRoleName().trim().length()==0 )
+				if((thisEnd.isNavigable() && (thisEnd.getRoleName()==null || thisEnd.getRoleName().trim().length()==0 ))|| (otherEnd.isNavigable() && (otherEnd.getRoleName()==null || otherEnd.getRoleName().trim().length()==0 )))
 					errors.addError(new GeneratorError("Association end name not specified for association between "+thisClassName +" and "+ otherClassName));
 				if((thisEnd.getRoleName()!= null && thisEnd.getRoleName().indexOf(' ') > 0 ) || (otherEnd.getRoleName()!= null && otherEnd.getRoleName().indexOf(' ') > 0 ))
 					errors.addError(new GeneratorError("Association end name contains empty spaces for association between "+thisClassName +" and "+ otherClassName));

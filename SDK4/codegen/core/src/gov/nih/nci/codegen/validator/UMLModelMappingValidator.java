@@ -230,8 +230,8 @@ import java.util.Map;
 					if(TransformerUtils.isMany2Many(thisEnd,otherEnd))
 					{
 						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
-						String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
-						String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd);
+						String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd,true);
+						String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 						String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 						if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
 							errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
@@ -241,10 +241,10 @@ import java.util.Map;
 						if (correlationTable == null) //One to Many - No Join Table
 						{
 							UMLClass assocTable = TransformerUtils.getTable(assocKlass);
-							String keyColumnName = TransformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd,klass,otherEnd, false);
 						}else{ //One to Many - Join Table
-							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
-							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
+							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
 								errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
@@ -253,10 +253,10 @@ import java.util.Map;
 						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
 						if (correlationTable == null) //Many to One - No Join Table
 						{
-							String keyColumnName = TransformerUtils.findAssociatedColumn(table,klass,otherEnd);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(table,klass,otherEnd,assocKlass,thisEnd, false);
 						}else{ // Many to One - Join Table
-							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
-							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
+							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
 								errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
@@ -267,13 +267,13 @@ import java.util.Map;
 						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
 						if (correlationTable == null) //One to One - No Join Table
 						{
-							String keyColumnName = TransformerUtils.findAssociatedColumn(table,klass,otherEnd, false);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(table,klass,otherEnd,assocKlass,thisEnd,false, false);
 							Boolean keyColumnPresent = (keyColumnName!=null && !"".equals(keyColumnName));
 							if(!thisEnd.isNavigable() && !keyColumnPresent)
 									errors.addError(new GeneratorError("One to one unidirectional mapping requires key column to be present in the source class"+TransformerUtils.getFQCN(klass)));
 						}else{
-							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd);
-							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
+							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
 								errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
