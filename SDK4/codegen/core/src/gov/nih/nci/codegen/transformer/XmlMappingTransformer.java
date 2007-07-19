@@ -47,6 +47,9 @@ public class XmlMappingTransformer implements Transformer {
 	private boolean includeAssociations = false;    
 	private boolean includeFieldHandler = false;    
 
+	private boolean enabled = true;
+
+	
 	/* @param model The UMLModel containing the classes for which a 
 	 * Castor Mapping file should be generated
 	 * @see gov.nih.nci.codegen.Transformer#execute(gov.nih.nci.ncicb.xmiinout.domain.UMLModel)
@@ -365,4 +368,15 @@ public class XmlMappingTransformer implements Transformer {
 	public void setNamespaceUriPrefix(String namespaceUriPrefix) {
 		this.namespaceUriPrefix = namespaceUriPrefix;
 	}
+
+
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+	
+	public Boolean isEnabled() {
+		return enabled;
+	}
+
 }

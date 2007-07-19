@@ -58,6 +58,7 @@
 		<SDKecho message="${ant.project.name}: Preparing directories"/>
 		<mkdir dir="${output.dir}"/>
 		<mkdir dir="${output.project.dir}"/>
+		<mkdir dir="${output.src.dir}"/>
 		<mkdir dir="${output.conf.dir}"/>
 		<mkdir dir="${output.codegen.config.dir}"/>
 		<mkdir dir="${build.dir}"/>
@@ -96,7 +97,15 @@
 			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
 			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
 			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />
-			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}" />	
+			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
+	
+			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${VALIDATE_LOGICAL_MODEL}"/>
+			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${VALIDATE_MODEL_MAPPING}"/>
+			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${GENERATE_HIBERNATE_MAPPING}"/>
+			<replacefilter token="@GENERATE_BEANS@" value="${GENERATE_BEANS}"/>
+			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${GENERATE_CASTOR_MAPPING}"/>
+			<replacefilter token="@GENERATE_XSD@" value="${GENERATE_XSD}"/>
+			<replacefilter token="@GENERATE_WSDD@" value="${GENERATE_WSDD}"/>
 		</replace>	
 	
 	</target>
@@ -169,7 +178,7 @@
 	<!--***********************************************************************
 	*** Compiles the generated beans 
 	*********************************************************************** -->
-	<target name="compile-beans" depends="codegen" description="Compiles the generated beans">
+	<target name="compile-beans" depends="codegen" description="Compiles the generated beans" if="${GENERATE_BEANS}">
 		<SDKecho message="${ant.project.name}: Compiling the generated beans"/>
 		<javac srcdir="${output.src.dir}" destdir="${build.classes.dir}" debug="true">
 			<include name="**/*.java"/>
@@ -192,7 +201,7 @@
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 			</manifest>
 			<include name="**/*.hbm.xml"/>
-			<include name="**/*.cfg.xml"/>
+			<include name="*.cfg.xml"/>
 			<include name="ehcache.xml"/>	
 		</jar>
 	</target>
@@ -290,7 +299,7 @@
 	<!--***********************************************************************
 	*** Generates documentation for the Java Beans
 	*********************************************************************** -->
-	<target name="doc" depends="codegen" description="Generates javadocs for the beans">
+	<target name="doc" depends="codegen" description="Generates javadocs for the beans" if="${GENERATE_BEANS}">
 		<SDKecho message="${ant.project.name}: Generating javadocs for the beans"/>
 		<javadoc packagenames="*" destdir="${build.doc.dir}" author="true"
 			private="true" version="true" use="true" windowtitle="${PROJECT_NAME} API Documentation"

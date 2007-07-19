@@ -20,4 +20,10 @@ public interface Validator
 	 */
 	public abstract GeneratorErrors validate(UMLModel model);
 	
+	/**
+	 * Determines if the generator should execute the Validator or not
+	 * @return
+	 */
+	public Boolean isEnabled();
+
 }

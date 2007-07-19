@@ -47,6 +47,8 @@ import java.util.List;
 public class UMLLogicalModelValidator implements Validator
 {
 
+	private boolean enabled = true;
+	
 	/**
 	 * See description for the this class above
 	 *  
@@ -192,5 +194,15 @@ public class UMLLogicalModelValidator implements Validator
 		} catch (GenerationException e) {
 			errors.addError(new GeneratorError("Superclass validation failed", e));
 		}
-	}	
+	}
+	
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+	
+	public Boolean isEnabled() {
+		return enabled;
+	}
+	
 }

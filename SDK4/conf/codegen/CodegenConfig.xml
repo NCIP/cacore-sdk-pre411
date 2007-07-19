@@ -9,7 +9,6 @@
 		<constructor-arg ref="UMLModel"></constructor-arg>
 		<constructor-arg index="1">
 			<list>
-				<ref bean="DataModelValidator"/>
 				<ref bean="LogicalModelValidator"/>
 				<ref bean="ModelMappingValidator"/>
 			</list>
@@ -52,9 +51,12 @@
 	<!-- 									 -->
 	<!--  Code Generation Validator			 -->
 	<!-- 									 -->
-	<bean name="DataModelValidator" class="gov.nih.nci.codegen.validator.UMLDataModelValidator"/>
-	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator"/>
-	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator"/>
+	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator">
+		<property name="enabled" value="@VALIDATE_LOGICAL_MODEL@"/>
+	</bean>
+	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator">
+		<property name="enabled" value="@VALIDATE_MODEL_MAPPING@"/>
+	</bean>
 
 	<!-- 									 -->
 	<!--  Transformers						 -->
@@ -67,6 +69,7 @@
 				<property name="suffix" value=".hbm.xml"/>				
 			</bean>
 		</property>
+		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
 	</bean>
 
 	<bean name="BeanTransformer" class="gov.nih.nci.codegen.transformer.jet.POJOTransformer">
@@ -77,6 +80,7 @@
 				<property name="suffix" value=".java"/>				
 			</bean>
 		</property>
+		<property name="enabled" value="@GENERATE_BEANS@"/>
 	</bean>
 	
 	<bean name="EHCacheTransformer" class="gov.nih.nci.codegen.transformer.jet.EHCacheTransformer">
@@ -92,6 +96,7 @@
 				<entry key="CACHE_PATH" value="@CACHE_PATH@"/>
 			</map>
 		</property>
+		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
 	</bean>
 
 	<bean name="HibernateCfgTransformer" class="gov.nih.nci.codegen.transformer.jet.HibernateCfgTransformer">
@@ -139,6 +144,7 @@
 				<entry key="INCLUDE_SEARCH_EVENT_LISTENER" value="false"/>
 			</map>
 		</property>
+		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
 	</bean>
 
 	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
@@ -152,6 +158,7 @@
 				<property name="fileName" value="xml-mapping.xml"/>
 			</bean>
 		</property>
+		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
 	</bean>
 
 	<bean name="XmlMappingUnmarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
@@ -165,6 +172,7 @@
 				<property name="fileName" value="unmarshaller-xml-mapping.xml"/>
 			</bean>
 		</property>
+		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
 	</bean>
 	
 	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
@@ -176,6 +184,7 @@
 				<property name="suffix" value=".xsd"/>	
 			</bean>
 		</property>
+		<property name="enabled" value="@GENERATE_XSD@"/>
 	</bean>	
 
 
@@ -191,7 +200,8 @@
 			<map>
 				<entry key="WEBSERVICE_NAME" value="@WEBSERVICE_NAME@"/>
 			</map>
-		</property>			
+		</property>
+		<property name="enabled" value="@GENERATE_WSDD@"/>
 	</bean>	
 	
 </beans>

@@ -99,9 +99,12 @@ import java.util.Map;
  * </UL>
  * @author Satish Patel
  *
- */public class UMLModelMappingValidator implements Validator
+ */
+public class UMLModelMappingValidator implements Validator
 {
 
+	private boolean enabled = true;
+	
 	public GeneratorErrors validate(UMLModel model)
 	{
 		GeneratorErrors errors = new GeneratorErrors();
@@ -299,5 +302,14 @@ import java.util.Map;
 				errors.addError(new GeneratorError("Attribute mapping validation failed for "+thisClassName+"."+attribute.getName()+" ", e));
 			}
 		}
+	}
+	
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+	
+	public Boolean isEnabled() {
+		return enabled;
 	}
 }

@@ -15,13 +15,19 @@ public interface Transformer
 	 * @param model
 	 * @return
 	 */
-	public abstract GeneratorErrors validate(UMLModel model);
+	public GeneratorErrors validate(UMLModel model);
 	
 	/**
 	 * Executes the transformer and generate the artifact(s) from the model
 	 * @param model
 	 * @return
 	 */
-	public abstract GeneratorErrors execute(UMLModel model);
+	public GeneratorErrors execute(UMLModel model);
+	
+	/**
+	 * Determines if the generator should execute the Transformer or not
+	 * @return
+	 */
+	public Boolean isEnabled();
 	
 }

@@ -20,6 +20,8 @@ public abstract class UMLClassJetTransformer implements Transformer
 {
 	private ArtifactHandler artifactHandler;
 
+	private boolean enabled = true;
+	
 	/**
 	 * @param artifactHandler the artifactHandler to set
 	 */
@@ -58,5 +60,15 @@ public abstract class UMLClassJetTransformer implements Transformer
 	{
 		return TransformerUtils.getAllClasses(model);		
 	}
+	
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+	
+	public Boolean isEnabled() {
+		return enabled;
+	}
+	
 	
 }

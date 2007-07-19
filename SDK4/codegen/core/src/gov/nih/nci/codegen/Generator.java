@@ -77,17 +77,20 @@ public class Generator
 	public void execute()
 	{
 		for(Validator validator:validators)
-			errors.addErrors(validator.validate(model));
+			if(validator.isEnabled())
+				errors.addErrors(validator.validate(model));
 
 		reportErrors(errors);
 
 		for(Transformer transformer:transformers)
-			errors.addErrors(transformer.validate(model));
+			if(transformer.isEnabled())
+				errors.addErrors(transformer.validate(model));
 		
 		reportErrors(errors);
 		
 		for(Transformer transformer:transformers)
-			errors.addErrors(transformer.execute(model));
+			if(transformer.isEnabled())
+				errors.addErrors(transformer.execute(model));
 
 		reportErrors(errors);
 		

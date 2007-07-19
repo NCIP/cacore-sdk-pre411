@@ -21,6 +21,8 @@ public abstract class UMLModelJETTransformer implements Transformer
 	
 	private Map<String, Object> configurationParams;
 	
+	private boolean enabled = true;
+	
 	/**
 	 * @param artifactHandler the artifactHandler to set
 	 */
@@ -54,6 +56,15 @@ public abstract class UMLModelJETTransformer implements Transformer
 	public void setConfigurationParams(Map<String, Object> configurationParams) {
 		this.configurationParams = configurationParams;
 	}	
+	
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+	
+	public Boolean isEnabled() {
+		return enabled;
+	}
 	
 	
 }
