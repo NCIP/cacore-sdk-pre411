@@ -6,6 +6,11 @@
     <td height="20" class="mainMenuItemOver" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItemOver'),hideCursor()" onclick="document.location.href='Home.action'">
       <a class="mainMenuLink" href="Home.action">HOME</a>
     </td>
+    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>
+    <!-- link 1 ends -->
+    <td height="20" class="mainMenuItem" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()" onclick="document.location.href='docs'">
+      <a class="mainMenuLink" href="docs">JAVA DOCS</a>
+    </td>
     <!-- link 1 ends -->
     <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>
   </tr>
