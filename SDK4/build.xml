@@ -51,6 +51,11 @@
 		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>
 	
+	<condition property="server-exclude-list" value="servlet.jar,commons-logging*.jar,log4j*.jar" else="servlet.jar,commons-logging*.jar">
+		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
+	</condition>
+	
+	
 	<!--***********************************************************************
 	*** Prepares the directory structure
 	*********************************************************************** -->
@@ -92,13 +97,13 @@
 			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_END@${xml.comment.end}" value="${JNDI_END}" />	
 			<replacefilter token="${xml.comment.start}@DB_CONNECTION_POOL_START@${xml.comment.end}" value="${DB_CONNECTION_START}" />	
 			<replacefilter token="${xml.comment.start}@DB_CONNECTION_POOL_END@${xml.comment.end}" value="${DB_CONNECTION_END}" />	
+			<replacefilter token="@DB_JNDI_URL@" value="${DB_JNDI_URL}" />	
 			<replacefilter token="@DB_DRIVER@" value="${DB_DRIVER}" />	
 			<replacefilter token="@DB_CONNECTION_URL@" value="${DB_CONNECTION_URL}" />	
 			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
 			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
 			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />
 			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
-	
 			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${VALIDATE_LOGICAL_MODEL}"/>
 			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${VALIDATE_MODEL_MAPPING}"/>
 			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${GENERATE_HIBERNATE_MAPPING}"/>
@@ -178,7 +183,7 @@
 	<!--***********************************************************************
 	*** Compiles the generated beans 
 	*********************************************************************** -->
-	<target name="compile-beans" depends="codegen" description="Compiles the generated beans" if="${GENERATE_BEANS}">
+	<target name="compile-beans" depends="codegen" description="Compiles the generated beans" >
 		<SDKecho message="${ant.project.name}: Compiling the generated beans"/>
 		<javac srcdir="${output.src.dir}" destdir="${build.classes.dir}" debug="true">
 			<include name="**/*.java"/>
@@ -282,7 +287,7 @@
 			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar"/>
 			<lib dir="${build.jar.dir}" includes="${bean.file}" />
 			<lib dir="${build.jar.dir}" includes="${orm.file}" />
-			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar" excludes="servlet.jar"/>
+			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar" excludes="${server-exclude-list}"/>
 			<fileset dir="${build.conf.system.web.dir}">
 				<include name="**/*"/>
 				<exclude name="**/web.xml"/>
@@ -299,7 +304,7 @@
 	<!--***********************************************************************
 	*** Generates documentation for the Java Beans
 	*********************************************************************** -->
-	<target name="doc" depends="codegen" description="Generates javadocs for the beans" if="${GENERATE_BEANS}">
+	<target name="doc" depends="codegen" description="Generates javadocs for the beans">
 		<SDKecho message="${ant.project.name}: Generating javadocs for the beans"/>
 		<javadoc packagenames="*" destdir="${build.doc.dir}" author="true"
 			private="true" version="true" use="true" windowtitle="${PROJECT_NAME} API Documentation"
