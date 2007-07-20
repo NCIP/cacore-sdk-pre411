@@ -56,6 +56,7 @@ public class TransformerUtils
 	private static String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
 	
 	private static String STEREO_TYPE_TABLE = "table";
+	private static String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
 
 	//private static String TV_TYPE = "type"; -- used to recognize CLOB
 	
@@ -609,7 +610,6 @@ public class TransformerUtils
 		{
 			for(UMLClass klass:rootPkg.getClasses())
 			{
-				String pkgName = TransformerUtils.getFullPackageName(klass);
 				if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && isIncluded(klass))
 					classes.add(klass);
 			}
@@ -644,7 +644,6 @@ public class TransformerUtils
 		{
 			for(UMLClass klass:rootPkg.getClasses())
 			{
-				String pkgName = TransformerUtils.getFullPackageName(klass);
 				if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && isIncluded(klass) && ModelUtil.getSuperclasses(klass).length == 0)
 					classes.add(klass);
 			}
@@ -668,9 +667,8 @@ public class TransformerUtils
 		UMLClass result = null; 
 		for(UMLDependency dependency:dependencies)
 		{
-			//TODO Cortrect the condition for the UMLDependency DataSource check
 			UMLClass client = (UMLClass) dependency.getClient();
-			if(STEREO_TYPE_TABLE.equalsIgnoreCase(client.getStereotype()))
+			if(STEREO_TYPE_TABLE.equalsIgnoreCase(client.getStereotype()) && STEREO_TYPE_DATASOURCE_DEPENDENCY.equalsIgnoreCase(dependency.getStereotype()))
 			{
 				count++;
 				result = client;
