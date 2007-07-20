@@ -73,10 +73,12 @@
 			<include name="gov/nih/nci/system/client/**/*"/>
 			<include name="gov/nih/nci/system/applicationservice/*"/>
 			<include name="gov/nih/nci/system/query/**/*"/>
+			<include name="gov/nih/nci/system/dao/*Exception*.*"/>
 			<fileset dir="${src.dir}">
 				<include name="gov/nih/nci/system/client/**/*"/>
 				<include name="gov/nih/nci/system/applicationservice/*"/>
 				<include name="gov/nih/nci/system/query/**/*"/>
+				<include name="gov/nih/nci/system/dao/*Exception*.*"/>
 			</fileset>
 		</jar>
 
@@ -87,10 +89,12 @@
 			<include name="gov/nih/nci/system/dao/**/*"/>
 			<include name="gov/nih/nci/system/applicationservice/impl/**/*"/>
 			<include name="gov/nih/nci/system/util/**/*"/>
+			<exclude name="gov/nih/nci/system/dao/*Exception*.*"/>
 			<fileset dir="${src.dir}">
 				<include name="gov/nih/nci/system/dao/**/*"/>
 				<include name="gov/nih/nci/system/applicationservice/impl/**/*"/>
 				<include name="gov/nih/nci/system/util/**/*"/>
+				<exclude name="gov/nih/nci/system/dao/*Exception*.*"/>
 			</fileset>
 		</jar>
 
