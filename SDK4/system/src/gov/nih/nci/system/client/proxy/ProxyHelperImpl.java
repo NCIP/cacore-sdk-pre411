@@ -16,16 +16,20 @@ public class ProxyHelperImpl implements ProxyHelper
 {
 	public Object convertToProxy(ApplicationService as, Object obj) 
 	{
+		if(obj == null) return null;
+		
 		if(obj instanceof ListProxy)
 			((ListProxy)obj).setAppService(as);
 		
-		  if(obj instanceof java.util.Collection)
-		    	return convertToProxy(as,(Collection)obj);
-		    else
-		    	return converToProxy(as,obj);
+		if(obj instanceof java.util.Collection)
+			return convertCollectionToProxy(as,(Collection)obj);
+		else if(obj instanceof Object[])
+			return convertArrayToProxy(as,(Object[])obj);
+		else
+		   	return converObjectToProxy(as,obj);
 	}
 
-	protected Object converToProxy(ApplicationService as, Object obj) 
+	protected Object converObjectToProxy(ApplicationService as, Object obj) 
 	{
 		if(null == obj) return null;
     	if(obj instanceof Integer || obj instanceof Float || obj instanceof Double
@@ -40,14 +44,23 @@ public class ProxyHelperImpl implements ProxyHelper
 		return pf.getProxy();		
 	}
 
-	protected Object convertToProxy(ApplicationService as, Collection collection) {
+	protected Object convertCollectionToProxy(ApplicationService as, Collection collection) {
 		if(null == collection) return null;
 		Collection<Object> modifiedCollection =  new ArrayList<Object>();
 		for(Object obj:collection)
-			modifiedCollection.add(converToProxy(as, obj));
+			modifiedCollection.add(convertToProxy(as, obj));
 		return modifiedCollection;
 	}
 
+	protected Object convertArrayToProxy(ApplicationService as, Object[] objects) {
+		if(null == objects) return null;
+		if(objects.length==0) return objects;
+		Object[] modifiedCollection =  new Object[objects.length];
+		for(int i=0;i<objects.length;i++)
+			modifiedCollection[i] = convertToProxy(as, objects[i]);
+		return modifiedCollection;
+	}
+	
 	public boolean isInitialized(MethodInvocation invocation) throws Throwable {
 	    Object retVal = invocation.proceed();
 		return Hibernate.isInitialized(retVal);
@@ -81,6 +94,7 @@ public class ProxyHelperImpl implements ProxyHelper
     			else
     				throw new Exception("Invalid data obtained from the database for the "+fieldName+" attribute of the "+bean.getClass().getName());
     		}
+   			value = convertToProxy(as,value);
 
     		Class[] params =  new Class[]{field.getType()};
 	    	Method setter = getMethod(bean,"set"+method.getName().substring(3), params);
