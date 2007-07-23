@@ -73,11 +73,11 @@ public class TransformerUtils
 			EXCLUDE_NAME = prop.getProperty("Exclude Name")==null ? "" : prop.getProperty("Exclude Name").trim();
 			
 			for(String excludeToken:EXCLUDE_PACKAGE.split(","))
-				EXCLUDE_PACKAGE_NAMES.add(excludeToken);
+				EXCLUDE_PACKAGE_NAMES.add(excludeToken.trim());
 			for(String includeToken:INCLUDE_PACKAGE.split(","))
-				INCLUDE_PACKAGE_NAMES.add(includeToken);
+				INCLUDE_PACKAGE_NAMES.add(includeToken.trim());
 			for(String excludeToken:EXCLUDE_NAME.split(","))
-				EXCLUDE_NAMES.add(excludeToken);
+				EXCLUDE_NAMES.add(excludeToken.trim());
 		}
 		catch (GenerationException e) 
 		{
@@ -94,9 +94,15 @@ public class TransformerUtils
 			return true;
 
 		boolean included = false;
+
+		if(pkgName.length()==0)
+			included = true;
+
 		for(String includePkg: INCLUDE_PACKAGE_NAMES)
-			included |= (fqcn.indexOf(includePkg) > 0);
+			if(includePkg!=null && includePkg.length()>0)
+				included |= (fqcn.indexOf(includePkg) > 0);
 		for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
+			if(excludePkg!=null && excludePkg.length()>0)
 			included &= (fqcn.indexOf(excludePkg) < 0);
 		included &= !EXCLUDE_NAMES.contains(fqcn);
 		
@@ -106,14 +112,12 @@ public class TransformerUtils
 	public static boolean isIncluded(UMLPackage pkg)
 	{
 		String pkgName = getFullPackageName(pkg);
-		if(INCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_PACKAGE_NAMES.contains(pkgName))
-			return true;
 		
-		boolean included = false;
-		for(String includePkg: INCLUDE_PACKAGE_NAMES)
-			included |= (pkgName.indexOf(includePkg) > 0);
-		for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
-			included &= (pkgName.indexOf(excludePkg) < 0);
+		boolean included = true;
+		if(pkgName.length()>0)
+			for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
+				if(excludePkg!=null && excludePkg.length()>0)
+					included &= (pkgName.indexOf(excludePkg) < 0);
 
 		return included;
 	}
