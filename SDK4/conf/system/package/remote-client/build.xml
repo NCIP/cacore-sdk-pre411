@@ -79,6 +79,16 @@
 	</target>
 	
 	<!--***********************************************************************
+	*** Runs the Web Service Test 
+	*********************************************************************** -->
+	<target name="runWS" depends="compile" description="Runs the test">
+		<SDKecho message="${ant.project.name}: Running the Web Service test"/>
+		<java classname="WSTestClient" fork="true">
+			<classpath refid="runtime" />
+		</java>
+	</target>
+	
+	<!--***********************************************************************
 	*** Dumps the properties of the build script
 	*********************************************************************** -->
 	<target name="show-properties" description="Dumps a list of all properties currently set">
