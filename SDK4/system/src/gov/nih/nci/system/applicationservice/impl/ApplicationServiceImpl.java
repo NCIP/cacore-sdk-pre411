@@ -14,6 +14,7 @@ import gov.nih.nci.system.util.ClassCache;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -31,31 +32,47 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	private ClassCache classCache;	
 
+	private Properties systemProperties;
+	
 	private static Logger log = Logger.getLogger(ApplicationServiceImpl.class.getName());
 
 	/**
 	 * Default constructor. Cache is required and is expected to have a collection of DAO
+	 * System properties is also a required parameter used to determine system specific parameters
 	 * 
 	 */
-	public ApplicationServiceImpl(ClassCache classCache)
+	public ApplicationServiceImpl(ClassCache classCache, Properties systemProperties)
 	{
 		this.classCache = classCache;
+		this.systemProperties = systemProperties;
 	}
 	
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(org.hibernate.criterion.DetachedCriteria, java.lang.String)
+	 */
 	public List<Object> query(DetachedCriteria detachedCriteria, String targetClassName) throws ApplicationException {
 		return query(detachedCriteria);
 	}
 
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(org.hibernate.criterion.DetachedCriteria)
+	 */
 	public List<Object> query(DetachedCriteria detachedCriteria) throws ApplicationException {
 		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
 		String targetClassName = crit.getEntityOrClassName();
 		return privateQuery(detachedCriteria, targetClassName);
 	}
 
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.hibernate.HQLCriteria, java.lang.String)
+	 */
 	public List<Object> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
 		return query(hqlCriteria);
 	}
 
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.hibernate.HQLCriteria)
+	 */
 	public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
 		String hql = hqlCriteria.getHqlString();
 		int index = hql.indexOf(" from ");
@@ -64,29 +81,47 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return privateQuery(hqlCriteria, targetClassName);
 	}
 	
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.cql.CQLQuery, java.lang.String)
+	 */
 	public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
 		return query(cqlQuery);
 	}
 
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.cql.CQLQuery)
+	 */
 	public List<Object> query(CQLQuery cqlQuery) throws ApplicationException {
 		return privateQuery(cqlQuery, cqlQuery.getTarget().getName());
 	}
 
 	
+	/** 
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.Class, java.lang.Object)
+	 */
 	public List<Object> search(Class targetClass, Object obj) throws ApplicationException {
 		return search(targetClass.getName(), obj);
 	}
 
+	/** 
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.Class, java.util.List)
+	 */
 	public List<Object> search(Class targetClass, List<Object> objList) throws ApplicationException {
 		return search(targetClass.getName(), objList);
 	}
 
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.String, java.lang.Object)
+	 */
 	public List<Object> search(String path, Object obj) throws ApplicationException {
 		List<Object> list = new ArrayList<Object>();
 		list.add(obj);
 		return search(path, list);
 	}
 
+	/** 
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(java.lang.Object, java.lang.Integer, java.lang.String)
+	 */
 	public List<Object> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException {
 		Request request = new Request(criteria);
 		
@@ -100,6 +135,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return results;
 	}
 
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.String, java.util.List)
+	 */
 	public List<Object> search(String path, List<Object> objList) throws ApplicationException {
 
 		try{
@@ -120,6 +158,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 	}
 
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#getQueryRowCount(java.lang.Object, java.lang.String)
+	 */
 	public Integer getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException {
 		Integer count = null;
 		Response response = new Response();
@@ -136,6 +177,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 			return 0;
 	}	
 	
+	/**
+	 * @see gov.nih.nci.system.applicationservice.ApplicationService#getAssociation(java.lang.Object, java.lang.String)
+	 */
 	public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
 		
 		String hql = "select obj."+associationName+" from "+source.getClass().getName()+" obj where obj = ?";
@@ -146,6 +190,32 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return query(criteria);
 	}
 	
+	public Integer getMaxRecordsCount() throws ApplicationException {
+		if(systemProperties == null) return 0;
+		
+		String temp = systemProperties.getProperty("resultCountPerQuery");
+		if(temp == null || temp.trim().length() == 0) return 0;
+		
+		try{
+			Integer count = Integer.parseInt(temp);
+			return count;
+		}catch(Exception e)
+		{
+			log.error("Could not determine the Max records count from the configuration");
+		}
+		return 0;
+	}
+	
+	/**
+	 * Prepares the {@link #gov.nih.nci.system.dao.Request} object and uses {@link #query(Request)} to retrieve results
+	 * from the data source. The results are converted in the list which is only partially loaded upto the maximum number 
+	 * of record that the system can support at a time. 
+	 * 
+	 * @param criteria
+	 * @param targetClassName
+	 * @return
+	 * @throws ApplicationException
+	 */
 	protected List<Object> privateQuery(Object criteria, String targetClassName) throws ApplicationException 
 	{
 		
@@ -175,6 +245,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	}	
 
+	/**
+	 * Sends the request to the DAO. The DAO is determined by the object that the query specifies to be queried. 
+	 * DAO returns the result which is in the form of a {@link #gov.nih.nci.system.dao.Response} object.
+	 * 
+	 * @param request
+	 * @return
+	 * @throws ApplicationException
+	 */
 	protected Response query(Request request) throws ApplicationException
 	{
 		request.setClassCache(classCache);
