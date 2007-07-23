@@ -1,7 +1,4 @@
 package gov.nih.nci.system.web.struts.action;
-//
-//import gov.nih.nci.common.util.Constant;
-//import gov.nih.nci.common.util.SecurityConfiguration;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -9,6 +6,8 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.userdetails.UserDetails;
 import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.SessionAware;
@@ -39,15 +38,22 @@ public class BaseActionSupport extends ActionSupport implements
 	}
 	
 	protected boolean isAuthenticated() {
-
-//		gov.nih.nci.system.server.mgmt.SecurityEnabler securityEnabler =  new gov.nih.nci.system.server.mgmt.SecurityEnabler(SecurityConfiguration.getApplicationName());
-//		if (securityEnabler.getSecurityLevel() > 0) {
-//			if (null == session.get(Constant.USER_NAME) || null == session.get(Constant.PASSWORD) ){
-//				return false;
-//			}
-//		}
 		
-		return true;
+		String userName = "";
+		Object obj = SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		if (obj instanceof UserDetails) {
+			userName = ((UserDetails) obj).getUsername();
+		} else {
+			userName = obj.toString();
+		}
+		log.debug("userName: " + userName);	
+		if (userName != null
+				&& !(userName.equalsIgnoreCase("anonymousUser"))) {
+			return true;
+		}
+
+		return false;
 	}
 	
 	protected static void debugSessionAttributes(SessionMap session){
