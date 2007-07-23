@@ -3,7 +3,8 @@
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
 	<bean name="ApplicationServiceImpl" class="gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl" singleton="false">
-		<constructor-arg ref="ClassCache"></constructor-arg>
+		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
+		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
 	</bean>
 
 	<!-- Bean Definitions -->
