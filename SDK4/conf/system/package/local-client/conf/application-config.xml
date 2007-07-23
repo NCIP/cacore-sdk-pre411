@@ -11,13 +11,13 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="true">
+	<bean id="interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="false">
 		<property name="proxyFactory">
-			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl"/>
+			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="false"/>
 		</property>
 	</bean>
 	
-	<bean id="applicationService" class="org.springframework.aop.framework.ProxyFactoryBean">
+	<bean id="applicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
 		<property name="target">
 			<ref bean="ApplicationServiceImpl"/>
 		</property>
@@ -35,7 +35,7 @@
 	</bean>
 	
 
-	<bean name="ApplicationServiceImpl" class="gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl" singleton="false">
+	<bean name="ApplicationServiceImpl" class="gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl" singleton="true">
 		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
 		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>		
 	</bean>
