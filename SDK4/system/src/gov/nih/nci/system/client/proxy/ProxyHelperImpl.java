@@ -94,7 +94,6 @@ public class ProxyHelperImpl implements ProxyHelper
     			else
     				throw new Exception("Invalid data obtained from the database for the "+fieldName+" attribute of the "+bean.getClass().getName());
     		}
-   			value = convertToProxy(as,value);
 
     		Class[] params =  new Class[]{field.getType()};
 	    	Method setter = getMethod(bean,"set"+method.getName().substring(3), params);

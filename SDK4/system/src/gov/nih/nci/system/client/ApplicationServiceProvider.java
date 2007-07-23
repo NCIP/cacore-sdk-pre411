@@ -1,6 +1,7 @@
 package gov.nih.nci.system.client;
 
 import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.system.client.proxy.ApplicationServiceProxy;
 
 import java.io.ByteArrayInputStream;
 import java.util.Map;
@@ -9,6 +10,9 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.AuthenticationProvider;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.aopalliance.aop.Advice;
+import org.springframework.aop.Advisor;
+import org.springframework.aop.framework.AopProxy;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -90,20 +94,41 @@ public class ApplicationServiceProvider
 		else
 		{
 			if(url == null) url ="";
-
-			as = (ApplicationService) serviceInfoMap.get("APPLICATION_SERVICE_BEAN"+url);
-			ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN"+url);
+			String serviceName = (String)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+			as = (ApplicationService) context.getBean(serviceName);
+			ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
 		}
 
-		if(!secured) return as;
-		
-		Authentication auth = new UsernamePasswordAuthenticationToken(username,password);
-		auth = ap.authenticate(auth);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		
+		if(secured)
+		{
+			Authentication auth = new UsernamePasswordAuthenticationToken(username,password);
+			auth = ap.authenticate(auth);
+			setApplicationService(as, auth);
+		}
+		else
+		{
+			setApplicationService(as, null);
+		}
 		return as;
 	}
 	
+	private static void setApplicationService(ApplicationService as, Authentication auth) {
+		if(as instanceof org.springframework.aop.framework.Advised)
+		{
+			org.springframework.aop.framework.Advised proxy = (org.springframework.aop.framework.Advised)as;
+			for(Advisor advisor: proxy.getAdvisors())
+			{
+				Advice advice = advisor.getAdvice();
+				if(advice instanceof ApplicationServiceProxy)
+				{
+					ApplicationServiceProxy asp = (ApplicationServiceProxy)advice;
+					asp.setApplicationService(as);
+					asp.setAuthentication(auth);
+				}
+			}
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private static ApplicationContext getApplicationContext(String service, String url, Boolean secured) throws Exception
 	{
@@ -116,7 +141,8 @@ public class ApplicationServiceProvider
 			throw new Exception("Change the configuration file!!!");
 		
 		//Initialized instances found in the configuration
-		ApplicationService as = (ApplicationService)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+		String asName = (String)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+		ApplicationService as = (ApplicationService)ctx.getBean(asName);
 		AuthenticationProvider ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
 		
 		//Returning initialized instance
@@ -134,8 +160,8 @@ public class ApplicationServiceProvider
 		if(serviceInfo.indexOf("URL_KEY") <0 || url == null)
 			url="";
 		
-		as = (ApplicationService)serviceInfoMap.get("APPLICATION_SERVICE_BEAN"+url);
-		ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN"+url);
+		//as = (ApplicationService)serviceInfoMap.get("APPLICATION_SERVICE_BEAN"+url);
+		//ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN"+url);
 
 		if((!secured && as!=null)||(secured && as!=null && ap!=null)) //Return pre-built service. This helps in improving performance
 			return ctx;
@@ -159,11 +185,11 @@ public class ApplicationServiceProvider
 		if(as==null || (secured && ap==null))
 			throw new Exception("Change the configuration file!!!");
 
-		synchronized (lock){
+	/*	synchronized (lock){
 			//Store the services in the map. Improves performance for next time access
 			serviceInfoMap.put("APPLICATION_SERVICE_BEAN"+url, as);
 			serviceInfoMap.put("AUTHENTICATION_SERVICE_BEAN"+url, ap);
-		}
+		}*/
 		return context;
 	}
 }

@@ -5,7 +5,7 @@
 	<bean id="ServiceInfo" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
-				<entry key="APPLICATION_SERVICE_BEAN" value-ref="applicationService"/>
+				<entry key="APPLICATION_SERVICE_BEAN" value="applicationService" />
 				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationManager"/>
 			</map>
 		</constructor-arg>
@@ -36,7 +36,8 @@
 	
 
 	<bean name="ApplicationServiceImpl" class="gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl" singleton="false">
-		<constructor-arg ref="ClassCache"></constructor-arg>
+		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
+		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>		
 	</bean>
 
 	<!-- Bean Definitions -->
