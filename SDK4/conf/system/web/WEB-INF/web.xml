@@ -3,8 +3,20 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/application-config.xml</param-value>
+		<param-value>
+			/WEB-INF/applicationContext-acegi-security.xml
+			/WEB-INF/classes/application-config.xml
+		</param-value>
 	</context-param>
+	
+    <filter>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+        </init-param>
+    </filter>
 
 	<filter> 
 		<filter-name>struts2</filter-name> 
@@ -14,6 +26,11 @@
         	<param-value>gov.nih.nci.system.struts.action</param-value>
         </init-param>
 	</filter> 
+
+    <filter-mapping>
+      <filter-name>Acegi Filter Chain Proxy</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>	
 
 	<filter-mapping> 
 		<filter-name>struts2</filter-name> 
@@ -31,17 +48,20 @@ taglib>
         <taglib-uri>/s</taglib-uri>
         <taglib-location>/WEB-INF/struts-tags.tld</taglib-location>
     </taglib
- 
 -->
-	<servlet>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+<!--
+    <servlet>
 		<servlet-name>context</servlet-name>
 		<servlet-class>
 			org.springframework.web.context.ContextLoaderServlet
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
-	<servlet>
+-->
+    <servlet>
 		<servlet-name>httpinvoker</servlet-name>
 		<servlet-class>
 			org.springframework.web.servlet.DispatcherServlet
@@ -71,18 +91,18 @@ taglib>
     </servlet>
     
     
-	<servlet-mapping>
+    <servlet-mapping>
 		<servlet-name>httpinvoker</servlet-name>
 		<url-pattern>/http/*</url-pattern>
 	</servlet-mapping>
-        
+     
     <servlet-mapping>
         <servlet-name>AxisServlet</servlet-name>
         <url-pattern>/ws/AxisServlet</url-pattern>
     </servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>AxisServlet</servlet-name>
+    
+    <servlet-mapping>
+        <servlet-name>AxisServlet</servlet-name>
 		<url-pattern>/servlet/AxisServlet</url-pattern>
 		</servlet-mapping>
 	<servlet-mapping>
