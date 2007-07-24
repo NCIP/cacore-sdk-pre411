@@ -246,6 +246,7 @@
 				<include name="hibernate*.*"/>
 				<include name="log4j*.*"/>
 				<include name="spring*.*"/>
+				<include name="castor*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 		</copy>
