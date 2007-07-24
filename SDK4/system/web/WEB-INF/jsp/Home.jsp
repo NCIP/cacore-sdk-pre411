@@ -25,12 +25,11 @@
 
 	boolean isAuthenticated = false;
 	String userName = "";
-	Object obj = SecurityContextHolder.getContext().getAuthentication()
-			.getPrincipal();
-	if (obj instanceof UserDetails) {
+	Object obj = null;//SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	if (obj != null && obj instanceof UserDetails) {
 		userName = ((UserDetails) obj).getUsername();
 	} else {
-		userName = obj.toString();
+		userName = "";// obj.toString();
 	}
 
 	if (userName != null
@@ -40,7 +39,7 @@
 	//out.println("userName: " + userName);	
 
 	// TODO :: implement isSecurityEnabled check
-	boolean isSecurityEnabled = true;
+	boolean isSecurityEnabled = false;
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

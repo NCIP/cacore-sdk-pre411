@@ -40,12 +40,11 @@ public class BaseActionSupport extends ActionSupport implements
 	protected boolean isAuthenticated() {
 		
 		String userName = "";
-		Object obj = SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
-		if (obj instanceof UserDetails) {
+		Object obj = null;//SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (obj!=null && obj instanceof UserDetails) {
 			userName = ((UserDetails) obj).getUsername();
 		} else {
-			userName = obj.toString();
+			userName = "";//obj.toString();
 		}
 		log.debug("userName: " + userName);	
 		if (userName != null
