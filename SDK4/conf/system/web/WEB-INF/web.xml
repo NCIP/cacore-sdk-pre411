@@ -98,16 +98,6 @@ taglib>
 	</servlet-mapping>
      
     <servlet-mapping>
-        <servlet-name>AxisServlet</servlet-name>
-        <url-pattern>/ws/AxisServlet</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>AxisServlet</servlet-name>
-		<url-pattern>/servlet/AxisServlet</url-pattern>
-	</servlet-mapping>
-
-    <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/services/AdminService</url-pattern>
     </servlet-mapping>
