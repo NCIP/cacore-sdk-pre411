@@ -38,7 +38,7 @@ public class TestClient
 	{
 		Collection<Class> classList = getClasses();
 		
-		String url = "http://localhost:8080/example/services/exampleService";
+		String url = "@SERVER_URL@/services/@WEBSERVICE_NAME@";
 		Service  service = new Service();
 		Call call = null;
 		
@@ -54,7 +54,7 @@ public class TestClient
 						new org.apache.axis.encoding.ser.BeanDeserializerFactory(klass, searchClassQName));
 	
 				call.setTargetEndpointAddress(new java.net.URL(url));
-				call.setOperationName(new QName("exampleService", "queryObject"));
+				call.setOperationName(new QName("@WEBSERVICE_NAME@", "queryObject"));
 				call.addParameter("arg1", org.apache.axis.encoding.XMLType.XSD_STRING, ParameterMode.IN);
 				call.addParameter("arg2", searchClassQName, ParameterMode.IN);
 				call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
