@@ -55,7 +55,18 @@
 					      <a class="mainMenuLink" href="ShowDynamicTree.action">CRITERIA</a>
 					    </td>
 					    <!-- link 2 ends -->
-					    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>
+					    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt=""/></td>
+					    <td height="20" width="100%">&nbsp;</td> 
+					    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt=""/></td>
+					    <!-- link 3 begins -->
+					    <td height="20" width="100%" align="right" class="mainMenuItem" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()">
+					      <a class="mainMenuLink" href="j_acegi_logout">Logout</a>
+					    </td>   
+					    <!-- link 3 ends -->
+				        <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>
+					    
+					    
+					    
 					  </tr>
 					</table>
 					<!-- main menu ends -->

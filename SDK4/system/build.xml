@@ -112,10 +112,10 @@
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 			</manifest>
-			<include name="gov/nih/nci/system/webservice/**/*"/>
+			<include name="gov/nih/nci/system/webservice/*"/>
 			<fileset dir="${src.dir}">
-				<include name="gov/nih/nci/system/webservice/**/*"/>
-			</fileset>
+				<include name="gov/nih/nci/system/webservice/*"/>
+			</fileset>		
 		</jar>
 	</target>
 	

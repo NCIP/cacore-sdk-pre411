@@ -28,6 +28,21 @@
 		<pathelement path="${output.codegen.config.dir}"/>
 	</path>
 	
+	<path id="system.runtime">
+		<fileset dir="${system.dir}\dist">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${system.dir}\lib">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${output.build.jar.dir}">
+			<include name="**/*.jar"/>
+		</fileset>		
+		<fileset dir="output/example/conf/system/web/WEB-INF/classes">
+			<include name="log4j.properties"/>
+		</fileset>		
+	</path>	
+	
 	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
 	<path id="basedir.path">
 		<pathelement path="${basedir}" />
@@ -103,7 +118,7 @@
 			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
 			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
 			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />
-			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
+			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>		
 			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${VALIDATE_LOGICAL_MODEL}"/>
 			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${VALIDATE_MODEL_MAPPING}"/>
 			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${GENERATE_HIBERNATE_MAPPING}"/>
@@ -190,6 +205,31 @@
 		</javac>
 	</target>
 
+	<target name="deployWS" 
+		description="Deploy Web services to system described in deploy.properties">
+		<SDKecho message="Deploying web services"/>
+		<echo message="Deploying to ${url.project.axisservice}"/>
+		<java classname="org.apache.axis.client.AdminClient" fork="true">
+			<classpath refid="system.runtime" />
+			<arg value="-l${url.project.axisservice}"/>
+			<arg value="${output.src.dir}/deploy.wsdd"/>
+			<sysproperty key="log4j.configuration"
+						value="output/example/conf/system/web/WEB-INF/classes/log4j.properties"/>
+		</java>
+	</target>
+
+	<target name="undeployWS"
+	description="Un-deploy Web services to system described in deploy.properties">
+		<SDKecho message="Undeploying web services"/>
+		<java classname="org.apache.axis.client.AdminClient" fork="true">
+			<classpath refid="system.runtime"/>
+			<arg value="-l${url.project.axisservice}"/>
+			<arg value="${output.conf.webservice.dir}/undeploy.wsdd"/>
+			<sysproperty key="log4j.configuration"
+						value="output/example/conf/system/web/WEB-INF/classes/log4j.properties"/>			
+		</java>
+	</target>
+
 	<!--***********************************************************************
 	*** Packages the generated artifacts 
 	*********************************************************************** -->
@@ -243,6 +283,12 @@
 		<copy todir="${package.client.remote.dir}">
 			<fileset dir="${system.config.client.remote.dir}"/>
 		</copy>
+		<replace dir="${output.dir}">
+			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}"/>			
+			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
+			<replacefilter token="@WEB_SERVER_PORT@" value="${WEB_SERVER_PORT}"/>
+			<replacefilter token="@WEB_SERVER_HOST_NAME@" value="${WEB_SERVER_HOST_NAME}"/>				
+		</replace>			
 	</target>
 
 	<target name="package-local-client" depends="package-codegen-artifacts">
