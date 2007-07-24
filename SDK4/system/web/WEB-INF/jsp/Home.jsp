@@ -1,5 +1,4 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib prefix='c' uri='http://java.sun.com/jstl/core'%>
 <%@ page import="org.acegisecurity.ui.AbstractProcessingFilter"%>
 <%@ page
 	import="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter"%>
