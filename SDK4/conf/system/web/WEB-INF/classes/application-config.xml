@@ -4,7 +4,7 @@
 
 	<bean name="ApplicationServiceImpl" class="gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl" singleton="false">
 		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
-		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
+		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>		
 	</bean>
 
 	<!-- Bean Definitions -->
@@ -30,8 +30,8 @@
 	</bean>
 			
 	<bean name="ORMDAOFactory" class="gov.nih.nci.system.dao.orm.ORMDAOFactoryBean">
-		<constructor-arg value="hibernate.cfg.xml"></constructor-arg> <!-- configLocation -->
-		<constructor-arg ref="SystemProperties"></constructor-arg>
+		<constructor-arg value="hibernate.cfg.xml" index="0"></constructor-arg> <!-- configLocation -->
+		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
 	</bean>
 
 	
