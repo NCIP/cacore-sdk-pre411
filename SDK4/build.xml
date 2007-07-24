@@ -247,6 +247,7 @@
 				<include name="log4j*.*"/>
 				<include name="spring*.*"/>
 				<include name="castor*.*"/>
+				<include name="xercesImpl*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 		</copy>
@@ -277,6 +278,7 @@
 				<include name="hibernate*.*"/>
 				<include name="jta*.*"/>	
 				<include name="log4j*.*"/>
+				<include name="mysql*.*"/>
 				<include name="ojdbc*.*"/>
 				<include name="spring*.*"/>
 			</fileset>
@@ -297,7 +299,11 @@
 			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar"/>
 			<lib dir="${build.jar.dir}" includes="${bean.file}" />
 			<lib dir="${build.jar.dir}" includes="${orm.file}" />
-			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar" excludes="${server-exclude-list}"/>
+			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar">
+				<exclude name="${server-exclude-list}"/>
+				<exclude name="castor*.*"/>
+				<exclude name="xercesImpl*.*"/>
+			</lib>
 			<fileset dir="${build.conf.system.web.dir}">
 				<include name="**/*"/>
 				<exclude name="**/web.xml"/>
