@@ -595,4 +595,16 @@ public class ListProxy extends ArrayList implements Set {
 	public void setAppService(ApplicationService appService) {
 		this.appService = appService;
 	}
+	
+	public List getListChunk()
+	{
+		return listChunk_;
+	}
+
+	public void setListChunk(List chunk)
+	{
+		listChunk_.clear();
+		listChunk_.addAll(chunk);
+	}
+
 }
