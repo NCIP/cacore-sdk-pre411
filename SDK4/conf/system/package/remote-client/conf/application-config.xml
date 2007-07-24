@@ -4,9 +4,9 @@
 	<bean id="ServiceInfo" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
-				<entry key="APPLICATION_SERVICE_BEAN" value-ref="applicationService"/>
+				<entry key="APPLICATION_SERVICE_BEAN" value="applicationService"/>
 				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationManager"/>
-				<entry key="APPLICATION_SERVICE_URL"  value="http://localhost:8080/example/http/applicationService"/>
+				<entry key="APPLICATION_SERVICE_URL"  value="@SERVER_URL@/http/applicationService"/>
 				<entry key="APPLICATION_SERVICE_CONFIG"  value-ref="applicationServiceConfig"/>
 			</map>
 		</constructor-arg>
@@ -21,7 +21,7 @@
 	<bean id="applicationService" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target">
 			<bean class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-				<property name="serviceUrl" value="http://localhost:8080/example/http/applicationService"/>
+				<property name="serviceUrl" value="@SERVER_URL@/http/applicationService"/>
 				<property name="serviceInterface" value="gov.nih.nci.system.applicationservice.ApplicationService"/>
 				<property name="httpInvokerRequestExecutor">
 					<bean class="org.acegisecurity.context.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor"/>
@@ -35,7 +35,7 @@
 	<bean id="authenticationManager" class="org.acegisecurity.providers.rcp.RemoteAuthenticationProvider">
 		<property name="remoteAuthenticationManager">
 			<bean class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-			    <property name="serviceUrl" value="http://localhost:8080/example/http/remoteAuthenticationManager"/>
+			    <property name="serviceUrl" value="@SERVER_URL@/http/remoteAuthenticationManager"/>
 			    <property name="serviceInterface" value="org.acegisecurity.providers.rcp.RemoteAuthenticationManager"/>
 			</bean>
 		</property>
