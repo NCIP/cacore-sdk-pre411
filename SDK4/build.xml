@@ -27,22 +27,7 @@
 		</fileset>
 		<pathelement path="${output.codegen.config.dir}"/>
 	</path>
-	
-	<path id="system.runtime">
-		<fileset dir="${system.dir}\dist">
-			<include name="**/*.jar"/>
-		</fileset>
-		<fileset dir="${system.dir}\lib">
-			<include name="**/*.jar"/>
-		</fileset>
-		<fileset dir="${output.build.jar.dir}">
-			<include name="**/*.jar"/>
-		</fileset>		
-		<fileset dir="output/example/conf/system/web/WEB-INF/classes">
-			<include name="log4j.properties"/>
-		</fileset>		
-	</path>	
-	
+
 	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
 	<path id="basedir.path">
 		<pathelement path="${basedir}" />
@@ -91,10 +76,13 @@
 		<mkdir dir="${package.client.local.dir}"/>
 		<mkdir dir="${package.client.local.lib.dir}"/>
 		<mkdir dir="${package.system.dir}"/>
+		<mkdir dir="${package.client.ws.dir}"/>
+		<mkdir dir="${package.client.ws.lib.dir}"/>
+		<mkdir dir="${package.client.ws.conf.dir}"/>
 	
 		<copy todir="${output.conf.dir}" overwrite="true">
 			<fileset dir="${conf.dir}">
-				<include name="**\*.*" />
+				<include name="**/*.*" />
 			</fileset>
 		</copy>
 		<replace dir="${output.dir}">
@@ -118,7 +106,7 @@
 			<replacefilter token="@DB_USERNAME@" value="${DB_USERNAME}" />	
 			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
 			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />
-			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>		
+			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
 			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${VALIDATE_LOGICAL_MODEL}"/>
 			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${VALIDATE_MODEL_MAPPING}"/>
 			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${GENERATE_HIBERNATE_MAPPING}"/>
@@ -126,6 +114,7 @@
 			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${GENERATE_CASTOR_MAPPING}"/>
 			<replacefilter token="@GENERATE_XSD@" value="${GENERATE_XSD}"/>
 			<replacefilter token="@GENERATE_WSDD@" value="${GENERATE_WSDD}"/>
+			<replacefilter token="@SERVER_URL@" value="${SERVER_URL}"/>
 		</replace>	
 	
 	</target>
@@ -205,31 +194,6 @@
 		</javac>
 	</target>
 
-	<target name="deployWS" 
-		description="Deploy Web services to system described in deploy.properties">
-		<SDKecho message="Deploying web services"/>
-		<echo message="Deploying to ${url.project.axisservice}"/>
-		<java classname="org.apache.axis.client.AdminClient" fork="true">
-			<classpath refid="system.runtime" />
-			<arg value="-l${url.project.axisservice}"/>
-			<arg value="${output.src.dir}/deploy.wsdd"/>
-			<sysproperty key="log4j.configuration"
-						value="output/example/conf/system/web/WEB-INF/classes/log4j.properties"/>
-		</java>
-	</target>
-
-	<target name="undeployWS"
-	description="Un-deploy Web services to system described in deploy.properties">
-		<SDKecho message="Undeploying web services"/>
-		<java classname="org.apache.axis.client.AdminClient" fork="true">
-			<classpath refid="system.runtime"/>
-			<arg value="-l${url.project.axisservice}"/>
-			<arg value="${output.conf.webservice.dir}/undeploy.wsdd"/>
-			<sysproperty key="log4j.configuration"
-						value="output/example/conf/system/web/WEB-INF/classes/log4j.properties"/>			
-		</java>
-	</target>
-
 	<!--***********************************************************************
 	*** Packages the generated artifacts 
 	*********************************************************************** -->
@@ -251,11 +215,8 @@
 		</jar>
 	</target>
 
-	<target name="package-system" depends="package-remote-client,package-local-client,package-webapp" description="Packages the system">
+	<target name="package-system" depends="package-remote-client,package-local-client,package-webapp,package-ws-client" description="Packages the system">
 		<SDKecho message="${ant.project.name}: Packaging the system artifacts"/>
-		<mkdir dir="${package.client.remote.dir}"/>
-		<mkdir dir="${package.client.local.dir}"/>
-		<mkdir dir="${package.system.dir}"/>
 	</target>	
 
 	<target name="package-remote-client" depends="package-codegen-artifacts">
@@ -283,12 +244,6 @@
 		<copy todir="${package.client.remote.dir}">
 			<fileset dir="${system.config.client.remote.dir}"/>
 		</copy>
-		<replace dir="${output.dir}">
-			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}"/>			
-			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
-			<replacefilter token="@WEB_SERVER_PORT@" value="${WEB_SERVER_PORT}"/>
-			<replacefilter token="@WEB_SERVER_HOST_NAME@" value="${WEB_SERVER_HOST_NAME}"/>				
-		</replace>			
 	</target>
 
 	<target name="package-local-client" depends="package-codegen-artifacts">
@@ -345,6 +300,29 @@
 				<include name="docs/**/*"/>
 			</fileset>
 		</war>
+	</target>	
+	
+	<target name="package-ws-client" depends="package-codegen-artifacts">
+		<SDKecho message="${ant.project.name}: Packaging the webservice client"/>
+		<copy todir="${package.client.ws.lib.dir}">
+			<fileset dir="${system.dir}\${system.lib.dir}">
+				<include name="axis*.*"/>
+				<include name="commons-discovery*.*"/>
+				<include name="commons-logging*.*"/>
+				<include name="jaxrpc*.*"/>
+				<include name="saaj*.*"/>
+				<include name="wsdl4j*.*"/>
+			</fileset>
+			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
+		</copy>
+		<copy todir="${package.client.ws.conf.dir}">
+			<fileset dir="${output.src.dir}">
+				<include name="deploy.wsdd"/>
+			</fileset>
+		</copy>
+		<copy todir="${package.client.ws.dir}">
+			<fileset dir="${system.config.client.ws.dir}"/>
+		</copy>
 	</target>	
 	
 	<!--***********************************************************************
