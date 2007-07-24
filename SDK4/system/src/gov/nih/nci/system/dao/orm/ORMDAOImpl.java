@@ -66,7 +66,8 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 				return query(request, session, (HQLCriteria) obj);
 			} else if (obj instanceof CQLQuery){
 				return query(request, session, (CQLQuery) obj);
-			}
+			} else
+				throw new DAOException("Can not determine type of the query");
 
 		} catch (JDBCException ex){
 			log.error("JDBC Exception in ORMDAOImpl ", ex);
@@ -89,8 +90,6 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 				throw new DAOException("Could not close the session  " + eSession);
 			}
 		}
-
-		return null;
 	}
 	
     public List<String> getAllClassNames(){
