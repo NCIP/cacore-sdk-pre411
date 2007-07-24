@@ -2,7 +2,9 @@ package gov.nih.nci.system.webservice;
 
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.proxy.ListProxy;
+import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.util.ClassCache;
+import gov.nih.nci.system.webservice.util.WSUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
+import javax.xml.rpc.ServiceException;
+import javax.xml.rpc.server.ServiceLifecycle;
 
 import org.apache.axis.MessageContext;
 import org.apache.axis.transport.http.HTTPConstants;
@@ -19,21 +23,38 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 
-public class WSQuery {
+public class WSQuery implements ServiceLifecycle{
 	private static Logger log = Logger.getLogger(WSQuery.class);
 
 	private static ApplicationService applicationService;	
 	private static ClassCache classCache;
 
 	private static int resultCountPerQuery = 1000;
-	
-	static {
-		HttpServlet srv = (HttpServlet) MessageContext.getCurrentContext().getProperty(HTTPConstants.MC_HTTP_SERVLET);
-		ServletContext context = srv.getServletContext();
-		
+
+
+	public void destroy() {
+		applicationService = null;
+		classCache = null;
+		resultCountPerQuery = 0;
+	}
+
+	public void init(Object obj) throws ServiceException {
+		ServletContext context;
+		if(obj instanceof ServletContext)
+		{
+			log.debug("Obtained servlet context directly as init parameter");
+			context= (ServletContext) obj;
+		}
+		else
+		{
+			log.debug("Obtaining servlet context indirectly from message context");
+			HttpServlet srv = (HttpServlet) MessageContext.getCurrentContext().getProperty(HTTPConstants.MC_HTTP_SERVLET);
+			context = srv.getServletContext();
+			log.debug("Obtained servlet context from message context");
+		}
 		WebApplicationContext ctx =  WebApplicationContextUtils.getWebApplicationContext(context);
 		classCache = (ClassCache)ctx.getBean("ClassCache");
-		applicationService = (ApplicationService)ctx.getBean("applicationService");
+		applicationService = (ApplicationService)ctx.getBean("ApplicationServiceImpl");
 		
 		Properties systemProperties = (Properties) ctx.getBean("SystemProperties");
 		
@@ -45,9 +66,10 @@ public class WSQuery {
 			}
 		} catch (Exception ex) {
 			log.error("Exception initializing resultCountPerQuery: ", ex);
+			throw new ServiceException("Exception initializing resultCountPerQuery: ", ex);
 		}
 	}
-
+	
 	public int getTotalNumberOfRecords(String targetClassName, Object criteria) throws Exception{
 		return getResultSet(targetClassName, criteria, 0).size();
 	}
@@ -62,8 +84,8 @@ public class WSQuery {
 
 //		List alteredResults = new ArrayList();
 		List results = new ArrayList();
-
 		results = getResultSet(targetClassName, criteria, startIndex);
+		List alteredResults = alterResultSet(results);//new ArrayList();
 		
 //		List<Object> resultList = new ArrayList<Object>();
 //
@@ -82,8 +104,9 @@ public class WSQuery {
 //		return alteredResults;
 		
 // TODO : confirm results don't need to be altered		
-		return results;
+		return alteredResults;
 	}
+
 
 	private List getResultSet(String targetClassName, Object searchCriteria, int startIndex) throws Exception{
 
@@ -93,7 +116,11 @@ public class WSQuery {
 		try
 		{
 			if(searchClassName != null && searchCriteria != null){
-				results = applicationService.query(searchCriteria, startIndex, targetClassName);			
+				List paramList = new ArrayList();
+				paramList.add(searchCriteria);
+				NestedCriteriaPath pathCriteria = new NestedCriteriaPath(targetClassName,paramList);
+				
+				results = applicationService.query(pathCriteria, startIndex, targetClassName);			
 			}
 			else{
 				throw new Exception("Invalid arguments passed over to the server");
@@ -130,4 +157,24 @@ public class WSQuery {
 		}
 		return searchClassName;
 	}
+	
+	
+	private List alterResultSet(List results) {
+		List objList;
+		
+		if (results instanceof ListProxy)
+		{
+			ListProxy listProxy = (ListProxy)results;
+			objList = listProxy.getListChunk();
+		}
+		else
+		{
+			objList = results;
+		}
+		
+		WSUtils util = new WSUtils();
+		objList = (List)util.convertToProxy(null, objList);
+		return objList;
+	}
+	
 }
