@@ -73,6 +73,7 @@
 		<mkdir dir="${package.dir}"/>
 		<mkdir dir="${package.client.remote.dir}"/>
 		<mkdir dir="${package.client.remote.lib.dir}"/>
+		<mkdir dir="${package.client.remote.conf.dir}"/>
 		<mkdir dir="${package.client.local.dir}"/>
 		<mkdir dir="${package.client.local.lib.dir}"/>
 		<mkdir dir="${package.system.dir}"/>
@@ -221,6 +222,13 @@
 
 	<target name="package-remote-client" depends="package-codegen-artifacts">
 		<SDKecho message="${ant.project.name}: Packaging the remote client"/>
+
+		<copy todir="${package.client.remote.conf.dir}">
+			<fileset dir="${output.src.dir}">
+				<include name="*.xsd"/>
+				<include name="*xml-mapping*.*"/>
+			</fileset>
+		</copy>
 		<copy todir="${package.client.remote.lib.dir}">
 			<fileset dir="${system.dir}\${system.dist.dir}">
 				<include name="${system.file.output.client.name}"/>
