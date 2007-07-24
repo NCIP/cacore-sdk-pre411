@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -34,7 +35,7 @@ public class ProxyHelperImpl implements ProxyHelper
 		if(null == obj) return null;
     	if(obj instanceof Integer || obj instanceof Float || obj instanceof Double
     			|| obj instanceof Character || obj instanceof Long || obj instanceof Boolean
-    			|| obj instanceof String || obj instanceof BeanProxy)
+    			|| obj instanceof String || obj instanceof Date || obj instanceof BeanProxy)
     		return obj;
 
     	org.springframework.aop.framework.ProxyFactory pf = new org.springframework.aop.framework.ProxyFactory();
@@ -106,7 +107,7 @@ public class ProxyHelperImpl implements ProxyHelper
     	return null;
 	}
 	
-	private Method getMethod(Object bean, String methodName, Class[] params) {
+	protected Method getMethod(Object bean, String methodName, Class[] params) {
 		Method method = null;
 		if(bean == null) return null;
 		
@@ -127,7 +128,7 @@ public class ProxyHelperImpl implements ProxyHelper
 		return method;
 	}
 
-	private Field getField(Object bean, String fieldName) {
+	protected Field getField(Object bean, String fieldName) {
 		Field field = null;
 		if(bean == null) return null;
 		
@@ -148,7 +149,7 @@ public class ProxyHelperImpl implements ProxyHelper
 		return field;
 	}
 
-	private Object createClone(Object source)
+	protected Object createClone(Object source)
 	{
 		try 
 		{
@@ -180,7 +181,7 @@ public class ProxyHelperImpl implements ProxyHelper
 		return null;
 	}
 	
-	private void getAllFields(Class klass, List<Field> fieldList){
+	protected void getAllFields(Class klass, List<Field> fieldList){
 
 		if ( klass == null || 
 				klass.getName().equalsIgnoreCase("java.lang.Object") ||
