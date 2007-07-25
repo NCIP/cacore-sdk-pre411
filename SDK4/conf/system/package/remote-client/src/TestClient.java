@@ -48,7 +48,7 @@ public class TestClient
 		}
 	}
 	
-	private void printObject(Object obj, Class klass) throws Exception {
+	protected void printObject(Object obj, Class klass) throws Exception {
 		System.out.println("Printing "+ obj.getClass().getName());
 		Method[] methods = klass.getMethods();
 		for(Method method:methods)
@@ -66,12 +66,14 @@ public class TestClient
 	}
 
 
-	private Collection<Class> getClasses() throws Exception
+	protected Collection<Class> getClasses() throws Exception
 	{
 		Collection<Class> list = new ArrayList<Class>();
 		JarFile file = null;
 		int count = 0;
-		for(File f:new File("lib").listFiles())
+		
+		File myfile = new File("C:/dan/dev/caCore/SDK4/output/example/package/remote-client/lib");
+		for(File f:myfile.listFiles())
 		{
 			if(f.getName().endsWith("-beans.jar"))
 			{

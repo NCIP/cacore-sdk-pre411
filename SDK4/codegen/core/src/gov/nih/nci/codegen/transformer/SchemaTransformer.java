@@ -342,14 +342,16 @@ public class SchemaTransformer implements Transformer {
 
 	private String getName(String type) {
 		String finalType = "xs:";
-		if (type.equalsIgnoreCase("collection")) {
+		if ("collection".equalsIgnoreCase(type)
+				|| "character".equalsIgnoreCase(type)
+				|| "char".equalsIgnoreCase(type)) {
 			finalType = finalType + "string";
 		} else {
 			finalType = finalType + type.toLowerCase();
 			if (finalType.equals("xs:date")) {
 				finalType = "xs:dateTime";
 			}
-		}    	
+		}
 		return finalType;
 	}
 

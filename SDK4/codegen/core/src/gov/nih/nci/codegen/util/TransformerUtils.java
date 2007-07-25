@@ -567,24 +567,31 @@ public class TransformerUtils
 	public static void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<UMLPackage, Collection<UMLClass>> pkgColl, Collection<UMLClass> classColl)
 	{
 		for(UMLPackage pkg:nextLevelPackages){
-			Collection<UMLClass> pkgClasses = pkg.getClasses();
 
-			if (pkgClasses != null && pkgClasses.size() > 0){
-				for (UMLClass klass:pkgClasses){
-					String pkgName = TransformerUtils.getFullPackageName(klass);
-					if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && !pkgName.startsWith("java.lang") && !pkgName.startsWith("java.util")) {
-						classColl.add(klass);
+			if (isIncluded(pkg)){
+				log.debug("including package: " + pkg.getName());
+			
+				Collection<UMLClass> pkgClasses = pkg.getClasses();
 
-						if(!pkgColl.containsKey(pkg)) {
-							List<UMLClass> classes = new ArrayList<UMLClass>();
-							classes.add(klass);
-							pkgColl.put(pkg, classes);
-						} else {
-							Collection<UMLClass> existingCollection = pkgColl.get(pkg);
-							existingCollection.add(klass);
-						}					
+				if (pkgClasses != null && pkgClasses.size() > 0){
+					for (UMLClass klass:pkgClasses){
+						String pkgName = TransformerUtils.getFullPackageName(klass);
+						if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && !pkgName.startsWith("java.lang") && !pkgName.startsWith("java.util")) {
+							classColl.add(klass);
+
+							if(!pkgColl.containsKey(pkg)) {
+								List<UMLClass> classes = new ArrayList<UMLClass>();
+								classes.add(klass);
+								pkgColl.put(pkg, classes);
+							} else {
+								Collection<UMLClass> existingCollection = pkgColl.get(pkg);
+								existingCollection.add(klass);
+							}					
+						}
 					}
 				}
+			} else{
+				log.debug("excluding package: " + pkg.getName());
 			}
 			collectPackages(pkg.getPackages(), pkgColl, classColl);	
 		}

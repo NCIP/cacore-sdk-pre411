@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jdom.DocType;
@@ -193,7 +192,18 @@ public class XmlMappingTransformer implements Transformer {
 		Element classEl = new Element(classElName);
 		mappingEl.addContent(classEl);
 		classEl.setAttribute("name", TransformerUtils.getFullPackageName(klass)+Constant.DOT+klass.getName());
-		classEl.setAttribute("identity", "id");
+		
+		
+		String idAttrName = "";
+		try {
+			idAttrName = TransformerUtils.getClassIdAttr(klass).getName();
+			log.debug("className: " + klass.getName() + "; idAttrName: " + idAttrName);
+		} catch (GenerationException ge){
+			log.error("ERROR: ", ge);
+			generatorErrors.addError(new GeneratorError(ge.getMessage(), ge));
+		}
+				
+		classEl.setAttribute("identity", idAttrName);
 		if (superClassName!=null){
 			classEl.setAttribute("extends", superClassName);
 		}
@@ -273,7 +283,7 @@ public class XmlMappingTransformer implements Transformer {
 				String associationPackage = TransformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
 				field.setAttribute("type", associationPackage + Constant.DOT + ( (UMLClass)otherEnd.getUMLElement() ).getName() );
 				if (includeFieldHandler) {
-					field.setAttribute("handler", "gov.nih.nci.common.util.CastorDomainObjectFieldHandler" );
+					field.setAttribute("handler", "gov.nih.nci.system.client.util.xml.CastorDomainObjectFieldHandler" );
 				}
 				Element bind = new Element("bind-xml");
 				bind.setAttribute("name", otherEndTypeName );
@@ -295,7 +305,7 @@ public class XmlMappingTransformer implements Transformer {
 				field.setAttribute("type", associationPackage + Constant.DOT + otherEndTypeName);
 				field.setAttribute("collection", "collection" );
 				if (includeFieldHandler) {
-					field.setAttribute("handler", "gov.nih.nci.common.util.CastorCollectionFieldHandler" );
+					field.setAttribute("handler", "gov.nih.nci.system.client.util.xml.CastorCollectionFieldHandler" );
 				}
 
 				//for container = false
@@ -323,16 +333,20 @@ public class XmlMappingTransformer implements Transformer {
 	}
 
 	/**
-	 * @param type The UMLAttribute type 
+	 * @param type The UMLAttribute type
 	 * @return The corresponding Castor Mapping attribute type
 	 */
 	private String getQualifiedTypeName(String type) {
+
+		if ("Character".equalsIgnoreCase(type) || "char".equalsIgnoreCase(type)) {
+			return "string";
+		}
 
 		if ("HashSet".equalsIgnoreCase(type)) {
 			return "set";
 		}
 
-		if ("HashMap".equalsIgnoreCase(type)){
+		if ("HashMap".equalsIgnoreCase(type)) {
 			return "map";
 		}
 
