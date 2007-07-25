@@ -103,7 +103,7 @@ public class caCOREMarshaller implements gov.nih.nci.system.client.util.xml.Mars
 		}
 		try{
 			Mapping mapping = this.getMapping();
-			System.out.println("mapping: " + mapping);
+			//System.out.println("mapping: " + mapping);
 		
 			marshaller.setMapping(mapping);
 		}catch (MappingException e) {
