@@ -72,8 +72,7 @@ public class TestClient
 		JarFile file = null;
 		int count = 0;
 		
-		File myfile = new File("C:/dan/dev/caCore/SDK4/output/example/package/remote-client/lib");
-		for(File f:myfile.listFiles())
+		for(File f:new File("lib").listFiles())	
 		{
 			if(f.getName().endsWith("-beans.jar"))
 			{
