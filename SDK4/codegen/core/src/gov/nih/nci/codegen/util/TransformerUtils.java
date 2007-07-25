@@ -404,7 +404,6 @@ public class TransformerUtils
 		//throw new GenerationException("No attribute found that maps to the primary key identifier for class : "+fqcn);
 	}
 	
-	// TODO :: add method to UMLAttribute instead?  However, would alter existing interface...
 	public static boolean isStatic(UMLAttribute att){
 		
 		UMLTaggedValue tValue = att.getTaggedValue("static");
