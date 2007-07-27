@@ -86,7 +86,7 @@
 				<include name="**/*.*" />
 			</fileset>
 		</copy>
-		<replace dir="${output.dir}">
+		<replace dir="${output.conf.dir}">
 			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
 			<replacefilter token="@MODEL_FILE@" value="${MODEL_FILE}" />
 			<replacefilter token="@MODEL_FILE_TYPE@" value="${MODEL_FILE_TYPE}" />
