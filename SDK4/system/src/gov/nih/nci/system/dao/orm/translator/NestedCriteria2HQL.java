@@ -172,7 +172,7 @@ public class NestedCriteria2HQL
 					if (criteria.isTargetCollection())
 						selectBuffer.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
 					else 
-						selectBuffer.append(destAlias).append("=").append(srcAlias).append(".").append(roleName);
+						selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
 						
 					selectBuffer.append(" and ").append(srcAlias).append(" in (")
 						.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg)).append(")");
@@ -191,7 +191,7 @@ public class NestedCriteria2HQL
 				.append(targetObjectName).append(" ").append(destAlias)
 				.append(", ").append(sourceObjectName).append(" ")
 				.append(srcAlias).append(" where ");
-				hql.append(destAlias).append("=").append(srcAlias);
+				hql.append(destAlias).append(".id").append("=").append(srcAlias).append(".id");
 				hql.append(" and ");
 			}
 			else
@@ -207,7 +207,7 @@ public class NestedCriteria2HQL
 					if (criteria.isTargetCollection())
 						hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
 					else 
-						hql.append(destAlias).append("=").append(srcAlias).append(".").append(roleName);
+						hql.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
 						
 					hql.append(" and ");
 				}
@@ -244,7 +244,7 @@ public class NestedCriteria2HQL
 			.append(targetObjectName).append(" ").append(destAlias)
 			.append(", ").append(sourceObjectName).append(" ")
 			.append(srcAlias).append(" where ");
-			hql.append(destAlias).append("=").append(srcAlias);
+			hql.append(destAlias).append(".id").append("=").append(srcAlias).append(".id");
 			StringBuffer internalNestedCriteriaBuffer = new StringBuffer();
 			processNestedCriteria(internalNestedCriteriaBuffer, criteria.getInternalNestedCriteria());
 			
@@ -261,7 +261,7 @@ public class NestedCriteria2HQL
 			if (criteria.isTargetCollection())
 				hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
 			else 
-				hql.append(destAlias).append("=").append(srcAlias).append(".").append(roleName);
+				hql.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
 				
 			StringBuffer internalNestedCriteriaBuffer = new StringBuffer();
 			processNestedCriteria(internalNestedCriteriaBuffer, criteria.getInternalNestedCriteria());
@@ -508,7 +508,7 @@ public class NestedCriteria2HQL
 				} else
 				{
 					String alias = getAlias(roleValue.getClass().getName(),counter++);
-					hql.append(alias).append("=").append(srcAlias).append(".").append(roleName);
+					hql.append(alias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
 					hql.append(" and ");
 					hql.append(alias).append(" in (").append(getObjectCriterion(roleValue, cfg)).append(") ");
 				}
