@@ -176,10 +176,21 @@ public class UMLLogicalModelValidator implements Validator
 					"string".equalsIgnoreCase(name) ||
 					"char".equalsIgnoreCase(name) || "character".equalsIgnoreCase(name) ||
 					"boolean".equalsIgnoreCase(name) ||
-					"date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name)))
+					"byte".equalsIgnoreCase(name) ||
+					"short".equalsIgnoreCase(name) ||
+					"date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name)||
+					"collection<int>".equalsIgnoreCase(name) || "collection<integer>".equalsIgnoreCase(name)||
+					"collection<double>".equalsIgnoreCase(name)||
+					"collection<float>".equalsIgnoreCase(name)||
+					"collection<long>".equalsIgnoreCase(name)||
+					"collection<string>".equalsIgnoreCase(name)||
+					"collection<boolean>".equalsIgnoreCase(name)||
+					"collection<byte>".equalsIgnoreCase(name)||
+					"collection<short>".equalsIgnoreCase(name)||
+					"collection<char>".equalsIgnoreCase(name) || "collection<character>".equalsIgnoreCase(name)))
 				errors.addError(new GeneratorError("Invalid datatype for the "+attribute.getName()+" attribute in the "+thisClassName+" class"));
-			
-			for(UMLAttribute attr: klass.getAttributes())
+
+			for(UMLAttribute attr: klass.getAttributes())     
 				if(attr!=attribute &&  attr.getName()!=null && attr.getName().equals(attribute.getName()))
 					errors.addError(new GeneratorError("Duplicate attributes found in the "+thisClassName+" class :"+attr.getName()));
 		}

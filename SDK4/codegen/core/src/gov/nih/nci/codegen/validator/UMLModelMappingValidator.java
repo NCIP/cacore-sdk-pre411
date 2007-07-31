@@ -129,7 +129,7 @@ public class UMLModelMappingValidator implements Validator
 
 	private void validateClass(UMLModel model, UMLClass klass, UMLClass table, GeneratorErrors errors) {
 		validateIdAttributeMapping(klass, table, errors);
-		validateAttributesMapping(klass, table, errors);
+		validateAttributesMapping(model,klass, table, errors);
 		validateAssociations(model, klass, table, errors);
 		validateSubClass(model, klass, table, errors);
 	}
@@ -291,13 +291,24 @@ public class UMLModelMappingValidator implements Validator
 		}
 	}
 
-	private void validateAttributesMapping(UMLClass klass, UMLClass table, GeneratorErrors errors) 
+	private void validateAttributesMapping(UMLModel model, UMLClass klass, UMLClass table, GeneratorErrors errors) 
 	{
 		String thisClassName = TransformerUtils.getFQCN(klass);
 		for(UMLAttribute attribute: klass.getAttributes())
 		{
 			try {
-				TransformerUtils.getMappedColumnName(table,thisClassName+"."+attribute.getName());
+				if(TransformerUtils.isCollection(klass, attribute))
+				{
+					UMLClass collectionTable = TransformerUtils.findCollectionTable(attribute, model);
+					String keyColumnName = TransformerUtils.getCollectionKeyColumnName(collectionTable, klass, attribute);
+					String elementColumnName = TransformerUtils.getCollectionElementColumnName(collectionTable, klass, attribute);
+					String elementType = TransformerUtils.getCollectionElementHibernateType(klass, attribute);
+					
+				}
+				else
+				{
+					TransformerUtils.getMappedColumnName(table,thisClassName+"."+attribute.getName());
+				}
 			} catch (GenerationException e) {
 				errors.addError(new GeneratorError("Attribute mapping validation failed for "+thisClassName+"."+attribute.getName()+" ", e));
 			}

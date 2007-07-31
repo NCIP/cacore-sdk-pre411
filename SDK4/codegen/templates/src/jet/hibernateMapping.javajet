@@ -24,8 +24,21 @@ if(level == 0){%>
 			if(currentKlass.getAttributes().size()>0){%>
 		<%=emptySpace%><!-- Attributes mapping for the <%=currentKlass.getName()%> class --><%
 				for(UMLAttribute attr:currentKlass.getAttributes()){
-					if(attr != idAttr){%>
+					if(attr != idAttr){
+						if(TransformerUtils.isCollection(currentKlass, attr)){
+							UMLClass collectionTable = TransformerUtils.findCollectionTable(attr, model);
+							String keyColumnName = TransformerUtils.getCollectionKeyColumnName(collectionTable, currentKlass, attr);
+							String elementColumnName = TransformerUtils.getCollectionElementColumnName(collectionTable, currentKlass, attr);
+							String elementType = TransformerUtils.getCollectionElementHibernateType(currentKlass, attr);%>
+		<%=emptySpace%><set name="<%=attr.getName()%>" lazy="false" table="<%=collectionTable.getName()%>">
+			<%=emptySpace%><cache usage="read-write" />
+			<%=emptySpace%><key column="<%=keyColumnName%>" />
+			<%=emptySpace%><element type="<%=elementType%>" column="<%=elementColumnName%>" />
+		<%=emptySpace%></set>
+						<%}
+						else{%>
 		<%=emptySpace%><property name="<%=attr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(currentKlass,attr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+attr.getName())%>"/><%
+						}
 					}
 				}
 			}

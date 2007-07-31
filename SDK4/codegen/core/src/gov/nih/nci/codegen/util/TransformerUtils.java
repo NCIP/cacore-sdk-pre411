@@ -51,7 +51,8 @@ public class TransformerUtils
 	private static String TV_DESCRIPTION = "description";
 	private static String TV_LAZY_LOAD = "lazy-load";
 	private static String TV_TYPE="type";
-	
+	private static String TV_MAPPED_COLLECTION_TABLE = "mapped-collection-table";
+	private static String TV_MAPPED_ELEMENT_COLUMN = "mapped-element";
 	private static String TV_CADSR_PUBLICID = "CADSR_ConceptualDomainPublicID";
 	private static String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
 	
@@ -201,6 +202,14 @@ public class TransformerUtils
 				importList.add(getFQCN(superClasses[0]));
 		}
 		
+		for(UMLAttribute attr: klass.getAttributes())
+		{
+			if(getDataType(attr).startsWith("Collection") && !importList.contains("java.util.Collection"))
+			{
+				importList.add("java.util.Collection");
+				break;
+			}
+		}
 		for(UMLAssociation association: klass.getAssociations())
 		{
 			List<UMLAssociationEnd> assocEnds = association.getAssociationEnds();
@@ -243,10 +252,34 @@ public class TransformerUtils
 			return "Character";
 		if("boolean".equalsIgnoreCase(name) )
 			return "Boolean";
+		if("byte".equalsIgnoreCase(name) )
+			return "Byte";
+		if("short".equalsIgnoreCase(name) )
+			return "Short";
 
 		if("date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name))
 			return "java.util.Date";
 
+		
+		if("collection<int>".equalsIgnoreCase(name) || "collection<integer>".equalsIgnoreCase(name))
+			return "Collection<Integer>";
+		if("collection<double>".equalsIgnoreCase(name))
+			return "Collection<Double>";
+		if("collection<float>".equalsIgnoreCase(name))
+			return "Collection<Float>";
+		if("collection<long>".equalsIgnoreCase(name))
+			return "Collection<Long>";
+		if("collection<string>".equalsIgnoreCase(name))
+			return "Collection<String>";
+		if("collection<boolean>".equalsIgnoreCase(name))
+			return "Collection<Boolean>";
+		if("collection<byte>".equalsIgnoreCase(name))
+			return "Collection<Byte>";
+		if("collection<short>".equalsIgnoreCase(name))
+			return "Collection<Short>";
+		if("collection<char>".equalsIgnoreCase(name) || "collection<character>".equalsIgnoreCase(name))
+			return "Collection<Character>";
+		
 		log.error("Unknown data type = "+name);
 		
 		return name;
@@ -287,6 +320,10 @@ public class TransformerUtils
 			return "character";
 		if("boolean".equalsIgnoreCase(name) )
 			return "boolean";
+		if("byte".equalsIgnoreCase(name) )
+			return "byte";
+		if("short".equalsIgnoreCase(name) )
+			return "short";
 
 		if("date".equalsIgnoreCase(name) || "java.util.date".equalsIgnoreCase(name))
 			return "java.util.Date";
@@ -402,6 +439,13 @@ public class TransformerUtils
 		}
 		return null;
 		//throw new GenerationException("No attribute found that maps to the primary key identifier for class : "+fqcn);
+	}
+	
+	public static Boolean isCollection(UMLClass klass, UMLAttribute attr ) throws GenerationException
+	{
+		if(getDataType(attr).startsWith("Collection")) 
+			return true;
+		return false;
 	}
 	
 	public static boolean isStatic(UMLAttribute att){
@@ -912,7 +956,45 @@ public class TransformerUtils
 		return result;
 	}
 	
-	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, int minOccurence, int maxOccurence) throws GenerationException
+	
+	private static String getTagValue(UMLClass klass, UMLAttribute attribute, String key, String value, Boolean isValuePrefix, int minOccurence, int maxOccurence) throws GenerationException
+	{
+		String result = null;
+		int count = 0;
+		for(UMLTaggedValue tv: attribute.getTaggedValues())
+		{
+			if (key.equals(tv.getName()))
+			{
+				String tvValue = tv.getValue();
+				String[] tvValues = tvValue.split(",");
+				for(String val:tvValues)
+				{
+					if(value==null)
+					{
+						count++;
+						result = val;
+					}
+					else if(isValuePrefix && val.startsWith(value))
+					{
+						count++;
+						result = val;
+					}
+					else if(!isValuePrefix && val.equals(value))
+					{
+						count++;
+						result = val;
+					}
+				}
+			}
+		}
+		
+		if(count < minOccurence) throw new GenerationException("No value of "+value+" found for "+key+" tag in class : "+getFQCN(klass));
+		if(count > maxOccurence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
+		
+		return result;
+	}	
+		
+	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, Boolean isValuePrefix, int minOccurence, int maxOccurence) throws GenerationException
 	{
 		
 		List <UMLAssociationEnd>ends = association.getAssociationEnds();
@@ -937,7 +1019,12 @@ public class TransformerUtils
 						count++;
 						result = val;
 					}
-					else if(value.equals(val))
+					else if(isValuePrefix && val.startsWith(value))
+					{
+						count++;
+						result = val;
+					}
+					else if(!isValuePrefix && val.equals(value))
 					{
 						count++;
 						result = val;
@@ -952,6 +1039,11 @@ public class TransformerUtils
 		if(count > maxOccurence) throw new GenerationException("More than one tag values of "+key+" found for association between "+thisClassName +" and "+ otherClassName);
 		
 		return result;
+	}	
+	
+	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, int minOccurence, int maxOccurence) throws GenerationException
+	{
+		return getTagValue(klass, association, key, value,false, minOccurence, maxOccurence);
 	}	
 	
 	private static String getTagValue(Collection<UMLTaggedValue> tagValues, String key, int maxOccurence) throws GenerationException
@@ -1081,4 +1173,57 @@ public class TransformerUtils
         return nn1.substring(0, nn1.length()-1);
 
 	}
+	
+
+	public static UMLClass findCollectionTable(UMLAttribute attr, UMLModel model) throws GenerationException
+	{
+		String tableName = getTagValue(attr.getTaggedValues(),TV_MAPPED_COLLECTION_TABLE, 1);
+
+		UMLClass collectionTable = ModelUtil.findClass(model,BASE_PKG_DATA_MODEL+"."+tableName);
+		if(collectionTable == null) throw new GenerationException("No collection table found named : \""+tableName+"\"");
+		
+		return collectionTable;
+	}
+	
+	
+	public static String getCollectionKeyColumnName(UMLClass table,UMLClass klass, UMLAttribute attr) throws GenerationException
+	{
+		return getColumnName(table,TV_MAPPED_ATTR_COLUMN,getFQCN(klass) +"."+ attr.getName(),false,1,1);
+	}
+
+	public static String getCollectionElementColumnName(UMLClass table,UMLClass klass, UMLAttribute attr) throws GenerationException
+	{
+		return getColumnName(table,TV_MAPPED_ELEMENT_COLUMN,getFQCN(klass) +"."+ attr.getName(),false,1,1);
+	}
+
+	public static String getCollectionElementHibernateType(UMLClass klass, UMLAttribute attr) throws GenerationException
+	{
+		String name = getDataType(attr);
+		if(name.startsWith("Collection<"))
+		{
+			name = name.substring("Collection<".length());
+			name = name.substring(0,name.length()-1);
+			
+			if("int".equalsIgnoreCase(name) || "integer".equalsIgnoreCase(name))
+				return "integer";
+			if("double".equalsIgnoreCase(name))
+				return "double";
+			if("float".equalsIgnoreCase(name))
+				return "float";
+			if("long".equalsIgnoreCase(name))
+				return "long";
+			if("string".equalsIgnoreCase(name))
+				return "string";
+			if("char".equalsIgnoreCase(name) || "character".equalsIgnoreCase(name))
+				return "character";
+			if("boolean".equalsIgnoreCase(name) )
+				return "boolean";
+			if("byte".equalsIgnoreCase(name) )
+				return "byte";
+			if("short".equalsIgnoreCase(name) )
+				return "short";	
+		}
+		return name;
+	}
+
 }
