@@ -1,15 +1,18 @@
 package gov.nih.nci.system.client;
 
+import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.proxy.ApplicationServiceProxy;
 
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 
+import org.acegisecurity.AcegiSecurityException;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.AuthenticationProvider;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
+import org.acegisecurity.providers.rcp.RemoteAuthenticationException;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.AopProxy;
@@ -102,8 +105,20 @@ public class ApplicationServiceProvider
 		if(secured)
 		{
 			Authentication auth = new UsernamePasswordAuthenticationToken(username,password);
-			auth = ap.authenticate(auth);
-			setApplicationService(as, auth);
+			try
+			{
+				auth = ap.authenticate(auth);
+				setApplicationService(as, auth);
+			}
+			catch(Exception e)
+			{
+				String message="";
+				if(e instanceof RemoteAuthenticationException || e instanceof AcegiSecurityException)
+					message = "Error authenticating user:";
+				else
+					message = "Unknown error in authenticating user:";
+				throw new ApplicationException(message,e);
+			}
 		}
 		else
 		{
