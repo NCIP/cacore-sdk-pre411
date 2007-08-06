@@ -112,7 +112,7 @@
 				<entry key="HIBERNATE_PROPERTIES">
 					<map>
 						<!--@DB_JNDI_URL_START@-->
-						<entry key="jndi" value="@DB_JNDI_URL@"/>
+						<entry key="connection.datasource" value="@DB_JNDI_URL@"/>
 						<!--@DB_JNDI_URL_END@-->
 						
 						<!--@DB_CONNECTION_POOL_START@-->
