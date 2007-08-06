@@ -51,6 +51,19 @@
 		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>
 	
+	<condition property="CSM_JNDI_START" value="" else="${xml.comment.start}">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="CSM_JNDI_END" value="" else="${xml.comment.end}">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="CSM_DB_CONNECTION_START" value="${xml.comment.start}" else="">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="CSM_DB_CONNECTION_END" value="${xml.comment.end}" else="">
+		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	
 	<condition property="server-exclude-list" value="servlet.jar,commons-logging*.jar,log4j*.jar" else="servlet.jar,commons-logging*.jar">
 		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
 	</condition>
@@ -116,8 +129,19 @@
 			<replacefilter token="@GENERATE_XSD@" value="${GENERATE_XSD}"/>
 			<replacefilter token="@GENERATE_WSDD@" value="${GENERATE_WSDD}"/>
 			<replacefilter token="@SERVER_URL@" value="${SERVER_URL}"/>
-		</replace>	
-	
+			<replacefilter token="${xml.comment.start}@CSM_DB_JNDI_URL_START@${xml.comment.end}" value="${CSM_JNDI_START}" />	
+			<replacefilter token="${xml.comment.start}@CSM_DB_JNDI_URL_END@${xml.comment.end}" value="${CSM_JNDI_END}" />	
+			<replacefilter token="${xml.comment.start}@CSM_DB_CONNECTION_POOL_START@${xml.comment.end}" value="${CSM_DB_CONNECTION_START}" />	
+			<replacefilter token="${xml.comment.start}@CSM_DB_CONNECTION_POOL_END@${xml.comment.end}" value="${CSM_DB_CONNECTION_END}" />	
+			<replacefilter token="@CSM_DB_JNDI_URL@" value="${CSM_DB_JNDI_URL}" />	
+			<replacefilter token="@CSM_DB_DRIVER@" value="${CSM_DB_DRIVER}" />	
+			<replacefilter token="@CSM_DB_CONNECTION_URL@" value="${CSM_DB_CONNECTION_URL}" />	
+			<replacefilter token="@CSM_DB_USERNAME@" value="${CSM_DB_USERNAME}" />	
+			<replacefilter token="@CSM_DB_PASSWORD@" value="${CSM_DB_PASSWORD}" />	
+			<replacefilter token="@CSM_DB_DIALECT@" value="${CSM_DB_DIALECT}" />
+			<replacefilter token="@CSM_PROJECT_NAME@" value="${CSM_PROJECT_NAME}" />
+		</replace>
+		<copy tofile="${output.src.dir}/${security.config.file}" file="${system.config.security.dir}/${security.config.original.file}"/>
 	</target>
 
 	<!--***********************************************************************
@@ -212,7 +236,8 @@
 			</manifest>
 			<include name="**/*.hbm.xml"/>
 			<include name="*.cfg.xml"/>
-			<include name="ehcache.xml"/>	
+			<include name="ehcache.xml"/>
+			<exclude name="${security.config.file}"/>
 		</jar>
 	</target>
 
@@ -314,6 +339,9 @@
 			<fileset dir="${build.dir}">
 				<include name="docs/**/*"/>
 			</fileset>
+			<classes dir="${output.src.dir}">
+				<include name="${security.config.file}"/>
+			</classes>
 		</war>
 	</target>	
 	
