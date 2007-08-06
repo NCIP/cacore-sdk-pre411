@@ -11,7 +11,6 @@
 		<property name="service"><ref bean="ApplicationServiceImpl" /></property>
 	</bean>
 
-	<!-- 
 	<bean name="/remoteAuthenticationManager"	class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
 		<property name="serviceInterface" value="org.acegisecurity.providers.rcp.RemoteAuthenticationManager"/>
 		<property name="service">
@@ -22,5 +21,5 @@
 			</bean>
 		</property>
 	</bean>
-	-->
+	
 </beans>
