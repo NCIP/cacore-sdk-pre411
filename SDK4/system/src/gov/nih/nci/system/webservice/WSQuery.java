@@ -81,29 +81,10 @@ public class WSQuery implements ServiceLifecycle{
 
 	public List query(String targetClassName, Object criteria, int startIndex) throws Exception
 	{
-
-//		List alteredResults = new ArrayList();
 		List results = new ArrayList();
 		results = getResultSet(targetClassName, criteria, startIndex);
-		List alteredResults = alterResultSet(results);//new ArrayList();
-		
-//		List<Object> resultList = new ArrayList<Object>();
-//
-//		if(results.size()>= startIndex){
-//			if(recordCounter <=0 || recordCounter > (startIndex + resultCountPerQuery) ){
-//				recordCounter = startIndex + resultCountPerQuery;
-//			}
-//			for(int i= startIndex;( i<=(recordCounter + startIndex) && i<results.size()); i++){
-//				resultList.add(results.get(i));
-//			}
-//		}
-//		if(resultList.size()>0){
-//			alteredResults = transformer.generateWSResults(resultList);
-//		}
-//
-//		return alteredResults;
-		
-// TODO : confirm results don't need to be altered		
+		List alteredResults = alterResultSet(results);
+	
 		return alteredResults;
 	}
 
