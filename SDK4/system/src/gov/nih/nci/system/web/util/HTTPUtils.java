@@ -55,6 +55,7 @@ public class HTTPUtils implements Serializable{
 	private String targetClassName;
 	private String servletName;
 	private String targetPackageName;
+	private String roleName;	
 	private List results = new ArrayList();
 	private Namespace namespace = Namespace.getNamespace("xlink", SystemConstant.XLINK_URL);
 
@@ -139,6 +140,9 @@ public class HTTPUtils implements Serializable{
 					else if(param.toLowerCase().startsWith("resultcounter")){
 						resultCounter = param.substring("resultCounter=".length());
 					}
+					else if(param.toLowerCase().startsWith("rolename=")){
+						roleName = param.substring("roleName=".length());
+					}					
 					else if(param.toLowerCase().startsWith("pagenumber=")){
 						pageNumber = param.substring("pageNumber=".length());
 					}
@@ -513,7 +517,6 @@ public class HTTPUtils implements Serializable{
 
 		org.jdom.Document xmlDoc = new org.jdom.Document(httpQuery);
 
-
 		return xmlDoc;
 	}
 
@@ -589,42 +592,12 @@ public class HTTPUtils implements Serializable{
 					}
 				}
 				String methodName = "get"+  fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
-				if((fieldName.startsWith("parent")|| fieldName.startsWith("child"))&& fieldName.indexOf("Ontology")>0){
-					link = servletName + SystemConstant.QUESTION_MARK + this.getOntologyLink(methodName, criteriaIdValue, result.getClass().getName());
-				}else{
-					//Support getSupplyingSource and getOriginalSource methods
-					if(result.getClass().getName().equals("gov.nih.nci.common.provenance.domain.Provenance")&& (fieldName.equals("supplyingSource")|| fieldName.equals("originalSource") || fieldName.equals("immediateSource"))){
-						String targetFieldName = fieldName +"Id";
-						if(getFieldByName(fields, targetFieldName) != null){
-							Field targetField = this.getFieldByName(fields, targetFieldName);
-							if(targetField.get(result)!=null){
-								String targetIdValue = "@id="+ String.valueOf(targetField.get(result));
-								link =  servletName + "?query=" +  targetBean + SystemConstant.AMPERSAND + targetBean +SystemConstant.LEFT_BRACKET+ targetIdValue+SystemConstant.RIGHT_BRACKET;
-							}
-						}
-					}
-					else if(result.getClass().getName().equals("gov.nih.nci.cabio.domain.CytogeneticLocation")&& (fieldName.equals("endCytoband")|| fieldName.equals("startCytoband"))){
-						String targetFieldName = fieldName +"LocId";
-						if(getFieldByName(fields, targetFieldName) != null){
-							Field targetField = this.getFieldByName(fields, targetFieldName);
-							if(targetField.get(result)!=null){
-								String targetIdValue = "@id="+ String.valueOf(targetField.get(result));
-								link =  servletName + "?query=" +  targetBean + SystemConstant.AMPERSAND +targetBean +SystemConstant.LEFT_BRACKET+ targetIdValue+SystemConstant.RIGHT_BRACKET;
-							}
-						}
+	
+				link = servletName + "?query=" +  targetBean + SystemConstant.AMPERSAND +criteriaBean + SystemConstant.LEFT_BRACKET+ criteriaIdValue+SystemConstant.RIGHT_BRACKET + 
+						SystemConstant.AMPERSAND + "roleName=" + fieldName;
+				
+				fieldElement.setAttribute("type","simple",namespace).setAttribute("href",link,namespace).setText(methodName);
 
-					}
-					else{
-						link =  servletName + "?query=" +  targetBean + SystemConstant.AMPERSAND +criteriaBean +SystemConstant.LEFT_BRACKET+ criteriaIdValue+SystemConstant.RIGHT_BRACKET;
-					}
-
-				}
-				if(link != null){
-					fieldElement.setAttribute("type","simple",namespace).setAttribute("href",link,namespace).setText(methodName);
-				}
-				else{
-					fieldElement.setText("-");
-				}
 
 			}
 
@@ -721,48 +694,6 @@ public class HTTPUtils implements Serializable{
 	}
 
 	/**
-	 * Returns a ontology link value for a given string
-	 * @param methodName - specifies the method name
-	 * @param criteriaIdValue - specifies the id value
-	 * @param currentClassName - specifies the class name
-	 * @return
-	 * @throws Exception
-	 */
-	private String getOntologyLink(String methodName, String criteriaIdValue, String currentClassName) throws Exception{
-		String link = null;
-		String returnClassName = null;
-		String term = null;
-		String roleName = null;
-
-		if(currentClassName.indexOf(SystemConstant.DOT)>1){
-			currentClassName = currentClassName.substring(currentClassName.lastIndexOf(SystemConstant.DOT)+1);
-		}
-
-		if(methodName.endsWith("Collection")){
-			term = methodName.substring(0, methodName.indexOf("Collection"));
-		}
-		else{
-			term = methodName;
-		}
-
-		if(methodName.startsWith("getParent")){
-			returnClassName = term.substring("getParent".length());
-			roleName = "child"+ currentClassName;
-		}
-		else if(methodName.startsWith("getChild")){
-			returnClassName = term.substring("getChild".length());
-			roleName = "parent"+ currentClassName;
-		}
-		if(currentClassName.endsWith("Relationship")){
-			roleName += "Collection";
-		}
-
-		link = "query="+ returnClassName +SystemConstant.AMPERSAND + returnClassName + SystemConstant.LEFT_BRACKET+roleName +SystemConstant.LEFT_BRACKET+ criteriaIdValue +"]]";
-		return link;
-	}
-
-
-	/**
 	 * Returns an id field from an array of fields
 	 * @param fields
 	 * @return
@@ -843,7 +774,12 @@ public class HTTPUtils implements Serializable{
 			if(resultCounter != null){
 				counter = Integer.parseInt(resultCounter);
 			}
-			results = applicationService.search(searchPath, criteria);
+			if (roleName != null){
+				results = applicationService.getAssociation(criteria, roleName);
+			} else {
+				results = applicationService.search(searchPath, criteria);
+			}
+
 			if (results != null && (results instanceof ListProxy)){
 				((ListProxy)results).setAppService(applicationService);
 			}
@@ -865,30 +801,6 @@ public class HTTPUtils implements Serializable{
 			resultSet[s]= results.get(i);
 		}
 
-		return resultSet;
-	}
-
-	public Object[] getCachedResultSet() throws Exception{
-		int counter = 1000;
-		int index = 0;
-		if(resultCounter != null){
-			counter = Integer.parseInt(resultCounter);
-		}
-		if(startIndex != null){
-			index = Integer.parseInt(startIndex);
-		}
-
-		int size = index + counter;
-
-		if(size > results.size()){
-			size = results.size();
-		}
-
-		Object[] resultSet = new Object[counter];
-		for(int s=0, i = index; i<size; i++, s++){
-			resultSet[s]= new Object();
-			resultSet[s]= results.get(i);
-		}
 		return resultSet;
 	}
 
@@ -1049,10 +961,6 @@ public class HTTPUtils implements Serializable{
 					strValue = String.valueOf(value);
 				}
 				out.println("<TD>"+ strValue +"</TD>" );
-			}
-			else if(returnObjectName.indexOf("Ontology")>0 &&(returnObjectName.startsWith("parent")|| returnObjectName.startsWith("child"))){
-				String link = this.getOntologyLink(methName, criteriaIdValue, result.getClass().getName());
-				out.println("<TD><a href="+ servletName + SystemConstant.QUESTION_MARK + link + SystemConstant.GREATER_THAN + methName +"</a></TD>");
 			}
 			else if(returnObjectName.endsWith("Collection")){
 

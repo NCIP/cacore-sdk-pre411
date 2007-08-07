@@ -388,112 +388,89 @@ public class SearchUtils {
 				}                
 			}
 			else{
-				String ontologyRole = null;
-				if(attRole.indexOf("Ontology")>0 && (attRole.startsWith("parent")|| attRole.startsWith("child"))){
-					Object ontologyObject = buildOntology(att, packageName);
-					Method ontologyMethod = getMethod(critObject.getClass(), "set" + attRole.substring(0,1).toUpperCase() + attRole.substring(1));
+				String roleClassName = getRoleClassName(attRole);
 
-					if(ontologyMethod != null){
-						if(attRole.endsWith("Collection")){
-							List<Object> ontologyList = new ArrayList<Object>();
-							ontologyList.add(ontologyObject);
-							ontologyMethod.invoke(critObject,new Object[]{ontologyList});                                                               
-						}
-						else{
-							ontologyMethod.invoke(critObject,new Object[]{ontologyObject});
-						}
-					}                                           
+				if(roleClassName.indexOf(SystemConstant.DOT)<0){
+					roleClassName = packageName +SystemConstant.DOT + roleClassName;                            
+				}                
+				Method roleMethod = null;
+				roleMethod = getMethod(critObject.getClass(), "set"+ attRole.substring(0,1).toUpperCase() + attRole.substring(1));
+
+
+				Object roleObject = Class.forName(roleClassName).newInstance();
+				List<Object> roleClassCollection = new ArrayList<Object>();
+				int count = 0;
+				for(int i=0; i< att.length(); i++){
+					if(att.charAt(i)==SystemConstant.LEFT_BRACKET){
+						count++;
+					}
 				}
-				else{
-					String roleClassName = getRoleClassName(attRole);
-
-					if(roleClassName.indexOf(SystemConstant.DOT)<0){
-						roleClassName = packageName +SystemConstant.DOT + roleClassName;                            
-					}                
-					Method roleMethod = null;
-					if(ontologyRole != null){                    
-						roleMethod = getMethod(critObject.getClass(), "set"+ attRole.substring(0,1).toUpperCase() + attRole.substring(1));
-					}
-					else{
-						roleMethod = getMethod(critObject.getClass(), "set"+ attRole.substring(0,1).toUpperCase() + attRole.substring(1));
-					}
-
-					Object roleObject = Class.forName(roleClassName).newInstance();
-					List<Object> roleClassCollection = new ArrayList<Object>();
-					int count = 0;
-					for(int i=0; i< att.length(); i++){
-						if(att.charAt(i)==SystemConstant.LEFT_BRACKET){
-							count++;
-						}
-					}
-					if(count>1){                    
-						List attList = getAttributeCollection(att.substring(att.indexOf(SystemConstant.LEFT_BRACKET)));
-						for(int i=0; i<attList.size(); i++){
-							String critAtt = (String)attList.get(i);                        
-							String attName = critAtt.substring(1, critAtt.indexOf(SystemConstant.EQUAL));
-							String attValue = critAtt.substring(critAtt.indexOf(SystemConstant.EQUAL)+1);
-							Field roleAttField = getField(Class.forName(roleClassName), attName);
-							Method roleAttMethod = getAttributeSetMethodName(Class.forName(roleClassName).newInstance(), attName);
-							if(attValue.indexOf(SystemConstant.COMMA)<1){
-								if(roleMethod != null){
-									try{
-										roleAttMethod.invoke(roleObject,new Object[]{getFieldValue(roleAttField, attValue)});
-									}catch(Exception e){
-										throw new Exception("Unable to set value for " + attName +" - "+e.getMessage());
-									}
+				if(count>1){                    
+					List attList = getAttributeCollection(att.substring(att.indexOf(SystemConstant.LEFT_BRACKET)));
+					for(int i=0; i<attList.size(); i++){
+						String critAtt = (String)attList.get(i);                        
+						String attName = critAtt.substring(1, critAtt.indexOf(SystemConstant.EQUAL));
+						String attValue = critAtt.substring(critAtt.indexOf(SystemConstant.EQUAL)+1);
+						Field roleAttField = getField(Class.forName(roleClassName), attName);
+						Method roleAttMethod = getAttributeSetMethodName(Class.forName(roleClassName).newInstance(), attName);
+						if(attValue.indexOf(SystemConstant.COMMA)<1){
+							if(roleMethod != null){
+								try{
+									roleAttMethod.invoke(roleObject,new Object[]{getFieldValue(roleAttField, attValue)});
+								}catch(Exception e){
+									throw new Exception("Unable to set value for " + attName +" - "+e.getMessage());
 								}
 							}
-
-							if(roleObject != null && attRole.indexOf("Collection")>0){
-								roleClassCollection.add(roleObject);
-							}
 						}
-					}
-					else{
-						String attName = att.substring(att.indexOf(SystemConstant.AT)+1, att.indexOf(SystemConstant.EQUAL));
-						String attValue = att.substring(att.indexOf(SystemConstant.EQUAL)+1, att.indexOf(SystemConstant.RIGHT_BRACKET));
-						Field roleAttField = getField(roleObject.getClass(), attName);
-						Method roleAttMethod = getAttributeSetMethodName(roleObject, attName);
-						if(attRole.indexOf("Collection")>0){
-							Object value = getFieldValue(roleAttField,attValue);
-							roleAttMethod.invoke(roleObject,new Object[]{value});
+
+						if(roleObject != null && attRole.indexOf("Collection")>0){
 							roleClassCollection.add(roleObject);
 						}
-						else{                        
-							Object value = getFieldValue(roleAttField, attValue);
-							roleAttMethod.invoke(roleObject,new Object[]{value});
-						}
-
+					}
+				}
+				else{
+					String attName = att.substring(att.indexOf(SystemConstant.AT)+1, att.indexOf(SystemConstant.EQUAL));
+					String attValue = att.substring(att.indexOf(SystemConstant.EQUAL)+1, att.indexOf(SystemConstant.RIGHT_BRACKET));
+					Field roleAttField = getField(roleObject.getClass(), attName);
+					Method roleAttMethod = getAttributeSetMethodName(roleObject, attName);
+					if(attRole.indexOf("Collection")>0){
+						Object value = getFieldValue(roleAttField,attValue);
+						roleAttMethod.invoke(roleObject,new Object[]{value});
+						roleClassCollection.add(roleObject);
+					}
+					else{                        
+						Object value = getFieldValue(roleAttField, attValue);
+						roleAttMethod.invoke(roleObject,new Object[]{value});
 					}
 
-					if(attRole.indexOf("Collection")<1 && roleObject != null){                    
-						roleMethod.invoke(critObject, new Object[]{roleObject});                        
-					}else if(roleClassCollection.size()>0){                    
-						try{
-							Class types[] = roleMethod.getParameterTypes();
-							if(types[0] != null){
-								if(types[0].getName().endsWith("Vector")){
-									Vector vector = new Vector();
-									for(int i=0; i<roleClassCollection.size(); i++){
-										vector.add(roleClassCollection.get(i));
-									} 
-									roleMethod.invoke(critObject, new Object[] {vector});
-								}
-								else{
-									roleMethod.invoke(critObject, new Object[] {roleClassCollection});
-								}
+				}
+
+				if(attRole.indexOf("Collection")<1 && roleObject != null){                    
+					roleMethod.invoke(critObject, new Object[]{roleObject});                        
+				}else if(roleClassCollection.size()>0){                    
+					try{
+						Class types[] = roleMethod.getParameterTypes();
+						if(types[0] != null){
+							if(types[0].getName().endsWith("Vector")){
+								Vector vector = new Vector();
+								for(int i=0; i<roleClassCollection.size(); i++){
+									vector.add(roleClassCollection.get(i));
+								} 
+								roleMethod.invoke(critObject, new Object[] {vector});
 							}
 							else{
-								throw new Exception("Invalid arguments passed over to method : "+ roleMethod);
+								roleMethod.invoke(critObject, new Object[] {roleClassCollection});
 							}
-
-						}catch(Exception ex){
-							throw new Exception("Cannot invoke method - " + roleMethod.getName());
 						}
-					}else{
-						throw new Exception("Unable to generate search criteria");
-					}
+						else{
+							throw new Exception("Invalid arguments passed over to method : "+ roleMethod);
+						}
 
+					}catch(Exception ex){
+						throw new Exception("Cannot invoke method - " + roleMethod.getName());
+					}
+				}else{
+					throw new Exception("Unable to generate search criteria");
 				}
 
 			}
@@ -615,31 +592,6 @@ public class SearchUtils {
 	}
 
 	/**
-	 * Returns a class name for a given role
-	 * @param attRole
-	 * @return
-	 */
-	public String getOntologyRoleName (String attRole){    
-		String ontologyRole = null;
-		if(attRole.startsWith("child")){
-			ontologyRole = attRole.substring("child".length());
-		}
-		else if(attRole.startsWith("parent")){
-			ontologyRole = attRole.substring("parent".length());
-		}
-		if(ontologyRole != null){
-			if(ontologyRole.indexOf("Relationship")>=0){
-				ontologyRole = ontologyRole.substring(0, ontologyRole.indexOf("Relationship"));
-			}
-			else if(ontologyRole.endsWith("Collection")){
-				ontologyRole = ontologyRole.substring(0, ontologyRole.indexOf("Collection"));
-			}
-		}
-
-		return ontologyRole;
-	}
-
-	/**
 	 * Returns the class name for a given role
 	 * @param attRole
 	 * @return
@@ -647,10 +599,7 @@ public class SearchUtils {
 	public String getRoleClassName(String attRole){
 
 		String attClassName = null;
-		if(attRole.indexOf("Ontology")>=0 && (attRole.startsWith("child")|| attRole.startsWith("parent"))){        
-			attClassName  = getOntologyRoleName(attRole);
-		}
-		else if(attRole.indexOf("Collection")>0){
+		if(attRole.indexOf("Collection")>0){
 			attClassName = attRole.substring(0,1).toUpperCase() + attRole.substring(1,attRole.indexOf("Collection"));
 		}else{
 			attClassName = attRole.substring(0,1).toUpperCase() + attRole.substring(1);
@@ -693,60 +642,6 @@ public class SearchUtils {
 		return methods;
 	}
 
-	/**
-	 * Generates ontology search criteria
-	 * @param queryString - Specifies the query string
-	 * @param packageName - specifies the package name
-	 * @return ontology criteria object
-	 * @throws Exception
-	 */
-	public Object buildOntology(String queryString, String packageName) throws Exception{
-
-		String attName = queryString.substring(queryString.indexOf(SystemConstant.AT)+1,queryString.indexOf(SystemConstant.EQUAL));
-		String attValue = queryString.substring(queryString.indexOf(SystemConstant.EQUAL)+1,queryString.lastIndexOf(SystemConstant.RIGHT_BRACKET));
-		String setMethodName = "set"+attName.substring(0,1).toUpperCase() + attName.substring(1);
-		String roleName = queryString.substring(0, queryString.indexOf(SystemConstant.LEFT_BRACKET));
-
-		Object ontologyCriteria = null;
-		String ontologyClassName = null;
-
-		if(roleName.startsWith("child")){
-			ontologyClassName = roleName.substring("child".length());
-		}
-		else if(roleName.startsWith("parent")){
-			ontologyClassName = roleName.substring("parent".length());
-		}
-		if(ontologyClassName.endsWith("Collection")){
-			ontologyClassName = ontologyClassName.substring(0,ontologyClassName.indexOf("Collection"));
-		}
-
-		if(ontologyClassName.indexOf(SystemConstant.DOT)<1){
-			ontologyClassName = packageName + SystemConstant.DOT +ontologyClassName;
-		}
-
-		Field field = getField(Class.forName(ontologyClassName), attName);
-
-		Method method = getMethod(Class.forName(ontologyClassName), setMethodName);
-
-		Object value = null;
-		if(method != null){
-			if(!field.getType().getName().endsWith("String")){
-				value = convertValues(field, attValue);
-			}
-			else{
-				value = attValue;
-			}
-			ontologyCriteria = Class.forName(ontologyClassName).newInstance();
-			method.invoke(ontologyCriteria, new Object[]{value});
-
-			Field[] ofields = classCache.getAllFields(Class.forName(ontologyClassName)); 
-			for(int i=0; i<ofields.length; i++){
-				Field ofield = ofields[i];
-				ofield.setAccessible(true);
-			}
-		}
-		return ontologyCriteria;
-	}
 	/**
 	 * Returns the target class name for the specified class and role names
 	 * @param className specifies the class name
