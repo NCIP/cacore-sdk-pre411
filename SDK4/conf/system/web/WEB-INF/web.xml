@@ -4,20 +4,13 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			<!--  /WEB-INF/applicationContext-acegi-security.xml-->
 			/WEB-INF/classes/application-config.xml
+			/WEB-INF/classes/application-config-security.xml
+			/WEB-INF/classes/application-config-web-security.xml
 		</param-value>
 	</context-param>
-	<!-- 
-    <filter>
-        <filter-name>Acegi Filter Chain Proxy</filter-name>
-        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
-        <init-param>
-            <param-name>targetClass</param-name>
-            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
-        </init-param>
-    </filter>
-	 -->
+	
+    
 	<filter> 
 		<filter-name>struts2</filter-name> 
 		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
@@ -27,41 +20,31 @@
         </init-param>
 	</filter> 
 
-	<!-- 
+	<!--@SECURITY_START@-->
+    <filter>
+        <filter-name>AcegiFilters</filter-name>
+        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+        </init-param>
+    </filter>
+
     <filter-mapping>
-      <filter-name>Acegi Filter Chain Proxy</filter-name>
+      <filter-name>AcegiFilters</filter-name>
       <url-pattern>/*</url-pattern>
     </filter-mapping>	
-	 -->
+	<!--@SECURITY_END@-->
+	
 	<filter-mapping> 
 		<filter-name>struts2</filter-name> 
 		<url-pattern>/*</url-pattern> 
 	</filter-mapping> 
 
-<!-- 
-        This typically isn't required, as the taglib is included in struts-core.jar.
-        If you really need a taglib configuration within web.xml,
-        copy struts2-core/core/src/main/resources/META-INF/struts-tags.tld
-        to the WEB-INF directory as struts-tags.tld.
---> 
-<!-- 
-taglib>
-        <taglib-uri>/s</taglib-uri>
-        <taglib-location>/WEB-INF/struts-tags.tld</taglib-location>
-    </taglib
--->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-<!--
-    <servlet>
-		<servlet-name>context</servlet-name>
-		<servlet-class>
-			org.springframework.web.context.ContextLoaderServlet
-		</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
--->
+
     <servlet>
 		<servlet-name>httpinvoker</servlet-name>
 		<servlet-class>
@@ -90,7 +73,6 @@ taglib>
     	<servlet-name>GetHTML</servlet-name>
     	<servlet-class>gov.nih.nci.system.web.HTTPQuery</servlet-class>        	
     </servlet>
-    
     
     <servlet-mapping>
 		<servlet-name>httpinvoker</servlet-name>

@@ -5,7 +5,7 @@
 		<constructor-arg>
 			<map>
 				<entry key="APPLICATION_SERVICE_BEAN" value="applicationService"/>
-				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationManager"/>
+				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationProvider"/>
 				<entry key="APPLICATION_SERVICE_URL"  value="@SERVER_URL@/http/applicationService"/>
 				<entry key="APPLICATION_SERVICE_CONFIG"  value-ref="applicationServiceConfig"/>
 			</map>
@@ -32,7 +32,7 @@
 		<property name="interfaces" value="gov.nih.nci.system.applicationservice.ApplicationService"/>
 	</bean>	
 	
-	<bean id="authenticationManager" class="org.acegisecurity.providers.rcp.RemoteAuthenticationProvider">
+	<bean id="authenticationProvider" class="org.acegisecurity.providers.rcp.RemoteAuthenticationProvider">
 		<property name="remoteAuthenticationManager">
 			<bean class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
 			    <property name="serviceUrl" value="@SERVER_URL@/http/remoteAuthenticationManager"/>
@@ -63,9 +63,13 @@
 					&lt;property name=&quot;interceptorNames&quot; value=&quot;interceptor&quot;/&gt;
 					&lt;property name=&quot;interfaces&quot; value=&quot;gov.nih.nci.system.applicationservice.ApplicationService&quot;/&gt;
 				&lt;/bean&gt;
-				&lt;bean id=&quot;authenticationManager&quot; class=&quot;org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean&quot;&gt;
-					&lt;property name=&quot;serviceUrl&quot; value=&quot;URL_KEY/http/remoteAuthenticationManager&quot;/&gt;
-					&lt;property name=&quot;serviceInterface&quot; value=&quot;org.acegisecurity.providers.rcp.RemoteAuthenticationManager&quot;/&gt;
+				&lt;bean id=&quot;authenticationProvider&quot; class=&quot;org.acegisecurity.providers.rcp.RemoteAuthenticationProvider&quot;&gt;
+					&lt;property name=&quot;remoteAuthenticationManager&quot;&gt;
+							&lt;bean class=&quot;org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean&quot;&gt;
+								&lt;property name=&quot;serviceUrl&quot; value=&quot;URL_KEY/http/remoteAuthenticationManager&quot;/&gt;
+								&lt;property name=&quot;serviceInterface&quot; value=&quot;org.acegisecurity.providers.rcp.RemoteAuthenticationManager&quot;/&gt;
+							&lt;/bean&gt;
+					&lt;/property&gt;
 				&lt;/bean&gt;
 			</value>
 		</constructor-arg>
