@@ -60,7 +60,7 @@ public class TestXMLClient extends TestClient
 					File myFile = new File("./output/" + klass.getName() + "_test.xml");						
 
 					FileWriter myWriter = new FileWriter(myFile);
-					myUtil.toXML(convertObject(obj, klass), myWriter);
+					myUtil.toXML(obj, myWriter);
 					myWriter.close();
 					printObject(obj, klass);					
 					DocumentBuilder parser = DocumentBuilderFactory
@@ -86,34 +86,7 @@ public class TestXMLClient extends TestClient
 				System.out.println("Exception caught: " + e.getMessage());
 				e.printStackTrace();
 			}
-			break;
+			//break;
 		}
-	}
-	
-	
-	private Object convertObject(Object obj, Class klass) throws Exception {
-//		System.out.println("Converting from proxy object: "+ obj.getClass().getName());
-		
-		Object convertedObject = klass.newInstance();
-		
-		Method[] methods = klass.getMethods();
-		for(Method method:methods)
-		{
-			if(method.getName().startsWith("get") && !method.getName().equals("getClass"))
-			{
-				Method setterMethod = convertedObject.getClass().getDeclaredMethod("set" + method.getName().substring(3), method.getReturnType());
-//				System.out.println("setterMethod Name: " + setterMethod.getName() + "; parameter type: " + method.getReturnType());
-				
-				Object val = method.invoke(obj, (Object[])null);
-//				System.out.println(method.getName().substring(3)+": " + val + "; value type: " + val.getClass().getName());
-
-				Object[] parameters = new Object[1];
-				parameters[0] = val;
-
-				setterMethod.invoke(convertedObject, (Object[])parameters);
-			}
-		}
-		
-		return convertedObject;
 	}
 }
