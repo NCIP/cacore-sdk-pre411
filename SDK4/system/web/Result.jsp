@@ -12,9 +12,8 @@ List fieldNames = null, domainNames=null;
 String message = null, selectedSearchDomain=null;
 String query=null;
 String submitValue = request.getParameter("BtnSearch");
-//System.out.println("submitValue: "+ submitValue);
 String className = (String)session.getAttribute("selectedDomain");
-//System.out.println("className: "+ className);
+
 if(submitValue != null && submitValue.equalsIgnoreCase("Submit"))
 {
    

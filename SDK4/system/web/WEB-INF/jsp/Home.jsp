@@ -8,6 +8,8 @@
 <%
 
 	// TODO :: refactor (use tags instead); cleanup
+//<jstl-c:if test="${ requestScope.login_error }">
+
 	
 	
 	String lastUserKey = (String) session.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY);
@@ -152,25 +154,24 @@
 																						<ul>
 																							<li>
 																								<a
-																									href="https://mail.nih.gov/exchweb/bin/redir.asp?URL=http://gforge.nci.nih.gov/projects/cacoresdk/">caCORE
+																									href="http://gforge.nci.nih.gov/projects/cacoresdk/">caCORE
 																									SDK GForge site</a> - Contains news, information,
 																								documents, defects, feedback, and reports
 																							</li>
 																							<li>
 																								<a
-																									href="https://mail.nih.gov/exchweb/bin/redir.asp?URL=http://ncicb.nci.nih.gov/infrastructure/cacore_overview/cacoresdk">caCORE
+																									href="http://ncicb.nci.nih.gov/infrastructure/cacore_overview/cacoresdk">caCORE
 																									SDK Download site</a> - Contains documents,
 																								information, and downloads for the caCORE SDK
 																							</li>
 																							<li>
 																								<a
-																									href="ftp://ftp1.nci.nih.gov/pub/cacore/SDK/v4.0/caCORE_SDK_32_notes.txt">caCORE
+																									href="ftp://ftp1.nci.nih.gov/pub/cacore/SDK/v4.0/caCORE_SDK_40_notes.txt">caCORE
 																									4.0 Release Notes</a> - Release Notes for all
 																								caCORE products for version 4.0
 																							</li>
 																							<li>
-																								<a href="#">caCORE 4.0 javadocs</a> - Coming
-																								soon!!!
+																								<a href="docs/index.html">caCORE 4.0 javadocs</a>
 																							</li>
 																						</ul>
 																					</td>

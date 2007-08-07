@@ -77,33 +77,45 @@ if(className != null)
 			</td>
 		</tr>
 -->		
-		<% if(fieldNames != null && fieldNames.size() > 0)
+		<% 
+		
+		String focusAttributes;
+		if(fieldNames != null && fieldNames.size() > 0)
 		{  
 			String attrName;
 		   	String attrType;
+		   	
 		   
 		   	for(int i=0; i < fieldNames.size(); i++)
 		   	{	attrName = ((Field)fieldNames.get(i)).getName();
-			   	attrType = ((Field)fieldNames.get(i)).getType().getName(); %>
+			   	attrType = ((Field)fieldNames.get(i)).getType().getName(); 
+			   	
+			   	if (i==0) {
+			   		focusAttributes = "id=\"firstInputField\" tabindex=\"1\"";
+			   	} else {
+			   		focusAttributes = "tabindex=\"" + i+1 + "\"";
+			   	}
+			   	
+		%>
 			   	
 		<tr align="left" valign="top">
-			<td class="formRequiredNotice" width="5">&nbsp;</td>
-			<td class="formLabel"><%=attrName%></td>
+			<td class="formRequiredNotice" width="5px">&nbsp;</td>
+			<td class="formLabel" width="40px" align="right"><%=attrName%>:</td>
 		<% if ( attrType.equalsIgnoreCase("java.Lang.Boolean") ) {%>
-			<td class="formField"><SELECT class="formFieldSized" NAME=<%=attrName%> > 
+			<td class="formField" width="90%"><SELECT <%=focusAttributes%> class="formFieldSized" NAME=<%=attrName%> > 
 			   		<OPTION SELECTED></OPTION>
 			   		<OPTION >True</OPTION>
 			   		<OPTION >False</OPTION>
 			</SELECT></td>
 		<%} else {%>
-			<td class="formField"><s:textfield name="<%=attrName%>" cssClass="formField" size="14" theme="simple" /></td>
+			<td class="formField"><input type="text" name="<%=attrName%>" <%=focusAttributes%> class="formField" size="14" theme="simple" /></td>
 		<%}%>
 		</tr>
 		  <%}%>
 		<tr align="left" valign="top">
-			<td class="formRequiredNotice" width="5">&nbsp;</td>
-			<td class="formLabel">Search Object: </td>
-			<td class="formField"><SELECT class="formFieldSized" NAME=searchObj>
+			<td class="formRequiredNotice" width="5px">&nbsp;</td>
+			<td class="formLabel" width="40px" align="right">Search Object: </td>
+			<td class="formField" width="90%"><SELECT tabIndex="100" class="formFieldSized" size="1" NAME=searchObj STYLE="width:90%">
 			<% if(domainNames != null)
 			   { if(!((String)domainNames.get(0)).equals("Please choose")) domainNames.add(0, "Please choose");
 			   %>

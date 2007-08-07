@@ -14,13 +14,24 @@
             url: "<s:url value='Criteria.action' />?nodeId="+nodeId,
             load: function(type, data, evt) {
                 var displayDiv = dojo.byId("displayId");
-                displayDiv.innerHTML = data
+                displayDiv.innerHTML = data;
+		    	setFocus('firstInputField')
             },
             mimeType: "text/html"
         });
     };
 
-    dojo.event.topic.subscribe("treeSelected", this, "treeNodeSelected");
+    dojo.event.topic.subscribe("treeSelected", this, "treeNodeSelected"); 
+</script>
+<script>
+	function setFocus(fieldName)
+	{
+		try {
+			document.getElementById( fieldName ).focus();
+		} catch(e) {
+			return true;
+		}
+	}// setFocus()    
 </script>
 </head>
 <body>
@@ -91,7 +102,7 @@
 													</tr>
 													<tr>
 														<td valign="top" style="border:0px; border-right:1px; border-style:solid; border-color:black;">
-															<div style="width: 300px; float:left; margin: 7px; overflow: auto;">
+															<div style="float:left; margin: 7px; overflow: auto;">
 															<s:tree 
 															    theme="ajax"
 															    rootNode="%{classTreeRootNode}" 
@@ -103,7 +114,7 @@
 															</div>														
 														</td>
 														<td valign="top">
-															<div id="displayId" style="width: 450px; float:left; margin: 7px; overflow: auto;">
+															<div id="displayId" style="float:left; margin: 7px; overflow: auto;">
 																&nbsp;
 															</div>														
 														</td>														
