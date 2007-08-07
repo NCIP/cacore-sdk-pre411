@@ -52,7 +52,6 @@ public abstract class UMLClassJetTransformer implements Transformer
 
 	public GeneratorErrors validate(UMLModel model)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
