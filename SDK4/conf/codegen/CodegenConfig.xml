@@ -53,9 +53,11 @@
 	<!-- 									 -->
 	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator">
 		<property name="enabled" value="@VALIDATE_LOGICAL_MODEL@"/>
+		<property name="name" value="Logical Model Validator"/>
 	</bean>
 	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator">
 		<property name="enabled" value="@VALIDATE_MODEL_MAPPING@"/>
+		<property name="name" value="Model Mapping Validator"/>		
 	</bean>
 
 	<!-- 									 -->
@@ -66,10 +68,11 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="true"/>
 				<property name="outputDir" value="@OUTPUTDIR@"/>				
-				<property name="suffix" value=".hbm.xml"/>				
+				<property name="suffix" value=".hbm.xml"/>						
 			</bean>
 		</property>
 		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
+		<property name="name" value="Hibernate Mapping Transformer"/>			
 	</bean>
 
 	<bean name="BeanTransformer" class="gov.nih.nci.codegen.transformer.jet.POJOTransformer">
@@ -77,10 +80,11 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="true"/>
 				<property name="outputDir" value="@OUTPUTDIR@"/>				
-				<property name="suffix" value=".java"/>				
+				<property name="suffix" value=".java"/>									
 			</bean>
 		</property>
 		<property name="enabled" value="@GENERATE_BEANS@"/>
+		<property name="name" value="Bean Transformer"/>		
 	</bean>
 	
 	<bean name="EHCacheTransformer" class="gov.nih.nci.codegen.transformer.jet.EHCacheTransformer">
@@ -88,7 +92,7 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
 				<property name="outputDir" value="@OUTPUTDIR@"/>
-				<property name="fileName" value="ehcache.xml"/>
+				<property name="fileName" value="ehcache.xml"/>				
 			</bean>
 		</property>
 		<property name="configurationParams">
@@ -97,6 +101,7 @@
 			</map>
 		</property>
 		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
+		<property name="name" value="EHCache Transformer"/>		
 	</bean>
 
 	<bean name="HibernateCfgTransformer" class="gov.nih.nci.codegen.transformer.jet.HibernateCfgTransformer">
@@ -104,7 +109,7 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
 				<property name="outputDir" value="@OUTPUTDIR@"/>
-				<property name="fileName" value="hibernate.cfg.xml"/>
+				<property name="fileName" value="hibernate.cfg.xml"/>				
 			</bean>
 		</property>
 		<property name="configurationParams">
@@ -145,6 +150,7 @@
 			</map>
 		</property>
 		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
+		<property name="name" value="Hibernate Config Transformer"/>		
 	</bean>
 
 	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
@@ -155,7 +161,7 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
 				<property name="outputDir" value="@OUTPUTDIR@"/>
-				<property name="fileName" value="xml-mapping.xml"/>
+				<property name="fileName" value="xml-mapping.xml"/>					
 			</bean>
 		</property>
 		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
@@ -169,10 +175,11 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
 				<property name="outputDir" value="@OUTPUTDIR@"/>
-				<property name="fileName" value="unmarshaller-xml-mapping.xml"/>
+				<property name="fileName" value="unmarshaller-xml-mapping.xml"/>						
 			</bean>
 		</property>
 		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
+		<property name="name" value="XML Mapping Marshaller Transformer"/>		
 	</bean>
 	
 	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
@@ -181,10 +188,11 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="true"/>
 				<property name="outputDir" value="@OUTPUTDIR@"/>
-				<property name="suffix" value=".xsd"/>	
+				<property name="suffix" value=".xsd"/>					
 			</bean>
 		</property>
 		<property name="enabled" value="@GENERATE_XSD@"/>
+		<property name="name" value="Schema (XSD) Transformer"/>		
 	</bean>	
 
 
@@ -193,7 +201,7 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
   				<property name="outputDir" value="@OUTPUTDIR@"/>	
-				<property name="fileName" value="deploy.wsdd"/>			
+				<property name="fileName" value="deploy.wsdd"/>	
 			</bean>
 		</property>
 		<property name="configurationParams">
@@ -202,6 +210,7 @@
 			</map>
 		</property>
 		<property name="enabled" value="@GENERATE_WSDD@"/>
+		<property name="name" value="Web Services Deployment Descriptor (WSDD) Transformer"/>		
 	</bean>	
 	
 </beans>
