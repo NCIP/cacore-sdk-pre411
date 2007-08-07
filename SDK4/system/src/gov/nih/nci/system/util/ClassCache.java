@@ -1,6 +1,7 @@
 package gov.nih.nci.system.util;
 
 import gov.nih.nci.system.dao.DAO;
+import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.QueryException;
 
 import java.lang.reflect.Field;
@@ -558,7 +559,7 @@ public class ClassCache {
 	 * @param daoList 	A list of DAO's for which Class metadata should be generated and cached.
 	 * 					Called by the Spring Framework.  See application-config.xml for more details.
 	 */
-	public void setDaoList(List<DAO> daoList) {
+	public void setDaoList(List<DAO> daoList) throws DAOException {
 		this.daoList = daoList;
 		initialize();
 	}	
@@ -583,7 +584,7 @@ public class ClassCache {
 	/**
 	 * initialize with a list of the classes obtained from each DAO class within the System
 	 */
-	private void initialize() { 
+	private void initialize() throws DAOException { 
 
 		String unqualifiedClassName = null;
 		Class klass = null;
@@ -608,6 +609,10 @@ public class ClassCache {
 				unqualifiedClassName = klassName.substring(klassName.lastIndexOf(".") + 1);
 				log.debug("Unqualified class name: " + unqualifiedClassName);
 
+				if ((pkgNameForClassCache.get(klassName.toLowerCase()) != null) ||
+						(pkgNameForClassCache.get(unqualifiedClassName) != null)) {
+					throw new DAOException("Duplicate Class name found while initializing ClassCache: " + klassName);
+				}
 				// Cache the package name for each klass
 				pkgNameForClassCache.put(klassName.toLowerCase(), packageName);			
 				pkgNameForClassCache.put(unqualifiedClassName.toLowerCase(), packageName);
@@ -631,7 +636,6 @@ public class ClassCache {
 
 					allFieldsCache.put(klassName, cacheAllFieldNames(klass));
 
-// TODO :: Implement Error handling in case of duplicate class/package entries
 					log.debug("Adding class " + klass.getName() + " to Class Cache.");
 					classCache.put(klassName, klass);
 					classCache.put(klassName.toLowerCase(), klass);
