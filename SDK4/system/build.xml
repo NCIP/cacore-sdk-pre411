@@ -90,6 +90,7 @@
 			<include name="gov/nih/nci/system/applicationservice/impl/**/*"/>
 			<include name="gov/nih/nci/system/util/**/*"/>
 			<exclude name="gov/nih/nci/system/dao/*Exception*.*"/>
+			<include name="gov/nih/nci/system/security/**/*"/>
 			<fileset dir="${src.dir}">
 				<include name="gov/nih/nci/system/dao/**/*"/>
 				<include name="gov/nih/nci/system/applicationservice/impl/**/*"/>
