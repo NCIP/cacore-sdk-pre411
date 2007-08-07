@@ -63,8 +63,15 @@
 	<condition property="CSM_DB_CONNECTION_END" value="${xml.comment.end}" else="">
 		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>
+
+	<condition property="SECURITY_START" value="" else="${xml.comment.start}">
+		<equals arg1="${SECURITY_ENABLED}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="SECURITY_END" value="" else="${xml.comment.end}">
+		<equals arg1="${SECURITY_ENABLED}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
 	
-	<condition property="server-exclude-list" value="servlet.jar,commons-logging*.jar,log4j*.jar" else="servlet.jar,commons-logging*.jar">
+	<condition property="server-exclude-list" value="log4j*.jar" else="">
 		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
 	</condition>
 	
@@ -140,8 +147,10 @@
 			<replacefilter token="@CSM_DB_PASSWORD@" value="${CSM_DB_PASSWORD}" />	
 			<replacefilter token="@CSM_DB_DIALECT@" value="${CSM_DB_DIALECT}" />
 			<replacefilter token="@CSM_PROJECT_NAME@" value="${CSM_PROJECT_NAME}" />
+			<replacefilter token="${xml.comment.start}@SECURITY_START@${xml.comment.end}" value="${SECURITY_START}" />	
+			<replacefilter token="${xml.comment.start}@SECURITY_END@${xml.comment.end}" value="${SECURITY_END}" />	
 		</replace>
-		<copy tofile="${output.src.dir}/${security.config.file}" file="${system.config.security.dir}/${security.config.original.file}"/>
+		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
 
 	<!--***********************************************************************
@@ -237,7 +246,7 @@
 			<include name="**/*.hbm.xml"/>
 			<include name="*.cfg.xml"/>
 			<include name="ehcache.xml"/>
-			<exclude name="${security.config.file}"/>
+			<exclude name="${csm.security.config.file}"/>
 		</jar>
 	</target>
 
@@ -298,6 +307,8 @@
 				<include name="commons-codec*.*"/>
 				<include name="commons-collection*.*"/>
 				<include name="commons-logging*.*"/>
+				<include name="csmapi*.*"/>
+				<include name="clm*.*"/>
 				<include name="dom4j*.*"/>
 				<include name="ehcache*.*"/>
 				<include name="hibernate*.*"/>
@@ -313,6 +324,15 @@
 		<copy todir="${package.client.local.dir}">
 			<fileset dir="${system.config.client.local.dir}"/>
 		</copy>
+		<copy todir="${package.client.local.conf.dir}">
+			<fileset dir="${system.config.web.classes.dir}">
+				<include name="${application.config.file}"/>
+				<include name="${application.config.security.file}"/>
+			</fileset>
+			<fileset dir="${output.src.dir}">
+				<include name="${csm.security.config.file}"/>
+			</fileset>
+		</copy>
 	</target>	
 
 	<target name="package-webapp" depends="package-codegen-artifacts">
@@ -326,6 +346,8 @@
 			<lib dir="${build.jar.dir}" includes="${orm.file}" />
 			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar">
 				<exclude name="${server-exclude-list}"/>
+				<exclude name="servlet.jar"/>
+				<exclude name="commons-logging*.*"/>
 				<exclude name="castor*.*"/>
 				<exclude name="xercesImpl*.*"/>
 			</lib>
@@ -340,7 +362,7 @@
 				<include name="docs/**/*"/>
 			</fileset>
 			<classes dir="${output.src.dir}">
-				<include name="${security.config.file}"/>
+				<include name="${csm.security.config.file}"/>
 			</classes>
 		</war>
 	</target>	
