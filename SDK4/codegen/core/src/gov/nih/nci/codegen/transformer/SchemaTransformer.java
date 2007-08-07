@@ -54,12 +54,15 @@ public class SchemaTransformer implements Transformer {
 
 	private boolean enabled = true;
 	
+	private String name = SchemaTransformer.class.getName();	
+	
 	/* @param model The UMLModel containing the classes for which a 
 	 * Castor Mapping file should be generated
 	 * @see gov.nih.nci.codegen.Transformer#execute(gov.nih.nci.ncicb.xmiinout.domain.UMLModel)
 	 */	
 	public GeneratorErrors execute(UMLModel model)
 	{
+		log.info("Executing " + getName());
 		
 		Hashtable<UMLPackage, Collection<UMLClass>> pkgColl = new Hashtable<UMLPackage, Collection<UMLClass>>();
 		List<UMLClass> classColl = new ArrayList<UMLClass>();
@@ -112,7 +115,7 @@ public class SchemaTransformer implements Transformer {
 				artifactHandler.handleArtifact(artifact);
 			} catch(GenerationException ge) {
 				log.error("ERROR: ", ge);
-				generatorErrors.addError(new GeneratorError(ge.getMessage(), ge));
+				generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 			}
 		}
 	}
@@ -202,7 +205,7 @@ public class SchemaTransformer implements Transformer {
 			superClass = TransformerUtils.getSuperClass(klass);
 		} catch(GenerationException ge){
 			log.error("Exception caught while getting Superclass for " + klass.getName(), ge);
-			generatorErrors.addError(new GeneratorError(ge.getMessage(), ge));
+			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 		}
 
 		if (superClass != null) {
@@ -387,5 +390,13 @@ public class SchemaTransformer implements Transformer {
 	
 	public Boolean isEnabled() {
 		return enabled;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

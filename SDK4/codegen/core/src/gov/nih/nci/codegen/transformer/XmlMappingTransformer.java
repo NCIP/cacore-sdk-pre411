@@ -47,6 +47,8 @@ public class XmlMappingTransformer implements Transformer {
 	private boolean includeFieldHandler = false;    
 
 	private boolean enabled = true;
+	
+	private String name = XmlMappingTransformer.class.getName();	
 
 	
 	/* @param model The UMLModel containing the classes for which a 
@@ -55,12 +57,21 @@ public class XmlMappingTransformer implements Transformer {
 	 */
 	public GeneratorErrors execute(UMLModel model)
 	{
+		log.info("Executing " + getName());		
+		
 		log.debug("Model name: " + model.getName());
 
-		Collection<UMLClass> classColl = TransformerUtils.getAllClasses(model);
+		GeneratorErrors errors = new GeneratorErrors();
+		Collection<UMLClass> classes = null;
 
-		log.debug("classColl size: " + classColl.size());		
-		processClasses(classColl);
+		try {
+			classes = TransformerUtils.getAllClasses(model);
+		} catch(GenerationException ge){
+			errors.addError(new GeneratorError(getName() + ": Error while retrieving classes to process: ", ge));
+		}
+		
+		log.debug("classes size: " + classes.size());		
+		processClasses(classes);
 		
 		return generatorErrors;
 	}
@@ -146,7 +157,7 @@ public class XmlMappingTransformer implements Transformer {
 
 				} catch(GenerationException ge){
 					log.error("ERROR: ", ge);
-					generatorErrors.addError(new GeneratorError(ge.getMessage(), ge));
+					generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 				}
 				return count;
 			}
@@ -182,7 +193,7 @@ public class XmlMappingTransformer implements Transformer {
 			superClass = TransformerUtils.getSuperClass(klass);
 		} catch (GenerationException ge){
 			log.error("ERROR: ", ge);
-			generatorErrors.addError(new GeneratorError(ge.getMessage(), ge));
+			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 		}	
 
 		if (superClass != null) {
@@ -200,7 +211,7 @@ public class XmlMappingTransformer implements Transformer {
 			log.debug("className: " + klass.getName() + "; idAttrName: " + idAttrName);
 		} catch (GenerationException ge){
 			log.error("ERROR: ", ge);
-			generatorErrors.addError(new GeneratorError(ge.getMessage(), ge));
+			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 		}
 				
 		classEl.setAttribute("identity", idAttrName);
@@ -392,6 +403,14 @@ public class XmlMappingTransformer implements Transformer {
 	
 	public Boolean isEnabled() {
 		return enabled;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

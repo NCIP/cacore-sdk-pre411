@@ -10,18 +10,23 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Satish Patel
  *
  */
 public abstract class UMLModelJETTransformer implements Transformer
 {
-
+	private static Logger log = Logger.getLogger(UMLModelJETTransformer.class);
+	
 	private ArtifactHandler artifactHandler;
 	
 	private Map<String, Object> configurationParams;
 	
 	private boolean enabled = true;
+	
+	private String name = UMLModelJETTransformer.class.getName();	
 	
 	/**
 	 * @param artifactHandler the artifactHandler to set
@@ -33,6 +38,8 @@ public abstract class UMLModelJETTransformer implements Transformer
 	
 	public GeneratorErrors execute(UMLModel model)
 	{
+		log.info("Executing " + getName());
+		
 		GeneratorErrors errors = new GeneratorErrors();
 		try 
 		{
@@ -41,7 +48,7 @@ public abstract class UMLModelJETTransformer implements Transformer
 		} 
 		catch (GenerationException e) 
 		{
-			errors.addError(new GeneratorError("Error while generating artifact for the model",e));
+			errors.addError(new GeneratorError(getName() + ": Error while generating artifact for the model",e));
 		}
 		return errors;
 	}
@@ -64,6 +71,14 @@ public abstract class UMLModelJETTransformer implements Transformer
 	
 	public Boolean isEnabled() {
 		return enabled;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	
