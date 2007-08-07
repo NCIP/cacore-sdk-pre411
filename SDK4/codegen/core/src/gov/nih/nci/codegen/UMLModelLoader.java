@@ -51,24 +51,30 @@ public class UMLModelLoader
 		else if("ARGO".equalsIgnoreCase(fileType))
 			xmiHandler = XmiHandlerFactory.getXmiHandler(HandlerEnum.ArgoUMLDefault);
 		else
-			throw new GenerationException("Can not instantiate UML Model Loader for specified file type :"+fileType);
+			throw new GenerationException("Can not instantiate UML Model Loader for specified file type: "+fileType);
 			
 		try
 		{
 			xmiHandler.load(xmiFileName);
+			log.debug("XMI Loaded in Memory");
+			
+			model = xmiHandler.getModel();			
 		} 
 		catch (XmiException e)
 		{
-			log.error("Error reading XMI file: Malformed XMI file",e);
+			log.error("XMI Error reading XMI file: Malformed XMI file: ", e);
+			throw new GenerationException("XMI Error reading XMI file: Malformed XMI file: ", e);
 		} 
 		catch (IOException e)
 		{
-			log.error("Error reading XMI file",e);
+			log.error("IO Error reading XMI file: ",e);
+			throw new GenerationException("IO Error reading XMI file: ", e);
 		}
-		log.debug("XMI Loaded in Memory");
-		
-		model = xmiHandler.getModel();
-		
+		catch (Exception e){
+			log.error("Unknown error: ",e);
+			throw new GenerationException("Unknown error: ", e);			
+		}
+
 		log.debug("UML Model retrieved");
 	}
 	

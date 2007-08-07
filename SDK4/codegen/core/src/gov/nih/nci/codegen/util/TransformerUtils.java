@@ -90,6 +90,11 @@ public class TransformerUtils
 	{
 		String fqcn = getFQCN(klass);
 		String pkgName = getFullPackageName(klass);
+		
+		Set<String> FQCN_PACKAGE_NAMES = new HashSet<String>();		
+		for(String packageToken:fqcn.split("\\.")){
+			FQCN_PACKAGE_NAMES.add(packageToken.trim());
+		}
 
 		if(INCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_NAMES.contains(fqcn))
 			return true;
@@ -101,10 +106,11 @@ public class TransformerUtils
 
 		for(String includePkg: INCLUDE_PACKAGE_NAMES)
 			if(includePkg!=null && includePkg.length()>0)
-				included |= (fqcn.indexOf(includePkg) > 0);
+				included |= (FQCN_PACKAGE_NAMES.contains(includePkg));
 		for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
-			if(excludePkg!=null && excludePkg.length()>0)
-			included &= (fqcn.indexOf(excludePkg) < 0);
+			if(excludePkg!=null && excludePkg.length()>0) {
+				included &= !(FQCN_PACKAGE_NAMES.contains(excludePkg));
+			}
 		included &= !EXCLUDE_NAMES.contains(fqcn);
 		
 		return included;
@@ -114,11 +120,17 @@ public class TransformerUtils
 	{
 		String pkgName = getFullPackageName(pkg);
 		
+		Set<String> PACKAGE_NAMES = new HashSet<String>();		
+		for(String packageToken:pkgName.split("\\.")){
+			PACKAGE_NAMES.add(packageToken.trim());
+		}
+		
 		boolean included = true;
 		if(pkgName.length()>0)
 			for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
-				if(excludePkg!=null && excludePkg.length()>0)
-					included &= (pkgName.indexOf(excludePkg) < 0);
+				if(excludePkg!=null && excludePkg.length()>0){
+					included &= !(PACKAGE_NAMES.contains(excludePkg));
+				}
 
 		return included;
 	}
@@ -619,7 +631,7 @@ public class TransformerUtils
 				if (pkgClasses != null && pkgClasses.size() > 0){
 					for (UMLClass klass:pkgClasses){
 						String pkgName = TransformerUtils.getFullPackageName(klass);
-						if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && !pkgName.startsWith("java.lang") && !pkgName.startsWith("java.util")) {
+						if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass)) { 
 							classColl.add(klass);
 
 							if(!pkgColl.containsKey(pkg)) {
@@ -645,10 +657,16 @@ public class TransformerUtils
 	 * @param model
 	 * @return
 	 */
-	public static Collection<UMLClass> getAllClasses(UMLModel model)
+	public static Collection<UMLClass> getAllClasses(UMLModel model) throws GenerationException
 	{
-		Collection<UMLClass> classes = new HashSet<UMLClass>();
-		getAllClasses(model.getPackages(),classes);
+		Collection<UMLClass> classes = null;
+		try {
+			classes = new HashSet<UMLClass>();
+			getAllClasses(model.getPackages(),classes);
+		} catch(Exception e){
+			log.error("Unable to retrieve classes from model: ", e);
+			throw new GenerationException("Unable to retrieve classes from model: ", e);
+		}
 		return classes;
 	}
 	
@@ -664,7 +682,7 @@ public class TransformerUtils
 		{
 			for(UMLClass klass:rootPkg.getClasses())
 			{
-				if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && isIncluded(klass))
+				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass))
 					classes.add(klass);
 			}
 		}
@@ -698,7 +716,7 @@ public class TransformerUtils
 		{
 			for(UMLClass klass:rootPkg.getClasses())
 			{
-				if(!STEREO_TYPE_TABLE.equals(klass.getStereotype()) && isIncluded(klass) && ModelUtil.getSuperclasses(klass).length == 0)
+				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass) && ModelUtil.getSuperclasses(klass).length == 0)
 					classes.add(klass);
 			}
 		}
@@ -1028,9 +1046,9 @@ public class TransformerUtils
 					{
 						count++;
 						result = val;
-					}
 				}
 			}
+		}
 		}
 		
 		
@@ -1183,7 +1201,7 @@ public class TransformerUtils
 		if(collectionTable == null) throw new GenerationException("No collection table found named : \""+tableName+"\"");
 		
 		return collectionTable;
-	}
+}	
 	
 	
 	public static String getCollectionKeyColumnName(UMLClass table,UMLClass klass, UMLAttribute attr) throws GenerationException

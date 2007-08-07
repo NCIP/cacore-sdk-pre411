@@ -25,5 +25,11 @@ public interface Validator
 	 * @return
 	 */
 	public Boolean isEnabled();
+	
+	/**
+	 * Return the user configurable (via CodegenConfig.xml) name of the Validator
+	 * @return
+	 */
+	public String getName();	
 
 }
