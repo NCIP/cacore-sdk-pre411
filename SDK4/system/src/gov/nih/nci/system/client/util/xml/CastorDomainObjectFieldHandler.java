@@ -1,18 +1,17 @@
 package gov.nih.nci.system.client.util.xml;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.apache.log4j.Logger;
-import org.exolab.castor.mapping.GeneralizedFieldHandler;
 
 /**
  * The FieldHandler for the Date class
  *
  */
 public class CastorDomainObjectFieldHandler
-    extends GeneralizedFieldHandler
+    extends BaseCastorFieldHandler
 {
 
     private static Logger log = Logger.getLogger(CastorDomainObjectFieldHandler.class);
@@ -23,7 +22,6 @@ public class CastorDomainObjectFieldHandler
     public CastorDomainObjectFieldHandler() {
         super();
         setCollectionIteration(false);
-//        System.out.println("CastorDomainObjectFieldHandler()");
     }
 
     /**
@@ -40,20 +38,26 @@ public class CastorDomainObjectFieldHandler
      */
     public Object convertUponGet(Object value) {
     	
-//    	System.out.println("Value: " + value);
+    	log.debug("Value: " + value);
         if (value == null) return null;
+        
+        try {
+        	value = convertObject(value);
+        } catch (Exception e){
+        	log.error("Exception caught: ", e);
+        }
         
         String setMethodName, getMethodName;
         Class klass = value.getClass();
-        Method[] methods = klass.getDeclaredMethods();
+        Method[] methods = klass.getMethods();
         Method tempMethod;
         
-//    	System.out.println("Number of methods: " + methods.length);
+    	log.debug("Number of methods: " + methods.length);
    	
-    	HashSet tempHS = new java.util.HashSet();
-        Object[] args = {tempHS};
+    	ArrayList<Object> tempList = new ArrayList<Object>();
+        Object[] args = {tempList};
         Class[] parameterTypes = {Collection.class};
-//    	System.out.println("args array initialized: " + args[0].getClass().getName());
+    	log.debug("args array initialized: " + args[0].getClass().getName());
 
         for (int i=0; i < methods.length; i++){
         	
@@ -63,17 +67,17 @@ public class CastorDomainObjectFieldHandler
         		try {
         			
         			getMethodName = tempMethod.getName();
-//                	System.out.println("getMethodName: " + getMethodName);
+                	log.debug("getMethodName: " + getMethodName);
                 	setMethodName = 's' + getMethodName.substring(1);
-//                	System.out.println("setMethodName: " + setMethodName);
+                	log.debug("setMethodName: " + setMethodName);
                 	
-                	tempMethod = klass.getDeclaredMethod(setMethodName, parameterTypes);
+                	tempMethod = klass.getMethod(setMethodName, parameterTypes);
         			tempMethod.invoke(value, args);
-//            		System.out.println("Successfully set Collection Attribute to empty HashSet for method " + tempMethod.getName());
+            		log.debug("Successfully set Collection Attribute to empty ArrayList for method " + tempMethod.getName());
         		} catch (Exception e) {
-        			//log.error("Exception: " + e.getMessage(), e);
-        			System.out.println("Exception: " + e.getMessage());
-        			System.out.println("Collection Attribute to empty HashSet for method " + tempMethod.getName());
+        			//log.debug("Exception: " + e.getMessage(), e);
+        			log.error("Exception: " + e.getMessage());
+        			log.error("Collection Attribute to empty HashSet for method " + tempMethod.getName());
         		}
         	}
         }
@@ -94,14 +98,11 @@ public class CastorDomainObjectFieldHandler
      * @return the converted value.
      */
     public Object convertUponSet(Object value) {
-//    	System.out.println("*** Domain convertUponSet() called - do nothing ***");
-//    	System.out.println("*** Domain Value: " + value);
-//    	System.out.println("*** Domain Value class: " + value.getClass().getName());
-//    	System.out.println("*** Domain Value size: " + ((HashSet)value).size());
+    	log.debug("*** Domain convertUponSet() called - do nothing ***");
     	return value;
     }   
     public Class getFieldType() {
-//    	System.out.println("*** Domain getFieldType() - returning null ***");   	
+    	log.debug("*** Domain getFieldType() - returning null ***");   	
         return null;
     }
 

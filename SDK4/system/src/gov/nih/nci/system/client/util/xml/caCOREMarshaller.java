@@ -1,6 +1,5 @@
 package gov.nih.nci.system.client.util.xml;
 
-//import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -40,7 +39,7 @@ public class caCOREMarshaller implements gov.nih.nci.system.client.util.xml.Mars
 	public Mapping getMapping() throws XMLUtilityException {
 		/* if no mapping file explicity specified then load the default */
 		if(mapping == null){
-			//System.out.println("mappingFileName: " + mappingFileName);
+			//log.debug("mappingFileName: " + mappingFileName);
 			try {
 				EntityResolver resolver = new EntityResolver() {
 					public InputSource resolveEntity(String publicId, String systemId) {
@@ -72,13 +71,14 @@ public class caCOREMarshaller implements gov.nih.nci.system.client.util.xml.Mars
 //				baos.writeTo(System.out);
 				
 				org.xml.sax.InputSource mappIS = new org.xml.sax.InputSource(is);
-				//System.out.println("mappIS: " + mappIS);
+				//log.debug("mappIS: " + mappIS);
 				Mapping localMapping = new Mapping();
 				localMapping.setEntityResolver(resolver);
 				localMapping.loadMapping(mappIS);
 				return localMapping;
-			}catch (Exception e) {
-				System.out.println("Error reading default xml mapping file " + e.getMessage()); 
+			} catch (Exception e) {
+				System.out.println("Error reading default xml mapping file " + e.getMessage());
+				log.error("Error reading default xml mapping file ", e); 
 				throw new XMLUtilityException("Error reading default xml mapping file " + e.getMessage(), e);
 			}
 		}
@@ -98,17 +98,18 @@ public class caCOREMarshaller implements gov.nih.nci.system.client.util.xml.Mars
 
 			marshaller = new org.exolab.castor.xml.Marshaller(stream);
 		} catch (IOException e) {
-			System.out.println("Output stream invalid " + e.getMessage());
+			System.out.println("Output stream invalid: " + e.getMessage());
+			log.error("Output stream invalid: ", e);
 			throw new XMLUtilityException("Output stream invalid "  + e.getMessage(), e);
 		}
 		try{
 			Mapping mapping = this.getMapping();
-			//System.out.println("mapping: " + mapping);
+			//log.debug("mapping: " + mapping);
 		
 			marshaller.setMapping(mapping);
 		}catch (MappingException e) {
-			//log.error("The mapping file is invalid:  e.getMessage()", e);
 			System.out.println("The mapping file is invalid: " + e.getMessage());
+			log.error("The mapping file is invalid: ", e);
 			throw new XMLUtilityException("The mapping file is invalid "  + e.getMessage(), e);
 		}
 
@@ -121,10 +122,12 @@ public class caCOREMarshaller implements gov.nih.nci.system.client.util.xml.Mars
 			marshaller.marshal(beanObject);
 		} catch (MarshalException e) {
 			System.out.println("Error in marshalling object: " + e.getMessage());
+			log.error("Error in marshalling object: ", e);
 			throw new XMLUtilityException(e.getMessage(),e);
 		} catch (ValidationException e) {
 			System.out.println("Error in xml validation of marshalled object: " + e.getMessage());
-			throw new XMLUtilityException(e.getMessage(),e);
+			log.error("Error in xml validation of marshalled object: ", e);
+			throw new XMLUtilityException(e.getMessage(), e);
 		}
 	}
 

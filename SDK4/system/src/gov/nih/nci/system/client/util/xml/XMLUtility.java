@@ -40,6 +40,13 @@ public class XMLUtility {
 
 	public void toXML(Object beanObject, Writer stream)
 			throws XMLUtilityException {
+		
+		try {
+			beanObject = CastorDomainObjectFieldHandler.convertObject(beanObject);
+		} catch(Exception e){
+			log.error("Exception caught trying to convert from proxy to domain object: ", e);
+			throw new XMLUtilityException("xception caught trying to convert from proxy to domain object: ", e);
+		}
 		marshaller.toXML(beanObject, stream);
 	}
 

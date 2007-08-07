@@ -33,9 +33,9 @@ public class caCOREUnmarshaller implements gov.nih.nci.system.client.util.xml.Un
 	 */
 	public Mapping getMapping() throws XMLUtilityException {
 		/* if no mapping file explicity specified then load the default */
-		//System.out.println("mapping is null? " + (mapping==null));
+		//log.debug("mapping is null? " + (mapping==null));
 		if(mapping == null){
-			//System.out.println("mapping is null; will try to load it");
+			//log.debug("mapping is null; will try to load it");
 			try {
 				EntityResolver resolver = new EntityResolver() {
 					public InputSource resolveEntity(String publicId, String systemId) {
@@ -52,8 +52,8 @@ public class caCOREUnmarshaller implements gov.nih.nci.system.client.util.xml.Un
 				localMapping.loadMapping(mappIS);
 				return localMapping;
 			} catch (Exception e) {
-				//System.out.println("Error reading default xml mapping file");
-				//log.error("Error reading default xml mapping file ", e); 
+				System.out.println("Error reading default xml mapping file: " + e.getMessage());				
+				log.error("Error reading default xml mapping file: ", e); 
 				throw new XMLUtilityException("Error reading default xml mapping file ", e);
 			}
 		}
@@ -65,28 +65,28 @@ public class caCOREUnmarshaller implements gov.nih.nci.system.client.util.xml.Un
 
 		org.exolab.castor.xml.Unmarshaller unmarshaller = null;
 		try {
-			//System.out.println("Creating unmarshaller");
+			//log.debug("Creating unmarshaller");
 			unmarshaller = new org.exolab.castor.xml.Unmarshaller(this.getMapping());
 		} catch (MappingException e) {
-			System.out.println("XML mapping file is invalid: ");
-			//log.error("XML mapping file is invalid: ", e);
+			System.out.println("XML mapping file is invalid: " + e.getMessage());
+			log.error("XML mapping file is invalid: ", e);
 			throw new XMLUtilityException("XML mapping file invalid: ", e);
 		} catch (Exception e){
-			System.out.println("General Exception caught trying to create unmarshaller: ");	
-			//log.error("General Exception caught trying to create unmarshaller: ", e);
+			System.out.println("General Exception caught trying to create unmarshaller: " + e.getMessage());		
+			log.error("General Exception caught trying to create unmarshaller: ", e);
 			throw new XMLUtilityException("General Exception caught trying to create unmarshaller: ", e);
 		}
 
 		try {
-			//System.out.println("About to unmarshal from input ");
+			log.debug("About to unmarshal from input ");
 			beanObject = unmarshaller.unmarshal(input);
 		} catch (MarshalException e) {
-			System.out.println("Error marshalling input: ");
-			//log.error("Error marshalling input: ", e);
+			System.out.println("Error marshalling input: " + e.getMessage());			
+			log.error("Error marshalling input: ", e);
 			throw new XMLUtilityException("Error unmarshalling xml input: " + e.getMessage(),e);
 		} catch (ValidationException e) {
-			System.out.println("Error in xml validation when unmarshalling xml input: ");
-			//log.error("Error in xml validation when unmarshalling xml input: ", e);
+			System.out.println("Error in xml validation when unmarshalling xml input: " + e.getMessage());			
+			log.error("Error in xml validation when unmarshalling xml input: ", e);
 			throw new XMLUtilityException("Error in xml validation when unmarshalling xml input: ", e);
 		}
 		return beanObject;
@@ -95,12 +95,13 @@ public class caCOREUnmarshaller implements gov.nih.nci.system.client.util.xml.Un
 	public Object fromXML(java.io.File xmlFile)throws XMLUtilityException {
 		Object beanObject = null;
 		try {
-			//System.out.println("Reading from file: " + xmlFile.getName());
+			//log.debug("Reading from file: " + xmlFile.getName());
 			FileReader fRead = new FileReader(xmlFile);
 			beanObject = fromXML(fRead);
 		} catch (FileNotFoundException e) {
 			System.out.println("XML input file invalid: " + e.getMessage());
-			throw new XMLUtilityException("XML input file invalid: " + e.getMessage(),e);
+			log.error("XML input file invalid: ", e);
+			throw new XMLUtilityException("XML input file invalid: ", e);
 		}
 		return beanObject;
 	}
