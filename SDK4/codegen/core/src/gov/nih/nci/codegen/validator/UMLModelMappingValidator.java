@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * Validates the mapping between logical model (Object model) and data model of the <code>model</code> passed in as a parameter
  * Validation rules are as follows
@@ -102,12 +104,22 @@ import java.util.Map;
  */
 public class UMLModelMappingValidator implements Validator
 {
-
+	private static Logger log = Logger.getLogger(UMLModelMappingValidator.class);
+	
 	private boolean enabled = true;
+	
+	private String name = UMLModelMappingValidator.class.getName();	
 	
 	public GeneratorErrors validate(UMLModel model)
 	{
+		log.info("Executing " + getName());
 		GeneratorErrors errors = new GeneratorErrors();
+		
+		if (model == null){
+			errors.addError(new GeneratorError(getName() + ": No Model element found within XMI file"));
+			return errors;
+		}		
+		
 		Collection<UMLClass> classes = TransformerUtils.getAllParentClasses(model);
 		for(UMLClass klass:classes)
 			validateClass(model, klass, errors);
@@ -121,7 +133,7 @@ public class UMLModelMappingValidator implements Validator
 		{
 			table = TransformerUtils.getTable(klass);
 		} catch (GenerationException e) {
-			errors.addError(new GeneratorError("Table search failed for "+fqcn+" ", e));
+			errors.addError(new GeneratorError(getName() + ": Table search failed for "+fqcn+" ", e));
 		}
 		if(table != null)
 			validateClass(model, klass, table, errors);
@@ -129,7 +141,7 @@ public class UMLModelMappingValidator implements Validator
 
 	private void validateClass(UMLModel model, UMLClass klass, UMLClass table, GeneratorErrors errors) {
 		validateIdAttributeMapping(klass, table, errors);
-		validateAttributesMapping(model,klass, table, errors);
+		validateAttributesMapping(model, klass, table, errors);
 		validateAssociations(model, klass, table, errors);
 		validateSubClass(model, klass, table, errors);
 	}
@@ -151,7 +163,7 @@ public class UMLModelMappingValidator implements Validator
 						String subFqcn = TransformerUtils.getFQCN(subKlass);
 						String keyColumnName = TransformerUtils.getMappedColumnName(subTable,subFqcn+"."+idAttr.getName());
 						if(subTable == table)
-							errors.addError(new GeneratorError("When the discriminating column is absent, the subclass and the parent class can not be presisted in the same table : "+subFqcn));
+							errors.addError(new GeneratorError(getName() + ": When the discriminating column is absent, the subclass and the parent class can not be presisted in the same table : "+subFqcn));
 						validateClass(model,subKlass, errors);
 					}
 				}
@@ -168,9 +180,9 @@ public class UMLModelMappingValidator implements Validator
 						String subFqcn = TransformerUtils.getFQCN(subKlass);
 						String discriminatorValue = TransformerUtils.getDiscriminatorValue(subKlass);
 						if(discriminatorValue == null || discriminatorValue.trim().length() ==0)
-							errors.addError(new GeneratorError("Discriminator value not present for the "+subFqcn+" class"));
+							errors.addError(new GeneratorError(getName() + ": Discriminator value not present for the "+subFqcn+" class"));
 						if(discriminatorValues.get(discriminatorValue)!= null)
-							errors.addError(new GeneratorError("Same discriminator value for "+subFqcn+" and "+discriminatorValues.get(discriminatorValue)+ " class"));
+							errors.addError(new GeneratorError(getName() + ": Same discriminator value for "+subFqcn+" and "+discriminatorValues.get(discriminatorValue)+ " class"));
 						if(TransformerUtils.getTable(subKlass) != table)
 						{
 							for(UMLGeneralization subgen:klass.getGeneralizations())
@@ -178,7 +190,7 @@ public class UMLModelMappingValidator implements Validator
 								UMLClass subSubKlass = (UMLClass)subgen.getSubtype();
 								if(subKlass!=subSubKlass && subSubKlass!=TransformerUtils.getSuperClass(subKlass))
 								{
-									errors.addError(new GeneratorError("When the discriminating column is present, the subclass and the parent class should be presisted in the same table unless subclass do not have any subclasses : "+subFqcn));
+									errors.addError(new GeneratorError(getName() + ": When the discriminating column is present, the subclass and the parent class should be presisted in the same table unless subclass do not have any subclasses : "+subFqcn));
 								}
 							}
 							
@@ -191,7 +203,7 @@ public class UMLModelMappingValidator implements Validator
 		} 
 		catch (GenerationException e) 
 		{
-			errors.addError(new GeneratorError("Subclass validation failed for "+fqcn+" class", e));
+			errors.addError(new GeneratorError(getName() + ": Subclass validation failed for "+fqcn+" class", e));
 		}		
 	}
 
@@ -213,7 +225,7 @@ public class UMLModelMappingValidator implements Validator
 		try {
 			TransformerUtils.getClassIdAttr(klass);
 		} catch (GenerationException e) {
-			errors.addError(new GeneratorError("ID Attribute mapping validation failed for "+thisClassName+" ", e));
+			errors.addError(new GeneratorError(getName() + ": ID Attribute mapping validation failed for "+thisClassName+" ", e));
 		}
 	}
 
@@ -237,7 +249,7 @@ public class UMLModelMappingValidator implements Validator
 						String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 						String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 						if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-							errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
+							errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
 					}else if(TransformerUtils.isOne2Many(thisEnd,otherEnd)){
 						
 						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
@@ -250,7 +262,7 @@ public class UMLModelMappingValidator implements Validator
 							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-								errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
+								errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
 						}
 					}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
 						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
@@ -262,7 +274,7 @@ public class UMLModelMappingValidator implements Validator
 							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-								errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
+								errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
 						}
 						
 					}else{
@@ -273,20 +285,20 @@ public class UMLModelMappingValidator implements Validator
 							String keyColumnName = TransformerUtils.findAssociatedColumn(table,klass,otherEnd,assocKlass,thisEnd,false, false);
 							Boolean keyColumnPresent = (keyColumnName!=null && !"".equals(keyColumnName));
 							if(!thisEnd.isNavigable() && !keyColumnPresent)
-									errors.addError(new GeneratorError("One to one unidirectional mapping requires key column to be present in the source class"+TransformerUtils.getFQCN(klass)));
+									errors.addError(new GeneratorError(getName() + ": One to one unidirectional mapping requires key column to be present in the source class"+TransformerUtils.getFQCN(klass)));
 						}else{
 							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
 							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
 							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-								errors.addError(new GeneratorError("Different columns used for implements-association and inverse-of of the same association"));
+								errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
 						}
 					}
 				}
 			}
 			catch (GenerationException e) 
 			{
-				errors.addError(new GeneratorError("Association validation failed ", e));
+				errors.addError(new GeneratorError(getName() + ": Association validation failed ", e));
 			}
 		}
 	}
@@ -307,10 +319,10 @@ public class UMLModelMappingValidator implements Validator
 				}
 				else
 				{
-					TransformerUtils.getMappedColumnName(table,thisClassName+"."+attribute.getName());
+				TransformerUtils.getMappedColumnName(table,thisClassName+"."+attribute.getName());
 				}
 			} catch (GenerationException e) {
-				errors.addError(new GeneratorError("Attribute mapping validation failed for "+thisClassName+"."+attribute.getName()+" ", e));
+				errors.addError(new GeneratorError(getName() + ": Attribute mapping validation failed for "+thisClassName+"."+attribute.getName()+" ", e));
 			}
 		}
 	}
@@ -322,5 +334,13 @@ public class UMLModelMappingValidator implements Validator
 	
 	public Boolean isEnabled() {
 		return enabled;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
