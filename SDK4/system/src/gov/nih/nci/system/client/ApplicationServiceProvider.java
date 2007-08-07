@@ -9,13 +9,11 @@ import java.util.Map;
 
 import org.acegisecurity.AcegiSecurityException;
 import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.AuthenticationProvider;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.rcp.RemoteAuthenticationException;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Advisor;
-import org.springframework.aop.framework.AopProxy;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -24,11 +22,9 @@ import org.springframework.core.io.InputStreamResource;
 
 public class ApplicationServiceProvider
 {
-	private static ApplicationContext ctx = new ClassPathXmlApplicationContext("application-config.xml");
+	private static ApplicationContext ctx = new ClassPathXmlApplicationContext("application-config-client.xml");
 
 	private static String DEFAULT_SERVICE = "ServiceInfo";
-	
-	private static Object lock = new Object();
 	
 	public static ApplicationService getApplicationService() throws Exception
 	{
@@ -78,8 +74,6 @@ public class ApplicationServiceProvider
 		return getApplicationService(service,url,username,password);
 	}
 
-
-	
 	@SuppressWarnings("unchecked")
 	public static ApplicationService getApplicationService(String service, String url, String username, String password) throws Exception
 	{
@@ -175,9 +169,6 @@ public class ApplicationServiceProvider
 		if(serviceInfo.indexOf("URL_KEY") <0 || url == null)
 			url="";
 		
-		//as = (ApplicationService)serviceInfoMap.get("APPLICATION_SERVICE_BEAN"+url);
-		//ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN"+url);
-
 		if((!secured && as!=null)||(secured && as!=null && ap!=null)) //Return pre-built service. This helps in improving performance
 			return ctx;
 		
@@ -200,11 +191,6 @@ public class ApplicationServiceProvider
 		if(as==null || (secured && ap==null))
 			throw new Exception("Change the configuration file!!!");
 
-	/*	synchronized (lock){
-			//Store the services in the map. Improves performance for next time access
-			serviceInfoMap.put("APPLICATION_SERVICE_BEAN"+url, as);
-			serviceInfoMap.put("AUTHENTICATION_SERVICE_BEAN"+url, ap);
-		}*/
-		return context;
+			return context;
 	}
 }
