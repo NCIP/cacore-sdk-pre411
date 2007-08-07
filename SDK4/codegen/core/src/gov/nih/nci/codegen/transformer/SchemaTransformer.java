@@ -61,7 +61,6 @@ public class SchemaTransformer implements Transformer {
 	public GeneratorErrors execute(UMLModel model)
 	{
 		
-		// TODO :: Add error checking... or is that part of the validation process?
 		Hashtable<UMLPackage, Collection<UMLClass>> pkgColl = new Hashtable<UMLPackage, Collection<UMLClass>>();
 		List<UMLClass> classColl = new ArrayList<UMLClass>();
 
@@ -128,7 +127,10 @@ public class SchemaTransformer implements Transformer {
 				
 				String relatedURI = namespaceUriPrefix + relatedPackageName;
 				log.debug("relatedURI: " + relatedURI);
-				Namespace relatedNamespace = Namespace.getNamespace(relatedPackageName,encode(relatedURI));
+				log.debug("relatedPackageName: " + relatedPackageName);
+				log.debug("encoded relatedURI: " + encode(relatedURI));
+				log.debug("encoded relatedPackageName: " + encode(relatedPackageName));				
+				Namespace relatedNamespace = Namespace.getNamespace(encode(relatedPackageName),encode(relatedURI));
 				namespaces.add(relatedNamespace);
 			}
 		}
@@ -372,9 +374,9 @@ public class SchemaTransformer implements Transformer {
 		this.artifactHandler = artifactHandler;
 	}
 	
-	private String encode(String namespaceUriPrefix){
+	private String encode(String string){
 		
-		return xmlEncoder.encode(namespaceUriPrefix);
+		return xmlEncoder.encode(string.replace(" ", "_"));
 		
 	}
 
