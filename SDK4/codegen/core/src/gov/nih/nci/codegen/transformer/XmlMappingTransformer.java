@@ -154,7 +154,7 @@ public class XmlMappingTransformer implements Transformer {
 
 		ArrayList<UMLClass> list = new ArrayList<UMLClass>(classColl);
 		Collections.sort(list, new caCOREComparator());
-		return classColl;
+		return list;
 	}
 
 	/**
@@ -220,7 +220,8 @@ public class XmlMappingTransformer implements Transformer {
 			field.setAttribute("name", att.getName());
 			log.debug("Field name: " + att.getName());
 
-			String qName = getQualifiedTypeName(TransformerUtils.getType(att));
+			String type = TransformerUtils.getType(att);
+			String qName = getQualifiedTypeName(type);
 			if (qName.equalsIgnoreCase("collection")) {
 				log.debug("Handling type 'collection' - qName: " + qName);            	 
 				field.setAttribute("type", "string");
@@ -239,7 +240,7 @@ public class XmlMappingTransformer implements Transformer {
 				bind.setAttribute("node", "attribute");
 				field.addContent(bind);         	 
 			}
-
+			
 			classEl.addContent(field);
 		}
 
@@ -339,7 +340,7 @@ public class XmlMappingTransformer implements Transformer {
 	private String getQualifiedTypeName(String type) {
 
 		if ("Character".equalsIgnoreCase(type) || "char".equalsIgnoreCase(type)) {
-			return "string";
+			return "char";
 		}
 
 		if ("HashSet".equalsIgnoreCase(type)) {
