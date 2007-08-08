@@ -348,7 +348,6 @@
 				<exclude name="${server-exclude-list}"/>
 				<exclude name="servlet.jar"/>
 				<exclude name="commons-logging*.*"/>
-				<exclude name="castor*.*"/>
 				<exclude name="xercesImpl*.*"/>
 			</lib>
 			<fileset dir="${build.conf.system.web.dir}">
