@@ -165,6 +165,7 @@
 			</bean>
 		</property>
 		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
+		<property name="name" value="XML Mapping (Marshaller) Transformer"/>
 	</bean>
 
 	<bean name="XmlMappingUnmarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
@@ -179,7 +180,7 @@
 			</bean>
 		</property>
 		<property name="enabled" value="@GENERATE_CASTOR_MAPPING@"/>
-		<property name="name" value="XML Mapping Marshaller Transformer"/>		
+		<property name="name" value="XML Mapping (Unmarshaller) Transformer"/>		
 	</bean>
 	
 	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
