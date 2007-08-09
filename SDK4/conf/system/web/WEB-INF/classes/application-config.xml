@@ -25,6 +25,8 @@
 				<prop key="resultCountPerQuery">5000</prop>
 				<prop key="resultOutputFormatter">resultOutputFormatter.xsl</prop>
 				<prop key="rowCounter">200</prop>
+				<prop key="instanceLevelSecurityEnabled">@INSTANCE_LEVEL_SECURITY@</prop>
+				<prop key="attributeLevelSecurityEnabled">@ATTRIBUTE_LEVEL_SECURITY@</prop>				
 			</props>
 		</constructor-arg>
 	</bean>
