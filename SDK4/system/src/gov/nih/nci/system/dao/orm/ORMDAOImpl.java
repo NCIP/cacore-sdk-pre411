@@ -42,16 +42,28 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	
 	private Configuration config;
 	
-	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, boolean caseSensitive, int resultCountPerQuery) {
+	private boolean instanceLevelSecurity;
+	private boolean attributeLevelSecurity;
+	
+	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, boolean caseSensitive, int resultCountPerQuery, boolean instanceLevelSecurity, boolean attributeLevelSecurity) {
 		this.config = config;
 		this.setSessionFactory(sessionFactory);
 		this.caseSensitive = caseSensitive;
 		this.resultCountPerQuery = resultCountPerQuery;
+		this.instanceLevelSecurity=instanceLevelSecurity;
+		this.attributeLevelSecurity=attributeLevelSecurity;
 	}
 
 	public Response query(Request request) throws DAOException 
 	{
+		//TODO CSMTEAM
+		//Obtain session factory first and then opensession with interceptor
 		Session session = getSession(); 
+		
+		//TODO CSMTEAM
+		//If InstanceLevel and or attribute level security is enabled then enable corresponding filters
+		//session.
+		
 		Object obj = request.getRequest();
 
 		try

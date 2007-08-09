@@ -26,9 +26,19 @@ public class ORMDAOFactoryBean implements FactoryBean {
 		boolean caseSensitive;
 		int resultCountPerQuery;
 		
+		boolean instanceLevelSecurity;
+		boolean attributeLevelSecurity;
 		try {
 			caseSensitive = Boolean.parseBoolean(systemProperties.getProperty("caseSensitive"));
 			resultCountPerQuery = Integer.parseInt(systemProperties.getProperty("resultCountPerQuery"));
+			String instanceLevelSecurityEnabled = (String)systemProperties.getProperty("instanceLevelSecurityEnabled");
+			String attributeLevelSecurityEnabled = (String)systemProperties.getProperty("attributeLevelSecurityEnabled");
+			instanceLevelSecurity = "yes".equalsIgnoreCase(instanceLevelSecurityEnabled) || "true".equalsIgnoreCase(instanceLevelSecurityEnabled);
+			attributeLevelSecurity = "yes".equalsIgnoreCase(attributeLevelSecurityEnabled) || "true".equalsIgnoreCase(attributeLevelSecurityEnabled);
+			
+			//TODO CSMTEAM
+			//If InstanceLevel and or attribute level security is enabled then set corresponding filters
+			//lsfb.setFilterDefinitions(org.hibernate.engine.FilterDefinition[]);
 			
 			lsfb.afterPropertiesSet();
 		} catch (Exception e){
@@ -36,7 +46,7 @@ public class ORMDAOFactoryBean implements FactoryBean {
 			throw e;
 		}
 		
-		ormDAO = new ORMDAOImpl((SessionFactory)lsfb.getObject(), (Configuration)lsfb.getConfiguration(), caseSensitive, resultCountPerQuery);
+		ormDAO = new ORMDAOImpl((SessionFactory)lsfb.getObject(), (Configuration)lsfb.getConfiguration(), caseSensitive, resultCountPerQuery, instanceLevelSecurity, attributeLevelSecurity);
 	}
 	
 	public Object getObject() {
