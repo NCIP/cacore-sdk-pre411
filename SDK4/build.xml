@@ -149,6 +149,8 @@
 			<replacefilter token="@CSM_PROJECT_NAME@" value="${CSM_PROJECT_NAME}" />
 			<replacefilter token="${xml.comment.start}@SECURITY_START@${xml.comment.end}" value="${SECURITY_START}" />	
 			<replacefilter token="${xml.comment.start}@SECURITY_END@${xml.comment.end}" value="${SECURITY_END}" />	
+			<replacefilter token="@INSTANCE_LEVEL_SECURITY@" value="${INSTANCE_LEVEL_SECURITY}" />
+			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY@" value="${ATTRIBUTE_LEVEL_SECURITY}" />
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
