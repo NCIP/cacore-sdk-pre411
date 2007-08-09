@@ -8,16 +8,11 @@ import java.util.jar.JarFile;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
+import javax.xml.soap.SOAPElement;
 
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
-
-
-import java.net.URL;
-import org.apache.axis.AxisFault;
-import org.apache.axis.client.Call;
-import org.apache.axis.client.Service;
-import org.apache.axis.utils.Options;
+import org.apache.axis.message.SOAPHeaderElement;
 
 public class TestClient
 {
@@ -48,10 +43,16 @@ public class TestClient
 			try 
 			{
 				call = (Call) service.createCall();
+
+				for(Class klassToMap:classList)
+				{
+					QName searchClassQNameToMap = new QName("urn:"+getInversePackageName(klassToMap), klassToMap.getSimpleName());
+					call.registerTypeMapping(klassToMap, searchClassQNameToMap,
+							new org.apache.axis.encoding.ser.BeanSerializerFactory(klassToMap, searchClassQNameToMap),
+							new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
+				}
+				
 				QName searchClassQName = new QName("urn:"+getInversePackageName(klass), klass.getSimpleName());
-				call.registerTypeMapping(klass, searchClassQName,
-						new org.apache.axis.encoding.ser.BeanSerializerFactory(klass, searchClassQName),
-						new org.apache.axis.encoding.ser.BeanDeserializerFactory(klass, searchClassQName));
 	
 				call.setTargetEndpointAddress(new java.net.URL(url));
 				call.setOperationName(new QName("@WEBSERVICE_NAME@", "queryObject"));
@@ -59,6 +60,18 @@ public class TestClient
 				call.addParameter("arg2", searchClassQName, ParameterMode.IN);
 				call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
 	
+				/*
+				//This block inserts the security headers in the service call
+				SOAPHeaderElement headerElement = new SOAPHeaderElement(call.getOperationName().getNamespaceURI(),"CSMSecurityHeader");
+				headerElement.setPrefix("csm");
+				headerElement.setMustUnderstand(false);
+				SOAPElement usernameElement = headerElement.addChildElement("username");
+				usernameElement.addTextNode("userId");
+				SOAPElement passwordElement = headerElement.addChildElement("password");
+				passwordElement.addTextNode("password");
+				call.addHeader(headerElement);				
+				*/
+				
 				Object o = klass.newInstance();
 	
 				System.out.println("Searching for "+klass.getName());
