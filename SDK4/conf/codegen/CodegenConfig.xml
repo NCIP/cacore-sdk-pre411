@@ -202,7 +202,7 @@
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
   				<property name="outputDir" value="@OUTPUTDIR@"/>	
-				<property name="fileName" value="deploy.wsdd"/>	
+				<property name="fileName" value="server-config.wsdd"/>	
 			</bean>
 		</property>
 		<property name="configurationParams">
