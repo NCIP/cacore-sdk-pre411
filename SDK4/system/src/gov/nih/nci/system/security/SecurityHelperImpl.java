@@ -41,7 +41,7 @@ public class SecurityHelperImpl implements SecurityHelper
 	}
 
 	private String getDomainObjectName(Method method, Object[] arguments) {
-		String domainObjectName="";
+		String domainObjectName="*";
 		
 		if("getAssociation".equals(method.getName()))
 		{
