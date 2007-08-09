@@ -27,6 +27,9 @@ public class TestClient
 	
 	public void testSearch() throws Exception
 	{
+		//Application Service retrieval for secured system
+		//ApplicationService appService = ApplicationServiceProvider.getApplicationService("userId","password");
+		
 		ApplicationService appService = ApplicationServiceProvider.getApplicationService();
 		Collection<Class> classList = getClasses();
 		for(Class klass:classList)
