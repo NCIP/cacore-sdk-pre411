@@ -5,6 +5,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/classes/application-config.xml
+			/WEB-INF/classes/application-config-web.xml
 			/WEB-INF/classes/application-config-security.xml
 			/WEB-INF/classes/application-config-web-security.xml
 		</param-value>
