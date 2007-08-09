@@ -26,10 +26,9 @@
 	<classpathentry kind="lib" path="system/lib/spring.jar"/>
 	<classpathentry kind="lib" path="codegen/core/lib/backport-util-concurrent.jar"/>
 	<classpathentry kind="lib" path="codegen/core/lib/mmbase.jar"/>
-	<classpathentry kind="lib" path="system/lib/acegi-security-1.0.3.jar"/>
 	<classpathentry kind="lib" path="system/lib/commons-codec-1.3.jar"/>
 	<classpathentry kind="lib" path="system/lib/axis.jar"/>
-	<classpathentry kind="lib" path="system/lib/csmapi.jar"/>
+	<classpathentry kind="lib" path="system/lib/csmapi.jar" sourcepath="/csmapi/src"/>
 	<classpathentry kind="lib" path="system/lib/freemarker-2.3.4.jar"/>
 	<classpathentry kind="lib" path="system/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="system/lib/ognl-2.6.7.jar"/>
@@ -46,5 +45,7 @@
 	<classpathentry kind="lib" path="system/lib/mysql-connector-java-3.1.13-bin.jar"/>
 	<classpathentry kind="lib" path="system/lib/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="system/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="system/lib/acegi-security-1.0.4.jar" sourcepath="/ACEGI/src"/>
+	<classpathentry kind="lib" path="system/lib/clm.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
