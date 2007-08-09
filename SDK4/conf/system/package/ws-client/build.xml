@@ -81,19 +81,6 @@
 	</target>
 	
 	<!--***********************************************************************
-	*** Deploys the web service to the server
-	*********************************************************************** -->
-	<target name="deploy" description="Deploys the webservice">
-		<SDKecho message="Deploying web services to ${SERVER_URL}/services/${WEBSERVICE_NAME}"/>
-		<echo message="Deploying to ${url.project.axisservice}"/>
-		<java classname="org.apache.axis.client.AdminClient" fork="true">
-			<classpath refid="runtime"/>
-			<arg value="-l${SERVER_URL}/services/AxisServlet"/>
-			<arg value="${conf.dir}\deploy.wsdd"/>
-		</java>
-	</target>	
-	
-	<!--***********************************************************************
 	*** Undeploying the web service from the server
 	*********************************************************************** -->
 	<target name="undeploy"  description="Undeploys the webservice">
