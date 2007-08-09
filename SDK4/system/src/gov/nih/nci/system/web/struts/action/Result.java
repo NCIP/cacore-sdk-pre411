@@ -32,10 +32,6 @@ public class Result extends BaseActionSupport {
 		
 		//log.debug("Result.action instance: " + this);
 		
-		if (!isAuthenticated()){
-			return LOGIN;
-		}		
-	
 		HttpServletRequest request = ServletActionContext.getRequest();
 		
 		SessionMap session = (SessionMap) ActionContext.getContext().get(ActionContext.SESSION);

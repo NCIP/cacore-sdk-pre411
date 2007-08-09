@@ -17,10 +17,6 @@ public class ShowDynamicTree extends BaseActionSupport {
 
 	public String execute() throws Exception {
 
-		if (!isAuthenticated()){
-			return LOGIN;
-		}		
-			
 		return SUCCESS;
 	}
 

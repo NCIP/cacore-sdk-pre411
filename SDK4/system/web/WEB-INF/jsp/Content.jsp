@@ -71,7 +71,7 @@
 					    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt=""/></td>
 					    <!-- link 3 begins -->
 					    <td height="20" width="100%" align="right" class="mainMenuItem" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()">
-					      <a class="mainMenuLink" href="j_acegi_logout">Logout</a>
+					      <a class="mainMenuLink" href="j_acegi_logout" onclick="window.close();">Logout</a>
 					    </td>   
 					    <!-- link 3 ends -->
 				        <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>

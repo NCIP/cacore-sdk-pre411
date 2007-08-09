@@ -26,10 +26,6 @@ public class Criteria extends BaseActionSupport {
 
 	public String execute() throws Exception {
 		
-		if (!isAuthenticated()){
-			return LOGIN;
-		}		
-		
 		currentCategory = Category.getById(nodeId);
 		log.debug(currentCategory);
 
