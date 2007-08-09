@@ -363,6 +363,9 @@
 			<classes dir="${output.src.dir}">
 				<include name="${csm.security.config.file}"/>
 			</classes>
+			<webinf dir="${output.src.dir}">
+				<include name="server-config.wsdd"/>
+			</webinf>
 		</war>
 	</target>	
 	
@@ -378,11 +381,6 @@
 				<include name="wsdl4j*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
-		</copy>
-		<copy todir="${package.client.ws.conf.dir}">
-			<fileset dir="${output.src.dir}">
-				<include name="deploy.wsdd"/>
-			</fileset>
 		</copy>
 		<copy todir="${package.client.ws.dir}">
 			<fileset dir="${system.config.client.ws.dir}"/>
@@ -406,7 +404,7 @@
 	<!--***********************************************************************
 	*** Generates documentation for the Java Beans
 	*********************************************************************** -->
-	<target name="build-system" depends="package-codegen-artifacts, doc, package-system" description="Generates complete system">
+	<target name="build-system" depends="clean,package-codegen-artifacts, doc, package-system" description="Generates complete system">
 		<SDKecho message="${ant.project.name}: Completed the system build"/>
 	</target>
 
