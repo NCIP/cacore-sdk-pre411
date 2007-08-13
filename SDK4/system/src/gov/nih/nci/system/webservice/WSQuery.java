@@ -9,4 +9,7 @@ public interface WSQuery {
 	public List queryObject(String targetClassName, Object criteria) throws Exception;
 
 	public List query(String targetClassName, Object criteria, int startIndex) throws Exception;
+	
+	public List getAssociation(Object source, String associationName, int startIndex) throws Exception;
+
 }

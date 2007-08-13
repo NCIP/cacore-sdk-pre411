@@ -28,16 +28,16 @@ public class TestClient
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void testSearch() throws Exception
 	{
 		Collection<Class> classList = getClasses();
-		
+
 		String url = "@SERVER_URL@/services/@WEBSERVICE_NAME@";
 		Service  service = new Service();
 		Call call = null;
-		
-			
+
+
 		for(Class klass:classList)
 		{
 			try 
@@ -53,13 +53,13 @@ public class TestClient
 				}
 				
 				QName searchClassQName = new QName("urn:"+getInversePackageName(klass), klass.getSimpleName());
-	
+
 				call.setTargetEndpointAddress(new java.net.URL(url));
 				call.setOperationName(new QName("@WEBSERVICE_NAME@", "queryObject"));
 				call.addParameter("arg1", org.apache.axis.encoding.XMLType.XSD_STRING, ParameterMode.IN);
 				call.addParameter("arg2", searchClassQName, ParameterMode.IN);
 				call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
-	
+
 				/*
 				//This block inserts the security headers in the service call
 				SOAPHeaderElement headerElement = new SOAPHeaderElement(call.getOperationName().getNamespaceURI(),"CSMSecurityHeader");
@@ -73,24 +73,61 @@ public class TestClient
 				*/
 				
 				Object o = klass.newInstance();
-	
+
 				System.out.println("Searching for "+klass.getName());
 				Object[] results = (Object[])call.invoke(new Object[] { klass.getName(), o });
-	
+
 				if (results!=null &&  results.length> 0) {
 					for(Object obj : results)
 					{
 						printObject(obj, klass);
+
+						if (klass.getName().equalsIgnoreCase("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit")) {
+							System.out.println("Testing getAssociation() call");
+							testGetAssociation(url, service, obj);
+						}
+
 						break;
 					}
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			//break
 		}
 	}
-	
-	
+
+
+	private void testGetAssociation(String url, Service service, Object returnCreditObj ) throws Exception {
+		//Scenario:  http://localhost:8080/example/GetHTML?query=Bank&Credit[@id=3]&roleName=issuingBank
+
+		Class klass = gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank.class;
+
+		Call call = (Call) service.createCall();
+		QName searchClassQName = new QName("urn:"+getInversePackageName(klass), klass.getSimpleName());
+		call.registerTypeMapping(klass, searchClassQName,
+				new org.apache.axis.encoding.ser.BeanSerializerFactory(klass, searchClassQName),
+				new org.apache.axis.encoding.ser.BeanDeserializerFactory(klass, searchClassQName));
+
+		call.setTargetEndpointAddress(new java.net.URL(url));
+		call.setOperationName(new QName("exampleService", "getAssociation"));
+		call.addParameter("arg1", searchClassQName, ParameterMode.IN);					
+		call.addParameter("arg2", org.apache.axis.encoding.XMLType.XSD_STRING, ParameterMode.IN);
+		call.addParameter("arg3", searchClassQName, ParameterMode.IN);					
+		call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
+
+		System.out.println("Searching for association: " + returnCreditObj.getClass().getName() + ".issuingBank");
+		Object[] results = (Object[])call.invoke(new Object[] { returnCreditObj, "issuingBank", 0 });
+
+		if (results!=null &&  results.length> 0) {
+			for(Object obj : results)
+			{
+				printObject(obj, klass);
+				break;
+			}
+		}
+	}
+
 	private String getInversePackageName(Class klass)
 	{
 		String name1 = klass.getPackage().getName();
@@ -101,7 +138,7 @@ public class TestClient
 		newName = newName.substring(1);
 		return newName;
 	}
-	
+
 	private void printObject(Object obj, Class klass) throws Exception {
 		System.out.println("Printing "+ obj.getClass().getName());
 		Method[] methods = klass.getMethods();
@@ -118,7 +155,7 @@ public class TestClient
 			}
 		}
 	}
-	
+
 
 	protected Collection<Class> getClasses() throws Exception
 	{
@@ -135,7 +172,7 @@ public class TestClient
 		}
 		if(file == null) throw new Exception("Could not locate the bean jar");
 		if(count>1) throw new Exception("Found more than one bean jar");
-		
+
 		Enumeration e = file.entries();
 		while(e.hasMoreElements())
 		{
