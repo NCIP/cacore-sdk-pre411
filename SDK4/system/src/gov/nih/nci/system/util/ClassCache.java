@@ -492,12 +492,13 @@ public class ClassCache {
 		String className = null;
 
 		try {
-			Class klass = getClassFromCache(beanName);
+			Class klass = getClassFromCache(beanName.toLowerCase());
 			if (klass != null){
 				className = klass.getName();
 				log.debug("Found Class " + className + " for bean " + beanName);
 			}
 		} catch (ClassNotFoundException e){
+			log.error("Unable to Find Class " + className + " for bean " + beanName);
 			return null;
 		}
 
@@ -507,7 +508,11 @@ public class ClassCache {
 			return null;
 		} 
 
-		return packageName + "." + className;
+		if(className.indexOf(".") < 1){
+			return packageName + "." + className;
+		}
+		
+		return className;
 	}
 
 	/**
@@ -616,7 +621,21 @@ public class ClassCache {
 				// Cache the package name for each klass
 				pkgNameForClassCache.put(klassName.toLowerCase(), packageName);			
 				pkgNameForClassCache.put(unqualifiedClassName.toLowerCase(), packageName);
-				nonPrimitiveFieldsCache.put(klassName, cacheNonPrimitiveFieldNames(klass));			
+				nonPrimitiveFieldsCache.put(klassName, cacheNonPrimitiveFieldNames(klass));		
+				
+				allFieldsCache.put(klassName, cacheAllFieldNames(klass));
+
+				log.debug("Adding class " + klass.getName() + " to Class Cache.");
+				classCache.put(klassName, klass);
+				classCache.put(klassName.toLowerCase(), klass);
+				classCache.put(unqualifiedClassName, klass);
+				classCache.put(unqualifiedClassName.toLowerCase(), klass);
+				
+				log.debug("Adding class " + klass.getName() + " to DAO Cache for DAO: " + dao.getClass().getName());
+				daoCache.put(klassName, dao);
+				daoCache.put(klassName.toLowerCase(), dao);
+				daoCache.put(unqualifiedClassName, dao);
+				daoCache.put(unqualifiedClassName.toLowerCase(), dao);	
 			}
 
 			// Certain metadata needs to be cached prior to caching the rest, 
@@ -632,21 +651,7 @@ public class ClassCache {
 
 				List<String>pkgClassNames  = new ArrayList<String>(); 
 				try {
-					klass = Class.forName(klassName);
-
-					allFieldsCache.put(klassName, cacheAllFieldNames(klass));
-
-					log.debug("Adding class " + klass.getName() + " to Class Cache.");
-					classCache.put(klassName, klass);
-					classCache.put(klassName.toLowerCase(), klass);
-					classCache.put(unqualifiedClassName, klass);
-					classCache.put(unqualifiedClassName.toLowerCase(), klass);
-					
-					log.debug("Adding class " + klass.getName() + " to DAO Cache for DAO: " + dao.getClass().getName());
-					daoCache.put(klassName, dao);
-					daoCache.put(klassName.toLowerCase(), dao);
-					daoCache.put(unqualifiedClassName, dao);
-					daoCache.put(unqualifiedClassName.toLowerCase(), dao);					
+					klass = Class.forName(klassName);			
 
 					String packageName = klass.getPackage().getName();
 
