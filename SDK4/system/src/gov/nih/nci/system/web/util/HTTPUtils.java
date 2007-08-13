@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -63,6 +64,18 @@ public class HTTPUtils implements Serializable{
 		WebApplicationContext ctx =  WebApplicationContextUtils.getWebApplicationContext(context);
 		this.classCache = (ClassCache)ctx.getBean("ClassCache");
 		this.applicationService = (ApplicationService)ctx.getBean("ApplicationServiceImpl");
+		
+		Properties systemProperties = (Properties) ctx.getBean("SystemProperties");
+		
+		try {
+			String rowCounter = systemProperties.getProperty("rowCounter");
+			log.debug("rowCounter: " + rowCounter);
+			if (rowCounter != null) {
+				this.resultCounter = rowCounter;
+			}
+		} catch (Exception ex) {
+			log.error("Exception: ", ex);
+		}
 	}	
 
 	/**
@@ -397,7 +410,7 @@ public class HTTPUtils implements Serializable{
 			}
 
 			if(rowCount > 0 && rowCount < size){
-				pageCounter = size/ rowCount;
+				pageCounter = size/rowCount;
 				if((size % rowCount)>0){
 					pageCounter++;
 				}

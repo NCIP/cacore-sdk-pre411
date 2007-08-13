@@ -47,7 +47,7 @@ public class HTTPQuery extends HttpServlet {
 
 	private String cacoreStyleSheet;
 
-	private int pageSize = 1000;
+	private int pageSize = 1000; //default
 
 	ServletContext context;
 
