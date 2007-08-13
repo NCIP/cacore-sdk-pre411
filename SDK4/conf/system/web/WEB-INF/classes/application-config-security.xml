@@ -3,7 +3,7 @@
 
 <beans>
 
-	<!-- SECURITY_START 
+	<!--@SECURITY_START@-->
 	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
 			<list>
@@ -83,5 +83,5 @@
 			</bean>
 		</property>
 	</bean>
-	SECURITY_END -->
+	<!--@SECURITY_END@-->
 </beans>
