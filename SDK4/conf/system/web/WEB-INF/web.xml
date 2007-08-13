@@ -21,7 +21,7 @@
         </init-param>
 	</filter> 
 
-	<!--@SECURITY_START@-->
+	<!-- SECURITY_START
     <filter>
         <filter-name>AcegiFilters</filter-name>
         <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
@@ -35,7 +35,7 @@
       <filter-name>AcegiFilters</filter-name>
       <url-pattern>/*</url-pattern>
     </filter-mapping>	
-	<!--@SECURITY_END@-->
+	SECURITY_END -->
 	
 	<filter-mapping> 
 		<filter-name>struts2</filter-name> 

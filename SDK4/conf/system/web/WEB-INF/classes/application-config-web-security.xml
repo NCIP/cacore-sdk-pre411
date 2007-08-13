@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<!--@SECURITY_START@-->
+	<!-- SECURITY_START
 	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
 		<property name="filterInvocationDefinitionSource">
 			<value>
@@ -57,7 +57,7 @@
 	<bean id="sessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
 
 	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
-		<constructor-arg value="/Home.action"/> <!-- URL redirected to after logout -->
+		<constructor-arg value="/Home.action"/> 
 		<constructor-arg>
 			<list>
 				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
@@ -65,6 +65,6 @@
 		</constructor-arg>
 	</bean>
 
-	<!--@SECURITY_END@-->	
+	SECURITY_END -->	
 	
 </beans>
