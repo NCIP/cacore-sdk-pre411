@@ -156,7 +156,7 @@
 	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
 		<property name="includeAssociations" value="true"/>
 		<property name="includeFieldHandler" value="true"/>
-		<property name="namespaceUriPrefix" value="gme://caCORE.caCORE/3.2/" />		
+		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />		
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
