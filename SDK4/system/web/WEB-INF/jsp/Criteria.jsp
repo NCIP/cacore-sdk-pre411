@@ -129,12 +129,12 @@ if(className != null)
 			<%}// end if(domainNames != null) statement%>			   
 		</tr>
 		<tr>
-			<td align="right" colspan="3">
+			<td align="left" colspan="3">
 				<!-- action buttons begins -->
 				<table cellpadding="4" cellspacing="0" border="0">
-					<tr>
-						<td><input type="submit" name="BtnSearch" class="actionButton" value="Submit" ></td>
-						<td><input class="actionButton" type="reset" value="Reset"></td> 
+					<tr align="left">
+						<td align="left"><input type="submit" name="BtnSearch" class="actionButton" value="Submit" ></td>
+						<td align="left"><input class="actionButton" type="reset" value="Reset"></td> 
 					</tr>
 				</table>
 				<!-- action buttons end -->

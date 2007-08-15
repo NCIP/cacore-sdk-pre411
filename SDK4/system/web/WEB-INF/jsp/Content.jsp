@@ -35,19 +35,19 @@
 </script>
 </head>
 <body>
-<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%">
+<table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="500px">
 
 <%@ include file="include/header.inc" %>	
 	
   <tr>
-    <td height="100%" align="center" valign="top">
-      <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="771">
+    <td height="500px" align="center" valign="top">
+      <table summary="" cellpadding="0" cellspacing="0" border="0" height="500px" width="771">
 
 <%@ include file="include/applicationHeader.inc" %>
 
         <tr>
           <td valign="top">
-            <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%" width="100%">
+            <table summary="" cellpadding="0" cellspacing="0" border="0" height="500px" width="100%">
               <tr>
                 <td height="20" class="mainMenu">
                 
@@ -89,7 +89,7 @@
               <tr>
                 <td valign="top">
                   <!-- target of anchor to skip menus --><a name="content" />
-                  <table summary="" cellpadding="0" cellspacing="0" border="0" class="contentPage" width="100%" height="100%">
+                  <table summary="" cellpadding="0" cellspacing="0" border="0" class="contentPage" width="100%" height="500px">
 										<tr>
 											<td valign="top">
 												<table cellpadding="0" cellspacing="0" border="1" bordercolor="white" class="contentBegins">
@@ -102,7 +102,7 @@
 													</tr>
 													<tr>
 														<td valign="top" style="border:0px; border-right:1px; border-style:solid; border-color:black;">
-															<div style="float:left; margin: 7px; overflow: auto;">
+															<div style="overflow:auto; height:350px; float:left; margin: 7px;">
 															<s:tree 
 															    theme="ajax"
 															    rootNode="%{classTreeRootNode}" 
@@ -114,7 +114,7 @@
 															</div>														
 														</td>
 														<td valign="top">
-															<div id="displayId" style="float:left; margin: 7px; overflow: auto;">
+															<div id="displayId" style="position:fixed; margin: 7px; overflow: auto;">
 																&nbsp;
 															</div>														
 														</td>														
