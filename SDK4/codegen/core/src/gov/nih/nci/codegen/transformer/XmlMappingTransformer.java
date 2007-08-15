@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jdom.DocType;
@@ -26,6 +27,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.mmbase.util.Encode;
 
 /**
  *
@@ -40,6 +42,8 @@ public class XmlMappingTransformer implements Transformer {
 	private GeneratorErrors generatorErrors = new GeneratorErrors();
 	
 	private ArtifactHandler artifactHandler;
+	
+	private Encode xmlEncoder = new Encode("ESCAPE_XML");	
 	
 	private String namespaceUriPrefix;
 
@@ -223,8 +227,10 @@ public class XmlMappingTransformer implements Transformer {
 		String nsURI = getNamespaceURI(klass);
 		maptoelement.setAttribute("ns-uri",nsURI);
 		classEl.addContent(maptoelement);
+		
+		List<UMLAttribute> primitiveCollectionAtts = new ArrayList<UMLAttribute>();
 
-		//Do properties
+		//process fields
 		for (Iterator i = klass.getAttributes().iterator(); i.hasNext();) {
 			UMLAttribute att = (UMLAttribute) i.next();
 			Element field = new Element("field");
@@ -244,6 +250,10 @@ public class XmlMappingTransformer implements Transformer {
 				bind.setAttribute("QName-prefix",qName,namespace);
 				bind.setAttribute("node", "attribute");
 				field.addContent(bind);
+			} else if (qName.startsWith("collection")) { // handle primitive collections; e.g., collection<string>
+				log.debug("Handling primitive collection type Name: " + qName);    
+				primitiveCollectionAtts.add(att);
+				continue;
 			} else {
 				field.setAttribute("type", getQualifiedTypeName(TransformerUtils.getType(att)));
 				Element bind = new Element("bind-xml");
@@ -253,6 +263,38 @@ public class XmlMappingTransformer implements Transformer {
 			}
 			
 			classEl.addContent(field);
+		}
+		
+		// TODO :: refactor
+		// process primitive collections; e.g., collection<string>
+		for ( UMLAttribute att : primitiveCollectionAtts){
+
+			Element field = new Element("field");
+			
+			String name = att.getName();
+			field.setAttribute("name", name ); 
+			
+			String type = TransformerUtils.getType(att);
+			String collectionType = type.substring(type.lastIndexOf("<")+1, type.lastIndexOf(">"));
+			collectionType = getQualifiedTypeName(collectionType);
+			log.debug("collectionType: " + collectionType);
+			
+			field.setAttribute("type", collectionType);
+			
+			field.setAttribute("collection", "collection" );
+			if (includeFieldHandler) {
+				field.setAttribute("handler", "gov.nih.nci.system.client.util.xml.CastorCollectionFieldHandler" );
+			}
+
+			Element bind = new Element("bind-xml");
+
+			bind.setAttribute("name", collectionType );
+			bind.setAttribute("type", collectionType);
+			bind.setAttribute("location", name ); 
+			bind.setAttribute("node", "element");
+
+			field.addContent(bind);
+			classEl.addContent(field);			
 		}
 
 		if (includeAssociations) {
@@ -320,17 +362,8 @@ public class XmlMappingTransformer implements Transformer {
 					field.setAttribute("handler", "gov.nih.nci.system.client.util.xml.CastorCollectionFieldHandler" );
 				}
 
-				//for container = false
-				//field.setAttribute("container", "false" );
-
 				Element bind = new Element("bind-xml");
-				//bind.setAttribute("auto-naming", "deriveByClass");
 
-				// for container = false
-				//bind.setAttribute("name", otherEnd.getName());
-
-
-				// for container = true
 				bind.setAttribute("name", otherEndTypeName );
 				bind.setAttribute("type", associationPackage+Constant.DOT + otherEndTypeName);
 				bind.setAttribute("location", otherEnd.getRoleName() ); //otherEnd.getName());
@@ -392,7 +425,11 @@ public class XmlMappingTransformer implements Transformer {
 	}
 
 	public void setNamespaceUriPrefix(String namespaceUriPrefix) {
-		this.namespaceUriPrefix = namespaceUriPrefix;
+		this.namespaceUriPrefix = namespaceUriPrefix.replace(" ", "_");
+	}
+	
+	private String encode(String string){
+		return xmlEncoder.encode(string.replace(" ", "_"));	
 	}
 
 

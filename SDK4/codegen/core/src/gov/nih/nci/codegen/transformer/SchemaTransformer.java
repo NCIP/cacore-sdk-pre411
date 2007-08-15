@@ -229,6 +229,7 @@ public class SchemaTransformer implements Transformer {
 		
 		addCaDSRAnnotation(klass, classE2, w3cNS);
 
+
 		if (superClassName!=null) {
 			log.debug("superClassName: " + superClassName);
 
@@ -240,6 +241,8 @@ public class SchemaTransformer implements Transformer {
 			Element sequence = new Element("sequence",w3cNS);
 			extension.addContent(sequence);
 
+			List<UMLAttribute> primitiveCollectionAtts = new ArrayList<UMLAttribute>();
+			
 			//Do properties
 			for (Iterator i = klass.getAttributes().iterator(); i.hasNext();) {
 				UMLAttribute att = (UMLAttribute) i.next();
@@ -252,9 +255,20 @@ public class SchemaTransformer implements Transformer {
 					attributeElement.setAttribute("name", att.getName());
 					String type = getName(TransformerUtils.getType(att));
 					log.debug("Attribute type: " + type);
+					if (type.startsWith("xs:collection")) { // handle primitive collections; e.g., collection<string>
+						log.debug("Handling primitive collection type Name: " + type);    
+						primitiveCollectionAtts.add(att);
+						continue;
+					}
 					attributeElement.setAttribute("type", type);
 					extension.addContent(attributeElement);
 				}
+			}
+			
+			// TODO :: refactor			
+			// process primitive collections; e.g., collection<string>
+			for ( UMLAttribute att : primitiveCollectionAtts){
+				addSequencePrimitiveCollectionElements(sequence, klass, att, w3cNS);			
 			}
 
 			for (Iterator i = TransformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
@@ -267,6 +281,8 @@ public class SchemaTransformer implements Transformer {
 			Element sequence = new Element("sequence",w3cNS);
 			classE2.addContent(sequence);
 
+			List<UMLAttribute> primitiveCollectionAtts = new ArrayList<UMLAttribute>();
+			
 			//Do properties
 			for (Iterator i = klass.getAttributes().iterator(); i.hasNext();) {
 				UMLAttribute att = (UMLAttribute) i.next();
@@ -281,6 +297,13 @@ public class SchemaTransformer implements Transformer {
 
 					String type = getName(TransformerUtils.getType(att));
 					log.debug("Attribute type: " + type);
+					
+					if (type.startsWith("xs:collection")) { // handle primitive collections; e.g., collection<string>
+						log.debug("Handling primitive collection type Name: " + type);    
+						primitiveCollectionAtts.add(att);
+						continue;
+					}				
+					
 					attributeElement.setAttribute("type", type);
 					
 					addCaDSRAnnotation(att, attributeElement, w3cNS);
@@ -288,7 +311,13 @@ public class SchemaTransformer implements Transformer {
 					classE2.addContent(attributeElement);
 				}
 			}
-
+			
+			// TODO :: refactor			
+			// process primitive collections; e.g., collection<string>
+			for ( UMLAttribute att : primitiveCollectionAtts){
+				addSequencePrimitiveCollectionElements(sequence, klass, att, w3cNS);			
+			}
+			
 			for (Iterator i = TransformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
 				UMLAssociationEnd otherEnd = TransformerUtils.getOtherAssociationEnd(thisEnd);
@@ -344,6 +373,44 @@ public class SchemaTransformer implements Transformer {
 
 		}
 	}
+	
+	private void addSequencePrimitiveCollectionElements(Element sequence, UMLClass klass, UMLAttribute att, Namespace w3cNS) {
+
+			Element field = new Element("field");
+			
+			String name = att.getName();
+			field.setAttribute("name", name ); 
+			
+			String type = TransformerUtils.getType(att);
+			String collectionType = type.substring(type.lastIndexOf("<")+1, type.lastIndexOf(">"));
+			collectionType = getName(collectionType);
+			log.info("collectionType: " + collectionType);
+			
+			String collectionTypeName = collectionType.substring(collectionType.indexOf(":")+1,collectionType.length());
+			
+			Element associationElement = new Element("element", w3cNS);
+			sequence.addContent(associationElement);
+
+			associationElement.setAttribute("name", name);
+
+			// A collection - model association as an element with the association name that 
+			// has a sequence of the associated type.  See GForge #1311.
+			associationElement.setAttribute("minOccurs","0");   
+			associationElement.setAttribute("maxOccurs","1");
+
+			Element complexType = new Element("complexType",w3cNS);
+			Element innerSequence = new Element("sequence", w3cNS);
+			Element associatedObjElement = new Element("element", w3cNS);
+
+			associatedObjElement.setAttribute("name", collectionTypeName);
+			associatedObjElement.setAttribute("type", collectionType);
+			associatedObjElement.setAttribute("minOccurs","0");   
+			associatedObjElement.setAttribute("maxOccurs","unbounded");  
+
+			innerSequence.addContent(associatedObjElement);
+			complexType.addContent(innerSequence);
+			associationElement.addContent(complexType);    
+	}	
 
 	private String getName(String type) {
 		String finalType = "xs:";
@@ -366,7 +433,6 @@ public class SchemaTransformer implements Transformer {
 	public void setNamespaceUriPrefix(String namespaceUriPrefix) {
 		this.namespaceUriPrefix = namespaceUriPrefix.replace(" ", "_");
 	}
-
 
 	/**
 	 * @param artifactHandler the artifactHandler to set; called by the
