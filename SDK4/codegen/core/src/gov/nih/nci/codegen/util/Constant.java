@@ -13,7 +13,6 @@ public class Constant {
 	public static final char 	DOT='.';
 	public static final char 	EQUAL='=';	
 	public static final char 	FORWARD_SLASH='/';
-	public static final char 	GREATER_THAN='>';	
 	public static final char 	QUESTION_MARK='?';	
 	public static final char 	LEFT_BRACKET='[';
 	public static final char 	RIGHT_BRACKET=']';	
