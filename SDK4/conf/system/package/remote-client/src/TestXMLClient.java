@@ -68,13 +68,20 @@ public class TestXMLClient extends TestClient
 					Document document = parser.parse(myFile);
 					SchemaFactory factory = SchemaFactory
 							.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+					try {
+						System.out.println("Validating " + klass.getName() + " against the schema......\n\n");						
+						Source schemaFile = new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(klass.getPackage().getName() + ".xsd"));
+						Schema schema = factory.newSchema(schemaFile);
+						Validator validator = schema.newValidator();
+
+						validator.validate(new DOMSource(document));
+						System.out.println(klass.getName() + " has been validated!!!\n\n");
+					} catch (Exception e) {
+						System.out.println(klass.getName() + " has failed validation!!!  Error reason is: \n\n" + e.getMessage());
+					}
 					
-					Source schemaFile = new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(klass.getPackage().getName() + ".xsd"));
-					Schema schema = factory.newSchema(schemaFile);
-					Validator validator = schema.newValidator();
-					System.out.println("Validating " + klass.getName() + " against the schema......\n\n");
-					validator.validate(new DOMSource(document));
-					System.out.println(klass.getName() + " has been validated!!!\n\n");
+					System.out.println("Un-marshalling " + klass.getName() + " from " + myFile.getName() +"......\n\n");
 					Object myObj = (Object) myUtil.fromXML(myFile);	
 					
 					printObject(myObj, klass);
