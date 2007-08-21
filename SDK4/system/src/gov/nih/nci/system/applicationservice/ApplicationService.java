@@ -156,7 +156,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> search(Class targetClass, List<Object> objList) throws ApplicationException;
+	public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the Query by Example. The <code>targetClass</code> specifies 
@@ -198,7 +198,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> search(String path, List<Object> objList) throws ApplicationException;
+	public List<Object> search(String path, List<?> objList) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the Nested Search Criteria. The <code>path</code> specifies 

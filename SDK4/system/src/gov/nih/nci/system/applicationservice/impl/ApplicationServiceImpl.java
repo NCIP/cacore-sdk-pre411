@@ -106,7 +106,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/** 
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.Class, java.util.List)
 	 */
-	public List<Object> search(Class targetClass, List<Object> objList) throws ApplicationException {
+	public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException {
 		return search(targetClass.getName(), objList);
 	}
 
@@ -138,7 +138,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.String, java.util.List)
 	 */
-	public List<Object> search(String path, List<Object> objList) throws ApplicationException {
+	public List<Object> search(String path, List<?> objList) throws ApplicationException {
 
 		try{
 			String targetClassName = "";
