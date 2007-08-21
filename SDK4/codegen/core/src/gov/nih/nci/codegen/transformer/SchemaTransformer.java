@@ -384,7 +384,7 @@ public class SchemaTransformer implements Transformer {
 			String type = TransformerUtils.getType(att);
 			String collectionType = type.substring(type.lastIndexOf("<")+1, type.lastIndexOf(">"));
 			collectionType = getName(collectionType);
-			log.info("collectionType: " + collectionType);
+			log.debug("collectionType: " + collectionType);
 			
 			String collectionTypeName = collectionType.substring(collectionType.indexOf(":")+1,collectionType.length());
 			
