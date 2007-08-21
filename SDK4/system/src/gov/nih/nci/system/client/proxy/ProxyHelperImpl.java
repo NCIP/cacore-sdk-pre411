@@ -76,10 +76,17 @@ public class ProxyHelperImpl implements ProxyHelper
     	{
         	String fieldName = methodName.substring(3);
     		fieldName = Character.toLowerCase(fieldName.charAt(0)) + fieldName.substring(1);
-    		Object obj = as.getAssociation(createClone(bean),fieldName);
-    		Object value = obj;
     		
     		Field field = getField(bean, fieldName); 
+    		
+    		if (field == null){ //Fix for [#8200] Query generator assumes lowercase association names
+    			fieldName = Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+    			field = getField(bean, fieldName);
+    		}
+    		
+    		Object obj = as.getAssociation(createClone(bean),fieldName);
+    		Object value = obj;
+
 
     		if(obj instanceof ListProxy)
     			((ListProxy)obj).setAppService(as);
