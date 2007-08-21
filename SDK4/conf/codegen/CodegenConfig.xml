@@ -28,7 +28,7 @@
 	</bean>
 
 	<!-- 									 -->
-	<!--  XMI File Reader/UML Model Loadeer	 -->
+	<!--  XMI File Reader/UML Model Loader	 -->
 	<!-- 									 -->
 	<bean name="UMLModel" factory-bean="UMLModelLoader" factory-method="getUMLModel" singleton="true"/>
 	<bean name="UMLModelLoader" class="gov.nih.nci.codegen.UMLModelLoader" singleton="true">
@@ -146,7 +146,7 @@
 					</map>
 				</entry>
 				<entry key="INCLUDE_CLASS" value=".domain."/>
-				<entry key="INCLUDE_SEARCH_EVENT_LISTENER" value="false"/>
+				<entry key="INCLUDE_SEARCH_EVENT_LISTENER" value="@INCLUDE_SEARCH_EVENT_LISTENER@"/>
 			</map>
 		</property>
 		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>
