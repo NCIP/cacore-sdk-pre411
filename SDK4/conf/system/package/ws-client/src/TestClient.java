@@ -84,7 +84,8 @@ public class TestClient
 
 						if (klass.getName().equalsIgnoreCase("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit")) {
 							System.out.println("Testing getAssociation() call");
-							testGetAssociation(url, service, obj);
+							String rolename = "issuingBank";
+							testGetAssociation(url, service, obj, rolename);
 						}
 
 						break;
@@ -98,7 +99,7 @@ public class TestClient
 	}
 
 
-	private void testGetAssociation(String url, Service service, Object returnCreditObj ) throws Exception {
+	private void testGetAssociation(String url, Service service, Object returnCreditObj, String rolename) throws Exception {
 		//Scenario:  http://localhost:8080/example/GetHTML?query=Bank&Credit[@id=3]&roleName=issuingBank
 
 		Class klass = gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank.class;
@@ -116,8 +117,8 @@ public class TestClient
 		call.addParameter("arg3", searchClassQName, ParameterMode.IN);					
 		call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
 
-		System.out.println("Searching for association: " + returnCreditObj.getClass().getName() + ".issuingBank");
-		Object[] results = (Object[])call.invoke(new Object[] { returnCreditObj, "issuingBank", 0 });
+		System.out.println("Searching for association: " + returnCreditObj.getClass().getName() + "." + rolename);
+		Object[] results = (Object[])call.invoke(new Object[] { returnCreditObj, rolename, 0 });
 
 		if (results!=null &&  results.length> 0) {
 			for(Object obj : results)
