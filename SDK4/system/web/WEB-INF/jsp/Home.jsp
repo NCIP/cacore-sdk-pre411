@@ -1,13 +1,54 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@ page import="org.acegisecurity.ui.AbstractProcessingFilter"%>
+<%@ page
+	import="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter"%>
+<%@ page import="org.acegisecurity.AuthenticationException"%>
+<%@ page import="org.acegisecurity.context.SecurityContextHolder"%>
+<%@ page import="org.acegisecurity.userdetails.UserDetails"%>
 <%
+			String lastUserKey = (String) session
+			.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY);
+	if (lastUserKey == null || lastUserKey.equalsIgnoreCase("null")) {
+		lastUserKey = "";
+	}
+	//out.println("lastUserKey: " + lastUserKey);
+
+	String loginErrorStr = request.getParameter("login_error");
+	boolean isLoginError = false;
+	if (loginErrorStr != null && loginErrorStr.length() > 0) {
+		isLoginError = true;
+	}
+	//out.println("isLoginError: " + isLoginError);
+
 	boolean isSecurityEnabled = false;
+
+	boolean isAuthenticated = false;
+	String userName = "";
+	if (isSecurityEnabled){
+		Object obj = SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+	
+		//out.println("obj: " + obj);
+		if (obj instanceof UserDetails) {
+			userName = ((UserDetails) obj).getUsername();
+		} else {
+			userName = obj.toString();
+		}
+	
+		if (userName != null
+				&& !(userName.equalsIgnoreCase("anonymousUser"))) {
+			isAuthenticated = true;
+		}
+	}
+	//out.println("userName: " + userName);	
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
 	<head>
-		<title><s:text name="home.title" /></title>
+		<title><s:text name="home.title" />
+		</title>
 		<link rel="stylesheet" type="text/css" href="styleSheet.css" />
 		<script src="script.js" type="text/javascript"></script>
 	</head>
@@ -130,7 +171,8 @@
 																								caCORE products for version 4.0
 																							</li>
 																							<li>
-																								<a href="docs/index.html">caCORE 4.0 javadocs</a>
+																								<a href="docs/index.html">caCORE 4.0
+																									javadocs</a>
 																							</li>
 																						</ul>
 																					</td>
@@ -148,6 +190,79 @@
 																				<!-- login/continue form begins -->
 																				<tr>
 																					<td valign="top">
+
+
+																						<%
+																						if (isSecurityEnabled && !isAuthenticated) {
+																						%>
+
+																						<table summary="" cellpadding="2" cellspacing="0"
+																							border="0" width="100%" class="sidebarSection">
+																							<tr>
+																								<td class="sidebarTitle" height="20">
+																									<s:text name="home.login" />
+																								</td>
+																							</tr>
+																							<tr>
+																								<td class="sidebarContent">
+																									<s:form method="post"
+																										action="j_acegi_security_check"
+																										name="loginForm" theme="css_xhtml">
+																										<table cellpadding="2" cellspacing="0"
+																											border="0">
+																											<%
+																											if (isLoginError) {
+																											%>
+																											<tr>
+																												<td class="sidebarLogin" align="left"
+																													colspan="2">
+																													<font color="red"> Your login
+																														attempt was not successful; please try
+																														again.<BR> <BR> Reason: <%=((AuthenticationException) session
+												.getAttribute(AbstractProcessingFilter.ACEGI_SECURITY_LAST_EXCEPTION_KEY))
+												.getMessage()%> <BR> <BR> </font>
+																												</td>
+																											</tr>
+																											<%
+																											}
+																											%>
+
+																											<tr>
+																												<td class="sidebarLogin" align="left">
+																													<s:text name="home.loginID" />
+																												</td>
+																												<td class="formFieldLogin">
+																													<s:textfield name="j_username"
+																														value="<%=lastUserKey%>"
+																														cssClass="formField" size="14" />
+																												</td>
+																											</tr>
+																											<tr>
+																												<td class="sidebarLogin" align="left">
+																													<s:text name="home.password" />
+																												</td>
+																												<td class="formFieldLogin">
+																													<s:password name="j_password"
+																														cssClass="formField" size="14" />
+																												</td>
+																											</tr>
+																											<tr>
+																												<td>
+																													&nbsp;
+																												</td>
+																												<td>
+																													<s:submit cssClass="actionButton"
+																														type="submit" value="Login" />
+																												</td>
+																											</tr>
+																										</table>
+																									</s:form>
+																								</td>
+																							</tr>
+																						</table>
+																						<%
+																						} else {
+																						%>
 
 																						<table summary="" cellpadding="2" cellspacing="0"
 																							border="0" width="100%" class="sidebarSection">
@@ -167,6 +282,9 @@
 																								</td>
 																							</tr>
 																						</table>
+																						<%
+																						}
+																						%>
 																					</td>
 																				</tr>
 																				<!-- login ends -->
