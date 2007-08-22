@@ -1,4 +1,3 @@
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.client.util.xml.Marshaller;
@@ -9,7 +8,6 @@ import gov.nih.nci.system.client.util.xml.caCOREUnmarshaller;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.Method;
 import java.util.Collection;
 
 import javax.xml.XMLConstants;
