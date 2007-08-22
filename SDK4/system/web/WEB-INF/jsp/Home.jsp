@@ -20,7 +20,7 @@
 	}
 	//out.println("isLoginError: " + isLoginError);
 
-	boolean isSecurityEnabled = false;
+	boolean isSecurityEnabled = @SECURITY_ENABLED@;
 
 	boolean isAuthenticated = false;
 	String userName = "";
