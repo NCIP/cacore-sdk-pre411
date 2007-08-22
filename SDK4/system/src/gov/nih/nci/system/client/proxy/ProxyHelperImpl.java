@@ -11,10 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 
 public class ProxyHelperImpl implements ProxyHelper 
 {
+	private static Logger log = Logger.getLogger(ProxyHelperImpl.class.getName());
+	
 	public Object convertToProxy(ApplicationService as, Object obj) 
 	{
 		if(obj == null) return null;
@@ -131,7 +134,7 @@ public class ProxyHelperImpl implements ProxyHelper
 			klass = klass.getSuperclass();
 		}
 		if(method==null) 
-			System.out.println("Error:");
+			log.debug("Error: method not found for methodName: " + methodName);
 		return method;
 	}
 
@@ -152,7 +155,7 @@ public class ProxyHelperImpl implements ProxyHelper
 			klass = klass.getSuperclass();
 		}
 		if(field==null) 
-			System.out.println("Error:");
+			log.debug("Error: field not found for fieldName: " + fieldName);
 		return field;
 	}
 
