@@ -65,10 +65,10 @@
 	</condition>
 
 	<condition property="SECURITY_START" value="" else="${xml.comment.start}">
-		<equals arg1="${SECURITY_ENABLED}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	<condition property="SECURITY_END" value="" else="${xml.comment.end}">
-		<equals arg1="${SECURITY_ENABLED}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	
 	<condition property="server-exclude-list" value="log4j*.jar" else="">
@@ -85,6 +85,7 @@
 		<mkdir dir="${output.project.dir}"/>
 		<mkdir dir="${output.src.dir}"/>
 		<mkdir dir="${output.conf.dir}"/>
+		<mkdir dir="${output.web.dir}"/>
 		<mkdir dir="${output.codegen.config.dir}"/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
@@ -153,6 +154,14 @@
 			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY@" value="${ATTRIBUTE_LEVEL_SECURITY}" />
 			<replacefilter token="@INCLUDE_SEARCH_EVENT_LISTENER@" value="${INCLUDE_SEARCH_EVENT_LISTENER}" />			
 		</replace>
+		<copy todir="${output.web.dir}" overwrite="true">
+			<fileset dir="${system.dir}\${system.web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>		
+		<replace dir="${output.web.dir}">
+			<replacefilter token="@SECURITY_ENABLED@" value="${SECURITY_ENABLED}" />			
+		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
 
@@ -215,7 +224,7 @@
 	*********************************************************************** -->
 	<target name="codegen" depends="prepare-codegen" description="Runs the code generator">
 		<SDKecho message="${ant.project.name}: Running the code generator"/>
-		<java classname="gov.nih.nci.codegen.Generator" fork="true">
+		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true">
 			<arg value="${codegen.config.file}" />
 			<classpath refid="codegen.runtime" />
 		</java>
@@ -224,7 +233,7 @@
 	<!--***********************************************************************
 	*** Compiles the generated beans 
 	*********************************************************************** -->
-	<target name="compile-beans" depends="codegen" description="Compiles the generated beans" >
+	<target name="compile-beans" depends="codegen" description="Compiles the generated beans">
 		<SDKecho message="${ant.project.name}: Compiling the generated beans"/>
 		<javac srcdir="${output.src.dir}" destdir="${build.classes.dir}" debug="true">
 			<include name="**/*.java"/>
@@ -357,9 +366,9 @@
 				<include name="**/*"/>
 				<exclude name="**/web.xml"/>
 			</fileset>
-			<fileset dir="${system.dir}\${system.web.dir}">
+			<fileset dir="${output.web.dir}">				
 				<include name="**/*"/>
-			</fileset>
+			</fileset>			
 			<fileset dir="${build.dir}">
 				<include name="docs/**/*"/>
 			</fileset>
