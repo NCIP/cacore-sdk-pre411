@@ -13,7 +13,7 @@ import org.aopalliance.intercept.MethodInvocation;
 public class WSUtils extends ProxyHelperImpl 
 {
 	
-	protected Object converObjectToProxy(ApplicationService as, Object obj) 
+	protected Object convertObjectToProxy(ApplicationService as, Object obj) 
 	{
 		if(null == obj) return null;
     	if(obj instanceof Integer || obj instanceof Float || obj instanceof Double

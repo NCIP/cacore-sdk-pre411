@@ -27,10 +27,10 @@ public class ProxyHelperImpl implements ProxyHelper
 		else if(obj instanceof Object[])
 			return convertArrayToProxy(as,(Object[])obj);
 		else
-		   	return converObjectToProxy(as,obj);
+		   	return convertObjectToProxy(as,obj);
 	}
 
-	protected Object converObjectToProxy(ApplicationService as, Object obj) 
+	protected Object convertObjectToProxy(ApplicationService as, Object obj) 
 	{
 		if(null == obj) return null;
     	if(obj instanceof Integer || obj instanceof Float || obj instanceof Double
