@@ -382,7 +382,12 @@ public class XmlMappingTransformer implements Transformer {
 	 * @return The corresponding Castor Mapping attribute type
 	 */
 	private String getQualifiedTypeName(String type) {
-
+		
+		if (type.indexOf('.') > 0){//java.util.Long, etc.
+			//type = type.substring(type.lastIndexOf('.')+1);
+			return type;
+		}
+		
 		if ("Character".equalsIgnoreCase(type) || "char".equalsIgnoreCase(type)) {
 			return "char";
 		}

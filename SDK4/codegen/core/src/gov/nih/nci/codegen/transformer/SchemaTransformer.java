@@ -414,6 +414,11 @@ public class SchemaTransformer implements Transformer {
 
 	private String getName(String type) {
 		String finalType = "xs:";
+		
+		if (type.indexOf('.') > 0){//java.util.Long, etc.
+			type = type.substring(type.lastIndexOf('.')+1);
+		}
+		
 		if ("collection".equalsIgnoreCase(type)
 				|| "character".equalsIgnoreCase(type)
 				|| "char".equalsIgnoreCase(type)) {
