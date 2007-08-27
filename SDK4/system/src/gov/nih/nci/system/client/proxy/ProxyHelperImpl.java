@@ -59,7 +59,7 @@ public class ProxyHelperImpl implements ProxyHelper
 	protected Object convertArrayToProxy(ApplicationService as, Object[] objects) {
 		if(null == objects) return null;
 		if(objects.length==0) return objects;
-		Object[] modifiedCollection =  new Object[objects.length];
+		Object[] modifiedCollection =  objects.clone();
 		for(int i=0;i<objects.length;i++)
 			modifiedCollection[i] = convertToProxy(as, objects[i]);
 		return modifiedCollection;
