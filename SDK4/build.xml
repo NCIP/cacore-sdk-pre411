@@ -164,6 +164,7 @@
 	<target name="clean" description="Cleans the generated directories and files">
 		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
 		<delete dir="${output.dir}"/>
+		<delete dir="${release.dir}"/>
 		<property name="clean-all-performed" value="true"/>
 	</target>
 
@@ -174,12 +175,13 @@
 		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
 		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${system.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
+		<ant antfile="${junit.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
 	</target>
 
 	<!--***********************************************************************
 	*** Prepare 
 	*********************************************************************** -->
-	<target name="prepare-condition-codegen" depends="init">
+	<target name="prepare-condition-codegen" >
 		<SDKecho message="${ant.project.name}: Checking the condition for codegen project build"/>
 		<condition property="prepare-required-codegen">
 			<not>
@@ -193,7 +195,7 @@
 		<ant antfile="${codegen.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
 	</target>
 
-	<target name="prepare-condition-system" depends="init">
+	<target name="prepare-condition-system" >
 		<SDKecho message="${ant.project.name}: Checking the condition for system project build"/>
 		<condition property="prepare-required-system">
 			<and>
@@ -215,7 +217,7 @@
 	<!--***********************************************************************
 	*** Runs the Codegen 
 	*********************************************************************** -->
-	<target name="codegen" depends="prepare-codegen" description="Runs the code generator">
+	<target name="codegen" depends="prepare-codegen,init" description="Runs the code generator">
 		<SDKecho message="${ant.project.name}: Running the code generator"/>
 		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true">
 			<arg value="${codegen.config.file}" />
@@ -422,4 +424,52 @@
 		<echo>Properties were dumped to 'antproperties.txt'</echo>
 	</target>
 	
+	<!--***********************************************************************
+	*** Creates release packages for the SDK  
+	*********************************************************************** -->
+	<target name="package-release-contents" depends="clean-all,prepare-codegen,prepare-system" description="Creates release packages">
+		<SDKecho message="${ant.project.name}: Creates release packages"/>
+		<mkdir dir="${release.dir}"/>
+		<zip destfile="${release.binary.file}" whenempty="skip">
+			<zipfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build/**/*"/>
+				<exclude name="${system.dir}/${system.src.dir}/**/*"/>
+				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
+				<exclude name="bin"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
+				<exclude name="${system.dir}/${system.src.dir}"/>
+				<exclude name="${system.dir}/${system.build.dir}"/>
+			</zipfileset>
+		</zip>
+
+		<zip destfile="${release.src.file}" whenempty="skip">
+			<zipfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="**/build/**/*"/>
+				<exclude name="**/dist/**/*"/>
+			</zipfileset>
+		</zip>
+	
+	</target>
 </project>
