@@ -23,8 +23,7 @@ public class ProxyHelperImpl implements ProxyHelper
 		if(obj == null) return null;
 		
 		if(obj instanceof ListProxy)
-			((ListProxy)obj).setAppService(as);
-		
+			return convertListProxyToProxy(as,(ListProxy)obj);
 		if(obj instanceof java.util.Collection)
 			return convertCollectionToProxy(as,(Collection)obj);
 		else if(obj instanceof Object[])
@@ -33,11 +32,22 @@ public class ProxyHelperImpl implements ProxyHelper
 		   	return convertObjectToProxy(as,obj);
 	}
 
+	protected Object convertListProxyToProxy(ApplicationService as, ListProxy proxy) {
+		proxy.setAppService(as);
+		List chunk = proxy.getListChunk();
+		
+		List modifiedChunk = new ArrayList((Collection)convertToProxy(as,chunk));
+		proxy.setListChunk(modifiedChunk);
+		
+		return proxy;
+	}
+
 	protected Object convertObjectToProxy(ApplicationService as, Object obj) 
 	{
 		if(null == obj) return null;
     	if(obj instanceof Integer || obj instanceof Float || obj instanceof Double
     			|| obj instanceof Character || obj instanceof Long || obj instanceof Boolean
+    			|| obj instanceof Byte ||  obj instanceof Short  
     			|| obj instanceof String || obj instanceof Date || obj instanceof BeanProxy)
     		return obj;
 
