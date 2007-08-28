@@ -82,10 +82,19 @@ public class TestClient
 					{
 						printObject(obj, klass);
 
-						if (klass.getName().equalsIgnoreCase("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit")) {
-							System.out.println("Testing getAssociation() call");
-							String rolename = "issuingBank";
-							testGetAssociation(url, service, obj, rolename);
+						for (Method method : obj.getClass().getMethods()){
+
+							if(method.getName().startsWith("get") && !method.getName().equals("getClass"))
+							{
+								if (!(method.getReturnType().getName().startsWith("java") 
+										|| method.getReturnType().isPrimitive()
+										|| method.getReturnType().getName().indexOf("Collection")>0) ) {
+									System.out.println("Testing getAssociation() call for Class: " + klass.getName() + ", Method: " + method.getName() + ", of type: " + method.getReturnType().getName());
+									
+									String rolename = String.valueOf(method.getName().charAt(3)).toLowerCase() + method.getName().substring(4);
+									testGetAssociation(url, service, obj, method.getReturnType(), rolename);
+								}
+							}
 						}
 
 						break;
@@ -99,16 +108,14 @@ public class TestClient
 	}
 
 
-	private void testGetAssociation(String url, Service service, Object returnCreditObj, String rolename) throws Exception {
-		//Scenario:  http://localhost:8080/example/GetHTML?query=Bank&Credit[@id=3]&roleName=issuingBank
-
-		Class klass = gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank.class;
+	private void testGetAssociation(String url, Service service, Object containingObj, Class associationClass, String rolename) throws Exception {
+		//Sample Scenario:  http://localhost:8080/example/GetHTML?query=Bank&Credit[@id=3]&roleName=issuingBank
 
 		Call call = (Call) service.createCall();
-		QName searchClassQName = new QName("urn:"+getInversePackageName(klass), klass.getSimpleName());
-		call.registerTypeMapping(klass, searchClassQName,
-				new org.apache.axis.encoding.ser.BeanSerializerFactory(klass, searchClassQName),
-				new org.apache.axis.encoding.ser.BeanDeserializerFactory(klass, searchClassQName));
+		QName searchClassQName = new QName("urn:"+getInversePackageName(associationClass), associationClass.getSimpleName());
+		call.registerTypeMapping(associationClass, searchClassQName,
+				new org.apache.axis.encoding.ser.BeanSerializerFactory(associationClass, searchClassQName),
+				new org.apache.axis.encoding.ser.BeanDeserializerFactory(associationClass, searchClassQName));
 
 		call.setTargetEndpointAddress(new java.net.URL(url));
 		call.setOperationName(new QName("exampleService", "getAssociation"));
@@ -117,13 +124,13 @@ public class TestClient
 		call.addParameter("arg3", searchClassQName, ParameterMode.IN);					
 		call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
 
-		System.out.println("Searching for association: " + returnCreditObj.getClass().getName() + "." + rolename);
-		Object[] results = (Object[])call.invoke(new Object[] { returnCreditObj, rolename, 0 });
+		System.out.println("Searching for association: " + containingObj.getClass().getName() + "." + rolename);
+		Object[] results = (Object[])call.invoke(new Object[] { containingObj, rolename, 0 });
 
 		if (results!=null &&  results.length> 0) {
 			for(Object obj : results)
 			{
-				printObject(obj, klass);
+				printObject(obj, associationClass);
 				break;
 			}
 		}
