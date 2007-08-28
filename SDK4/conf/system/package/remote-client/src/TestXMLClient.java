@@ -40,6 +40,9 @@ public class TestXMLClient extends TestClient
 	
 	public void testXMLUtility() throws Exception
 	{
+		//Application Service retrieval for secured system
+		//ApplicationService appService = ApplicationServiceProvider.getApplicationService("userId","password");
+		
 		ApplicationService appService = ApplicationServiceProvider.getApplicationService();
 		Collection<Class> classList = getClasses();
 		
