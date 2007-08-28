@@ -18,7 +18,8 @@ public class WSUtils extends ProxyHelperImpl
 		if(null == obj) return null;
     	if(obj instanceof Integer || obj instanceof Float || obj instanceof Double
     			|| obj instanceof Character || obj instanceof Long || obj instanceof Boolean
-    			|| obj instanceof String || obj instanceof BeanProxy)
+    			|| obj instanceof Byte ||  obj instanceof Short
+    			|| obj instanceof String || obj instanceof Date || obj instanceof BeanProxy)
     		return obj;
 
     	setAssociationsToNull(obj);
@@ -41,8 +42,11 @@ public class WSUtils extends ProxyHelperImpl
 	        	if(!(type.getName().equals(Integer.class.getName()) 
 	        			||type.getName().equals(Float.class.getName())
 	        			||type.getName().equals(Double.class.getName())
+	        			||type.getName().equals(Character.class.getName())
 	        			||type.getName().equals(Long.class.getName())
 	        			||type.getName().equals(Boolean.class.getName())
+	        			||type.getName().equals(Byte.class.getName())
+	        			||type.getName().equals(Short.class.getName())
 	        			||type.getName().equals(String.class.getName())
 	        			||type.getName().equals(Date.class.getName())))
 	        	{
