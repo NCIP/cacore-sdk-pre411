@@ -136,6 +136,7 @@
 						<entry key="c3p0.validate" value="false"/>
 						<!--@DB_CONNECTION_POOL_END@-->
 
+						<entry key="hibernate.show_sql" value="false"/>
 						<entry key="dialect" value="@DB_DIALECT@"/>
 						<entry key="max_fetch_depth" value="1"/>
 						<entry key="cglib.use_reflection_optimizer" value="false"/>
@@ -143,6 +144,7 @@
 						<entry key="jdbc.use_streams_for_binary" value="true"/>
 						<entry key="cache.use_query_cache" value="false"/>
 						<entry key="cache.provider_class" value="org.hibernate.cache.EhCacheProvider"/>
+
 					</map>
 				</entry>
 				<entry key="INCLUDE_CLASS" value=".domain."/>
