@@ -112,18 +112,36 @@ public class TestClient
 		//Sample Scenario:  http://localhost:8080/example/GetHTML?query=Bank&Credit[@id=3]&roleName=issuingBank
 
 		Call call = (Call) service.createCall();
+
+		for(Class klassToMap:getClasses())
+		{
+			QName searchClassQNameToMap = new QName("urn:"+getInversePackageName(klassToMap), klassToMap.getSimpleName());
+			call.registerTypeMapping(klassToMap, searchClassQNameToMap,
+					new org.apache.axis.encoding.ser.BeanSerializerFactory(klassToMap, searchClassQNameToMap),
+					new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
+		}
+		
 		QName searchClassQName = new QName("urn:"+getInversePackageName(associationClass), associationClass.getSimpleName());
-		call.registerTypeMapping(associationClass, searchClassQName,
-				new org.apache.axis.encoding.ser.BeanSerializerFactory(associationClass, searchClassQName),
-				new org.apache.axis.encoding.ser.BeanDeserializerFactory(associationClass, searchClassQName));
 
 		call.setTargetEndpointAddress(new java.net.URL(url));
-		call.setOperationName(new QName("exampleService", "getAssociation"));
+		call.setOperationName(new QName("@WEBSERVICE_NAME@", "getAssociation"));
 		call.addParameter("arg1", searchClassQName, ParameterMode.IN);					
 		call.addParameter("arg2", org.apache.axis.encoding.XMLType.XSD_STRING, ParameterMode.IN);
 		call.addParameter("arg3", searchClassQName, ParameterMode.IN);					
 		call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
 
+		/*
+		//This block inserts the security headers in the service call
+		SOAPHeaderElement headerElement = new SOAPHeaderElement(call.getOperationName().getNamespaceURI(),"CSMSecurityHeader");
+		headerElement.setPrefix("csm");
+		headerElement.setMustUnderstand(false);
+		SOAPElement usernameElement = headerElement.addChildElement("username");
+		usernameElement.addTextNode("userId");
+		SOAPElement passwordElement = headerElement.addChildElement("password");
+		passwordElement.addTextNode("password");
+		call.addHeader(headerElement);				
+		*/
+		
 		System.out.println("Searching for association: " + containingObj.getClass().getName() + "." + rolename);
 		Object[] results = (Object[])call.invoke(new Object[] { containingObj, rolename, 0 });
 
