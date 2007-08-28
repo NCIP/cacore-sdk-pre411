@@ -6,6 +6,7 @@
 	<!--***********************************************************************
 	*** Load the build properties from the file
 	*********************************************************************** -->
+	<property file="local.properties"  />
 	<property file="conf/deploy.properties"  />
 	<property file="build.properties"  />
 	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
