@@ -61,8 +61,6 @@ public class XmlMappingTransformer implements Transformer {
 	 */
 	public GeneratorErrors execute(UMLModel model)
 	{
-		log.info("Executing " + getName());		
-		
 		log.debug("Model name: " + model.getName());
 
 		GeneratorErrors errors = new GeneratorErrors();

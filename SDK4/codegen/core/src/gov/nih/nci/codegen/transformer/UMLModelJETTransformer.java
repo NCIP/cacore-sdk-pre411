@@ -38,8 +38,6 @@ public abstract class UMLModelJETTransformer implements Transformer
 	
 	public GeneratorErrors execute(UMLModel model)
 	{
-		log.info("Executing " + getName());
-		
 		GeneratorErrors errors = new GeneratorErrors();
 		try 
 		{

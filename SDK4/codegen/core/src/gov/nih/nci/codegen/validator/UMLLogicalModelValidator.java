@@ -62,8 +62,6 @@ public class UMLLogicalModelValidator implements Validator
 	 */
 	public GeneratorErrors validate(UMLModel model)
 	{
-		log.info("Executing " + getName());
-		
 		GeneratorErrors errors = new GeneratorErrors();
 		
 		if (model == null){

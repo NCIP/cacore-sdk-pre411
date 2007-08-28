@@ -62,8 +62,6 @@ public class SchemaTransformer implements Transformer {
 	 */	
 	public GeneratorErrors execute(UMLModel model)
 	{
-		log.info("Executing " + getName());
-		
 		Hashtable<UMLPackage, Collection<UMLClass>> pkgColl = new Hashtable<UMLPackage, Collection<UMLClass>>();
 		List<UMLClass> classColl = new ArrayList<UMLClass>();
 

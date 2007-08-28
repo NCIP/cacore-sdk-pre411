@@ -78,19 +78,42 @@ public class Generator
 	{
 		for(Validator validator:validators)
 			if(validator.isEnabled())
+			{
+				log.info("Executing " + validator.getName());
 				errors.addErrors(validator.validate(model));
+			}
+			else
+			{
+				log.info("Skipped execution of " + validator.getName());
+			}
 
 		reportErrors(errors);
 
 		for(Transformer transformer:transformers)
 			if(transformer.isEnabled())
+			{
+				log.info("Executing validator for " + transformer.getName());
 				errors.addErrors(transformer.validate(model));
+			}
+			else
+			{
+				log.info("Skipped validation of " + transformer.getName());
+			}
+			
 		
 		reportErrors(errors);
 		
 		for(Transformer transformer:transformers)
 			if(transformer.isEnabled())
+			{
+				log.info("Executing " + transformer.getName());
 				errors.addErrors(transformer.execute(model));
+			}
+			else
+			{
+				log.info("Skipped execution of " + transformer.getName());
+			}
+				
 
 		reportErrors(errors);
 		
