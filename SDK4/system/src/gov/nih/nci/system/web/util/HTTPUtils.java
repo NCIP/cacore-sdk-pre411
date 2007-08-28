@@ -589,6 +589,12 @@ public class HTTPUtils implements Serializable{
 					SearchUtils searchUtils = new SearchUtils(classCache);
 					if(searchUtils.getTargetClassName(result.getClass().getName(),fieldName)!=null){
 						targetBean = searchUtils.getTargetClassName(result.getClass().getName(),fieldName);
+						
+						//handle primitive collections
+						if (Class.forName(targetBean).isPrimitive() ||
+								targetBean.startsWith("java")){
+							targetBean = null;
+						}
 					}
 				}
 				else if(locateClass(fieldType)){
@@ -620,11 +626,16 @@ public class HTTPUtils implements Serializable{
 
 				try{
 					if(fieldType.indexOf("Collection")>0 || fieldType.endsWith("HashSet") || fieldType.endsWith("ArrayList") || fieldType.indexOf("Vector")>0){
-						Iterator it = ((Collection)fields[f].get(result)).iterator();
-						fieldValue = String.valueOf(it.next());
-						while(it.hasNext()){
-							fieldValue += "; "+ String.valueOf(it.next());
+						
+						if (((Collection)fields[f].get(result)).size() > 0) {
+							
+							Iterator it = ((Collection)fields[f].get(result)).iterator();
+							fieldValue = String.valueOf(it.next());
+							while(it.hasNext()){
+								fieldValue += "; "+ String.valueOf(it.next());
+							}
 						}
+						
 						if(fieldValue != null){
 							fieldElement.setText(fieldValue);
 						}
@@ -683,7 +694,7 @@ public class HTTPUtils implements Serializable{
 		}
 
 		log.debug("Package name found for class: " + className + " is: " + packageName);
-		return classCache.getPkgNameForClass(className);
+		return packageName;
 	}
 
 	/**
