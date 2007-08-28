@@ -40,9 +40,18 @@
 	</target>
 
 	<!--***********************************************************************
+	*** Condition determining if clean is possible or not
+	*********************************************************************** -->
+	<target name="prepare-clean-condition">
+		<SDKecho message="${ant.project.name}: Checking the condition for cleaning"/>
+		<condition property="clean-condition-met">
+			<available file="${codegen.core.src.dir}/src" type="dir"/>
+		</condition>
+	</target>	
+	<!--***********************************************************************
 	*** Cleans the generated directories and files
 	*********************************************************************** -->
-	<target name="clean" description="Cleans the generated directories and files">
+	<target name="clean" description="Cleans the generated directories and files" depends="prepare-clean-condition" if="clean-condition-met">
 		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
 		<delete dir="${build.dir}"/>
 		<delete dir="${dist.dir}"/>
