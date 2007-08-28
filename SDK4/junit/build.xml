@@ -58,6 +58,15 @@
 		</javac>
 	</target>
 	
+	<!--***********************************************************************
+	*** Cleans the generated directories and files
+	*********************************************************************** -->
+	<target name="clean" description="Cleans the generated directories and files">
+		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
+		<delete dir="${classes.dir}"/>
+		<delete dir="${report.dir}"/>
+	</target>
+	
 	<!-- ************************************************************************************************-->
 	<!--                                Run Test                              	                         -->
 	<!-- ************************************************************************************************-->
