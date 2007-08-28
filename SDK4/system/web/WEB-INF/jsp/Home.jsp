@@ -21,7 +21,7 @@
 	}
 	//out.println("isLoginError: " + isLoginError);
 	JSPUtils jspUtils= JSPUtils.getJSPUtils(config.getServletContext());
-	boolean isSecurityEnabled = jspUtils.isSecurityEnabled();;
+	boolean isSecurityEnabled = jspUtils.isSecurityEnabled();
 
 	boolean isAuthenticated = false;
 	String userName = "";
