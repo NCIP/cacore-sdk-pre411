@@ -1,4 +1,9 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@ page import="gov.nih.nci.system.web.util.JSPUtils"%>
+<%
+	JSPUtils jspUtils= JSPUtils.getJSPUtils(config.getServletContext());
+	boolean isSecurityEnabled = jspUtils.isSecurityEnabled();;
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
@@ -68,13 +73,14 @@
 					    <!-- link 2 ends -->
 					    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt=""/></td>
 					    <td height="20" width="100%">&nbsp;</td> 
-					    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt=""/></td>
 					    <!-- link 3 begins -->
+					    <%if(isSecurityEnabled){ %>
+					    <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt=""/></td>
 					    <td height="20" width="100%" align="right" class="mainMenuItem" onmouseover="changeMenuStyle(this,'mainMenuItemOver'),showCursor()" onmouseout="changeMenuStyle(this,'mainMenuItem'),hideCursor()">
 					      <a class="mainMenuLink" href="j_acegi_logout">Logout</a>
-					    </td>   
+					    </td> 
+					    <%}%>
 					    <!-- link 3 ends -->
-				        <td><img src="images/mainMenuSeparator.gif" width="1" height="16" alt="" /></td>
 					    
 					    
 					    
