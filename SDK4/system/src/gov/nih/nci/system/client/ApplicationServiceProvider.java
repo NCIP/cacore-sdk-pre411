@@ -86,7 +86,7 @@ public class ApplicationServiceProvider
 		if(serviceInfoMap == null)
 		{
 			as = (ApplicationService) context.getBean("applicationService");
-			ap = (AuthenticationProvider)context.getBean("authenticationManager");
+			ap = (AuthenticationProvider)context.getBean("authenticationProvider");
 		}
 		else
 		{
@@ -169,10 +169,6 @@ public class ApplicationServiceProvider
 		if(serviceInfo.indexOf("URL_KEY") <0 || url == null)
 			url="";
 		
-		if((!secured && as!=null)||(secured && as!=null && ap!=null)) //Return pre-built service. This helps in improving performance
-			return ctx;
-		
-		
 		serviceInfo = serviceInfo.replace("URL_KEY", url);
 		
 		//Prepare in memory configuration from the information retrieved of the configuration file
@@ -185,7 +181,7 @@ public class ApplicationServiceProvider
 		context.refresh();
 
 		as = (ApplicationService) context.getBean("applicationService");
-		ap = (AuthenticationProvider)context.getBean("authenticationManager");
+		ap = (AuthenticationProvider)context.getBean("authenticationProvider");
 		
 		//Make sure the configuration has the required objects present
 		if(as==null || (secured && ap==null))
