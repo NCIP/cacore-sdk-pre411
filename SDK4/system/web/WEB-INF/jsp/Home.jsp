@@ -5,6 +5,7 @@
 <%@ page import="org.acegisecurity.AuthenticationException"%>
 <%@ page import="org.acegisecurity.context.SecurityContextHolder"%>
 <%@ page import="org.acegisecurity.userdetails.UserDetails"%>
+<%@ page import="gov.nih.nci.system.web.util.JSPUtils"%>
 <%
 			String lastUserKey = (String) session
 			.getAttribute(AuthenticationProcessingFilter.ACEGI_SECURITY_LAST_USERNAME_KEY);
@@ -19,8 +20,8 @@
 		isLoginError = true;
 	}
 	//out.println("isLoginError: " + isLoginError);
-
-	boolean isSecurityEnabled = @SECURITY_ENABLED@;
+	JSPUtils jspUtils= JSPUtils.getJSPUtils(config.getServletContext());
+	boolean isSecurityEnabled = jspUtils.isSecurityEnabled();;
 
 	boolean isAuthenticated = false;
 	String userName = "";
