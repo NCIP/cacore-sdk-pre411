@@ -498,7 +498,7 @@ public class ClassCache {
 				log.debug("Found Class " + className + " for bean " + beanName);
 			}
 		} catch (ClassNotFoundException e){
-			log.error("Unable to Find Class " + className + " for bean " + beanName);
+			log.warn("Unable to find class for bean '" + beanName + "'");
 			return null;
 		}
 
