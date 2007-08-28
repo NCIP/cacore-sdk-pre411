@@ -89,6 +89,17 @@
 		</java>
 	</target>
 
+
+	<!-- *******************************************************************-->
+	<!-- Run XML Utility Demo                                               -->
+	<!-- *******************************************************************-->
+	<target name="runGetXML" depends="compile" description="Runs the Get XML client">
+		<SDKecho message="${ant.project.name}: Running the Get XML Client"/>
+		<mkdir dir="./output"/>
+		<java classname="TestGetXMLClient" fork="true" maxmemory="512m">
+			<classpath refid="runtime" />
+		</java>
+	</target>
 	
 	<!--***********************************************************************
 	*** Dumps the properties of the build script
