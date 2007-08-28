@@ -85,7 +85,6 @@
 		<mkdir dir="${output.project.dir}"/>
 		<mkdir dir="${output.src.dir}"/>
 		<mkdir dir="${output.conf.dir}"/>
-		<mkdir dir="${output.web.dir}"/>
 		<mkdir dir="${output.codegen.config.dir}"/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
@@ -153,13 +152,6 @@
 			<replacefilter token="@INSTANCE_LEVEL_SECURITY@" value="${INSTANCE_LEVEL_SECURITY}" />
 			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY@" value="${ATTRIBUTE_LEVEL_SECURITY}" />
 			<replacefilter token="@INCLUDE_SEARCH_EVENT_LISTENER@" value="${INCLUDE_SEARCH_EVENT_LISTENER}" />			
-		</replace>
-		<copy todir="${output.web.dir}" overwrite="true">
-			<fileset dir="${system.dir}\${system.web.dir}">
-				<include name="**/*.*" />
-			</fileset>
-		</copy>		
-		<replace dir="${output.web.dir}">
 			<replacefilter token="@SECURITY_ENABLED@" value="${SECURITY_ENABLED}" />			
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
@@ -366,9 +358,9 @@
 				<include name="**/*"/>
 				<exclude name="**/web.xml"/>
 			</fileset>
-			<fileset dir="${output.web.dir}">				
+			<fileset dir="${system.dir}\${system.web.dir}">
 				<include name="**/*"/>
-			</fileset>			
+			</fileset>
 			<fileset dir="${build.dir}">
 				<include name="docs/**/*"/>
 			</fileset>
