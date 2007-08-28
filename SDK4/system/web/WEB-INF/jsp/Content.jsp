@@ -118,11 +118,9 @@
 															    treeSelectedTopic="treeSelected">
 															</s:tree> 
 															</div>														
+															<img width="400" height="1"/>														
 														</td>
-														<td valign="top">
-															<div id="displayId" style="position:fixed; margin: 7px; overflow: auto;">
-																&nbsp;
-															</div>														
+														<td valign="top" id="displayId" >
 														</td>														
 													</tr>														
 												</table>
