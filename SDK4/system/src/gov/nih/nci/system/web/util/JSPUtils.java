@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 
@@ -25,6 +26,7 @@ public class JSPUtils {
 	private static Logger log = Logger.getLogger(JSPUtils.class.getName());
 
 	private static JSPUtils jspUtils;
+	private static boolean secured;
 
 	private ClassCache classCache;
 
@@ -32,6 +34,9 @@ public class JSPUtils {
 		WebApplicationContext ctx = WebApplicationContextUtils
 		.getWebApplicationContext(context);
 		this.classCache = (ClassCache) ctx.getBean("ClassCache");
+		Properties systemProperties = (Properties)ctx.getBean("SystemProperties");
+		String securityEnabled = (String)systemProperties.getProperty("securityEnabled");
+		secured = "yes".equalsIgnoreCase(securityEnabled) || "true".equalsIgnoreCase(securityEnabled);
 	}
 
 	/**
@@ -127,5 +132,10 @@ public class JSPUtils {
 	 */
 	public List<String> getAssociations(String className) throws Exception {
 		return classCache.getAssociations(className);
+	}
+	
+	public boolean isSecurityEnabled()
+	{
+		return secured;
 	}
 }
