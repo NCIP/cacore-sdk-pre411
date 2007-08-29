@@ -45,9 +45,9 @@
 	<bean id="applicationServiceConfig" class="java.lang.String">
 		<constructor-arg>
 			<value>
-				&lt;bean id=&quot;interceptor&quot; class=&quot;gov.nih.nci.system.applicationservice.ApplicationServiceProxy&quot;&gt;
+				&lt;bean id=&quot;interceptor&quot; class=&quot;gov.nih.nci.system.client.proxy.ApplicationServiceProxy&quot;&gt;
 					&lt;property name=&quot;proxyFactory&quot;&gt;
-						&lt;bean class=&quot;gov.nih.nci.system.applicationservice.ProxyUtilsImpl&quot;/&gt;
+						&lt;bean class=&quot;gov.nih.nci.system.client.proxy.ProxyHelperImpl&quot;/&gt;
 					&lt;/property&gt;
 				&lt;/bean&gt;
 				&lt;bean id=&quot;applicationService&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
