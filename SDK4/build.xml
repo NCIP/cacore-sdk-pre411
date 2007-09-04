@@ -439,6 +439,7 @@
 				<exclude name="**/*.classpath"/>
 				<exclude name="${release.dir}"/>
 				<exclude name="${output.dir}"/>
+				<exclude name="${release.dir}/**/*"/>
 				<exclude name="bin/**/*"/>
 				<exclude name="${codegen.dir}/${codegen.build.dir}/**/*"/>
 				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}/**/*"/>
@@ -453,6 +454,8 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
 				<exclude name="${system.dir}/${system.src.dir}"/>
 				<exclude name="${system.dir}/${system.build.dir}"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
 			</zipfileset>
 		</zip>
 
@@ -468,8 +471,58 @@
 				<exclude name="bin/**/*"/>
 				<exclude name="**/build/**/*"/>
 				<exclude name="**/dist/**/*"/>
+				<exclude name="${release.dir}/**/*"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
 			</zipfileset>
 		</zip>
+
+		<tar destfile="${release.binary.tar.file}" >
+			<tarfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="${release.dir}/**/*"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src/**/*"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build/**/*"/>
+				<exclude name="${system.dir}/${system.src.dir}/**/*"/>
+				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
+				<exclude name="bin"/>
+				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/src"/>
+				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
+				<exclude name="${system.dir}/${system.src.dir}"/>
+				<exclude name="${system.dir}/${system.build.dir}"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
+			</tarfileset>
+		</tar>
 	
+		<tar destfile="${release.src.tar.file}" >
+			<tarfileset dir="${basedir}">
+				<exclude name="local.properties"/>
+				<exclude name="**/CVS/**/*"/>
+				<exclude name="**/*.cvsignore"/>
+				<exclude name="**/*.project"/>
+				<exclude name="**/*.classpath"/>
+				<exclude name="${release.dir}"/>
+				<exclude name="${output.dir}"/>
+				<exclude name="bin/**/*"/>
+				<exclude name="**/build/**/*"/>
+				<exclude name="**/dist/**/*"/>
+				<exclude name="${release.dir}/**/*"/>
+				<exclude name="${junit.dir}"/>
+				<exclude name="${junit.dir}/**/*"/>
+			</tarfileset>
+		</tar>
+		
 	</target>
 </project>
