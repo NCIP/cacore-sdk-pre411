@@ -20,7 +20,7 @@ public interface Marshaller {
 	 * @param  object the object to be serialized.
 	 * @param  reader the writer to be written to.
 	 */
-	void toXML(Object object, java.io.Writer reader)throws XMLUtilityException;
+	void toXML(Object object, java.io.Writer writer)throws XMLUtilityException;
 	
 	/**
 	 * Returns the base marshaller
