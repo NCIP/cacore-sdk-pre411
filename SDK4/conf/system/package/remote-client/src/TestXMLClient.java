@@ -86,7 +86,6 @@ public class TestXMLClient extends TestClient
 					Object myObj = (Object) myUtil.fromXML(myFile);	
 					
 					printObject(myObj, klass);
-					myWriter.close();
 					break;
 				}
 			}catch(Exception e)
