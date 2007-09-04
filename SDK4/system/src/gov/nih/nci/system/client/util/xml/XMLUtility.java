@@ -51,7 +51,7 @@ public class XMLUtility {
 	}
 
 	/**
-	 * Instanties an object from an xml File that contains the serialized output
+	 * Instantiates an object from an XML File that contains the serialized output
 	 * of that object.
 	 * 
 	 * @param xmlFile
