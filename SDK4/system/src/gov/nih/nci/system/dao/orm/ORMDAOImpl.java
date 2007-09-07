@@ -129,6 +129,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		hCriteria = ((org.hibernate.criterion.DetachedCriteria)request.getRequest()).getExecutableCriteria(session);
 		log.info("Detached Criteria Query :"+hCriteria.toString());
+		hCriteria.setMaxResults(10000);
 		if (hCriteria != null)
 		{
 		    if(isCount != null && isCount.booleanValue())
@@ -174,7 +175,8 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		if (query != null)
 		{
 			if(isCount != null && isCount.booleanValue())
-		    {			
+		    {
+				converter.getCountQuery().setMaxResults(1);
 				log.debug("ORMDAOImpl.  isCount .... .... | converter.getCountQuery() = " + converter.getCountQuery().getQueryString());
 				rowCount = Integer.parseInt(converter.getCountQuery().uniqueResult()+"");
 				log.debug("ORMDAOImpl HQL ===== count = " + rowCount);		
@@ -219,7 +221,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			for(Object param:obj.getParameters())
 				hqlQuery.setParameter(count++, param);
 		}
-			
+		hqlQuery.setMaxResults(100000);
 		log.info("HQL Criteria Query :"+hqlQuery.getQueryString());
 		if(isCount != null && isCount.booleanValue())
 	    {
@@ -263,7 +265,8 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		for(int i = 0; i<params.size();i++)
 			hqlQuery.setParameter(i,params.get(i) );
-		
+
+		hqlQuery.setMaxResults(100000);
 		if(isCount != null && isCount.booleanValue())
 	    {
 			rowCount = new Integer(hqlQuery.list().size());
