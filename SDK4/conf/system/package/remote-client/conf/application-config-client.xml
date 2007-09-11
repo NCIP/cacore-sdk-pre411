@@ -6,7 +6,7 @@
 			<map>
 				<entry key="APPLICATION_SERVICE_BEAN" value="applicationService"/>
 				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationProvider"/>
-				<entry key="APPLICATION_SERVICE_URL"  value="@SERVER_URL@/http/applicationService"/>
+				<entry key="APPLICATION_SERVICE_URL"  value="@SERVER_URL@"/>
 				<entry key="APPLICATION_SERVICE_CONFIG"  value-ref="applicationServiceConfig"/>
 			</map>
 		</constructor-arg>
