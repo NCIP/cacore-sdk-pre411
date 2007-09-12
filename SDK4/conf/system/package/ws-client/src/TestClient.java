@@ -62,8 +62,8 @@ public class TestClient
 
 				/*
 				//This block inserts the security headers in the service call
-				SOAPHeaderElement headerElement = new SOAPHeaderElement(call.getOperationName().getNamespaceURI(),"CSMSecurityHeader");
-				headerElement.setPrefix("csm");
+				SOAPHeaderElement headerElement = new SOAPHeaderElement(call.getOperationName().getNamespaceURI(),"SecurityHeader");
+				headerElement.setPrefix("security");
 				headerElement.setMustUnderstand(false);
 				SOAPElement usernameElement = headerElement.addChildElement("username");
 				usernameElement.addTextNode("userId");
