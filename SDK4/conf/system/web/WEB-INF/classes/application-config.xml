@@ -30,10 +30,21 @@
 			</props>
 		</constructor-arg>
 	</bean>
+
+	<bean id="SystemPropertiesMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<!--@SECURITY_START@-->
+				<entry key="AUTHENTICATION_PROVIDER" value-ref="authenticationProvider"/>
+				<!--@SECURITY_END@-->
+			</map>
+		</constructor-arg>
+	</bean>
 			
 	<bean name="ORMDAOFactory" class="gov.nih.nci.system.dao.orm.ORMDAOFactoryBean">
 		<constructor-arg value="hibernate.cfg.xml" index="0"></constructor-arg> <!-- configLocation -->
 		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
+		<constructor-arg ref="SystemPropertiesMap" index="2"></constructor-arg>
 	</bean>
 
 	
