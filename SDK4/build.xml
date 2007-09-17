@@ -320,6 +320,7 @@
 				<include name="ehcache*.*"/>
 				<include name="hibernate*.*"/>
 				<include name="jta*.*"/>	
+				<include name="jdom*.*"/>	
 				<include name="log4j*.*"/>
 				<include name="mysql*.*"/>
 				<include name="ojdbc*.*"/>
