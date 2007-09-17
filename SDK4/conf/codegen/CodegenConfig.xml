@@ -147,7 +147,6 @@
 
 					</map>
 				</entry>
-				<entry key="INCLUDE_CLASS" value=".domain."/>
 				<entry key="INCLUDE_SEARCH_EVENT_LISTENER" value="@INCLUDE_SEARCH_EVENT_LISTENER@"/>
 			</map>
 		</property>
