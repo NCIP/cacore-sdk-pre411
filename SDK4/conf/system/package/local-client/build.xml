@@ -75,6 +75,7 @@
 		<SDKecho message="${ant.project.name}: Running the test"/>
 		<java classname="TestClient" fork="true">
 			<classpath refid="runtime" />
+			<sysproperty key="java.security.auth.login.config" value="${conf.dir}/login.config"/>
 		</java>
 	</target>
 	
