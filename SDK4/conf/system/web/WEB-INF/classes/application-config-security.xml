@@ -12,7 +12,7 @@
 		</property>
 	</bean>
 
-	<bean id="authenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+	<bean id="authenticationProvider" class="gov.nih.nci.security.acegi.authentication.CSMAuthenticationProvider">
 		<property name="userDetailsService">
 			<bean class="gov.nih.nci.security.acegi.authentication.CSMUserDetailsService">
 				<property name="csmApplicationContext"><value>@CSM_PROJECT_NAME@</value></property>
