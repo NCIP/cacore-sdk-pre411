@@ -1,5 +1,6 @@
 package gov.nih.nci.system.dao.orm;
 
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -18,7 +19,7 @@ public class ORMDAOFactoryBean implements FactoryBean {
 	
 	private ORMDAOImpl ormDAO;
 
-	public ORMDAOFactoryBean(String configLocation, Properties systemProperties) throws Exception {	
+	public ORMDAOFactoryBean(String configLocation, Properties systemProperties, Map systemPropertiesMap) throws Exception {	
 		lsfb = new LocalSessionFactoryBean();
 		Resource resource = new ClassPathResource(configLocation);
 		lsfb.setConfigLocation(resource);
@@ -31,6 +32,7 @@ public class ORMDAOFactoryBean implements FactoryBean {
 		try {
 			caseSensitive = Boolean.parseBoolean(systemProperties.getProperty("caseSensitive"));
 			resultCountPerQuery = Integer.parseInt(systemProperties.getProperty("resultCountPerQuery"));
+			
 			String instanceLevelSecurityEnabled = (String)systemProperties.getProperty("instanceLevelSecurityEnabled");
 			String attributeLevelSecurityEnabled = (String)systemProperties.getProperty("attributeLevelSecurityEnabled");
 			instanceLevelSecurity = "yes".equalsIgnoreCase(instanceLevelSecurityEnabled) || "true".equalsIgnoreCase(instanceLevelSecurityEnabled);
