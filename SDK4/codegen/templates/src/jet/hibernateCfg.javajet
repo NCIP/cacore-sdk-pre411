@@ -3,7 +3,6 @@
         skeleton="ModelTransformerBase.skeleton" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-<%String klassIncludeRegex = (String)configurationParams.get("INCLUDE_CLASS");%>
 <hibernate-configuration>
 	<session-factory>
 	
@@ -19,11 +18,9 @@
 	}%>
 
 		<!-- Mapped Resources -->
-<%for(UMLClass klass:TransformerUtils.getAllParentClasses(model)){
-	if(TransformerUtils.getFQCN(klass).indexOf(klassIncludeRegex)>0){%>
+<%for(UMLClass klass:TransformerUtils.getAllParentClasses(model)){%>
 		<mapping resource="<%=TransformerUtils.getFQCN(klass).replace('.','/')%>.hbm.xml" />
-<%	}
-}%>
+<%}%>
 <%if("true".equalsIgnoreCase((String)configurationParams.get("INCLUDE_SEARCH_EVENT_LISTENER"))){%>
 
 		<!-- Event Listeners for Hibernate Search API-->
