@@ -47,4 +47,4 @@ Server: 	cbiodb20
 Database: 	CCCSTG
 Port: 		1521
 User: 		eacacoresdk
-Password: 	ea#cacoresdk123
+Password: 	dev1234
