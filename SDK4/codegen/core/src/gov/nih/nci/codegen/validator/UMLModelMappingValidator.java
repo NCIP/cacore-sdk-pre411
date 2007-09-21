@@ -162,7 +162,7 @@ public class UMLModelMappingValidator implements Validator
 						String subFqcn = TransformerUtils.getFQCN(subKlass);
 						String keyColumnName = TransformerUtils.getMappedColumnName(subTable,subFqcn+"."+idAttr.getName());
 						if(subTable == table)
-							errors.addError(new GeneratorError(getName() + ": When the discriminating column is absent, the subclass and the parent class can not be presisted in the same table : "+subFqcn));
+							errors.addError(new GeneratorError(getName() + ": When the discriminating column is absent, the subclass and the parent class can not be persisted in the same table : "+subFqcn));
 						validateClass(model,subKlass, errors);
 					}
 				}

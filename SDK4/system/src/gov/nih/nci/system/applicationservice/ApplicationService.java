@@ -15,10 +15,10 @@ import org.hibernate.criterion.DetachedCriteria;
 public interface ApplicationService
 {
 	/**
-	 * Retrieves the result from the data source using the CQL query. The CQL query structure is converted in to the
+	 * Retrieves the result from the data source using the CQL query. The CQL query structure is converted into the
 	 * data source specific query language. For the Object Relational Mapping based persistence tier, the CQL query
 	 * structure is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into SQL and executes
-	 * it gainst the relational database. 
+	 * it against the relational database. 
 	 * 
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
 	 * are more than the maximum number of supported records as indicated by {@link #getMaxRecordsCount()} then the
@@ -39,10 +39,10 @@ public interface ApplicationService
 	public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException;
 	
 	/**
-	 * Retrieves the result from the data source using the CQL query. The CQL query structure is converted in to the
+	 * Retrieves the result from the data source using the CQL query. The CQL query structure is converted into the
 	 * data source specific query language. For the Object Relational Mapping based persistence tier, the CQL query
 	 * structure is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into SQL and executes
-	 * it gainst the relational database. 
+	 * it against the relational database. 
 	 * 
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
 	 * are more than the maximum number of supported records as indicated by {@link #getMaxRecordsCount()} then the
@@ -58,7 +58,7 @@ public interface ApplicationService
 
 	/**
 	 * Retrieves the result from the data source using the DetachedCriteria query. The DetachedCriteria query structure 
-	 * can be used only by the Object Relational Mapping based persistence tier. Hibernate executes it gainst the 
+	 * can be used only by the Object Relational Mapping based persistence tier. Hibernate executes it against the 
 	 * relational database and fetches the results. 
 	 * 
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
@@ -81,7 +81,7 @@ public interface ApplicationService
 	
 	/**
 	 * Retrieves the result from the data source using the DetachedCriteria query. The DetachedCriteria query structure 
-	 * can be used only by the Object Relational Mapping based persistence tier. Hibernate executes it gainst the 
+	 * can be used only by the Object Relational Mapping based persistence tier. Hibernate executes it against the 
 	 * relational database and fetches the results. 
 	 * 
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
@@ -98,7 +98,7 @@ public interface ApplicationService
 	
 	/**
 	 * Retrieves the result from the data source using the HQL query. The HQL query structure can be used only by 
-	 * the Object Relational Mapping based persistence tier. Hibernate executes hql query gainst the relational 
+	 * the Object Relational Mapping based persistence tier. Hibernate executes hql query against the relational 
 	 * database and fetches the results. 
 	 * 
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
@@ -121,7 +121,7 @@ public interface ApplicationService
 	
 	/**
 	 * Retrieves the result from the data source using the HQL query. The HQL query structure can be used only by 
-	 * the Object Relational Mapping based persistence tier. Hibernate executes hql query gainst the relational 
+	 * the Object Relational Mapping based persistence tier. Hibernate executes hql query against the relational 
 	 * database and fetches the results. 
 	 * 
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
@@ -140,9 +140,9 @@ public interface ApplicationService
 	 * Retrieves the result from the data source using the Query by Example. The <code>targetClass</code> specifies 
 	 * the object that the user intends to fetch after executing the query. The <code>targetClass</code> should be 
 	 * same as the object specified in the objList or associated object for the example object. Also, all the objects 
-	 * in the <code>objList</code> has to be of the same type. The example query is converted in to the data source 
+	 * in the <code>objList</code> has to be of the same type. The example query is converted into the data source 
 	 * specific query language. For the Object Relational Mapping based persistence tier, the example query structure 
-	 * is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into SQL and executes it gainst
+	 * is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into SQL and executes it against
 	 * the relational database.
 	 *  
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
@@ -161,10 +161,10 @@ public interface ApplicationService
 	/**
 	 * Retrieves the result from the data source using the Query by Example. The <code>targetClass</code> specifies 
 	 * the object that the user intends to fetch after executing the query. The <code>targetClass</code> should be 
-	 * same as the example object or associated object for the example object. The example query is converted in to 
+	 * same as the example object or associated object for the example object. The example query is converted into 
 	 * the data source specific query language. For the Object Relational Mapping based persistence tier, the example 
 	 * query structure is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into SQL and 
-	 * executes it gainst the relational database.
+	 * executes it against the relational database.
 	 *  
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
 	 * are more than the maximum number of supported records as indicated by {@link #getMaxRecordsCount()} then the
@@ -180,12 +180,12 @@ public interface ApplicationService
 	public List<Object> search(Class targetClass, Object obj) throws ApplicationException;
 	
 	/**
-	 * Retrieves the result from the data source using the Nested Search Criteria. The <code>path</code> specifies 
-	 * the list of objects seperated by comman which should be used to reach the target object from the example objects 
+	 * Retrieves the result from the data source using a Nested Search Criteria. The <code>path</code> specifies 
+	 * the list of objects (separated by commas), which should be used to reach the target object from the example objects 
 	 * passed in the <code>objList</code> or associated object for the example object. The Nested Search Criteria 
-	 * is converted in to the data source specific query language. For the Object Relational Mapping based persistence 
-	 * tier, the query structure is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into 
-	 * SQL and executes it gainst the relational database.
+	 * is converted into the data source specific query language. For the Object Relational Mapping based persistence 
+	 * tier, the query structure is first converted into the Hibernate Query Language (HQL). Hibernate then converts the HQL into 
+	 * SQL and executes it against the relational database.
 	 *  
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
 	 * are more than the maximum number of supported records as indicated by {@link #getMaxRecordsCount()} then the
@@ -202,11 +202,11 @@ public interface ApplicationService
 	
 	/**
 	 * Retrieves the result from the data source using the Nested Search Criteria. The <code>path</code> specifies 
-	 * the list of objects seperated by comman which should be used to reach the target object from the example objects 
-	 * passed as <code>obj</code> or associated object for the example object. The Nested Search Criteria 
-	 * is converted in to the data source specific query language. For the Object Relational Mapping based persistence 
-	 * tier, the query structure is converted in the Hibernate Query Language (HQL). Hibernate converts the HQL into 
-	 * SQL and executes it gainst the relational database.
+	 * the list of objects (separated by commas) which should be used to reach the target object from the example object 
+	 * passed as <code>obj</code>, or the associated object for the example object. Internally, the Nested Search Criteria 
+	 * is converted into the data source specific query language. For the Object Relational Mapping based persistence 
+	 * tier, the query structure is first converted into the Hibernate Query Language (HQL). Hibernate then converts the HQL into 
+	 * SQL and executes it against the relational database.
 	 *  
 	 * The retrieved results are converted into a list which may not be completely loaded. If the retrieved results 
 	 * are more than the maximum number of supported records as indicated by {@link #getMaxRecordsCount()} then the
@@ -222,7 +222,7 @@ public interface ApplicationService
 	public List<Object> search(String path, Object obj) throws ApplicationException;	
 
 	/**
-	 * Used by the infrastructure to get next chunk of results. Use this method in conjunction with the 
+	 * Used by the infrastructure to get next chunk of records in the result set. Use this method in conjunction with the 
 	 * {@link #getMaxRecordsCount()} to determine what should be the start of next chunk.
 	 *  
 	 * @param criteria
@@ -234,7 +234,7 @@ public interface ApplicationService
 	public List<Object> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException;
 	
 	/**
-	 * Returns the number of records the query can return. The method is used by the client framework to determine 
+	 * Returns the number of records that meet the search criteria. The method is used by the client framework to determine 
 	 * the number of chunk of results. Use this method in conjunction with the {@link #getMaxRecordsCount()}
 	 * 
 	 * @param criteria
@@ -245,7 +245,7 @@ public interface ApplicationService
 	public Integer getQueryRowCount(Object criteria, String targetClassName) throws ApplicationException;
 	
 	/**
-	 * Returns the maximum number of records the <code>ApplicationService</code> can return 
+	 * Returns the maximum number of records the <code>ApplicationService</code> has been configured to return at one time. 
 	 * 
 	 * @return
 	 * @throws ApplicationException
