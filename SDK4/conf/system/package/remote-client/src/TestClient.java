@@ -52,7 +52,7 @@ public class TestClient
 	}
 	
 	protected void printObject(Object obj, Class klass) throws Exception {
-		System.out.println("Printing "+ obj.getClass().getName());
+		System.out.println("Printing "+ obj.getClass().getName().substring(0, obj.getClass().getName().indexOf("$$")));
 		Method[] methods = klass.getMethods();
 		for(Method method:methods)
 		{
@@ -66,6 +66,7 @@ public class TestClient
 					System.out.println(val);
 			}
 		}
+		System.out.println("--------");
 	}
 
 
