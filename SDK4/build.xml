@@ -78,7 +78,7 @@
 	
 	
 	<!--***********************************************************************
-	*** Prepares the directory structure
+	*** Prepares the output directory structure
 	*********************************************************************** -->
 	<target name="init" >
 		<SDKecho message="${ant.project.name}: Preparing directories"/>
@@ -159,7 +159,8 @@
 	</target>
 
 	<!--***********************************************************************
-	*** Cleans the generated directories and files
+	*** Cleans the generated directories and files created following the 
+	*** execution of the build-system target.
 	*********************************************************************** -->
 	<target name="clean" description="Cleans the generated directories and files">
 		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
@@ -169,7 +170,7 @@
 	</target>
 
 	<!--***********************************************************************
-	*** Cleans the generated directories and files in addition to child projects
+	*** Cleans the generated directories and files of both the main and child projects
 	*********************************************************************** -->
 	<target name="clean-all" depends="clean" description="Cleans the child projects and generated directories and files">
 		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
@@ -215,9 +216,9 @@
 	<target name="prepare" depends="prepare-codegen,prepare-system"/>
 	
 	<!--***********************************************************************
-	*** Runs the Codegen 
+	*** Runs the Code Generator 
 	*********************************************************************** -->
-	<target name="codegen" depends="prepare-codegen,init" description="Runs the code generator">
+	<target name="codegen" depends="prepare-codegen,init" description="Runs the Code Generator">
 		<SDKecho message="${ant.project.name}: Running the code generator"/>
 		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true">
 			<arg value="${codegen.config.file}" />
@@ -238,7 +239,7 @@
 	<!--***********************************************************************
 	*** Packages the generated artifacts 
 	*********************************************************************** -->
-	<target name="package-codegen-artifacts" depends="compile-beans, prepare-system" description="Packages the generated artifacts">
+	<target name="package-codegen-artifacts" depends="compile-beans, prepare-system" description="Packages the generated ORM and bean artifacts">
 		<SDKecho message="${ant.project.name}: Packaging the generated artifacts"/>
 		<jar destfile="${build.jar.dir}\${bean.file}" basedir="${build.classes.dir}">
 			<manifest>
@@ -378,7 +379,7 @@
 	</target>	
 	
 	<target name="package-ws-client" depends="package-codegen-artifacts">
-		<SDKecho message="${ant.project.name}: Packaging the webservice client"/>
+		<SDKecho message="${ant.project.name}: Packaging the Web Service client"/>
 		<copy todir="${package.client.ws.lib.dir}">
 			<fileset dir="${system.dir}\${system.lib.dir}">
 				<include name="axis*.*"/>
@@ -396,9 +397,9 @@
 	</target>	
 	
 	<!--***********************************************************************
-	*** Generates documentation for the Java Beans
+	*** Generates Javadocs for the Java Beans
 	*********************************************************************** -->
-	<target name="doc" depends="codegen" description="Generates javadocs for the beans">
+	<target name="doc" depends="codegen" description="Generates javadocs for the domain Java beans">
 		<SDKecho message="${ant.project.name}: Generating javadocs for the beans"/>
 		<javadoc packagenames="*" destdir="${build.doc.dir}" author="true"
 			private="true" version="true" use="true" windowtitle="${PROJECT_NAME} API Documentation"
@@ -410,7 +411,7 @@
 
 
 	<!--***********************************************************************
-	*** Generates documentation for the Java Beans
+	*** Generates the system using properties set within /conf/deploy.properties
 	*********************************************************************** -->
 	<target name="build-system" depends="clean,package-codegen-artifacts, doc, package-system" description="Generates complete system">
 		<SDKecho message="${ant.project.name}: Completed the system build"/>
@@ -418,9 +419,9 @@
 
 	
 	<!--***********************************************************************
-	*** Dumps the properties of the codegen  
+	*** Dumps the current Code Generator properties  
 	*********************************************************************** -->
-	<target name="show-properties" description="Dumps a list of all properties currently set">
+	<target name="show-properties" description="Dumps a list of all currently set Code Generator properties">
 		<echoproperties destfile="antproperties.txt"/>
 		<echo>Properties were dumped to 'antproperties.txt'</echo>
 	</target>
@@ -477,7 +478,7 @@
 				<exclude name="${junit.dir}/**/*"/>
 			</zipfileset>
 		</zip>
-
+	
 		<tar destfile="${release.binary.tar.file}" >
 			<tarfileset dir="${basedir}">
 				<exclude name="local.properties"/>
