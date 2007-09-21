@@ -1,5 +1,10 @@
 package gov.nih.nci.system.dao.orm;
 
+import gov.nih.nci.security.AuthorizationManager;
+import gov.nih.nci.security.acegi.authentication.CSMAuthenticationProvider;
+import gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor;
+import gov.nih.nci.security.authorization.attributeLevel.UserClassAttributeMapCache;
+import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHelper;
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
@@ -18,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.dao.UserCache;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.JDBCException;
@@ -45,25 +52,45 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	private boolean instanceLevelSecurity;
 	private boolean attributeLevelSecurity;
 	
-	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, boolean caseSensitive, int resultCountPerQuery, boolean instanceLevelSecurity, boolean attributeLevelSecurity) {
+	private CSMAuthenticationProvider authenticationProvider;
+	
+	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, boolean caseSensitive, int resultCountPerQuery, boolean instanceLevelSecurity, boolean attributeLevelSecurity, CSMAuthenticationProvider authenticationProvider) {
 		this.config = config;
 		this.setSessionFactory(sessionFactory);
 		this.caseSensitive = caseSensitive;
 		this.resultCountPerQuery = resultCountPerQuery;
 		this.instanceLevelSecurity=instanceLevelSecurity;
 		this.attributeLevelSecurity=attributeLevelSecurity;
+		this.authenticationProvider=authenticationProvider;
 	}
 
+	private Session getSecuredSession()
+	{
+		Session session = null;
+		if (attributeLevelSecurity)
+		{
+			session = this.getSessionFactory().openSession(new AttributeSecuritySessionInterceptor());
+			String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+			AuthorizationManager authorizationManager = authenticationProvider.getUserDetailsService().authorizationManagerInstance();
+			UserClassAttributeMapCache.setAttributeMap(userName,this.getSessionFactory(), authorizationManager);
+		}
+		else
+			session = getSession(); 
+		
+		if (instanceLevelSecurity)
+		{
+			AuthorizationManager authorizationManager = authenticationProvider.getUserDetailsService().authorizationManagerInstance();
+			String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+			InstanceLevelSecurityHelper.initializeFilters(userName, session, authorizationManager);
+		}
+		return session;
+	}
+	
+	
 	public Response query(Request request) throws DAOException 
 	{
-		//TODO CSMTEAM
-		//Obtain session factory first and then opensession with interceptor
-		Session session = getSession(); 
-		
-		//TODO CSMTEAM
-		//If InstanceLevel and or attribute level security is enabled then enable corresponding filters
-		//session.
-		
+		Session session = (instanceLevelSecurity || attributeLevelSecurity)?getSecuredSession():getSession();
+
 		Object obj = request.getRequest();
 
 		try
