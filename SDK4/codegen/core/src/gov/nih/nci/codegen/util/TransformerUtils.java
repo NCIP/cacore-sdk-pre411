@@ -736,7 +736,7 @@ public class TransformerUtils
 		}
 
 		if(count!=1)
-			throw new GenerationException("No table found for : "+getFQCN(klass));
+			throw new GenerationException("No table found for : "+getFQCN(klass)+".  Make sure the corresponding Data Model table (class) has a 'table' Stereotype assigned, and the Dependency between the Data Model table and Logical Model class has a 'DataSource' Stereotype assigned.");
 		
 		return result;
 	}
