@@ -472,18 +472,6 @@ public class TransformerUtils
 		return ("1".equalsIgnoreCase(tValue.getValue()));
 	}
 	
-	public static String getType(UMLAttribute att){
-		
-		UMLTaggedValue tValue = att.getTaggedValue("type");
-		
-		if (tValue == null) {
-			return "";
-		}
-		
-		log.debug("UMLAttribute Type Tagged Value: " + tValue.getValue());
-		return tValue.getValue();
-	}	
-	
 	public static String getType(UMLAssociationEnd assocEnd){
 		
 		UMLTaggedValue tValue = assocEnd.getTaggedValue("type");

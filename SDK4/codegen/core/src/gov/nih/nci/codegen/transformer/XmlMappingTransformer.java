@@ -235,7 +235,7 @@ public class XmlMappingTransformer implements Transformer {
 			field.setAttribute("name", att.getName());
 			log.debug("Field name: " + att.getName());
 
-			String type = TransformerUtils.getType(att);
+			String type = TransformerUtils.getDataType(att);
 			String qName = getQualifiedTypeName(type);
 			if (qName.equalsIgnoreCase("collection")) {
 				log.debug("Handling type 'collection' - qName: " + qName);            	 
@@ -253,7 +253,7 @@ public class XmlMappingTransformer implements Transformer {
 				primitiveCollectionAtts.add(att);
 				continue;
 			} else {
-				field.setAttribute("type", getQualifiedTypeName(TransformerUtils.getType(att)));
+				field.setAttribute("type", getQualifiedTypeName(TransformerUtils.getDataType(att)));
 				Element bind = new Element("bind-xml");
 				bind.setAttribute("name", att.getName());
 				bind.setAttribute("node", "attribute");
@@ -272,7 +272,7 @@ public class XmlMappingTransformer implements Transformer {
 			String name = att.getName();
 			field.setAttribute("name", name ); 
 			
-			String type = TransformerUtils.getType(att);
+			String type = TransformerUtils.getDataType(att);
 			String collectionType = type.substring(type.lastIndexOf("<")+1, type.lastIndexOf(">"));
 			collectionType = getQualifiedTypeName(collectionType);
 			log.debug("collectionType: " + collectionType);

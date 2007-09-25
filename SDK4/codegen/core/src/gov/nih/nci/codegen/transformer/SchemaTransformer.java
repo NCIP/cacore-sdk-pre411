@@ -251,7 +251,7 @@ public class SchemaTransformer implements Transformer {
 				if (!TransformerUtils.isStatic(att)){
 					Element attributeElement = new Element("attribute", w3cNS);
 					attributeElement.setAttribute("name", att.getName());
-					String type = getName(TransformerUtils.getType(att));
+					String type = getName(TransformerUtils.getDataType(att));
 					log.debug("Attribute type: " + type);
 					if (type.startsWith("xs:collection")) { // handle primitive collections; e.g., collection<string>
 						log.debug("Handling primitive collection type Name: " + type);    
@@ -293,7 +293,7 @@ public class SchemaTransformer implements Transformer {
 					Element attributeElement = new Element("attribute", w3cNS);
 					attributeElement.setAttribute("name", att.getName());
 
-					String type = getName(TransformerUtils.getType(att));
+					String type = getName(TransformerUtils.getDataType(att));
 					log.debug("Attribute type: " + type);
 					
 					if (type.startsWith("xs:collection")) { // handle primitive collections; e.g., collection<string>
@@ -379,7 +379,7 @@ public class SchemaTransformer implements Transformer {
 			String name = att.getName();
 			field.setAttribute("name", name ); 
 			
-			String type = TransformerUtils.getType(att);
+			String type = TransformerUtils.getDataType(att);
 			String collectionType = type.substring(type.lastIndexOf("<")+1, type.lastIndexOf(">"));
 			collectionType = getName(collectionType);
 			log.debug("collectionType: " + collectionType);
