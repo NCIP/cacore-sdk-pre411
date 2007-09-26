@@ -220,12 +220,17 @@ public class UMLModelMappingValidator implements Validator
 	
 	private void validateIdAttributeMapping(UMLClass klass, UMLClass table, GeneratorErrors errors) {
 		String thisClassName = TransformerUtils.getFQCN(klass);
-		
+		if(thisClassName.equals("gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey"))
+			log.debug("found\n");
+		boolean error = false;
 		try {
-			TransformerUtils.getClassIdAttr(klass);
+			UMLAttribute idAttr = TransformerUtils.getClassIdAttr(klass);
+			if(idAttr == null) error = true;
 		} catch (GenerationException e) {
-			errors.addError(new GeneratorError(getName() + ": ID Attribute mapping validation failed for "+thisClassName+" ", e));
+			error =  true;
 		}
+		if(error) 
+			errors.addError(new GeneratorError(getName() + ": ID Attribute mapping validation failed for "+thisClassName+" "));
 	}
 
 	private void validateAssociations(UMLModel model, UMLClass klass, UMLClass table, GeneratorErrors errors) 
