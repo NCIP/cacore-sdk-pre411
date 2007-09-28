@@ -16,6 +16,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggableElement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -138,9 +140,10 @@ public class SchemaTransformer implements Transformer {
 		return namespaces;
 	}
 
-	private HashSet getRelatedNamespacesImports(Collection<UMLClass> classColl, String fQPkgName, Namespace w3cNS) {
+	private List getRelatedNamespacesImports(Collection<UMLClass> classColl, String fQPkgName, Namespace w3cNS) {
 		HashSet<Element> elements = new HashSet<Element>();
 		Vector<String> tmpList = new Vector<String>();
+		
 		for (Iterator i = classColl.iterator(); i.hasNext();) {
 			UMLClass klass = (UMLClass)i.next();
 			String relatedPackageName = TransformerUtils.getFullPackageName(klass);
@@ -156,7 +159,8 @@ public class SchemaTransformer implements Transformer {
 				}
 			}
 		}
-		return elements;
+
+		return sortImportStatements(elements);
 	}
 
 	private Document generateRepository(Collection<UMLClass> classColl, String fQPkgName, Collection<UMLClass> pkgClassCollection) {
@@ -175,7 +179,7 @@ public class SchemaTransformer implements Transformer {
 
 		Attribute targetNSAttr = new Attribute("targetNamespace", caBIGNS_URI);
 		schemaElem.setAttribute(targetNSAttr);
-		HashSet relatedNamespacesImports = getRelatedNamespacesImports(classColl, fQPkgName, w3cNS);
+		List relatedNamespacesImports = getRelatedNamespacesImports(classColl, fQPkgName, w3cNS);
 		Attribute formDefault = new Attribute("elementFormDefault","qualified");
 		schemaElem.setAttribute(formDefault);
 
@@ -428,6 +432,25 @@ public class SchemaTransformer implements Transformer {
 			}
 		}
 		return finalType;
+	}
+	
+	/**
+	 * @param classColl The List of classes to be sorted.  The caCOREMarshaller 
+	 * has problem with forward references.
+	 * @return The Sorted list of classes with Generalizations listed first.
+	 */
+	private List sortImportStatements(HashSet<Element> elementColl) 
+	{
+		class caCOREComparator implements Comparator {
+			public int compare(Object obj1, Object obj2)
+			{
+				return (((Element)obj1).getAttribute("schemaLocation").getValue().compareTo(((Element)obj2).getAttribute("schemaLocation").getValue()));
+			}
+		};
+
+		ArrayList<Element> list = new ArrayList<Element>(elementColl);
+		Collections.sort(list, new caCOREComparator());
+		return list;
 	}
 
 	/**
