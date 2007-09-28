@@ -220,8 +220,7 @@ public class UMLModelMappingValidator implements Validator
 	
 	private void validateIdAttributeMapping(UMLClass klass, UMLClass table, GeneratorErrors errors) {
 		String thisClassName = TransformerUtils.getFQCN(klass);
-		if(thisClassName.equals("gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey"))
-			log.debug("found\n");
+
 		boolean error = false;
 		try {
 			UMLAttribute idAttr = TransformerUtils.getClassIdAttr(klass);
