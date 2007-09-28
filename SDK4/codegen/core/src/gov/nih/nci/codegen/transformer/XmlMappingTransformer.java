@@ -323,8 +323,11 @@ public class XmlMappingTransformer implements Transformer {
 			log.debug("thisEnd.getType().getName(): " + ((UMLClass)(thisEnd.getUMLElement())).getName());    		 
 			log.debug("otherEnd.getRoleName(): " + otherEnd.getRoleName()); 
 			log.debug("otherEnd.getType().getName(): " + otherEndTypeName);  
+			
+			log.debug("TransformerUtils.isMany2One(thisEnd, otherEnd) || TransformerUtils.isOne2One(thisEnd, otherEnd): " + (TransformerUtils.isMany2One(thisEnd, otherEnd) || TransformerUtils.isOne2One(thisEnd, otherEnd)));
+			log.debug("TransformerUtils.isMany2Many(thisEnd, otherEnd) || TransformerUtils.isOne2Many(thisEnd, otherEnd): " + (TransformerUtils.isMany2Many(thisEnd, otherEnd) || TransformerUtils.isOne2Many(thisEnd, otherEnd))); 
 
-			if (TransformerUtils.isMany2One(thisEnd, otherEnd)) {
+			if (TransformerUtils.isMany2One(thisEnd, otherEnd) || TransformerUtils.isOne2One(thisEnd, otherEnd)) {
 
 				log.debug("UML13Utils.isMany2One(thisEnd, otherEnd): " + true);
 				log.debug("lowerBound: " + TransformerUtils.getLowerBound(otherEnd));
@@ -347,10 +350,12 @@ public class XmlMappingTransformer implements Transformer {
 				mappingEl.addContent(field);
 
 			} else if (TransformerUtils.isMany2Many(thisEnd, otherEnd) || TransformerUtils.isOne2Many(thisEnd, otherEnd)){
+				
 				log.debug("UML13Utils.isMany2Many(thisEnd, otherEnd): " + TransformerUtils.isMany2Many(thisEnd, otherEnd));
 				log.debug("UML13Utils.isOne2Many(thisEnd, otherEnd): " + TransformerUtils.isOne2Many(thisEnd, otherEnd));
 				log.debug("lowerBound: " + TransformerUtils.getLowerBound(otherEnd));
 				log.debug("upperBound: " + TransformerUtils.getUpperBound(otherEnd));
+				
 				Element field = new Element("field");
 				field.setAttribute("name", otherEnd.getRoleName() ); //otherEnd.getName());
 				String associationPackage = TransformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
@@ -371,7 +376,6 @@ public class XmlMappingTransformer implements Transformer {
 				mappingEl.addContent(field);
 
 			}
-
 		}
 	}
 
