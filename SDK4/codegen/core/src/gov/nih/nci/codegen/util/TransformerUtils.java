@@ -530,8 +530,6 @@ public class TransformerUtils
 	 * @return
 	 */
 	public static boolean isMany2One(UMLAssociationEnd thisEnd, UMLAssociationEnd otherEnd) {
-		if((thisEnd.getRoleName().equals("buttonCollection")) || otherEnd.getRoleName().equals("buttonCollection"))
-				System.out.println("");
 		return isAssociationEndMany(thisEnd) && !isAssociationEndMany(otherEnd);
 	}	
 	/**
@@ -540,8 +538,6 @@ public class TransformerUtils
 	 * @return
 	 */
 	public static boolean isOne2Many(UMLAssociationEnd thisEnd,UMLAssociationEnd otherEnd) {
-		if((thisEnd.getRoleName().equals("buttonCollection")) || otherEnd.getRoleName().equals("buttonCollection"))
-			System.out.println("");
 		return !isAssociationEndMany(thisEnd) && isAssociationEndMany(otherEnd);
 	}
 	
@@ -554,6 +550,16 @@ public class TransformerUtils
 		return isAssociationEndMany(thisEnd) && isAssociationEndMany(otherEnd);
 	}	
 	
+	/**
+	 * @param thisEnd
+	 * @param otherEnd
+	 * @return
+	 */
+	public static boolean isOne2One(UMLAssociationEnd thisEnd,UMLAssociationEnd otherEnd) {
+		return !isAssociationEndMany(thisEnd) && !isAssociationEndMany(otherEnd);
+	}	
+		
+	
 	public static Collection getAssociationEnds(UMLClass klass) {
 		return getAssociationEnds(klass, false);
 	}
@@ -562,28 +568,26 @@ public class TransformerUtils
 			boolean includeInherited) {
 		log.debug("class = " + klass.getName() + ", includeInherited = "
 				+ includeInherited);
-		Map<String, UMLAssociationEnd> assocEndsMap = new HashMap<String, UMLAssociationEnd>();
+		List<UMLAssociationEnd> assocEndsList = new ArrayList<UMLAssociationEnd>();
 		UMLClass superClass = klass;
 		while (superClass != null) {
 			Collection assocs = superClass.getAssociations();
+			log.debug( superClass.getName() + " association collection size(): " + assocs.size());
+			
 			for (Iterator i = assocs.iterator(); i.hasNext();) {
 				UMLAssociation assoc = (UMLAssociation) i.next();
 				
-			
 				for (UMLAssociationEnd ae:assoc.getAssociationEnds()){
 					UMLAssociationEnd otherEnd = getOtherAssociationEnd(ae);
 					String id = ((UMLClass)(otherEnd.getUMLElement())).getName() + Constant.LEFT_BRACKET
 							+ getFQCN((UMLClass)(otherEnd.getUMLElement())) + Constant.RIGHT_BRACKET;
 					
-					log.debug("id: " + id);
-					log.debug("assocEndsMap.get(id) == null ? " + (assocEndsMap.get(id) == null));
-					log.debug("ae.getType(): " + (UMLClass)(ae.getUMLElement()));
-					log.debug("superClass: " + superClass);
+					log.debug("id (otherEnd): " + id);
+					log.debug("superClass: " + superClass.getName());
 					
-					if ((UMLClass)ae.getUMLElement() == superClass && assocEndsMap.get(id) == null) {
-						log.debug("adding assoc: " + id);
-						log.debug("adding assoc: " + id);
-						assocEndsMap.put(id, ae);
+					if ((UMLClass)ae.getUMLElement() == superClass) {
+						log.debug("adding association: " + id + " for class " + superClass.getName());
+						assocEndsList.add(ae);
 					}
 				}
 			}
@@ -604,7 +608,7 @@ public class TransformerUtils
 			}
 		}	
 		
-		return assocEndsMap.values();
+		return assocEndsList;
 	}
 	
 	public static void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<UMLPackage, Collection<UMLClass>> pkgColl, Collection<UMLClass> classColl)
@@ -806,6 +810,7 @@ public class TransformerUtils
 	
 	public static String findAssociatedColumn(UMLClass table,UMLClass klass, UMLAssociationEnd otherEnd, UMLClass assocKlass, UMLAssociationEnd thisEnd, Boolean throwException, Boolean isJoin) throws GenerationException
 	{
+
 		String col1 = getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass) +"."+ otherEnd.getRoleName(),false,0,1);
 		String col2 = getColumnName(table,TV_ASSOC_COLUMN,getFQCN(assocKlass) +"."+ thisEnd.getRoleName(),false,0,1);
 		String col3 = getColumnName(table,TV_INVERSE_ASSOC_COLUMN,getFQCN(assocKlass) +"."+ thisEnd.getRoleName(),false,0,1);
@@ -814,8 +819,13 @@ public class TransformerUtils
 		if("".equals(col2)) col2=null;
 		if("".equals(col3)) col3=null;
 		
-		if((col1==null && col3==null && isJoin && throwException) || (col1==null && col2==null && !isJoin && throwException))
+		if((col1==null && col3==null && isJoin && throwException) || (col1==null && col2==null && !isJoin && throwException)){
+			log.debug("table: " + table.getName());
+			log.debug("isJoin: " + isJoin);
+			log.debug("otherEnd.getRoleName(): " +otherEnd.getRoleName());
+			log.debug("thisEnd.getRoleName(): " +thisEnd.getRoleName());			
 			throw new GenerationException("Could not determine the column for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
+		}
 		/*if(col1!=null && col2!=null && !col1.equals(col2))
 			throw new GenerationException("More than one column found for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
 		if(col1!=null && col3!=null && !col1.equals(col3))
@@ -1110,7 +1120,7 @@ public class TransformerUtils
 	public static String getGetterMethodJavaDocs(UMLAttribute attr) {
 		StringBuilder doc = new StringBuilder();
 		doc.append("/**");
-		doc.append("\n	* Retreives the value of "+attr.getName()+" attribue");
+		doc.append("\n	* Retreives the value of "+attr.getName()+" attribute");
 		doc.append("\n	* @return ").append(attr.getName());
 		doc.append("\n	**/\n");
 		return doc.toString();
