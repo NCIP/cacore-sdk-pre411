@@ -22,7 +22,13 @@ extends GeneralizedFieldHandler
 	static public Object convertObject(Object oldObj) throws Exception
 	{
 		String proxyClassName = oldObj.getClass().getName();
-		String domainClassName = proxyClassName.substring(0, proxyClassName.indexOf('$'));
+		String domainClassName;
+		if (proxyClassName.indexOf('$') > 0) {
+			domainClassName = proxyClassName.substring(0, proxyClassName.indexOf('$'));
+		} else {
+			domainClassName = proxyClassName;
+		}
+
 		log.debug("domainClassName: " + domainClassName);
 
 		Object convertedObj =  convertObject(oldObj, Class.forName(domainClassName));
