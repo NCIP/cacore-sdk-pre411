@@ -166,7 +166,7 @@ public class TestClient
 	}
 
 	private void printObject(Object obj, Class klass) throws Exception {
-		System.out.println("Printing "+ obj.getClass().getName());
+		System.out.println("Printing "+ klass.getName());
 		Method[] methods = klass.getMethods();
 		for(Method method:methods)
 		{
