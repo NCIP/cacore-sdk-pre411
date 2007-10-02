@@ -1,5 +1,5 @@
-Oracle DEV Schema
-================
+Oracle DEV Schema - SDK 3.2 Schema and Data
+============================================
 Server: 	cbiodb2-d
 Database: 	CADEV
 Port: 		1521
