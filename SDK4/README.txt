@@ -3,14 +3,21 @@
 ===============================================================================
 
 -------------------------------------------------------------------------------
+	LICENSING
+-------------------------------------------------------------------------------
+
+	This software is licensed under the terms you may find in the file 
+  	named "LICENSE.txt" in the same directory as this README file.
+
+-------------------------------------------------------------------------------
 	OVERVIEW
 -------------------------------------------------------------------------------
 
-	NCICB provides biomedical informatics support and integration capabilities to 
-	the cancer research community. NCICB has created caCORE Software Development 
+	NCI CBIIT provides biomedical informatics support and integration capabilities to 
+	the cancer research community. NCI CBIIT has created caCORE Software Development 
 	Kit, or caCORE SDK, which is a data management framework designed for 
 	researchers who need to be able to navigate through a large number of data 
-	sources. caCORE SDK is NCICB's platform for data management and semantic 
+	sources. caCORE SDK is NCI CBIIT's platform for data management and semantic 
 	integration, built using formal techniques from the software engineering and 
 	computer science communities. By providing a common data management framework, 
 	caCORE SDK helps streamline the informatics development throughout academic, 
@@ -69,7 +76,7 @@
 	OBTAINING SUPPORT
 -------------------------------------------------------------------------------
 
-	The NCICB Application Support group can be contacted at:
+	The NCI CBIIT Application Support group can be contacted at:
 
 		http://ncicb.nci.nih.gov/NCICB/support
 		Telephone: 301-451-4384 	
@@ -80,7 +87,7 @@
 	A GForge Support tracker group, which is actively monitored by caCORE SDK 
 	developers, has been created to track any support requests. If you believe 
 	there is a bug/issue in the caCORE SDK software itself, or have a technical 
-	issue that cannot be resolved by contacting the NCICB Application Support group, 
+	issue that cannot be resolved by contacting the NCI CBIIT Application Support group, 
 	please submit a new support tracker using the following link: 
 
 	https://gforge.nci.nih.gov/tracker/?group_id=148&atid=731. 
@@ -90,14 +97,8 @@
 
 	A list summarizing the online SDK resources is provided below:
 
-		Mailing List:				CACORESDK_USERS-L@mail.nih.gov
+		Mailing List:			CACORESDK_USERS-L@mail.nih.gov
 		Mailing List Archive:		https://list.nih.gov/archives/ cacore_sdk_users-l.html
 		Project Home (GForge):		https://gforge.nci.nih.gov/projects/cacoresdk/
 		Support Tracker (GForge):	https://gforge.nci.nih.gov/tracker/?group_id=148&atid=731
 
--------------------------------------------------------------------------------
-	LICENSING
--------------------------------------------------------------------------------
-
-	This software is licensed under the terms you may find in the file 
-  	named "LICENSE.txt" in the same directory as this README file.
