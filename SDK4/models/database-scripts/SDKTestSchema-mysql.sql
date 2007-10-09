@@ -1051,7 +1051,7 @@ CREATE TABLE `csm_user` (
 
 INSERT INTO `csm_user` VALUES ('1','SuperAdmin','Super','Admin','','','','','XdRz2L8CN+ygmHldOE8ejA==','','','','20070323');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('2','User1','User1','User1','','','','','Password1','','','','20070326');
+INSERT INTO `csm_user` VALUES ('2','User1','User1','User1','','','','','KAr8eYrMgvs=','','','','20070326');
 COMMIT;
 INSERT INTO `csm_user` VALUES ('3','asdf','asdf','asdf','','','','','4JsrPs5x4Hc=','','','','20070302');
 COMMIT;
