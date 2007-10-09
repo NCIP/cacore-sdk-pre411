@@ -1049,25 +1049,25 @@ CREATE TABLE `csm_user` (
   UNIQUE KEY `UQ_LOGIN_NAME` (`LOGIN_NAME`)
 ) ;
 
-INSERT INTO `csm_user` VALUES ('1','SuperAdmin','Super','Admin','','','','','XdRz2L8CN+ygmHldOE8ejA==','','','','20070323');
+INSERT INTO `csm_user` VALUES ('1','SuperAdmin','Super','Admin','','','','','XdRz2L8CN+ygmHldOE8ejA==','',NULL,NULL,'20070323');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('2','User1','User1','User1','','','','','KAr8eYrMgvs=','','','','20070326');
+INSERT INTO `csm_user` VALUES ('2','User1','User1','User1','','','','','KAr8eYrMgvs=','',NULL,NULL,'20070326');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('3','asdf','asdf','asdf','','','','','4JsrPs5x4Hc=','','','','20070302');
+INSERT INTO `csm_user` VALUES ('3','asdf','asdf','asdf','','','','','4JsrPs5x4Hc=','',NULL,NULL,'20070302');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('4','qwer','qwer','qwer','','','','','vY9TSSEXu94=','','','','20070302');
+INSERT INTO `csm_user` VALUES ('4','qwer','qwer','qwer','','','','','vY9TSSEXu94=','',NULL,NULL,'20070302');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('5','modik','Kunal','Modi','','','','','','','','','20070322');
+INSERT INTO `csm_user` VALUES ('5','modik','Kunal','Modi','','','','','','',NULL,NULL,'20070322');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('6','User2','User2','User2','','','','','pW6D5p9+yRA=','','','','20070326');
+INSERT INTO `csm_user` VALUES ('6','User2','User2','User2','','','','','pW6D5p9+yRA=','',NULL,NULL,'20070326');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('7','User3','User3','User3','','','','','9nljHyRzdjY=','','','','20070326');
+INSERT INTO `csm_user` VALUES ('7','User3','User3','User3','','','','','9nljHyRzdjY=','',NULL,NULL,'20070326');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('8','hunterst','asdf','asdf','','','','','','','','','20070323');
+INSERT INTO `csm_user` VALUES ('8','hunterst','asdf','asdf','','','','','','',NULL,NULL,'20070323');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('9','patelsat','Satish','Patel','','','','','','','','','20070323');
+INSERT INTO `csm_user` VALUES ('9','patelsat','Satish','Patel','','','','','','',NULL,NULL,'20070323');
 COMMIT;
-INSERT INTO `csm_user` VALUES ('11','yusuf','Yusuf','Abdulla','','','','','UIpz2URaRaM=','','','','20070823');
+INSERT INTO `csm_user` VALUES ('11','yusuf','Yusuf','Abdulla','','','','','UIpz2URaRaM=','',NULL,NULL,'20070823');
 COMMIT;
 
 /* 
