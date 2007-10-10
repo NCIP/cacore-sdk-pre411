@@ -3347,7 +3347,7 @@ Insert into CSM_APPLICATION
     DATABASE_DRIVER)
  Values
    (2, 'sdk', 'sdk', 1, 1, 
-    TO_DATE('03/01/2007 00:00:00', 'MM/DD/YYYY HH24:MI:SS'), 'jdbc:oracle:thin:@cbiodb30.nci.nih.gov:1521:CBTEST', 'cacoresdk_qa', '6br9qywm7P0=', 'org.hibernate.dialect.Oracle9Dialect', 
+    TO_DATE('03/01/2007 00:00:00', 'MM/DD/YYYY HH24:MI:SS'), 'jdbc:oracle:thin:@localhost:1521:TEST', 'username', 'encryptedPassword', 'org.hibernate.dialect.Oracle9Dialect', 
     'oracle.jdbc.driver.OracleDriver');
 COMMIT;
 

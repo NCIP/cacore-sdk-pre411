@@ -616,7 +616,7 @@ CREATE TABLE `csm_application` (
 
 INSERT INTO `csm_application` VALUES ('1','csmupt','UPT Super Admin Application','0','0','20070228','','','','','');
 COMMIT;
-INSERT INTO `csm_application` VALUES ('2','sdk','sdk','1','1','20070301','jdbc:oracle:thin:@cbiodb30.nci.nih.gov:1521:CBTEST','cacoresdk_qa','6br9qywm7P0=','org.hibernate.dialect.Oracle9Dialect','oracle.jdbc.driver.OracleDriver');
+INSERT INTO `csm_application` VALUES ('2','sdk','sdk','1','1','20070301','jdbc:mysql://localhost/test','username','encryptedPassword','org.hibernate.dialect.MySQLDialect','org.gjt.mm.mysql.Driver');
 COMMIT;
 
 /* 
