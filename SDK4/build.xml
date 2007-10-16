@@ -529,7 +529,7 @@
 	</target>
 	
 	<target name="copy-sdk" if="anthill.artifacts.dir" description="Copy SDK target required for ANTHILL">
-		<copy todir="anthill.artifacts.dir">
+		<copy todir="${anthill.artifacts.dir}">
 			<fileset dir="${basedir}">
 				<include name="**/*"/>
 			</fileset>
