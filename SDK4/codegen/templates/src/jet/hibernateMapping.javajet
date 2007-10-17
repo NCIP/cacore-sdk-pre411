@@ -30,7 +30,7 @@ if(level == 0){%>
 							String keyColumnName = TransformerUtils.getCollectionKeyColumnName(collectionTable, currentKlass, attr);
 							String elementColumnName = TransformerUtils.getCollectionElementColumnName(collectionTable, currentKlass, attr);
 							String elementType = TransformerUtils.getCollectionElementHibernateType(currentKlass, attr);%>
-		<%=emptySpace%><set name="<%=attr.getName()%>" lazy="false" table="<%=collectionTable.getName()%>">
+		<%=emptySpace%><set name="<%=attr.getName()%>" table="<%=collectionTable.getName()%>">
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><element type="<%=elementType%>" column="<%=elementColumnName%>" />
