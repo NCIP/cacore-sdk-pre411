@@ -156,7 +156,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		hCriteria = ((org.hibernate.criterion.DetachedCriteria)request.getRequest()).getExecutableCriteria(session);
 		log.info("Detached Criteria Query :"+hCriteria.toString());
-		hCriteria.setMaxResults(10000);
+
 		if (hCriteria != null)
 		{
 		    if(isCount != null && isCount.booleanValue())
@@ -241,22 +241,33 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		
 		Response rsp = new Response();
 		
-		Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
-		if(obj.getParameters()!=null && obj.getParameters().size()>0)
-		{
-			int count=0;
-			for(Object param:obj.getParameters())
-				hqlQuery.setParameter(count++, param);
-		}
-		hqlQuery.setMaxResults(100000);
-		log.info("HQL Criteria Query :"+hqlQuery.getQueryString());
 		if(isCount != null && isCount.booleanValue())
 	    {
-			rowCount = new Integer(hqlQuery.list().size());
+			Query hqlQuery = session.createQuery(getCountQuery(((HQLCriteria)obj).getHqlString()));
+			if(obj.getParameters()!=null && obj.getParameters().size()>0)
+			{
+				int count=0;
+				for(Object param:obj.getParameters())
+					hqlQuery.setParameter(count++, param);
+			}
+			hqlQuery.setMaxResults(1);
+			log.debug("HQL Criteria Query : isCount = " + hqlQuery.getQueryString());
+			rowCount = Integer.parseInt(hqlQuery.uniqueResult()+"");
+			log.debug("HQL Criteria Query : count = " + rowCount);		
 			rsp.setRowCount(rowCount);
+			
 		}
 		else if((isCount != null && !isCount.booleanValue()) || isCount == null)
 	    {	
+			Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
+			if(obj.getParameters()!=null && obj.getParameters().size()>0)
+			{
+				int count=0;
+				for(Object param:obj.getParameters())
+					hqlQuery.setParameter(count++, param);
+			}
+			log.info("HQL Criteria Query :"+hqlQuery.getQueryString());
+			
 	    	if(firstRow != null)
 	    	{
 	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
@@ -284,23 +295,35 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		Response rsp = new Response();
 		
 		CQL2HQL converter = new CQL2HQL(request.getClassCache());
-		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive); 
-		String hql = hqlCriteria.getHqlString();
-		List params = hqlCriteria.getParameters();
-		log.info("CQL Query :"+hql);
-		Query hqlQuery = session.createQuery(hql);
-		
-		for(int i = 0; i<params.size();i++)
-			hqlQuery.setParameter(i,params.get(i) );
-
-		hqlQuery.setMaxResults(100000);
 		if(isCount != null && isCount.booleanValue())
 	    {
-			rowCount = new Integer(hqlQuery.list().size());
+			HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive); 
+			String hql = hqlCriteria.getHqlString();
+			List params = hqlCriteria.getParameters();
+			log.info("CQL Query :"+hql);
+			Query hqlQuery = session.createQuery(getCountQuery(hql));
+			
+			for(int i = 0; i<params.size();i++)
+				hqlQuery.setParameter(i,params.get(i) );
+
+			hqlQuery.setMaxResults(1);
+			log.debug("CQL Criteria Query : isCount = " + hqlQuery.getQueryString());
+			rowCount = Integer.parseInt(hqlQuery.uniqueResult()+"");
+			log.debug("CQL Criteria Query : count = " + rowCount);		
 			rsp.setRowCount(rowCount);
 		}
 		else if((isCount != null && !isCount.booleanValue()) || isCount == null)
 	    {	
+			HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive); 
+			String hql = hqlCriteria.getHqlString();
+			List params = hqlCriteria.getParameters();
+			log.info("CQL Query :"+hql);
+			Query hqlQuery = session.createQuery(hql);
+			
+			for(int i = 0; i<params.size();i++)
+				hqlQuery.setParameter(i,params.get(i) );
+
+			hqlQuery.setMaxResults(100000);
 	    	if(firstRow != null)
 	    	{
 	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
@@ -314,5 +337,23 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	    }	
 		
 		return rsp;		
-	}	
+	}
+	
+	//Synch with the NestedCriteria2HQL
+	private static String getCountQuery(String hql)
+	{
+		String upperHQL = hql.toUpperCase();
+		String modifiedHQL = "";
+		
+		int firstSelectIndex = upperHQL.indexOf("SELECT");
+		int firstFromIndex = upperHQL.indexOf("FROM");
+		
+		if((firstSelectIndex >= 0) && (firstSelectIndex<firstFromIndex))
+			modifiedHQL = hql.substring(0, firstSelectIndex+"SELECT".length())+" count(*) " + hql.substring( firstFromIndex);
+		else
+			modifiedHQL = hql.substring(0, firstFromIndex)+" select count(*) " + hql.substring(firstFromIndex);
+		
+		return modifiedHQL;
+	}
+
 }

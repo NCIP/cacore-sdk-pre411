@@ -110,14 +110,39 @@ public class NestedCriteria2HQL
 		} else {
 			log.debug("Scenario1: Processing multiple objects in source object list");
 			
-			hql.append("select " + destAlias + " from " + targetObjectName + " " + destAlias + " where ");
+			hql.append("select " + destAlias + " from " + targetObjectName + " " + destAlias);
+
+			int count  = 1;
 			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
 			{
+				String destAlias2 = getAlias(targetObjectName,++count);
 				Object obj = i.next();
-				hql.append(destAlias + " in (" + getObjectCriterion(obj, cfg)+" )");
+				hql.append(", "+targetObjectName + " " + destAlias2);
+			}
+
+			hql.append(" where ");
+			
+			count  = 1;
+			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
+			{
+				String destAlias2 = getAlias(targetObjectName,++count);
+				Object obj = i.next();
+				hql.append(destAlias2 + " in (" + getObjectCriterion(obj, cfg)+" )");
+				if (i.hasNext())
+					hql.append(" and ");
+			}
+			
+			hql.append(" and (");
+			count  = 1;
+			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
+			{
+				String destAlias2 = getAlias(targetObjectName,++count);
+				Object obj = i.next();
+				hql.append(" " +destAlias2 +"="+destAlias);
 				if (i.hasNext())
 					hql.append(" or ");
 			}
+			hql.append(") ");
 		}
 	}
 	
@@ -273,12 +298,29 @@ public class NestedCriteria2HQL
 		
 		log.debug("Scenario3: HQL select: " + hql.toString());
 	}
+
+	//Synch with the ORMDAOImpl implementation
+	private static String getCountQuery(String hql)
+	{
+		String upperHQL = hql.toUpperCase();
+		String modifiedHQL = "";
+		
+		int firstSelectIndex = upperHQL.indexOf("SELECT");
+		int firstFromIndex = upperHQL.indexOf("FROM");
+		
+		if((firstSelectIndex >= 0) && (firstSelectIndex<firstFromIndex))
+			modifiedHQL = hql.substring(0, firstSelectIndex+"SELECT".length())+" count(*) " + hql.substring( firstFromIndex);
+		else
+			modifiedHQL = hql.substring(0, firstFromIndex)+" select count(*) " + hql.substring(firstFromIndex);
+		
+		return modifiedHQL;
+	}
 	
 	private Query prepareQuery(StringBuffer hql)
 	{
 		//Check if the target contains any CLOB. If yes then do a subselect with distinct else do plain distinct
 		String destalias = getAlias(criteria.getTargetObjectName(), 1);
-		boolean containsCLOB = checkClobAttribute(criteria.getTargetObjectName());
+		boolean containsCLOB = true;//checkClobAttribute(criteria.getTargetObjectName());
 		String countQ="";
 		String normalQ="";
 		String originalQ = hql.toString();
@@ -440,7 +482,7 @@ public class NestedCriteria2HQL
 
 				if (field.get(obj) != null)
 				{
-					if (prop.getType().getName().equals("gov.nih.nci.common.util.StringClobType"))
+					if (prop.getType().getName().equals("gov.nih.nci.system.util.StringClobType"))
 						criterions.put(fieldName, field.get(obj) + "*");
 					else
 						criterions.put(fieldName, field.get(obj));
