@@ -228,6 +228,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		List<Object> results = (List<Object>) response.getResponse();
 
 		ListProxy resultList = new ListProxy();
+		resultList.setAppService(this);
 
 		// Set the value for ListProxy
 		if (results != null) {
@@ -235,10 +236,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 		
 		resultList.setOriginalStart(0);
-		resultList.setMaxRecordsPerQuery(response.getRowCount());
+		resultList.setMaxRecordsPerQuery(getMaxRecordsCount());
 		resultList.setOriginalCriteria(criteria);
 		resultList.setTargetClassName(targetClassName);
-		
+		resultList.calculateRealSize();
 		log.debug("response.getRowCount(): " + response.getRowCount());
 		
 		return resultList;

@@ -37,7 +37,7 @@ public class ListProxy extends ArrayList implements Set {
 
 	private static Logger log = Logger.getLogger(ListProxy.class.getName());
 	
-	private ApplicationService appService;
+	private transient ApplicationService appService;
 	
 	// ==================================================================================
 	// make a inner class, there is no telling what we need to do
@@ -606,5 +606,13 @@ public class ListProxy extends ArrayList implements Set {
 		listChunk_.clear();
 		listChunk_.addAll(chunk);
 	}
-
+	
+	public void calculateRealSize()
+	{
+		if(listChunk_.size()< maxRecordsPerQuery_)
+		{
+			realSize_ = listChunk_.size(); 
+			hasAllRecords_ = true;
+		}
+	}
 }
