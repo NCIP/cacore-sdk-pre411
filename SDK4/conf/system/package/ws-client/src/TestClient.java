@@ -1,4 +1,5 @@
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,6 +93,13 @@ public class TestClient
 									System.out.println("Testing getAssociation() call for Class: " + klass.getName() + ", Method: " + method.getName() + ", of type: " + method.getReturnType().getName());
 									
 									String rolename = String.valueOf(method.getName().charAt(3)).toLowerCase() + method.getName().substring(4);
+									Field field = getField(obj, rolename); 
+						    		
+						    		if (field == null){
+						    			rolename = Character.toUpperCase(rolename.charAt(0)) + rolename.substring(1);
+						    			field = getField(obj, rolename);
+						    		}
+						    		rolename = field.getName();
 									testGetAssociation(url, service, obj, method.getReturnType(), rolename);
 								}
 							}
@@ -215,4 +223,26 @@ public class TestClient
 		}
 		return list;
 	}	
+	
+	protected Field getField(Object bean, String fieldName) {
+		Field field = null;
+		if(bean == null) return null;
+		
+		Class klass = bean.getClass();
+		while(klass!=null && klass!= Object.class)
+		{
+			try {
+				field = klass.getDeclaredField(fieldName);
+			} catch (SecurityException e) {
+			} catch (NoSuchFieldException e) {
+			}
+			if(field!=null) 
+				break;;
+			klass = klass.getSuperclass();
+		}
+		if(field==null) 
+			System.out.println("Error: field not found for fieldName: " + fieldName);
+		return field;
+	}	
+	
 }
