@@ -32,20 +32,28 @@ public class ACEGISOAPHandler extends BasicHandler {
 	private static final long serialVersionUID = 1L;
 
 	private static AuthenticationProvider authProvider;
+
+	private synchronized void initialize()
+	{
+		if(authProvider == null)
+		{
+			try
+			{
+				HttpServlet srv = (HttpServlet) MessageContext.getCurrentContext().getProperty(HTTPConstants.MC_HTTP_SERVLET);
+				ServletContext context = srv.getServletContext();
+				WebApplicationContext ctx =  WebApplicationContextUtils.getWebApplicationContext(context);
+				authProvider = (AuthenticationProvider) ctx.getBean("authenticationProvider");
+			}
+			catch(Exception e)
+			{
+				authProvider = null;
+			}
+		}
+	}
 	
 	public void init()
 	{
-		HttpServlet srv = (HttpServlet) MessageContext.getCurrentContext().getProperty(HTTPConstants.MC_HTTP_SERVLET);
-		ServletContext context = srv.getServletContext();
-		WebApplicationContext ctx =  WebApplicationContextUtils.getWebApplicationContext(context);
-		try
-		{
-			authProvider = (AuthenticationProvider) ctx.getBean("authenticationProvider");
-		}
-		catch(Exception e)
-		{
-			authProvider = null;
-		}
+		initialize();
 	}
 	
 	public void invoke(MessageContext messageContext) throws AxisFault {
@@ -66,6 +74,9 @@ public class ACEGISOAPHandler extends BasicHandler {
 			headerElement = (SOAPHeaderElement) iterator.next();
 			if (headerElement.getNodeName().equals("security:SecurityHeader"))
 			{
+				if(authProvider == null)
+					initialize();
+				
 				if(authProvider == null)
 					throw new AxisFault("Authentication Provider not present in configuration file");
 				
