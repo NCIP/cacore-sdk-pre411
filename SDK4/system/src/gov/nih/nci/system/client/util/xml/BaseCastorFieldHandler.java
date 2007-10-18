@@ -47,55 +47,22 @@ extends GeneralizedFieldHandler
 		{
 			if(method.getName().startsWith("get") && !method.getName().equals("getClass"))
 			{
-				Method setterMethod = convertedObject.getClass().getMethod("set" + method.getName().substring(3), method.getReturnType());
-				log.debug("***  setterMethod Name: " + setterMethod.getName() + "; parameter type: " + method.getReturnType());
-
-				Object value = method.invoke(obj, (Object[])null);
-				String valueType = "";
-				if (value != null){
-					valueType = value.getClass().getName();
+				try {
+					Method setterMethod = convertedObject.getClass().getMethod("set" + method.getName().substring(3), method.getReturnType());
+					log.debug("***  setterMethod Name: " + setterMethod.getName() + "; parameter type: " + method.getReturnType());
+	
+					Object value = method.invoke(obj, (Object[])null);
+	
+					Object[] parameters = new Object[1];
+					parameters[0] = value;
+	
+					setterMethod.invoke(convertedObject, (Object[])parameters);
+				} catch (NoSuchMethodException e){
+					//ignore - E.g., Strings have getChars(), getBytes() methods with no corresponding Setters
 				}
-				log.debug("***  " +  method.getName().substring(3)+": " + value + "; value type: " + valueType);
-
-				Object[] parameters = new Object[1];
-				parameters[0] = value;
-
-				setterMethod.invoke(convertedObject, (Object[])parameters);
 			}
 		}
 
 		return convertedObject;
 	}   
-
-	static public Object deepCopy(Object oldObj) throws Exception
-	{
-
-		log.debug("deepCopy called");
-		ObjectOutputStream oos = null;
-		ObjectInputStream ois = null;
-		try
-		{
-			ByteArrayOutputStream bos = 
-				new ByteArrayOutputStream(); // A
-				oos = new ObjectOutputStream(bos); // B
-				// serialize and pass the object
-				oos.writeObject(oldObj);   // C
-				oos.flush();               // D
-				ByteArrayInputStream bin = 
-					new ByteArrayInputStream(bos.toByteArray()); // E
-				ois = new ObjectInputStream(bin);                  // F
-				// return the new object
-				return ois.readObject(); // G
-		}
-		catch(Exception e)
-		{
-			log.debug("Exception in ObjectCloner = " + e);
-			throw(e);
-		}
-		finally
-		{
-			oos.close();
-			ois.close();
-		}
-	}
 }
