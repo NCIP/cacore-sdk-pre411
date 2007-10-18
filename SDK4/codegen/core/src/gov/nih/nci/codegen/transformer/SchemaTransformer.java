@@ -346,7 +346,10 @@ public class SchemaTransformer implements Transformer {
 
 			log.debug("sequence name: " + sequence.getName());
 			log.debug("otherEnd getRoleName: " + otherEnd.getRoleName());
-			log.debug("otherEnd type: " + ((UMLClass)(otherEnd.getUMLElement())).getName());
+			String otherEndType = ((UMLClass)(otherEnd.getUMLElement())).getName();
+			log.error("otherEnd type: " + otherEndType);
+			String thisEndType = ((UMLClass)(thisEnd.getUMLElement())).getName();
+			log.error("thisEnd type: " + thisEndType);
 
 			Element associationElement = new Element("element", w3cNS);
 			sequence.addContent(associationElement);
@@ -360,19 +363,24 @@ public class SchemaTransformer implements Transformer {
 			// has a sequence of the associated type.  See GForge #1311.
 			associationElement.setAttribute("minOccurs","0");   
 			associationElement.setAttribute("maxOccurs","1");
-
+			
 			Element complexType = new Element("complexType",w3cNS);
 			Element innerSequence = new Element("sequence", w3cNS);
 			Element associatedObjElement = new Element("element", w3cNS);
-
-			associatedObjElement.setAttribute("ref", ((UMLClass)(otherEnd.getUMLElement())).getName());
+			
+			String associationPackage = TransformerUtils.getFullPackageName(((UMLClass)(otherEnd.getUMLElement())));
+			String thisPackage = TransformerUtils.getFullPackageName(((UMLClass)(thisEnd.getUMLElement())));
+			log.error("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
+			String type = (associationPackage.equals(thisPackage)) ? otherEndType : associationPackage + ":" + otherEndType;
+			
+			associatedObjElement.setAttribute("ref", type);
 			associatedObjElement.setAttribute("minOccurs","0");   
 			associatedObjElement.setAttribute("maxOccurs",maxOccurs);  
 
 			innerSequence.addContent(associatedObjElement);
 			complexType.addContent(innerSequence);
-			associationElement.addContent(complexType);           	
-
+			associationElement.addContent(complexType);
+			
 		}
 	}
 	
