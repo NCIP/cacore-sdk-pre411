@@ -60,7 +60,7 @@ extends BaseCastorFieldHandler
 			try {
 				tempCollection.add(CastorCollectionFieldHandler.convertObject((Object)collIterator.nextElement()));
 			} catch (Exception e) {
-				log.error("Exception caught trying to convert proxy object to domain object" + e.getMessage());
+				log.error("Exception caught trying to convert proxy object to domain object: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
