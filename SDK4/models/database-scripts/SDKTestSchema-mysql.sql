@@ -1326,7 +1326,6 @@ CREATE TABLE `flight_passanger` (
   `flight_id` int(8) NOT NULL default '0',
   `passanger_id` int(8) NOT NULL default '0',
   PRIMARY KEY  (`flight_id`,`passanger_id`),
-  UNIQUE KEY `uq_flight_passanger_flight_id` (`flight_id`),
   KEY `fk_flight_passanger_passanger` (`passanger_id`),
   CONSTRAINT `fk_flight_passanger_flight` FOREIGN KEY (`flight_id`) REFERENCES `flight` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_flight_passanger_passanger` FOREIGN KEY (`passanger_id`) REFERENCES `passanger` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -1612,28 +1611,6 @@ COMMIT;
 INSERT INTO `lcd_monitor` VALUES ('3','1212');
 COMMIT;
 
-/* 
-local_phone_call
-*/
-CREATE TABLE `local_phone_call` (
-  `phone_call_id` int(8) NOT NULL default '0',
-  PRIMARY KEY  (`phone_call_id`),
-  CONSTRAINT `fk_local_phone_call_phone_call` FOREIGN KEY (`phone_call_id`) REFERENCES `phone_call` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ;
-
-
-/* 
-long_distance_phone_call
-*/
-CREATE TABLE `long_distance_phone_call` (
-  `phone_call_id` int(8) NOT NULL default '0',
-  `discriminator` VARCHAR(50) DEFAULT NULL,
-  `area_code` VARCHAR(50) DEFAULT NULL,
-  `country_code` VARCHAR(50) DEFAULT NULL,
-  PRIMARY KEY  (`phone_call_id`),
-  CONSTRAINT `fk_long_distance_ph_phone_call` FOREIGN KEY (`phone_call_id`) REFERENCES `phone_call` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ;
-
 
 /* 
 long_key
@@ -1844,16 +1821,6 @@ INSERT INTO `person` VALUES ('4','Person_Name4','');
 COMMIT;
 INSERT INTO `person` VALUES ('5','Person_Name5','');
 COMMIT;
-
-/* 
-phone_call
-*/
-CREATE TABLE `phone_call` (
-  `id` int(8) NOT NULL default '0',
-  `phone_number` VARCHAR(50) DEFAULT NULL,
-  PRIMARY KEY  (`id`)
-) ;
-
 
 /* 
 product

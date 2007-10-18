@@ -77,10 +77,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Fri Sep 28 13:56:41 PDT 2007'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed Oct 17 18:56:12 PDT 2007'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2007-10-01 20:42:10 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2007-10-18 02:10:16 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -9468,22 +9468,6 @@
                         </UML:Parameter>
                       </UML:BehavioralFeature.parameter>
                     </UML:Operation>
-                    <UML:Operation xmi.id = '-64--88-0-1-8238f4:1154840d741:-8000:00000000000012A4'
-                      name = 'UQ_ALBUM_SONG_ALBUM_ID' visibility = 'public' isSpecification = 'false'
-                      ownerScope = 'instance' isQuery = 'false' concurrency = 'sequential' isRoot = 'false'
-                      isLeaf = 'false' isAbstract = 'false'>
-                      <UML:ModelElement.stereotype>
-                        <UML:Stereotype xmi.idref = 'EAID_8AC93FAC_02FE_4ca0_92A1_E88EAFC69F53_fix_2_fix_5_fix_ster_0'/>
-                      </UML:ModelElement.stereotype>
-                      <UML:BehavioralFeature.parameter>
-                        <UML:Parameter xmi.id = '-64--88-0-1-8238f4:1154840d741:-8000:00000000000012A5'
-                          name = 'ALBUM_ID' isSpecification = 'false' kind = 'in'>
-                          <UML:Parameter.type>
-                            <UML:DataType xmi.idref = 'eaxmiid0'/>
-                          </UML:Parameter.type>
-                        </UML:Parameter>
-                      </UML:BehavioralFeature.parameter>
-                    </UML:Operation>
                   </UML:Classifier.feature>
                 </UML:Class>
                 <UML:Class xmi.id = '-64--88-0-1-8238f4:1154840d741:-8000:00000000000012A6'
@@ -9792,19 +9776,6 @@
                         </UML:Parameter>
                         <UML:Parameter xmi.id = '-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012D5'
                           name = 'PASSANGER_ID' isSpecification = 'false'>
-                          <UML:Parameter.type>
-                            <UML:DataType xmi.idref = 'eaxmiid0'/>
-                          </UML:Parameter.type>
-                        </UML:Parameter>
-                      </UML:BehavioralFeature.parameter>
-                    </UML:Operation>
-                    <UML:Operation xmi.id = '-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012D6'
-                      name = 'UQ_FLIGHT_PASSANGER_FLIGHT_ID' visibility = 'public' isSpecification = 'false'
-                      ownerScope = 'instance' isQuery = 'false' concurrency = 'sequential' isRoot = 'false'
-                      isLeaf = 'false' isAbstract = 'false'>
-                      <UML:BehavioralFeature.parameter>
-                        <UML:Parameter xmi.id = '-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012D7'
-                          name = 'FLIGHT_ID' isSpecification = 'false' kind = 'in'>
                           <UML:Parameter.type>
                             <UML:DataType xmi.idref = 'eaxmiid0'/>
                           </UML:Parameter.type>
@@ -13874,10 +13845,10 @@
                                                       name = 'flight' visibility = 'public' isSpecification = 'false' isNavigable = 'true'
                                                       ordering = 'unordered' aggregation = 'none' targetScope = 'instance' changeability = 'changeable'>
                                                       <UML:AssociationEnd.multiplicity>
-                                                        <UML:Multiplicity xmi.id = '-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012AA'>
+                                                        <UML:Multiplicity xmi.id = '-87--2-18-31-19a32e0:115b0cea9be:-8000:00000000000013FA'>
                                                           <UML:Multiplicity.range>
-                                                            <UML:MultiplicityRange xmi.id = '-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012A9'
-                                                              lower = '0' upper = '0'/>
+                                                            <UML:MultiplicityRange xmi.id = '-87--2-18-31-19a32e0:115b0cea9be:-8000:00000000000013F9'
+                                                              lower = '1' upper = '1'/>
                                                           </UML:Multiplicity.range>
                                                         </UML:Multiplicity>
                                                       </UML:AssociationEnd.multiplicity>
@@ -34769,7 +34740,7 @@
       textsize="10"
     >ALBUM_SONG</text>
     <group name="Fig4.3"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[833, 467, 352, 36]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[833, 474, 352, 28]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -34780,9 +34751,9 @@
       
       <rectangle name="Fig4.3.0"
         x="833"
-        y="467"
+        y="474"
         width="352"
-        height="36"
+        height="28"
         fill="1"
         fillcolor="white"
         stroke="0"
@@ -34796,13 +34767,13 @@
         strokecolor="black"
       >
         <moveto x="833"
-                y="467" />
+                y="474" />
         <lineto x="1185"
-                y="467" />
+                y="474" />
       </path>
       <text name="Fig4.3.2"
         x="833"
-        y="468"
+        y="475"
         fill="0"
         fillcolor="white"
         stroke="0"
@@ -34810,19 +34781,9 @@
         font="Dialog"
         textsize="10"
       >&lt;&lt;PK&gt;&gt; PK_ALBUM_SONG(ALBUM_ID : NUMBER,SONG_ID : NUMBER)</text>
-      <text name="Fig4.3.3"
-        x="833"
-        y="482"
-        fill="0"
-        fillcolor="white"
-        stroke="0"
-        strokecolor="black"
-        font="Dialog"
-        textsize="10"
-      >&lt;&lt;unique&gt;&gt; UQ_ALBUM_SONG_ALBUM_ID(ALBUM_ID : NUMBER)</text>
     </group>
     <group name="Fig4.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[833, 430, 352, 36]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[833, 430, 352, 43]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -34835,7 +34796,7 @@
         x="833"
         y="430"
         width="352"
-        height="36"
+        height="43"
         fill="1"
         fillcolor="white"
         stroke="0"
@@ -36332,7 +36293,7 @@
       textsize="10"
     >FLIGHT_PASSANGER</text>
     <group name="Fig9.3"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[137, 1156, 422, 64]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[137, 1163, 422, 57]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -36343,9 +36304,9 @@
       
       <rectangle name="Fig9.3.0"
         x="137"
-        y="1156"
+        y="1163"
         width="422"
-        height="64"
+        height="57"
         fill="1"
         fillcolor="white"
         stroke="0"
@@ -36359,13 +36320,13 @@
         strokecolor="black"
       >
         <moveto x="137"
-                y="1156" />
+                y="1163" />
         <lineto x="559"
-                y="1156" />
+                y="1163" />
       </path>
       <text name="Fig9.3.2"
         x="137"
-        y="1157"
+        y="1164"
         fill="0"
         fillcolor="white"
         stroke="0"
@@ -36375,7 +36336,7 @@
       >&lt;&lt;FK&gt;&gt; FK_FLIGHT_PASSANGER_FLIGHT(FLIGHT_ID : NUMBER)</text>
       <text name="Fig9.3.3"
         x="137"
-        y="1171"
+        y="1178"
         fill="0"
         fillcolor="white"
         stroke="0"
@@ -36385,7 +36346,7 @@
       >&lt;&lt;FK&gt;&gt; FK_FLIGHT_PASSANGER_PASSANGER(PASSANGER_ID : NUMBER)</text>
       <text name="Fig9.3.4"
         x="137"
-        y="1185"
+        y="1192"
         fill="0"
         fillcolor="white"
         stroke="0"
@@ -36393,19 +36354,9 @@
         font="Dialog"
         textsize="10"
       >&lt;&lt;PK&gt;&gt; PK_FLIGHT_PASSANGER(FLIGHT_ID : NUMBER,PASSANGER_ID : NUMBER)</text>
-      <text name="Fig9.3.5"
-        x="137"
-        y="1199"
-        fill="0"
-        fillcolor="white"
-        stroke="0"
-        strokecolor="black"
-        font="Dialog"
-        textsize="10"
-      >UQ_FLIGHT_PASSANGER_FLIGHT_ID(FLIGHT_ID : NUMBER)</text>
     </group>
     <group name="Fig9.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[137, 1118, 422, 37]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[137, 1118, 422, 44]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -36418,7 +36369,7 @@
         x="137"
         y="1118"
         width="422"
-        height="37"
+        height="44"
         fill="1"
         fillcolor="white"
         stroke="0"

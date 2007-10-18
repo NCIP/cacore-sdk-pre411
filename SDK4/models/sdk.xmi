@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-10-01 13:38:33">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2007-10-17 18:46:02">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -2944,50 +2944,6 @@
 												</UML:Parameter>
 											</UML:BehavioralFeature.parameter>
 										</UML:Operation>
-										<UML:Operation name="UQ_FLIGHT_PASSANGER_FLIGHT_ID" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
-											<UML:ModelElement.stereotype>
-												<UML:Stereotype name="unique"/>
-											</UML:ModelElement.stereotype>
-											<UML:ModelElement.taggedValue>
-												<UML:TaggedValue tag="const" value="false"/>
-												<UML:TaggedValue tag="stereotype" value="unique"/>
-												<UML:TaggedValue tag="synchronised" value="0"/>
-												<UML:TaggedValue tag="position" value="0"/>
-												<UML:TaggedValue tag="returnarray" value="0"/>
-												<UML:TaggedValue tag="pure" value="0"/>
-												<UML:TaggedValue tag="ea_guid" value="{85DEF7C5-3E41-4d24-9EF1-3D9318F902C2}"/>
-												<UML:TaggedValue tag="ea_localid" value="548"/>
-											</UML:ModelElement.taggedValue>
-											<UML:BehavioralFeature.parameter>
-												<UML:Parameter kind="return" visibility="public">
-													<UML:Parameter.type>
-														<UML:Classifier xmi.idref="eaxmiid1"/>
-													</UML:Parameter.type>
-													<UML:ModelElement.taggedValue>
-														<UML:TaggedValue tag="pos" value="0"/>
-														<UML:TaggedValue tag="const" value="0"/>
-														<UML:TaggedValue tag="ea_guid" value="{RETURNID-3E41-4d24-9EF1-3D9318F902C2}"/>
-													</UML:ModelElement.taggedValue>
-													<UML:Parameter.defaultValue>
-														<UML:Expression/>
-													</UML:Parameter.defaultValue>
-												</UML:Parameter>
-												<UML:Parameter name="FLIGHT_ID" kind="in" visibility="public">
-													<UML:Parameter.type>
-														<UML:Classifier xmi.idref="eaxmiid0"/>
-													</UML:Parameter.type>
-													<UML:ModelElement.taggedValue>
-														<UML:TaggedValue tag="pos" value="0"/>
-														<UML:TaggedValue tag="type" value="NUMBER"/>
-														<UML:TaggedValue tag="const" value="0"/>
-														<UML:TaggedValue tag="ea_guid" value="{C84B14B2-A1E6-4d8f-8D3F-1D8F97C61180}"/>
-													</UML:ModelElement.taggedValue>
-													<UML:Parameter.defaultValue>
-														<UML:Expression/>
-													</UML:Parameter.defaultValue>
-												</UML:Parameter>
-											</UML:BehavioralFeature.parameter>
-										</UML:Operation>
 									</UML:Classifier.feature>
 								</UML:Class>
 								<UML:Association name="(PASSANGER_ID = ID)" xmi.id="EAID_BCB3CAE5_DFEF_4463_BB41_7D0795A87569" visibility="public" isRoot="false" isLeaf="false" isAbstract="false">
@@ -4588,50 +4544,6 @@
 														<UML:TaggedValue tag="type" value="NUMBER"/>
 														<UML:TaggedValue tag="const" value="0"/>
 														<UML:TaggedValue tag="ea_guid" value="{74BE03E6-A714-47c7-B781-CAEFB3989CD2}"/>
-													</UML:ModelElement.taggedValue>
-													<UML:Parameter.defaultValue>
-														<UML:Expression/>
-													</UML:Parameter.defaultValue>
-												</UML:Parameter>
-											</UML:BehavioralFeature.parameter>
-										</UML:Operation>
-										<UML:Operation name="UQ_ALBUM_SONG_ALBUM_ID" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
-											<UML:ModelElement.stereotype>
-												<UML:Stereotype name="unique"/>
-											</UML:ModelElement.stereotype>
-											<UML:ModelElement.taggedValue>
-												<UML:TaggedValue tag="const" value="false"/>
-												<UML:TaggedValue tag="stereotype" value="unique"/>
-												<UML:TaggedValue tag="synchronised" value="0"/>
-												<UML:TaggedValue tag="position" value="0"/>
-												<UML:TaggedValue tag="returnarray" value="0"/>
-												<UML:TaggedValue tag="pure" value="0"/>
-												<UML:TaggedValue tag="ea_guid" value="{FA286513-FA8B-4501-AF9D-C064119062B6}"/>
-												<UML:TaggedValue tag="ea_localid" value="563"/>
-											</UML:ModelElement.taggedValue>
-											<UML:BehavioralFeature.parameter>
-												<UML:Parameter kind="return" visibility="public">
-													<UML:Parameter.type>
-														<UML:Classifier xmi.idref="eaxmiid1"/>
-													</UML:Parameter.type>
-													<UML:ModelElement.taggedValue>
-														<UML:TaggedValue tag="pos" value="0"/>
-														<UML:TaggedValue tag="const" value="0"/>
-														<UML:TaggedValue tag="ea_guid" value="{RETURNID-FA8B-4501-AF9D-C064119062B6}"/>
-													</UML:ModelElement.taggedValue>
-													<UML:Parameter.defaultValue>
-														<UML:Expression/>
-													</UML:Parameter.defaultValue>
-												</UML:Parameter>
-												<UML:Parameter name="ALBUM_ID" kind="in" visibility="public">
-													<UML:Parameter.type>
-														<UML:Classifier xmi.idref="eaxmiid0"/>
-													</UML:Parameter.type>
-													<UML:ModelElement.taggedValue>
-														<UML:TaggedValue tag="pos" value="0"/>
-														<UML:TaggedValue tag="type" value="NUMBER"/>
-														<UML:TaggedValue tag="const" value="0"/>
-														<UML:TaggedValue tag="ea_guid" value="{FCFA7BBD-BA05-43d2-9AB6-4BB029974239}"/>
 													</UML:ModelElement.taggedValue>
 													<UML:Parameter.defaultValue>
 														<UML:Expression/>
@@ -24865,7 +24777,7 @@
 																										<UML:TaggedValue tag="complexity" value="1"/>
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1019"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=7449;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=fc8e;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={94C62FE2-CFC0-458e-A33E-29BC5F0414F5}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={C09EA099-C221-424b-996E-50CB230E9822}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
@@ -24945,7 +24857,7 @@
 																										<UML:TaggedValue tag="correlation-table" value="FLIGHT_PASSANGER" xmi.id="EAID_CD33C45B_3097_41d0_8CA9_3FB6D8EBBF40"/>
 																									</UML:ModelElement.taggedValue>
 																									<UML:Association.connection>
-																										<UML:AssociationEnd visibility="public" multiplicity="0" name="flight" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_F117109E_DB4A_4cc5_935F_902E68FA958B">
+																										<UML:AssociationEnd visibility="public" multiplicity="1" name="flight" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_F117109E_DB4A_4cc5_935F_902E68FA958B">
 																											<UML:ModelElement.taggedValue>
 																												<UML:TaggedValue tag="containment" value="Unspecified"/>
 																												<UML:TaggedValue tag="ea_end" value="source"/>
@@ -24975,7 +24887,7 @@
 																										<UML:TaggedValue tag="complexity" value="1"/>
 																										<UML:TaggedValue tag="status" value="Proposed"/>
 																										<UML:TaggedValue tag="ea_localid" value="1020"/>
-																										<UML:TaggedValue tag="eventflags" value="LNK=7449;"/>
+																										<UML:TaggedValue tag="eventflags" value="LNK=fc8e;"/>
 																										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 																										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={53B6BD39-9DB7-4837-ADE4-F5FF38C196ED}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={F117109E-DB4A-4cc5-935F-902E68FA958B}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																									</UML:ModelElement.taggedValue>
