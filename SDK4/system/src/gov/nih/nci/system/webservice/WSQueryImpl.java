@@ -25,7 +25,8 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 	private static ClassCache classCache;
 
 	private static int resultCountPerQuery = 1000;
-
+	private String version = "4.0";
+	
 	public void destroy() {
 		applicationService = null;
 		classCache = null;
@@ -49,6 +50,17 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 			throw new ServiceException("Exception initializing resultCountPerQuery: ", ex);
 		}
 	}
+
+	public String getVersion(){
+        return version;
+    }
+
+    public int getRecordsPerQuery(){
+        return resultCountPerQuery;
+    }
+    public int getMaximumRecordsPerQuery(){
+        return resultCountPerQuery;
+    }
 	
 	public int getTotalNumberOfRecords(String targetClassName, Object criteria) throws Exception{
 		return getNestedCriteriaResultSet(targetClassName, criteria, 0).size();

@@ -12,4 +12,11 @@ public interface WSQuery {
 	
 	public List getAssociation(Object source, String associationName, int startIndex) throws Exception;
 
+    public String getVersion();
+    
+    public int getRecordsPerQuery();
+    
+    public int getMaximumRecordsPerQuery();
+    
+	
 }
