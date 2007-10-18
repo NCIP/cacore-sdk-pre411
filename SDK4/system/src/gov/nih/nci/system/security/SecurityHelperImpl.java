@@ -87,8 +87,11 @@ public class SecurityHelperImpl implements SecurityHelper
 			else if(arguments[0] instanceof HQLCriteria)
 			{
 				String hql = ((HQLCriteria)arguments[0]).getHqlString();
-				int index = hql.indexOf(" from ");
-				hql = hql.substring(index+" from ".length()).trim()+" ";
+				
+				String upperHQL = hql.toUpperCase();
+				int index = upperHQL.indexOf(" FROM ");
+				
+				hql = hql.substring(index+" FROM ".length()).trim()+" ";
 				domainObjectName = hql.substring(0,hql.indexOf(' ')).trim();
 			}
 			else if(arguments[0] instanceof NestedCriteriaPath)
