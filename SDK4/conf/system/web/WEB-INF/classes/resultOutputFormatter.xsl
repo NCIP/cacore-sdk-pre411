@@ -155,7 +155,7 @@
 					<tr>
 						<td>
 							<font color="#003333" size="4">
-		Criteria : 	<xsl:value-of select="/xlink:httpQuery/queryRequest/criteria"/>
+		Criteria: <xsl:value-of select="/xlink:httpQuery/queryRequest/criteria"/>
 								<br/>
 							</font>
 						</td>
@@ -208,6 +208,11 @@
 				
 					<xsl:if test="@recordNumber = $start"> <!--  Print Header -->
 						<tr>
+							<th class="dataTableHeader" scope="col" align="left" colspan="20">
+								<xsl:value-of select="@name"/>
+							</th>							
+						</tr>	
+						<tr>
 							<xsl:for-each select="field">
 								<th class="dataTableHeader" scope="col" align="center">
 									<xsl:value-of select="@name"/>
@@ -238,8 +243,7 @@
 				</xsl:if>
 				
 				<xsl:choose>
-					<xsl:when test="$counter > @recordNumber">
-				</xsl:when>
+					<xsl:when test="$counter > @recordNumber"></xsl:when>
 					<xsl:otherwise>
 						<xsl:call-template name="cacore">
 							<xsl:with-param name="counter" select="$counter + 1"/>
