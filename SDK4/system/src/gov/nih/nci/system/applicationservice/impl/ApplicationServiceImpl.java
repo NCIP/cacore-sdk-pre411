@@ -75,8 +75,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 	 */
 	public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException {
 		String hql = hqlCriteria.getHqlString();
-		int index = hql.indexOf(" from ");
-		hql = hql.substring(index+" from ".length()).trim()+" ";
+		
+		String upperHQL = hql.toUpperCase();
+		int index = upperHQL.indexOf(" FROM ");
+		
+		hql = hql.substring(index + " FROM ".length()).trim()+" ";
 		String targetClassName = hql.substring(0,hql.indexOf(' ')).trim();
 		return privateQuery(hqlCriteria, targetClassName);
 	}
