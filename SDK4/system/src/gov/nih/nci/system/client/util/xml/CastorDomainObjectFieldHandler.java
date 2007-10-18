@@ -37,53 +37,75 @@ public class CastorDomainObjectFieldHandler
      * @return the converted value.
      */
     public Object convertUponGet(Object value) {
-    	
+
     	log.debug("Value: " + value);
-        if (value == null) return null;
-        
-        try {
-        	value = convertObject(value);
-        } catch (Exception e){
-        	log.error("Exception caught: ", e);
-        }
-        
-        String setMethodName, getMethodName;
-        Class klass = value.getClass();
-        Method[] methods = klass.getMethods();
-        Method tempMethod;
-        
+    	if (value == null) return null;
+
+    	try {
+    		value = convertObject(value);
+    	} catch (Exception e){
+    		log.error("Exception caught: ", e);
+    	}
+
+    	String setMethodName, getMethodName;
+    	Class klass = value.getClass();
+    	Method[] methods = klass.getMethods();
+    	Method tempMethod;
+
     	log.debug("Number of methods: " + methods.length);
-   	
+
+    	// for collection associations
     	ArrayList<Object> tempList = new ArrayList<Object>();
-        Object[] args = {tempList};
-        Class[] parameterTypes = {Collection.class};
+    	Object[] args = {tempList};
+    	Class[] parameterTypes = {Collection.class};
     	log.debug("args array initialized: " + args[0].getClass().getName());
+    	
+    	// for non-collection associations
+		Object[] parameters = new Object[1];
+		parameters[0] = null;
 
-        for (int i=0; i < methods.length; i++){
-        	
-        	tempMethod = methods[i];
+    	for (int i=0; i < methods.length; i++){
 
-        	if ("java.util.Collection".equalsIgnoreCase(tempMethod.getReturnType().getName())){
-        		try {
-        			
-        			getMethodName = tempMethod.getName();
-                	log.debug("getMethodName: " + getMethodName);
-                	setMethodName = 's' + getMethodName.substring(1);
-                	log.debug("setMethodName: " + setMethodName);
-                	
-                	tempMethod = klass.getMethod(setMethodName, parameterTypes);
-        			tempMethod.invoke(value, args);
-            		log.debug("Successfully set Collection Attribute to empty ArrayList for method " + tempMethod.getName());
-        		} catch (Exception e) {
-        			//log.debug("Exception: " + e.getMessage(), e);
-        			log.error("Exception: " + e.getMessage());
-        			log.error("Collection Attribute to empty HashSet for method " + tempMethod.getName());
-        		}
-        	}
-        }
+    		tempMethod = methods[i];
 
-        return value;
+    		if ("java.util.Collection".equalsIgnoreCase(tempMethod.getReturnType().getName())){ // Blank out an Collection associations
+    			try {
+
+    				getMethodName = tempMethod.getName();
+    				log.debug("getMethodName: " + getMethodName);
+    				setMethodName = 's' + getMethodName.substring(1);
+    				log.debug("setMethodName: " + setMethodName);
+
+    				tempMethod = klass.getMethod(setMethodName, parameterTypes);
+    				tempMethod.invoke(value, args);
+    				log.debug("Successfully set Collection Attribute to empty ArrayList for method " + tempMethod.getName());
+    			} catch (Exception e) {
+    				log.error("Exception: " + e.getMessage());
+    				log.error("Unsuccessful in setting Collection Attribute to empty HashSet for method " + tempMethod.getName());
+    			}
+    		} else if (tempMethod.getName().startsWith("get")){ // Blank out an non-primitive associations
+
+    			if (!(tempMethod.getReturnType().getName().startsWith("java") 
+						|| tempMethod.getReturnType().isPrimitive()))
+    			{
+    				try {
+    					Method setterMethod = value.getClass().getMethod("set" + tempMethod.getName().substring(3), tempMethod.getReturnType());
+    					log.debug("***  setterMethod Name: " + setterMethod.getName() + "; parameter type: " + tempMethod.getReturnType());
+
+    					setterMethod.invoke(value, (Object[])parameters);
+    				} catch (NoSuchMethodException e){
+    					//ignore - E.g., Strings have getChars(), getBytes() methods with no corresponding "setter" methods
+    				} catch (Exception e) {
+    					log.error("Exception: " + e.getMessage());
+    					log.error("Unsuccessful in setting association to null for method " + tempMethod.getName());
+    				}        		
+    			}
+    		}
+    	}
+    	
+    	return value;
     }
+
 
 
     /**
