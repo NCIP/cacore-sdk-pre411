@@ -59,6 +59,8 @@ extends GeneralizedFieldHandler
 					setterMethod.invoke(convertedObject, (Object[])parameters);
 				} catch (NoSuchMethodException e){
 					//ignore - E.g., Strings have getChars(), getBytes() methods with no corresponding Setters
+				} catch (Exception e){
+					log.error("Exception caught trying to convert proxy object to domain object for method " + method.getName(), e);
 				}
 			}
 		}
