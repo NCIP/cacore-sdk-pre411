@@ -347,9 +347,9 @@ public class SchemaTransformer implements Transformer {
 			log.debug("sequence name: " + sequence.getName());
 			log.debug("otherEnd getRoleName: " + otherEnd.getRoleName());
 			String otherEndType = ((UMLClass)(otherEnd.getUMLElement())).getName();
-			log.error("otherEnd type: " + otherEndType);
+			log.debug("otherEnd type: " + otherEndType);
 			String thisEndType = ((UMLClass)(thisEnd.getUMLElement())).getName();
-			log.error("thisEnd type: " + thisEndType);
+			log.debug("thisEnd type: " + thisEndType);
 
 			Element associationElement = new Element("element", w3cNS);
 			sequence.addContent(associationElement);
@@ -370,7 +370,7 @@ public class SchemaTransformer implements Transformer {
 			
 			String associationPackage = TransformerUtils.getFullPackageName(((UMLClass)(otherEnd.getUMLElement())));
 			String thisPackage = TransformerUtils.getFullPackageName(((UMLClass)(thisEnd.getUMLElement())));
-			log.error("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
+			log.debug("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
 			String type = (associationPackage.equals(thisPackage)) ? otherEndType : associationPackage + ":" + otherEndType;
 			
 			associatedObjElement.setAttribute("ref", type);
