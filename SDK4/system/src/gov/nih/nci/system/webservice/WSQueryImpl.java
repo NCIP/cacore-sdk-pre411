@@ -114,7 +114,14 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 		String targetClassName = source.getClass().getName();
 		log.debug("targetClassName: " + targetClassName);
 		
-		String hql = "select obj."+associationName+" from "+targetClassName+" obj where obj = ?";
+		String assocType = classCache.getAssociationType(source.getClass(),associationName);
+
+		String hql = "";
+		if(classCache.isCollection(source.getClass().getName(), associationName))
+			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest in elements(src."+associationName+") and src=?";
+		else
+			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where src."+associationName+"=dest and src=?";
+
 		log.debug("hql: " + hql);
 		
 		List<Object> params = new ArrayList<Object>();

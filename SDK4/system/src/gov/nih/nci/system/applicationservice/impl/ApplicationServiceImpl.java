@@ -184,9 +184,19 @@ public class ApplicationServiceImpl implements ApplicationService {
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#getAssociation(java.lang.Object, java.lang.String)
 	 */
 	public List<Object> getAssociation(Object source, String associationName) throws ApplicationException {
-		
-		String hql = "select obj."+associationName+" from "+source.getClass().getName()+" obj where obj = ?";
-		
+		String assocType = "";
+		try{
+			assocType = classCache.getAssociationType(source.getClass(),associationName);
+		}catch(Exception e)
+		{
+			throw new ApplicationException(e);
+		}
+		String hql = "";
+		if(classCache.isCollection(source.getClass().getName(), associationName))
+			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest in elements(src."+associationName+") and src=?";
+		else
+			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where src."+associationName+"=dest and src=?";
+
 		List<Object> params = new ArrayList<Object>();
 		params.add(source);
 		HQLCriteria criteria = new HQLCriteria(hql,params);

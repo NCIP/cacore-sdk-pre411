@@ -382,6 +382,14 @@ public class ClassCache {
 		return classAssociationsCache.get(qualClassName);
 	}
 
+	public String getAssociationType(Class klass, String associationName) throws Exception 
+	{
+		String type = getReturnType(klass.getName(), associationName);
+		if(type.startsWith("class "))
+			type = type.substring(6).trim();
+		return type;
+	}
+	
 
 	private List<String> cacheAssociations(String className) {
 		String qualClassName = null;

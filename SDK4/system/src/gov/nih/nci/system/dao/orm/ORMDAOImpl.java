@@ -339,21 +339,9 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		return rsp;		
 	}
 	
-	//Synch with the NestedCriteria2HQL
-	private static String getCountQuery(String hql)
+	private String getCountQuery(String hql)
 	{
-		String upperHQL = hql.toUpperCase();
-		String modifiedHQL = "";
-		
-		int firstSelectIndex = upperHQL.indexOf("SELECT");
-		int firstFromIndex = upperHQL.indexOf("FROM");
-		
-		if((firstSelectIndex >= 0) && (firstSelectIndex<firstFromIndex))
-			modifiedHQL = hql.substring(0, firstSelectIndex+"SELECT".length())+" count(*) " + hql.substring( firstFromIndex);
-		else
-			modifiedHQL = hql.substring(0, firstFromIndex)+" select count(*) " + hql.substring(firstFromIndex);
-		
-		return modifiedHQL;
+		return NestedCriteria2HQL.getCountQuery(hql);
 	}
 
 }
