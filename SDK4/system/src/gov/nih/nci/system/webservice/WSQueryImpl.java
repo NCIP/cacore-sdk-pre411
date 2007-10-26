@@ -118,7 +118,8 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 
 		String hql = "";
 		if(classCache.isCollection(source.getClass().getName(), associationName))
-			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest in elements(src."+associationName+") and src=?";
+			//hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest in elements(src."+associationName+") and src=?";
+			hql = "select dest from "+source.getClass().getName()+" as src inner join src."+associationName+" dest where src=?";
 		else
 			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where src."+associationName+"=dest and src=?";
 
