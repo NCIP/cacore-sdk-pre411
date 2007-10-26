@@ -121,7 +121,7 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 			//hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest in elements(src."+associationName+") and src=?";
 			hql = "select dest from "+source.getClass().getName()+" as src inner join src."+associationName+" dest where src=?";
 		else
-			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where src."+associationName+"=dest and src=?";
+			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest.id=src."+associationName+".id and src=?";
 
 		log.debug("hql: " + hql);
 		

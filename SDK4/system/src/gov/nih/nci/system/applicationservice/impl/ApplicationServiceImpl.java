@@ -196,7 +196,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 			//hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest in elements(src."+associationName+") and src=?";
 			hql = "select dest from "+source.getClass().getName()+" as src inner join src."+associationName+" dest where src=?";
 		else
-			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where src."+associationName+"=dest and src=?";
+			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where src."+associationName+".id=dest.id and src=?";
 
 		List<Object> params = new ArrayList<Object>();
 		params.add(source);
