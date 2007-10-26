@@ -52,6 +52,10 @@ public class TestClient
 							new org.apache.axis.encoding.ser.BeanSerializerFactory(klassToMap, searchClassQNameToMap),
 							new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
 				}
+				QName searchClassQNameToMap = new QName("urn:Character.lang.java", "Character");
+				call.registerTypeMapping(Character.class, searchClassQNameToMap,
+						new org.apache.axis.encoding.ser.BeanSerializerFactory(Character.class, searchClassQNameToMap),
+						new org.apache.axis.encoding.ser.BeanDeserializerFactory(Character.class, searchClassQNameToMap));
 				
 				QName searchClassQName = new QName("urn:"+getInversePackageName(klass), klass.getSimpleName());
 
@@ -235,6 +239,8 @@ public class TestClient
 				field = klass.getDeclaredField(fieldName);
 			} catch (SecurityException e) {
 			} catch (NoSuchFieldException e) {
+			} catch(Exception e)
+			{
 			}
 			if(field!=null) 
 				break;;

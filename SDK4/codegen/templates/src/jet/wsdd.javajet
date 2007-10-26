@@ -34,6 +34,7 @@
 %>	
 	<beanMapping xmlns:myNS="urn:<%=TransformerUtils.reversePackageName(pkgName)%>"  qname="myNS:<%=klass.getName()%>" languageSpecificType="java:<%= pkgName + '.' + klass.getName()%>" />
 <% } %>		
+	<beanMapping xmlns:myNS="urn:Character.lang.java"  qname="myNS:Character" languageSpecificType="java:java.lang.Character" />		
 </service>
 <transport name="http">
   <requestFlow>
