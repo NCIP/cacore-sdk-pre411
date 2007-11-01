@@ -76,7 +76,7 @@ public class FloatKeyTest extends SDKTestBase
 		object.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1.1"));
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.primarykey.FloatKey");
+		Collection results = getApplicationService().query(criteria);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());

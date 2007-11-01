@@ -17,7 +17,6 @@ import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
-import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
@@ -38,12 +37,24 @@ public class AllDataTypeTest extends SDKTestBase
 	 */
 	private void validateObject(AllDataType result)
 	{
+		assertNotNull(result.getBooleanPrimitiveValue());
 		assertNotNull(result.getBooleanValue());
+		assertNotNull(result.getCharacterPrimitiveValue());
+		assertNotNull(result.getCharacterValue());
+		assertNotNull(result.getClobValue());
+		assertNotNull(result.getDatePrimitiveValue());
 		assertNotNull(result.getDateValue());
+		assertNotNull(result.getDoublePrimitiveValue());
 		assertNotNull(result.getDoubleValue());
+		assertNotNull(result.getFloatPrimitiveValue());
 		assertNotNull(result.getFloatValue());
 		assertNotNull(result.getId());
 		assertNotNull(result.getIntValue());
+		assertNotNull(result.getIntPrimitiveValue());
+		assertNotNull(result.getLongPrimitiveValue());
+		assertNotNull(result.getLongValue());
+		assertNotNull(result.getStringCollection());
+		assertNotNull(result.getStringPrimitiveValue());
 		assertNotNull(result.getStringValue());
 	}
 
@@ -83,7 +94,7 @@ public class AllDataTypeTest extends SDKTestBase
 		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		Collection results = getApplicationService().query(criteria);
 
 		assertNotNull(results);
 		assertEquals(5,results.size());
@@ -205,6 +216,23 @@ public class AllDataTypeTest extends SDKTestBase
 	
 	/**
 	 * Uses Class for search
+	 * Searches by the Boolean Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testBooleanPrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setBooleanPrimitiveValue(true);
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.size());
+	}
+	
+	/**
+	 * Uses Class for search
 	 * Searches by the Boolean data type
 	 * Verifies size of the result set
 	 * 
@@ -219,6 +247,76 @@ public class AllDataTypeTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(3,results.size());
 	}
+	
+	/**
+	 * Uses Class for search
+	 * Searches by the Character Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testCharacterPrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setCharacterPrimitiveValue('a');
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
+	
+	/**
+	 * Uses Class for search
+	 * Searches by the Character data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testCharacterDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setCharacterValue(new Character('a'));
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
+
+	/**
+	 * Uses Class for search
+	 * Searches by the Clob data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testClobDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setClobValue("0123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340112340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012");
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(5,results.size());
+	}	
+		
+	
+	
+	/**
+	 * Uses Class for search
+	 * Searches by the Date Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testDatePrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setDatePrimitiveValue(new Date("10/1/2007"));
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
 	
 	/**
 	 * Uses Class for search
@@ -239,6 +337,23 @@ public class AllDataTypeTest extends SDKTestBase
 
 	/**
 	 * Uses Class for search
+	 * Searches by the Double Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testDoublePrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setDoublePrimitiveValue(10001.00);
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
+	
+	/**
+	 * Uses Class for search
 	 * Searches by the Double data type
 	 * Verifies size of the result set
 	 * 
@@ -254,7 +369,23 @@ public class AllDataTypeTest extends SDKTestBase
 		assertEquals(1,results.size());
 	}
 	
+	/**
+	 * Uses Class for search
+	 * Searches by the Float Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testFloatPrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setFloatPrimitiveValue(new Float(10.01));
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
 
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
+	
 	/**
 	 * Uses Class for search
 	 * Searches by the Float data type
@@ -274,6 +405,22 @@ public class AllDataTypeTest extends SDKTestBase
 	
 	/**
 	 * Uses Class for search
+	 * Searches by the Integer Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testIntegerPrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setIntPrimitiveValue(new Integer(11));
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
+	/**
+	 * Uses Class for search
 	 * Searches by the Integer data type
 	 * Verifies size of the result set
 	 * 
@@ -283,6 +430,39 @@ public class AllDataTypeTest extends SDKTestBase
 	{
 		AllDataType searchObject = new AllDataType();
 		searchObject.setIntValue(new Integer(5));
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
+	
+	/**
+	 * Uses Class for search
+	 * Searches by the Long Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testLongPrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setLongPrimitiveValue(new Long(1000001));
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
+	/**
+	 * Uses Class for search
+	 * Searches by the Long data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testLongDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setLongValue(new Long(1000001));
 		Collection results = getApplicationService().search(AllDataType.class,searchObject );
 
 		assertNotNull(results);
@@ -306,7 +486,52 @@ public class AllDataTypeTest extends SDKTestBase
 		assertEquals(1,results.size());
 	}
 
+	/**
+	 * Uses Class for search
+	 * Searches by the String data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testStringPrimitiveDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		searchObject.setStringPrimitiveValue(new String("abc"));
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
 	
+	/**
+	 * Uses Class for search
+	 * Searches by the String data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testStringCollectionDataType() throws ApplicationException
+	{
+		AllDataType searchObject = new AllDataType();
+		
+//		Collection<String> col = new ArrayList<String>();
+//		col.add("String_Collection 1");
+//		col.add("String_Collection 2");
+//		col.add("String_Collection 3");
+//		
+//		searchObject.setStringCollection(col);
+		
+		searchObject.setId(1);
+		Collection results = getApplicationService().search(AllDataType.class,searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();){
+			Collection col = ((AllDataType)i.next()).getStringCollection();
+			assertEquals(3, col.size());
+		}
+	}	
 	/**
 	 * Verifies size of the result set from query row count method where criteria is HQL type
 	 * 
@@ -319,6 +544,8 @@ public class AllDataTypeTest extends SDKTestBase
 
 		assertEquals(2,count);
 	}
+	
+	
 
 	/**
 	 * Verifies size of the result set from query row count method where criteria is CQL type
@@ -372,6 +599,28 @@ public class AllDataTypeTest extends SDKTestBase
 		assertEquals(1,count);
 	}
 
+
+	/**
+	 * Uses CQL for search
+	 * Searches by the Boolean data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testBooleanPrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("booleanPrimitiveValue",CQLPredicate.EQUAL_TO,"true"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+		
+		assertNotNull(results);
+		assertEquals(3,results.size());
+	}
 	
 	/**
 	 * Uses CQL for search
@@ -389,11 +638,77 @@ public class AllDataTypeTest extends SDKTestBase
 		object.setAttribute(new CQLAttribute("booleanValue",CQLPredicate.EQUAL_TO,"true"));
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		Collection results = getApplicationService().query(criteria);
 		
 		assertNotNull(results);
 		assertEquals(3,results.size());
 	}
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the Character Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testCharacterDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("characterValue",CQLPredicate.EQUAL_TO,"a"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+		
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the Clob data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testClobDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("clobValue",CQLPredicate.EQUAL_TO,"0123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340112340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012340123456789012"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+		
+		assertNotNull(results);
+		assertEquals(5,results.size());
+	}	
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the Character data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testCharacterPrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("characterPrimitiveValue",CQLPredicate.EQUAL_TO,"a"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+		
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
 	
 	/**
 	 * Uses Date for search
@@ -411,11 +726,33 @@ public class AllDataTypeTest extends SDKTestBase
 		object.setAttribute(new CQLAttribute("dateValue",CQLPredicate.EQUAL_TO,"03/03/2003"));
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		Collection results = getApplicationService().query(criteria);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 	}
+	
+	/**
+	 * Uses Date for search
+	 * Searches by the Date data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testDatePrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("datePrimitiveValue",CQLPredicate.EQUAL_TO,"10/1/2007"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
 
 	/**
 	 * Uses CQL for search
@@ -433,12 +770,33 @@ public class AllDataTypeTest extends SDKTestBase
 		object.setAttribute(new CQLAttribute("doubleValue",CQLPredicate.EQUAL_TO,"555.55"));
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		Collection results = getApplicationService().query(criteria);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 	}
-	
+
+	/**
+	 * Uses CQL for search
+	 * Searches by the Double Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testDoublePrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("doublePrimitiveValue",CQLPredicate.EQUAL_TO,"10001.00"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
 
 	/**
 	 * Uses CQL for search
@@ -456,11 +814,33 @@ public class AllDataTypeTest extends SDKTestBase
 		object.setAttribute(new CQLAttribute("floatValue",CQLPredicate.EQUAL_TO,"555.55"));
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		Collection results = getApplicationService().query(criteria);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 	}
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the Float Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testFloatPrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("floatPrimitiveValue",CQLPredicate.EQUAL_TO,"10.01"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
 	
 	/**
 	 * Uses CQL for search
@@ -478,11 +858,77 @@ public class AllDataTypeTest extends SDKTestBase
 		object.setAttribute(new CQLAttribute("intValue",CQLPredicate.EQUAL_TO,"5"));
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		Collection results = getApplicationService().query(criteria);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 	}
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the Integer Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testIntegerPrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("intPrimitiveValue",CQLPredicate.EQUAL_TO,"11"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the Long data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testLongDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("longValue",CQLPredicate.EQUAL_TO,"1000001"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the Long Primitive data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testLongPrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("longPrimitiveValue",CQLPredicate.EQUAL_TO,"1000001"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
 	
 	/**
 	 * Uses CQL for search
@@ -500,9 +946,31 @@ public class AllDataTypeTest extends SDKTestBase
 		object.setAttribute(new CQLAttribute("stringValue",CQLPredicate.EQUAL_TO,"String_Value5"));
 		criteria.setTarget(object);
 		
-		Collection results = getApplicationService().query(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		Collection results = getApplicationService().query(criteria);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 	}
+	
+	/**
+	 * Uses CQL for search
+	 * Searches by the String data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testStringPrimitiveDataTypeCQL() throws ApplicationException
+	{
+		CQLQuery criteria = new CQLQuery();
+
+		CQLObject object = new CQLObject();
+		object.setName("gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
+		object.setAttribute(new CQLAttribute("stringPrimitiveValue",CQLPredicate.EQUAL_TO,"def"));
+		criteria.setTarget(object);
+		
+		Collection results = getApplicationService().query(criteria);
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+	}	
 }

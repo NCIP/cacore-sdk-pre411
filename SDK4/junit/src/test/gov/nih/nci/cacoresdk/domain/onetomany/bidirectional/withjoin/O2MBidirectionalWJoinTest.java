@@ -1,23 +1,24 @@
-package test.gov.nih.nci.cacoresdk.domain.manytomany.bidirectional;
+package test.gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-import gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee;
-import gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project;
+import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger;
+import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class M2MBidirectionalTest extends SDKTestBase
+public class O2MBidirectionalWJoinTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "Many to Many Bidirectional Test Case";
+		return "One to Many Bidirectional Test Case";
 	}
 	
 	/**
@@ -30,18 +31,18 @@ public class M2MBidirectionalTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		Employee searchObject = new Employee();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee",searchObject );
+		Flight searchObject = new Flight();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight",searchObject );
 
 		assertNotNull(results);
-		assertEquals(10,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Employee result = (Employee)i.next();
+			Flight result = (Flight)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getDestination());
 		}
 	}
 
@@ -55,15 +56,15 @@ public class M2MBidirectionalTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		Project searchObject = new Project();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project",searchObject );
+		Passanger searchObject = new Passanger();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger",searchObject );
 
 		assertNotNull(results);
-		assertEquals(10,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Project result = (Project)i.next();
+			Passanger result = (Passanger)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getName());
@@ -80,21 +81,21 @@ public class M2MBidirectionalTest extends SDKTestBase
 	 */
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
-		Employee searchObject = new Employee();
-		searchObject.setId(new Integer(7));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee",searchObject );
+		Flight searchObject = new Flight();
+		searchObject.setId(new Integer(3));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Employee result = (Employee)i.next();
+		Flight result = (Flight)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getName());
+		assertNotNull(result.getDestination());
 		
-		Collection projectCollection = result.getProjectCollection();
-		assertEquals(0,projectCollection.size());
+		Collection PassangerCollection = result.getPassangerCollection();
+		assertEquals(0,PassangerCollection.size());
 	}
 
 	/**
@@ -106,9 +107,9 @@ public class M2MBidirectionalTest extends SDKTestBase
 	 */
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
-		Employee searchObject = new Employee();
-		searchObject.setId(new Integer(7));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project",searchObject );
+		Flight searchObject = new Flight();
+		searchObject.setId(new Integer(3));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger",searchObject );
 
 		assertNotNull(results);
 		assertEquals(0,results.size());
@@ -124,34 +125,31 @@ public class M2MBidirectionalTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
+	public void testTwoAssociatedObjectNestedSearch1() throws ApplicationException
 	{
-		Employee searchObject = new Employee();
+		Flight searchObject = new Flight();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Employee result = (Employee)i.next();
+		Flight result = (Flight)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getName());
+		assertNotNull(result.getDestination());
 		
-		Collection projectCollection = result.getProjectCollection();
-		Iterator j = projectCollection.iterator();
+		Collection PassangerCollection = result.getPassangerCollection();
+		Iterator j = PassangerCollection.iterator();
 		
-		Project project = (Project)j.next();
-		assertNotNull(project);
+		Passanger Passanger = (Passanger)j.next();
+		assertNotNull(Passanger);
 		
-		assertNotNull(project);
-		assertNotNull(project.getId());
-		assertNotNull(project.getName());
-		assertEquals(new Integer(1),project.getId());
-		
-		Collection employeeCollection = project.getEmployeeCollection();
-		assertEquals(1,employeeCollection.size());
+		assertNotNull(Passanger);
+		assertNotNull(Passanger.getId());
+		assertNotNull(Passanger.getName());
+		assertEquals(new Integer(1),Passanger.getId());
 	}
 
 	/**
@@ -163,24 +161,24 @@ public class M2MBidirectionalTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
+	public void testTwoAssociatedObjectNestedSearch2() throws ApplicationException
 	{
-		Employee searchObject = new Employee();
+		Flight searchObject = new Flight();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(2,results.size());
 		
 		Iterator i = results.iterator();
 		
-		Project project = (Project)i.next();
-		assertNotNull(project);
+		Passanger Passanger = (Passanger)i.next();
+		assertNotNull(Passanger);
 		
-		assertNotNull(project);
-		assertNotNull(project.getId());
-		assertNotNull(project.getName());
-		assertEquals(new Integer(1),project.getId());
+		assertNotNull(Passanger);
+		assertNotNull(Passanger.getId());
+		assertNotNull(Passanger.getName());
+		assertEquals(new Integer(1),Passanger.getId());
 	}
 
 	/**
@@ -194,20 +192,20 @@ public class M2MBidirectionalTest extends SDKTestBase
 	 */
 	public void testOneAssociatedObjectNestedSearch3() throws ApplicationException
 	{
-		Project searchObject = new Project();
+		Passanger searchObject = new Passanger();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
 		
-		Employee employee = (Employee)i.next();
-		assertNotNull(employee);
-		assertNotNull(employee.getId());
-		assertNotNull(employee.getName());
-		assertEquals(new Integer(1),employee.getId());
+		Flight Flight = (Flight)i.next();
+		assertNotNull(Flight);
+		assertNotNull(Flight.getId());
+		assertNotNull(Flight.getDestination());
+		assertEquals(new Integer(1),Flight.getId());
 	}	
 	/**
 	 * Uses CQL Criteria for search
@@ -224,11 +222,11 @@ public class M2MBidirectionalTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee");
-		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"4"));
-		association.setTargetRoleName("employeeCollection");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight");
+		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
+		association.setTargetRoleName("flight");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -239,11 +237,11 @@ public class M2MBidirectionalTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Project project = (Project)i.next();
-			assertNotNull(project);
-			assertNotNull(project.getId());
-			assertNotNull(project.getName());
-			assertEquals(true,project.getId().intValue()>1);
+			Passanger Passanger = (Passanger)i.next();
+			assertNotNull(Passanger);
+			assertNotNull(Passanger.getId());
+			assertNotNull(Passanger.getName());
+			assertEquals(true,Passanger.getId().intValue()>0);
 		}
 	}	
 
@@ -262,11 +260,11 @@ public class M2MBidirectionalTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project");
-		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"4"));
-		association.setTargetRoleName("projectCollection");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger");
+		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
+		association.setTargetRoleName("passangerCollection");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -277,13 +275,13 @@ public class M2MBidirectionalTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		Employee employee = (Employee)i.next();
-		assertNotNull(employee);
+		Flight Flight = (Flight)i.next();
+		assertNotNull(Flight);
 		
-		assertNotNull(employee);
-		assertNotNull(employee.getId());
-		assertNotNull(employee.getName());
-		assertEquals(new Integer(4),employee.getId());
+		assertNotNull(Flight);
+		assertNotNull(Flight.getId());
+		assertNotNull(Flight.getDestination());
+		assertEquals(new Integer(1),Flight.getId());
 	}	
 	
 	/**
@@ -299,11 +297,11 @@ public class M2MBidirectionalTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Employee");
-		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"7"));
-		association.setTargetRoleName("employeeCollection");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight");
+		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"3"));
+		association.setTargetRoleName("flight");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.manytomany.bidirectional.Project");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 

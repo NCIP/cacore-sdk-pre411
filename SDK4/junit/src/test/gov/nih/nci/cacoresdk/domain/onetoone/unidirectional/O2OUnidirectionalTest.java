@@ -203,7 +203,7 @@ public class O2OUnidirectionalTest extends SDKTestBase
 			target.setAssociation(association);
 			cqlQuery.setTarget(target);
 	
-			Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person");
+			Collection results = getApplicationService().query(cqlQuery);
 			assertNotNull(results);
 			
 		}
@@ -239,7 +239,7 @@ public class O2OUnidirectionalTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());

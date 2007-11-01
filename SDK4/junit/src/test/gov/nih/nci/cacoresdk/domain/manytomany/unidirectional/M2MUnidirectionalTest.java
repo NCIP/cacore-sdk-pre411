@@ -202,7 +202,7 @@ public class M2MUnidirectionalTest extends SDKTestBase
 			target.setAssociation(association);
 			cqlQuery.setTarget(target);
 	
-			Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Book");
+			Collection results = getApplicationService().query(cqlQuery);
 			assertNotNull(results);
 			
 		}
@@ -238,7 +238,7 @@ public class M2MUnidirectionalTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.Author");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());

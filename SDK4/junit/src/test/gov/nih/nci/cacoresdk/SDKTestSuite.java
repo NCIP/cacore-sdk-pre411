@@ -15,8 +15,7 @@ import junit.framework.TestSuite;
 public class SDKTestSuite {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(
-				"Test for caCORE SDK");
+		TestSuite suite = new TestSuite("Test for caCORE SDK");
 		suite.addTest(OtherSuite.suite());
 		suite.addTest(InheritanceSuite.suite());
 		suite.addTest(Many2ManySuite.suite());

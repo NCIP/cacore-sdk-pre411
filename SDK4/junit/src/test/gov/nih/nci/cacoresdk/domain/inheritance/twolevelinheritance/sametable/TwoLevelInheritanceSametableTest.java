@@ -1,28 +1,32 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable;
+
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt;
+import gov.nih.nci.system.applicationservice.ApplicationException;
+import gov.nih.nci.system.query.cql.CQLAssociation;
+import gov.nih.nci.system.query.cql.CQLAttribute;
+import gov.nih.nci.system.query.cql.CQLGroup;
+import gov.nih.nci.system.query.cql.CQLLogicalOperator;
+import gov.nih.nci.system.query.cql.CQLObject;
+import gov.nih.nci.system.query.cql.CQLPredicate;
+import gov.nih.nci.system.query.cql.CQLQuery;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor;
-import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.query.cql.CQLAssociation;
-import gov.nih.nci.system.query.cql.CQLAttribute;
-import gov.nih.nci.system.query.cql.CQLObject;
-import gov.nih.nci.system.query.cql.CQLPredicate;
-import gov.nih.nci.system.query.cql.CQLQuery;
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class ParentWithAssociationTest extends SDKTestBase
+public class TwoLevelInheritanceSametableTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "Parent With Association Test Case";
+		return "Two Level Inheritance Same Table Test Case";
 	}
 	
+
 	/**
 	 * Uses Nested Search Criteria for search
 	 * Verifies that the results are returned 
@@ -33,21 +37,21 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		Professor searchObject = new Professor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		Goverment searchObject = new Goverment();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment",searchObject );
 
 		assertNotNull(results);
-		assertEquals(15,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Professor result = (Professor)i.next();
+			Goverment result = (Goverment)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getCountry());
 		}
 	}
-
+	
 	/**
 	 * Uses Nested Search Criteria for search
 	 * Verifies that the results are returned 
@@ -58,19 +62,17 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		TenuredProfessor searchObject = new TenuredProfessor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor",searchObject );
+		CommunistGovt searchObject = new CommunistGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			TenuredProfessor result = (TenuredProfessor)i.next();
+			CommunistGovt result = (CommunistGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getTenuredYear());
 		}
 	}
 
@@ -84,22 +86,20 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch3() throws ApplicationException
 	{
-		AssociateProfessor searchObject = new AssociateProfessor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor",searchObject );
+		DemocraticGovt searchObject = new DemocraticGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			AssociateProfessor result = (AssociateProfessor)i.next();
+			DemocraticGovt result = (DemocraticGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getYearsServed());
 		}
 	}
-	
+
 	/**
 	 * Uses Nested Search Criteria for search
 	 * Verifies that the results are returned 
@@ -110,21 +110,21 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch4() throws ApplicationException
 	{
-		Assistant searchObject = new Assistant();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant",searchObject );
+		ParliamantaryGovt searchObject = new ParliamantaryGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(9,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Assistant result = (Assistant)i.next();
+			ParliamantaryGovt result = (ParliamantaryGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getPrimeMinister());
 		}
 	}
-	
+
 	/**
 	 * Uses Nested Search Criteria for search
 	 * Verifies that the results are returned 
@@ -135,22 +135,22 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch5() throws ApplicationException
 	{
-		AssistantProfessor searchObject = new AssistantProfessor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor",searchObject );
+		PresidentialGovt searchObject = new PresidentialGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			AssistantProfessor result = (AssistantProfessor)i.next();
+			PresidentialGovt result = (PresidentialGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getJoiningYear());
+			assertNotNull(result.getPresident());
 		}
-	}	
-		
+	}
+	
+
 	/**
 	 * Uses CQL Criteria for search
 	 * Verifies that the results are returned 
@@ -164,21 +164,20 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			TenuredProfessor result = (TenuredProfessor)i.next();
+			Goverment result = (Goverment)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getTenuredYear());
+			assertNotNull(result.getCountry());
 		}
 	}
 
@@ -195,23 +194,22 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(15,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Professor result = (Professor)i.next();
+			CommunistGovt result = (CommunistGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
 		}
-	}
-
+	}	
+	
 	/**
 	 * Uses CQL Criteria for search
 	 * Verifies that the results are returned 
@@ -225,24 +223,21 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			AssociateProfessor result = (AssociateProfessor)i.next();
+			ParliamantaryGovt result = (ParliamantaryGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getYearsServed());
 		}
 	}
-
 
 	/**
 	 * Uses CQL Criteria for search
@@ -257,23 +252,22 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(9,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Assistant result = (Assistant)i.next();
+			DemocraticGovt result = (DemocraticGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
 		}
 	}
-	
+
 	/**
 	 * Uses CQL Criteria for search
 	 * Verifies that the results are returned 
@@ -287,23 +281,23 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			AssistantProfessor result = (AssistantProfessor)i.next();
+			PresidentialGovt result = (PresidentialGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getJoiningYear());
+			assertNotNull(result.getPresident());
 		}
-	}	
+	}
+
 	
 	/**
 	 * Uses Nested Search Criteria for inheritance as association in search
@@ -313,12 +307,18 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
-		TenuredProfessor searchObject = new TenuredProfessor();
-		searchObject.setName("Bad Name");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		Goverment searchObject = new Goverment();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(0,results.size());
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			CommunistGovt result = (CommunistGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
 	}
 
 	
@@ -332,17 +332,12 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch1() throws ApplicationException
 	{
-		Professor searchObject = new Professor();
-		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor",searchObject );
+		ParliamantaryGovt searchObject = new ParliamantaryGovt();
+		searchObject.setId(1);
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		TenuredProfessor result = (TenuredProfessor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(1), result.getId());
+		assertEquals(0,results.size());
 	}
 
 	/**
@@ -359,10 +354,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
-		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Bad Name"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt");
+		association.setAttribute(new CQLAttribute("primeMinister", CQLPredicate.EQUAL_TO,"George Bush"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -383,17 +378,18 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch2() throws ApplicationException
 	{
-		TenuredProfessor searchObject = new TenuredProfessor();
-		searchObject.setId(new Integer(2));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		ParliamantaryGovt searchObject = new ParliamantaryGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(2),result.getId());
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			DemocraticGovt result = (DemocraticGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
 	}
 
 	/**
@@ -406,17 +402,18 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch3() throws ApplicationException
 	{
-		Professor searchObject = new Professor();
-		searchObject.setId(new Integer(7));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor",searchObject );
+		DemocraticGovt searchObject = new DemocraticGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		AssociateProfessor result = (AssociateProfessor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(7), result.getId());
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			PresidentialGovt result = (PresidentialGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
 	}
 
 	/**
@@ -429,17 +426,18 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch4() throws ApplicationException
 	{
-		AssociateProfessor searchObject = new AssociateProfessor();
-		searchObject.setId(new Integer(7));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		PresidentialGovt searchObject = new PresidentialGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(7), result.getId());
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			DemocraticGovt result = (DemocraticGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
 	}
 	
 	/**
@@ -456,10 +454,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
-		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"1"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt");
+		association.setAttribute(new CQLAttribute("primeMinister", CQLPredicate.EQUAL_TO,"Tony Blair"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -468,10 +466,12 @@ public class ParentWithAssociationTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(1), result.getId());
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			DemocraticGovt result = (DemocraticGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
 	}
 	
 
@@ -489,10 +489,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt");
 		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"2"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -501,10 +501,12 @@ public class ParentWithAssociationTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		TenuredProfessor result = (TenuredProfessor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(2), result.getId());
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			ParliamantaryGovt result = (ParliamantaryGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
 	}
 
 	/**
@@ -521,10 +523,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
-		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Assistant_Name1"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt");
+		association.setAttribute(new CQLAttribute("country", CQLPredicate.EQUAL_TO,"USA"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -533,10 +535,12 @@ public class ParentWithAssociationTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(1), result.getId());
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			DemocraticGovt result = (DemocraticGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
 	}
 	
 
@@ -554,10 +558,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
-		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Assistant_Name3"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt");
+		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"1"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -566,9 +570,56 @@ public class ParentWithAssociationTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		AssociateProfessor result = (AssociateProfessor)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(3), result.getId());
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			PresidentialGovt result = (PresidentialGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
+	}
+
+	/**
+	 * Uses CQL Criteria for inheritance as association in search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testAssociationCQL5() throws ApplicationException
+	{
+		CQLQuery cqlQuery = new CQLQuery();
+		CQLObject target = new CQLObject();
+
+		CQLAssociation association1 = new CQLAssociation();
+		association1.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.ParliamantaryGovt");
+		association1.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"2"));
+
+		CQLAssociation association2 = new CQLAssociation();
+		association2.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.PresidentialGovt");
+		association2.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"1"));
+		
+
+		CQLGroup group = new CQLGroup();
+		group.setLogicOperator(CQLLogicalOperator.OR);
+		group.addAssociation(association1);
+		group.addAssociation(association2);
+		
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt");
+		target.setGroup(group);
+		cqlQuery.setTarget(target);
+		
+		Collection results = getApplicationService().query(cqlQuery);
+
+		assertNotNull(results);
+		assertEquals(2,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Goverment result = (Goverment)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getCountry());
+		}
 	}
 }

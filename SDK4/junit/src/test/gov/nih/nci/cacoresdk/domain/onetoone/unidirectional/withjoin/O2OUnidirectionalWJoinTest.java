@@ -1,23 +1,24 @@
-package test.gov.nih.nci.cacoresdk.domain.onetomany.unidirectional;
+package test.gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key;
-import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
+import gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle;
+import gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
+import java.util.Collection;
+import java.util.Iterator;
+
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class O2MUnidirectionalTest extends SDKTestBase
+public class O2OUnidirectionalWJoinTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "One to Many Unidirectional Test Case";
+		return "One to One Unidirectional With Join Test Case";
 	}
 	
 	/**
@@ -30,18 +31,18 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		KeyChain searchObject = new KeyChain();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain",searchObject );
+		Bag searchObject = new Bag();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(11,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			KeyChain result = (KeyChain)i.next();
+			Bag result = (Bag)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getStyle());
 		}
 	}
 
@@ -55,18 +56,18 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		Key searchObject = new Key();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key",searchObject );
+		Handle searchObject = new Handle();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle",searchObject );
 
 		assertNotNull(results);
-		assertEquals(3,results.size());
+		assertEquals(12,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Key result = (Key)i.next();
+			Handle result = (Handle)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getType());
+			assertNotNull(result.getColor());
 		}
 	}
 
@@ -80,21 +81,21 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	 */
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
-		KeyChain searchObject = new KeyChain();
-		searchObject.setId(new Integer(4));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain",searchObject );
+		Bag searchObject = new Bag();
+		searchObject.setId(new Integer(11));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		KeyChain result = (KeyChain)i.next();
+		Bag result = (Bag)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getName());
+		assertNotNull(result.getStyle());
 		
-		Collection keyCollection = result.getKeyCollection();
-		assertEquals(0, keyCollection.size());
+		Handle handle = result.getHandle();
+		assertNull(handle);
 	}
 
 	/**
@@ -106,9 +107,9 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	 */
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
-		KeyChain searchObject = new KeyChain();
-		searchObject.setId(new Integer(4));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key",searchObject );
+		Bag searchObject = new Bag();
+		searchObject.setId(new Integer(11));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle",searchObject );
 
 		assertNotNull(results);
 		assertEquals(0,results.size());
@@ -125,28 +126,26 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	 */
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
-		KeyChain searchObject = new KeyChain();
+		Bag searchObject = new Bag();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		KeyChain result = (KeyChain)i.next();
+		Bag result = (Bag)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getName());
+		assertNotNull(result.getStyle());
 		
-		Collection keyCollection = result.getKeyCollection();
-		assertEquals(true, keyCollection.size()>0);
+		Handle handle = result.getHandle();
+		assertNotNull(handle);
 		
-		Iterator j = keyCollection.iterator();
-		Key key = (Key)j.next();
-		assertNotNull(key);
-		assertNotNull(key.getId());
-		assertNotNull(key.getType());
-		assertEquals(new Integer(1),key.getId());
+		assertNotNull(handle);
+		assertNotNull(handle.getId());
+		assertNotNull(handle.getColor());
+		assertEquals(new Integer(1),handle.getId());
 	}
 
 	/**
@@ -160,19 +159,22 @@ public class O2MUnidirectionalTest extends SDKTestBase
 	 */
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
-		KeyChain searchObject = new KeyChain();
+		Bag searchObject = new Bag();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Key key = (Key)i.next();
-		assertNotNull(key);
-		assertNotNull(key.getId());
-		assertNotNull(key.getType());
-		assertEquals(new Integer(1),key.getId());
+		
+		Handle handle = (Handle)i.next();
+		assertNotNull(handle);
+		
+		assertNotNull(handle);
+		assertNotNull(handle.getId());
+		assertNotNull(handle.getColor());
+		assertEquals(new Integer(1),handle.getId());
 	}
 	
 
@@ -194,10 +196,10 @@ public class O2MUnidirectionalTest extends SDKTestBase
 			CQLObject target = new CQLObject();
 			
 			CQLAssociation association = new CQLAssociation();
-			association.setName("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain");
+			association.setName("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag");
 			association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
 			
-			target.setName("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key");
+			target.setName("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle");
 			target.setAssociation(association);
 			cqlQuery.setTarget(target);
 	
@@ -229,11 +231,11 @@ public class O2MUnidirectionalTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag");
 		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
-		association.setSourceRoleName("keyCollection");
+		association.setSourceRoleName("handle");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Handle");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -243,10 +245,13 @@ public class O2MUnidirectionalTest extends SDKTestBase
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Key key = (Key)i.next();
-		assertNotNull(key);
-		assertNotNull(key.getId());
-		assertNotNull(key.getType());
-		assertEquals(new Integer(1),key.getId());
+		
+		Handle handle = (Handle)i.next();
+		assertNotNull(handle);
+		
+		assertNotNull(handle);
+		assertNotNull(handle.getId());
+		assertNotNull(handle.getColor());
+		assertEquals(new Integer(1),handle.getId());
 	}	
 }

@@ -1,20 +1,21 @@
-package test.gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation;
-
-import java.util.Collection;
-import java.util.Iterator;
+package test.gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin;
 
 import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child;
-import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent;
+import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride;
+import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw;
 import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.dao.QueryException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
+import java.util.Collection;
+import java.util.Iterator;
+
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class O2OMultipleAssociationTest extends SDKTestBase
+public class O2OMultipleAssociationWJoinTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
@@ -31,15 +32,15 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		Parent searchObject = new Parent();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent",searchObject );
+		InLaw searchObject = new InLaw();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw",searchObject );
 
 		assertNotNull(results);
-		assertEquals(10,results.size());
+		assertEquals(4,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Parent result = (Parent)i.next();
+			InLaw result = (InLaw)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getName());
@@ -56,15 +57,15 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		Child searchObject = new Child();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
+		Bride searchObject = new Bride();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(4,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Child result = (Child)i.next();
+			Bride result = (Bride)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getName());
@@ -80,44 +81,17 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
+	public void testOneAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
-		Child searchObject = new Child();
-		searchObject.setId(new Integer(4));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
+		Bride searchObject = new Bride();
+		searchObject.setId(new Integer(2));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Child result = (Child)i.next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertNotNull(result.getName());
-		
-		assertNull(result.getFather());
-		assertNotNull(result.getMother());
-	}
-
-	/**
-	 * Uses Nested Search Criteria for search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that the associated object is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
-	{
-		Child searchObject = new Child();
-		searchObject.setId(new Integer(3));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
-
-		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		Iterator i = results.iterator();
-		Child result = (Child)i.next();
+		Bride result = (Bride)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertNotNull(result.getName());
@@ -134,17 +108,44 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testZeroAssociatedObjectsNestedSearch3() throws ApplicationException
+	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
-		Child searchObject = new Child();
-		searchObject.setId(new Integer(5));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
+		Bride searchObject = new Bride();
+		searchObject.setId(new Integer(3));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Child result = (Child)i.next();
+		Bride result = (Bride)i.next();
+		assertNotNull(result);
+		assertNotNull(result.getId());
+		assertNotNull(result.getName());
+		
+		assertNull(result.getFather());
+		assertNotNull(result.getMother());
+	}
+
+	/**
+	 * Uses Nested Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that the associated object is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testZeroAssociatedObjectsNestedSearch3() throws ApplicationException
+	{
+		Bride searchObject = new Bride();
+		searchObject.setId(new Integer(4));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		Iterator i = results.iterator();
+		Bride result = (Bride)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertNotNull(result.getName());
@@ -168,19 +169,19 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 
 		try
 		{
-			Child searchObject = new Child();
-			searchObject.setId(new Integer(1));
-			Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent",searchObject );
+			Bride searchObject = new Bride();
+			searchObject.setId(new Integer(3));
+			Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw",searchObject );
 
 			assertNotNull(results);
 			assertEquals(1,results.size());
-
-		}
+		} 
 		catch(ApplicationException e)
 		{
 			flag = true;
 		}
-		assertTrue(flag);
+		assertTrue(flag);		
+
 	}
 	
 	/**
@@ -198,10 +199,10 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 			CQLObject target = new CQLObject();
 			
 			CQLAssociation association = new CQLAssociation();
-			association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child");
+			association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride");
 			association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
 			
-			target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent");
+			target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw");
 			target.setAssociation(association);
 			cqlQuery.setTarget(target);
 	
@@ -232,11 +233,11 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child");
-		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"3"));
+		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride");
+		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"4"));
 		association.setSourceRoleName("mother");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -261,11 +262,11 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride");
 		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
 		association.setSourceRoleName("father");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -276,7 +277,7 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		Parent parent = (Parent)i.next();
+		InLaw parent = (InLaw)i.next();
 		assertNotNull(parent);
 		
 		assertNotNull(parent);
@@ -300,11 +301,11 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride");
 		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
 		association.setSourceRoleName("mother");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -315,7 +316,7 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		Parent parent = (Parent)i.next();
+		InLaw parent = (InLaw)i.next();
 		assertNotNull(parent);
 		
 		assertNotNull(parent);

@@ -3,11 +3,10 @@ package test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation;
 import java.util.Collection;
 import java.util.Iterator;
 
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank;
 import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit;
 import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment;
 import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash;
-import gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType;
+import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
@@ -140,7 +139,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash");
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(2,results.size());
@@ -170,7 +169,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment");
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(5,results.size());
@@ -200,7 +199,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit");
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(2,results.size());
@@ -232,7 +231,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank");
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(4,results.size());
@@ -307,7 +306,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(0,results.size());
@@ -404,7 +403,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -437,7 +436,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -469,7 +468,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -502,7 +501,7 @@ public class ChildWithAssociationTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());

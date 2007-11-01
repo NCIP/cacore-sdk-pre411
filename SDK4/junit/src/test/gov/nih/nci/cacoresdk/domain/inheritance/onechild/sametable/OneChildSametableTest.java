@@ -1,7 +1,7 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritance.onechild;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable;
 
-import gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human;
-import gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal;
+import gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note;
+import gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
@@ -14,11 +14,11 @@ import java.util.Iterator;
 
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class OneChildTest extends SDKTestBase
+public class OneChildSametableTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "One Child Test Case";
+		return "One Child Same Table Test Case";
 	}
 	
 	/**
@@ -31,18 +31,18 @@ public class OneChildTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		Mammal searchObject = new Mammal();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal",searchObject );
+		Currency searchObject = new Currency();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Mammal result = (Mammal)i.next();
+			Currency result = (Currency)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getHairColor());
+			assertNotNull(result.getCountry());
 		}
 	}
 
@@ -56,18 +56,18 @@ public class OneChildTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		Human searchObject = new Human();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human",searchObject );
+		Note searchObject = new Note();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note",searchObject );
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Human result = (Human)i.next();
+			Note result = (Note)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getDiet());
+			assertNotNull(result.getValue());
 		}
 	}
 
@@ -84,20 +84,20 @@ public class OneChildTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Human result = (Human)i.next();
+			Note result = (Note)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getDiet());
+			assertNotNull(result.getValue());
 		}
 	}
 
@@ -114,20 +114,20 @@ public class OneChildTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Mammal result = (Mammal)i.next();
+			Currency result = (Currency)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getHairColor());
+			assertNotNull(result.getCountry());
 		}
 	}
 
@@ -141,19 +141,19 @@ public class OneChildTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch1() throws ApplicationException
 	{
-		Mammal searchObject = new Mammal();
-		searchObject.setHairColor("Hair_Color1");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human",searchObject );
+		Currency searchObject = new Currency();
+		searchObject.setCountry("USA");
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Human result = (Human)i.next();
+			Note result = (Note)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getDiet());
+			assertNotNull(result.getValue());
 		}
 	}
 
@@ -167,19 +167,19 @@ public class OneChildTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch2() throws ApplicationException
 	{
-		Human searchObject = new Human();
-		searchObject.setHairColor("Hair_Color1");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal",searchObject );
+		Note searchObject = new Note();
+		searchObject.setCountry("Germany");
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Mammal result = (Mammal)i.next();
+			Currency result = (Currency)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getHairColor());
+			assertNotNull(result.getCountry());
 		}
 	}
 
@@ -197,10 +197,10 @@ public class OneChildTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human");
-		association.setAttribute(new CQLAttribute("hairColor", CQLPredicate.EQUAL_TO,"Hair_Color1"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note");
+		association.setAttribute(new CQLAttribute("country", CQLPredicate.EQUAL_TO,"USA"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -211,10 +211,10 @@ public class OneChildTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Mammal result = (Mammal)i.next();
+			Currency result = (Currency)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getHairColor());
+			assertNotNull(result.getCountry());
 		}
 	}
 	
@@ -233,10 +233,10 @@ public class OneChildTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Mammal");
-		association.setAttribute(new CQLAttribute("hairColor", CQLPredicate.EQUAL_TO,"Hair_Color1"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Currency");
+		association.setAttribute(new CQLAttribute("country", CQLPredicate.EQUAL_TO,"Germany"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.Human");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.Note");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -247,10 +247,10 @@ public class OneChildTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Human result = (Human)i.next();
+			Note result = (Note)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getHairColor());
+			assertNotNull(result.getCountry());
 		}
 	}
 }

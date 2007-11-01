@@ -1,13 +1,12 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor;
+import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel;
+import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop;
+import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage;
+import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
@@ -16,11 +15,11 @@ import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class ParentWithAssociationTest extends SDKTestBase
+public class ParentWithAssociationSametableTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "Parent With Association Test Case";
+		return "Parent With Association Same Table Test Case";
 	}
 	
 	/**
@@ -33,18 +32,18 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		Professor searchObject = new Professor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		Luggage searchObject = new Luggage();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
-		assertEquals(15,results.size());
+		assertEquals(4,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Professor result = (Professor)i.next();
+			Luggage result = (Luggage)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getCapacity());
 		}
 	}
 
@@ -58,19 +57,19 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		TenuredProfessor searchObject = new TenuredProfessor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor",searchObject );
+		HardTop searchObject = new HardTop();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			TenuredProfessor result = (TenuredProfessor)i.next();
+			HardTop result = (HardTop)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getTenuredYear());
+			assertNotNull(result.getCapacity());
+			assertNotNull(result.getKeyCode());
 		}
 	}
 
@@ -84,19 +83,19 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch3() throws ApplicationException
 	{
-		AssociateProfessor searchObject = new AssociateProfessor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor",searchObject );
+		SoftTop searchObject = new SoftTop();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			AssociateProfessor result = (AssociateProfessor)i.next();
+			SoftTop result = (SoftTop)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getYearsServed());
+			assertNotNull(result.getCapacity());
+			assertNotNull(result.getExpandable());
 		}
 	}
 	
@@ -110,47 +109,21 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch4() throws ApplicationException
 	{
-		Assistant searchObject = new Assistant();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant",searchObject );
+		Wheel searchObject = new Wheel();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel",searchObject );
 
 		assertNotNull(results);
-		assertEquals(9,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Assistant result = (Assistant)i.next();
+			Wheel result = (Wheel)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getRadius());
 		}
 	}
 	
-	/**
-	 * Uses Nested Search Criteria for search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testEntireObjectNestedSearch5() throws ApplicationException
-	{
-		AssistantProfessor searchObject = new AssistantProfessor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor",searchObject );
-
-		assertNotNull(results);
-		assertEquals(5,results.size());
-		
-		for(Iterator i = results.iterator();i.hasNext();)
-		{
-			AssistantProfessor result = (AssistantProfessor)i.next();
-			assertNotNull(result);
-			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getJoiningYear());
-		}
-	}	
-		
 	/**
 	 * Uses CQL Criteria for search
 	 * Verifies that the results are returned 
@@ -164,21 +137,21 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			TenuredProfessor result = (TenuredProfessor)i.next();
+			HardTop result = (HardTop)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getTenuredYear());
+			assertNotNull(result.getCapacity());
+			assertNotNull(result.getKeyCode());
 		}
 	}
 
@@ -195,20 +168,20 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(15,results.size());
+		assertEquals(4,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Professor result = (Professor)i.next();
+			Luggage result = (Luggage)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getCapacity());
 		}
 	}
 
@@ -225,21 +198,21 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			AssociateProfessor result = (AssociateProfessor)i.next();
+			SoftTop result = (SoftTop)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getYearsServed());
+			assertNotNull(result.getCapacity());
+			assertNotNull(result.getExpandable());
 		}
 	}
 
@@ -257,53 +230,22 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(9,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Assistant result = (Assistant)i.next();
+			Wheel result = (Wheel)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getRadius());
 		}
 	}
-	
-	/**
-	 * Uses CQL Criteria for search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testEntireObjectCQL5() throws ApplicationException
-	{
-		CQLQuery cqlQuery = new CQLQuery();
-		CQLObject target = new CQLObject();
-		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor");
-		cqlQuery.setTarget(target);
-
-		Collection results = getApplicationService().query(cqlQuery);
-
-		assertNotNull(results);
-		assertEquals(5,results.size());
-		
-		for(Iterator i = results.iterator();i.hasNext();)
-		{
-			AssistantProfessor result = (AssistantProfessor)i.next();
-			assertNotNull(result);
-			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-			assertNotNull(result.getJoiningYear());
-		}
-	}	
 	
 	/**
 	 * Uses Nested Search Criteria for inheritance as association in search
@@ -313,9 +255,9 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
-		TenuredProfessor searchObject = new TenuredProfessor();
-		searchObject.setName("Bad Name");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		HardTop searchObject = new HardTop();
+		searchObject.setCapacity(99);//No such row exists
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
 		assertEquals(0,results.size());
@@ -332,14 +274,14 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch1() throws ApplicationException
 	{
-		Professor searchObject = new Professor();
+		Luggage searchObject = new Luggage();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		TenuredProfessor result = (TenuredProfessor)results.iterator().next();
+		HardTop result = (HardTop)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertEquals(new Integer(1), result.getId());
@@ -359,10 +301,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
-		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Bad Name"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop");
+		association.setAttribute(new CQLAttribute("capacity", CQLPredicate.EQUAL_TO,"99"));//no such row exists
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -383,14 +325,14 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch2() throws ApplicationException
 	{
-		TenuredProfessor searchObject = new TenuredProfessor();
+		HardTop searchObject = new HardTop();
 		searchObject.setId(new Integer(2));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
+		Luggage result = (Luggage)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertEquals(new Integer(2),result.getId());
@@ -406,17 +348,17 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch3() throws ApplicationException
 	{
-		Professor searchObject = new Professor();
-		searchObject.setId(new Integer(7));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor",searchObject );
+		Luggage searchObject = new Luggage();
+		searchObject.setId(new Integer(3));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		AssociateProfessor result = (AssociateProfessor)results.iterator().next();
+		SoftTop result = (SoftTop)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertEquals(new Integer(7), result.getId());
+		assertEquals(new Integer(3), result.getId());
 	}
 
 	/**
@@ -429,17 +371,17 @@ public class ParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch4() throws ApplicationException
 	{
-		AssociateProfessor searchObject = new AssociateProfessor();
-		searchObject.setId(new Integer(7));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor",searchObject );
+		SoftTop searchObject = new SoftTop();
+		searchObject.setId(new Integer(3));
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
+		Luggage result = (Luggage)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertEquals(new Integer(7), result.getId());
+		assertEquals(new Integer(3), result.getId());
 	}
 	
 	/**
@@ -456,10 +398,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop");
 		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"1"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -468,7 +410,7 @@ public class ParentWithAssociationTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
+		Luggage result = (Luggage)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertEquals(new Integer(1), result.getId());
@@ -489,10 +431,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage");
 		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"2"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -501,7 +443,7 @@ public class ParentWithAssociationTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		TenuredProfessor result = (TenuredProfessor)results.iterator().next();
+		HardTop result = (HardTop)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertEquals(new Integer(2), result.getId());
@@ -521,19 +463,19 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
-		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Assistant_Name1"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel");
+		association.setAttribute(new CQLAttribute("radius", CQLPredicate.EQUAL_TO,"1"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(2,results.size());
 		
-		Professor result = (Professor)results.iterator().next();
+		Luggage result = (Luggage)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertEquals(new Integer(1), result.getId());
@@ -554,10 +496,10 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
-		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Assistant_Name3"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel");
+		association.setAttribute(new CQLAttribute("radius", CQLPredicate.EQUAL_TO,"5"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -566,9 +508,9 @@ public class ParentWithAssociationTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		AssociateProfessor result = (AssociateProfessor)results.iterator().next();
+		SoftTop result = (SoftTop)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertEquals(new Integer(3), result.getId());
+		assertEquals(new Integer(4), result.getId());
 	}
 }

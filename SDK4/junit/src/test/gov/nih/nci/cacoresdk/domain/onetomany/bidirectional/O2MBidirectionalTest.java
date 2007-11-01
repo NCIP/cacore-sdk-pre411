@@ -230,7 +230,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(2,results.size());
@@ -268,7 +268,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -305,7 +305,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(0,results.size());

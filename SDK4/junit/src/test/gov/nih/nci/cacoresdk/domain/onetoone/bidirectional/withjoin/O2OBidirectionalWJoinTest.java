@@ -1,7 +1,7 @@
-package test.gov.nih.nci.cacoresdk.domain.onetoone.bidirectional;
+package test.gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin;
 
-import gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine;
-import gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product;
+import gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain;
+import gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
@@ -14,11 +14,11 @@ import java.util.Iterator;
 
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class O2OBidirectionalTest extends SDKTestBase
+public class O2OBidirectionalWJoinTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "One to One Bidirectional Test Case";
+		return "One to One Bidirectional With Join Test Case";
 	}
 	
 	/**
@@ -31,18 +31,18 @@ public class O2OBidirectionalTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		Product searchObject = new Product();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+		Pendant searchObject = new Pendant();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
 
 		assertNotNull(results);
 		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Product result = (Product)i.next();
+			Pendant result = (Pendant)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getShape());
 		}
 	}
 
@@ -56,18 +56,18 @@ public class O2OBidirectionalTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		OrderLine searchObject = new OrderLine();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+		Chain searchObject = new Chain();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			OrderLine result = (OrderLine)i.next();
+			Chain result = (Chain)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getName());
+			assertNotNull(result.getMetal());
 		}
 	}
 
@@ -81,21 +81,21 @@ public class O2OBidirectionalTest extends SDKTestBase
 	 */
 	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
-		Product searchObject = new Product();
+		Pendant searchObject = new Pendant();
 		searchObject.setId(new Integer(3));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Product result = (Product)i.next();
+		Pendant result = (Pendant)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getName());
+		assertNotNull(result.getShape());
 		
-		OrderLine orderLine = result.getLine();
-		assertNull(orderLine);
+		Chain chain = result.getChain();
+		assertNull(chain);
 	}
 
 	/**
@@ -107,9 +107,9 @@ public class O2OBidirectionalTest extends SDKTestBase
 	 */
 	public void testZeroAssociatedObjectsNestedSearch2() throws ApplicationException
 	{
-		Product searchObject = new Product();
+		Pendant searchObject = new Pendant();
 		searchObject.setId(new Integer(3));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain",searchObject );
 
 		assertNotNull(results);
 		assertEquals(0,results.size());
@@ -127,26 +127,26 @@ public class O2OBidirectionalTest extends SDKTestBase
 	 */
 	public void testOneAssociatedObjectNestedSearch1() throws ApplicationException
 	{
-		Product searchObject = new Product();
+		Pendant searchObject = new Pendant();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Product result = (Product)i.next();
+		Pendant result = (Pendant)i.next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getName());
+		assertNotNull(result.getShape());
 		
-		OrderLine orderLine = result.getLine();
-		assertNotNull(orderLine);
+		Chain Chain = result.getChain();
+		assertNotNull(Chain);
 		
-		assertNotNull(orderLine);
-		assertNotNull(orderLine.getId());
-		assertNotNull(orderLine.getName());
-		assertEquals(new Integer(1),orderLine.getId());
+		assertNotNull(Chain);
+		assertNotNull(Chain.getId());
+		assertNotNull(Chain.getMetal());
+		assertEquals(new Integer(1),Chain.getId());
 	}
 
 	/**
@@ -160,22 +160,22 @@ public class O2OBidirectionalTest extends SDKTestBase
 	 */
 	public void testOneAssociatedObjectNestedSearch2() throws ApplicationException
 	{
-		Product searchObject = new Product();
+		Pendant searchObject = new Pendant();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
 		
-		OrderLine orderLine = (OrderLine)i.next();
-		assertNotNull(orderLine);
+		Chain Chain = (Chain)i.next();
+		assertNotNull(Chain);
 		
-		assertNotNull(orderLine);
-		assertNotNull(orderLine.getId());
-		assertNotNull(orderLine.getName());
-		assertEquals(new Integer(1),orderLine.getId());
+		assertNotNull(Chain);
+		assertNotNull(Chain.getId());
+		assertNotNull(Chain.getMetal());
+		assertEquals(new Integer(1),Chain.getId());
 	}
 
 	/**
@@ -189,22 +189,22 @@ public class O2OBidirectionalTest extends SDKTestBase
 	 */
 	public void testOneAssociatedObjectNestedSearch3() throws ApplicationException
 	{
-		OrderLine searchObject = new OrderLine();
+		Chain searchObject = new Chain();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
 		
-		Product product = (Product)i.next();
-		assertNotNull(product);
+		Pendant Pendant = (Pendant)i.next();
+		assertNotNull(Pendant);
 		
-		assertNotNull(product);
-		assertNotNull(product.getId());
-		assertNotNull(product.getName());
-		assertEquals(new Integer(1),product.getId());
+		assertNotNull(Pendant);
+		assertNotNull(Pendant.getId());
+		assertNotNull(Pendant.getShape());
+		assertEquals(new Integer(1),Pendant.getId());
 	}	
 	/**
 	 * Uses CQL Criteria for search
@@ -221,11 +221,11 @@ public class O2OBidirectionalTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant");
 		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
-		association.setTargetRoleName("product");
+		association.setTargetRoleName("pendant");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -236,13 +236,13 @@ public class O2OBidirectionalTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		OrderLine orderLine = (OrderLine)i.next();
-		assertNotNull(orderLine);
+		Chain Chain = (Chain)i.next();
+		assertNotNull(Chain);
 		
-		assertNotNull(orderLine);
-		assertNotNull(orderLine.getId());
-		assertNotNull(orderLine.getName());
-		assertEquals(new Integer(1),orderLine.getId());
+		assertNotNull(Chain);
+		assertNotNull(Chain.getId());
+		assertNotNull(Chain.getMetal());
+		assertEquals(new Integer(1),Chain.getId());
 	}	
 
 	/**
@@ -260,11 +260,11 @@ public class O2OBidirectionalTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain");
 		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"1"));
-		association.setTargetRoleName("line");
+		association.setTargetRoleName("chain");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -275,13 +275,13 @@ public class O2OBidirectionalTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		Product product = (Product)i.next();
-		assertNotNull(product);
+		Pendant Pendant = (Pendant)i.next();
+		assertNotNull(Pendant);
 		
-		assertNotNull(product);
-		assertNotNull(product.getId());
-		assertNotNull(product.getName());
-		assertEquals(new Integer(1),product.getId());
+		assertNotNull(Pendant);
+		assertNotNull(Pendant.getId());
+		assertNotNull(Pendant.getShape());
+		assertEquals(new Integer(1),Pendant.getId());
 	}	
 	
 	/**
@@ -297,11 +297,11 @@ public class O2OBidirectionalTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 		
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product");
+		association.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant");
 		association.setAttribute(new CQLAttribute("id",CQLPredicate.EQUAL_TO,"3"));
-		association.setTargetRoleName("product");
+		association.setTargetRoleName("pendant");
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine");
+		target.setName("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 
@@ -313,68 +313,68 @@ public class O2OBidirectionalTest extends SDKTestBase
 	
 	public void testGetMethods1() throws ApplicationException
 	{
-		Product searchObject = new Product();
+		Pendant searchObject = new Pendant();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		Product result = (Product)results.iterator().next();
-		assertEquals(new Integer(1),result.getLine().getId());
+		Pendant result = (Pendant)results.iterator().next();
+		assertEquals(new Integer(1),result.getChain().getId());
 
 
 		searchObject.setId(new Integer(2));
-		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		result = (Product)results.iterator().next();
-		assertEquals(new Integer(2),result.getLine().getId());
+		result = (Pendant)results.iterator().next();
+		assertEquals(new Integer(2),result.getChain().getId());
 
 		searchObject.setId(new Integer(3));
-		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		result = (Product)results.iterator().next();
-		assertNull(result.getLine());
+		result = (Pendant)results.iterator().next();
+		assertNull(result.getChain());
 		
 	}
 
 
 	public void testGetMethods2() throws ApplicationException
 	{
-		OrderLine searchObject = new OrderLine();
+		Chain searchObject = new Chain();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		OrderLine result = (OrderLine)results.iterator().next();
-		assertEquals(new Integer(1),result.getProduct().getId());
+		Chain result = (Chain)results.iterator().next();
+		assertEquals(new Integer(1),result.getPendant().getId());
 
 
 		searchObject.setId(new Integer(2));
-		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		result = (OrderLine)results.iterator().next();
-		assertEquals(new Integer(2),result.getProduct().getId());
+		result = (Chain)results.iterator().next();
+		assertEquals(new Integer(2),result.getPendant().getId());
 
 		searchObject.setId(new Integer(3));
-		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+		results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
-		result = (OrderLine)results.iterator().next();
-		assertNull(result.getProduct());
+		result = (Chain)results.iterator().next();
+		assertNull(result.getPendant());
 		
 	}
 }

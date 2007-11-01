@@ -1,9 +1,9 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel;
 
-import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor;
-import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display;
-import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor;
-import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator;
+import gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
@@ -18,11 +18,11 @@ import java.util.Iterator;
 
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
-public class TwoLevelInheritanceTest extends SDKTestBase
+public class TwoLevelInheritanceSametablerootlevelTest extends SDKTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "Two Level Inheritance Test Case";
+		return "Two Level Inheritance Same Table Root Level Test Case";
 	}
 	
 
@@ -36,22 +36,21 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch1() throws ApplicationException
 	{
-		Display searchObject = new Display();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display",searchObject );
+		Calculator searchObject = new Calculator();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator",searchObject );
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Display result = (Display)i.next();
+			Calculator result = (Calculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getHeight());
-			assertNotNull(result.getWidth());
+			assertNotNull(result.getBrand());
 		}
 	}
-
+	
 	/**
 	 * Uses Nested Search Criteria for search
 	 * Verifies that the results are returned 
@@ -62,15 +61,15 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws ApplicationException
 	{
-		Monitor searchObject = new Monitor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor",searchObject );
+		FinancialCalculator searchObject = new FinancialCalculator();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator",searchObject );
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Monitor result = (Monitor)i.next();
+			FinancialCalculator result = (FinancialCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
@@ -87,19 +86,18 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch3() throws ApplicationException
 	{
-		CRTMonitor searchObject = new CRTMonitor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor",searchObject );
+		ScientificCalculator searchObject = new ScientificCalculator();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(2,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			CRTMonitor result = (CRTMonitor)i.next();
+			ScientificCalculator result = (ScientificCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
-			assertNotNull(result.getRefreshRate());
 		}
 	}
 
@@ -113,19 +111,18 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 */
 	public void testEntireObjectNestedSearch4() throws ApplicationException
 	{
-		LCDMonitor searchObject = new LCDMonitor();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor",searchObject );
+		GraphicCalculator searchObject = new GraphicCalculator();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator",searchObject );
 
 		assertNotNull(results);
-		assertEquals(2,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			LCDMonitor result = (LCDMonitor)i.next();
+			GraphicCalculator result = (GraphicCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
-			assertNotNull(result.getDpiSupported());
 		}
 	}
 	
@@ -143,48 +140,17 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Display");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(5,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Display result = (Display)i.next();
-			assertNotNull(result);
-			assertNotNull(result.getId());
-			assertNotNull(result.getWidth());
-			assertNotNull(result.getHeight());
-		}
-	}
-	
-	/**
-	 * Uses CQL Criteria for search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testEntireObjectCQL2() throws ApplicationException
-	{
-		CQLQuery cqlQuery = new CQLQuery();
-		CQLObject target = new CQLObject();
-		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor");
-		cqlQuery.setTarget(target);
-
-		Collection results = getApplicationService().query(cqlQuery);
-
-		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		for(Iterator i = results.iterator();i.hasNext();)
-		{
-			CRTMonitor result = (CRTMonitor)i.next();
+			Calculator result = (Calculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
@@ -199,22 +165,52 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testEntireObjectCQL3() throws ApplicationException
+	public void testEntireObjectCQL2() throws ApplicationException
 	{
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Monitor result = (Monitor)i.next();
+			FinancialCalculator result = (FinancialCalculator)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getBrand());
+		}
+	}	
+	
+	/**
+	 * Uses CQL Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testEntireObjectCQL3() throws ApplicationException
+	{
+		CQLQuery cqlQuery = new CQLQuery();
+		CQLObject target = new CQLObject();
+		
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator");
+		cqlQuery.setTarget(target);
+
+		Collection results = getApplicationService().query(cqlQuery);
+
+		assertNotNull(results);
+		assertEquals(2,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			ScientificCalculator result = (ScientificCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
@@ -234,21 +230,20 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLQuery cqlQuery = new CQLQuery();
 		CQLObject target = new CQLObject();
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator");
 		cqlQuery.setTarget(target);
 
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(2,results.size());
+		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			LCDMonitor result = (LCDMonitor)i.next();
+			GraphicCalculator result = (GraphicCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
-			assertNotNull(result.getDpiSupported());
 		}
 	}
 
@@ -261,41 +256,21 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 */
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
-		Monitor searchObject = new Monitor();
-		searchObject.setBrand("A");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor",searchObject );
+		Calculator searchObject = new Calculator();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			CRTMonitor result = (CRTMonitor)i.next();
+			FinancialCalculator result = (FinancialCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
 		}
 	}
-
 	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationNestedSearch1() throws ApplicationException
-	{
-		CRTMonitor searchObject = new CRTMonitor();
-		searchObject.setBrand("B");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor",searchObject );
-
-		assertNotNull(results);
-		assertEquals(0,results.size());
-	}
-
 	/**
 	 * Uses CQL Search Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
@@ -310,10 +285,10 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor");
-		association.setAttribute(new CQLAttribute("brand", CQLPredicate.EQUAL_TO,"B"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator");
+		association.setAttribute(new CQLAttribute("brand", CQLPredicate.EQUAL_TO,"Invalid Brand"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -323,7 +298,6 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		assertEquals(0,results.size());
 		
 	}
-	
 	/**
 	 * Uses Nested Search Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
@@ -332,18 +306,17 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch2() throws ApplicationException
+	public void testAssociationNestedSearch() throws ApplicationException
 	{
-		CRTMonitor searchObject = new CRTMonitor();
-		searchObject.setBrand("A");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor",searchObject );
+		ScientificCalculator searchObject = new ScientificCalculator();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Monitor result = (Monitor)i.next();
+			GraphicCalculator result = (GraphicCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
@@ -358,18 +331,43 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch3() throws ApplicationException
+	public void testAssociationNestedSearch2() throws ApplicationException
 	{
-		Monitor searchObject = new Monitor();
-		searchObject.setBrand("B");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor",searchObject );
+		GraphicCalculator searchObject = new GraphicCalculator();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			LCDMonitor result = (LCDMonitor)i.next();
+			ScientificCalculator result = (ScientificCalculator)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getBrand());
+		}
+	}
+	
+	/**
+	 * Uses Nested Search Criteria for inheritance as association in search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testAssociationNestedSearch3() throws ApplicationException
+	{
+		ScientificCalculator searchObject = new ScientificCalculator();
+		searchObject.setBrand("HP");
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			GraphicCalculator result = (GraphicCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
@@ -386,16 +384,16 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch4() throws ApplicationException
 	{
-		LCDMonitor searchObject = new LCDMonitor();
-		searchObject.setBrand("C");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor",searchObject );
+		GraphicCalculator searchObject = new GraphicCalculator();
+		searchObject.setBrand("HP");
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Monitor result = (Monitor)i.next();
+			ScientificCalculator result = (ScientificCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
@@ -416,10 +414,10 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor");
-		association.setAttribute(new CQLAttribute("brand", CQLPredicate.EQUAL_TO,"A"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator");
+		association.setAttribute(new CQLAttribute("brand", CQLPredicate.EQUAL_TO,"HP"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -430,13 +428,12 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Monitor result = (Monitor)i.next();
+			ScientificCalculator result = (ScientificCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
 		}
 	}
-	
 
 	/**
 	 * Uses CQL Criteria for inheritance as association in search
@@ -452,10 +449,10 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor");
-		association.setAttribute(new CQLAttribute("width", CQLPredicate.EQUAL_TO,"1"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator");
+		association.setAttribute(new CQLAttribute("brand", CQLPredicate.EQUAL_TO,"HP"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -466,13 +463,13 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			CRTMonitor result = (CRTMonitor)i.next();
+			GraphicCalculator result = (GraphicCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
 		}
 	}
-
+	
 	/**
 	 * Uses CQL Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
@@ -487,10 +484,10 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor");
-		association.setAttribute(new CQLAttribute("height", CQLPredicate.EQUAL_TO,"2"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator");
+		association.setAttribute(new CQLAttribute("Brand", CQLPredicate.EQUAL_TO,"HP"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -501,13 +498,12 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Monitor result = (Monitor)i.next();
+			ScientificCalculator result = (ScientificCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
 		}
 	}
-	
 
 	/**
 	 * Uses CQL Criteria for inheritance as association in search
@@ -523,10 +519,10 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor");
-		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"2"));
+		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator");
+		association.setAttribute(new CQLAttribute("Brand", CQLPredicate.EQUAL_TO,"HP"));
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.GraphicCalculator");
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
@@ -537,10 +533,9 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			LCDMonitor result = (LCDMonitor)i.next();
+			GraphicCalculator result = (GraphicCalculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getBrand());
 		}
 	}
 
@@ -558,12 +553,12 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		CQLObject target = new CQLObject();
 
 		CQLAssociation association1 = new CQLAssociation();
-		association1.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor");
-		association1.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"1"));
+		association1.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.ScientificCalculator");
+		association1.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"2"));
 
 		CQLAssociation association2 = new CQLAssociation();
-		association2.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.LCDMonitor");
-		association2.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"3"));
+		association2.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.FinancialCalculator");
+		association2.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"1"));
 		
 
 		CQLGroup group = new CQLGroup();
@@ -571,7 +566,7 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		group.addAssociation(association1);
 		group.addAssociation(association2);
 		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor");
+		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametablerootlevel.Calculator");
 		target.setGroup(group);
 		cqlQuery.setTarget(target);
 		
@@ -582,11 +577,10 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Display result = (Display)i.next();
+			Calculator result = (Calculator)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getWidth());
-			assertNotNull(result.getHeight());
+			assertNotNull(result.getBrand());
 		}
 	}
 }

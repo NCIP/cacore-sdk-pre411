@@ -114,7 +114,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent");
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(5,results.size());
@@ -144,7 +144,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student");
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(10,results.size());
@@ -174,7 +174,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.GraduateStudent");
 		cqlQuery.setTarget(target);
 
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.GraduateStudent");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(5,results.size());
@@ -254,7 +254,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(0,results.size());
@@ -360,7 +360,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -396,7 +396,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -431,7 +431,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -467,7 +467,7 @@ public class MultipleChildTest extends SDKTestBase
 		target.setAssociation(association);
 		cqlQuery.setTarget(target);
 		
-		Collection results = getApplicationService().query(cqlQuery,"gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.GraduateStudent");
+		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
