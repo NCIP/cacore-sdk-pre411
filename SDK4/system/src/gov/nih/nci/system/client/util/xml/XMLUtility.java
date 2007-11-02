@@ -42,7 +42,7 @@ public class XMLUtility {
 			throws XMLUtilityException {
 		
 		try {
-			beanObject = CastorDomainObjectFieldHandler.convertObject(beanObject);
+			beanObject = CastorDomainObjectFieldHandler.convertObject(beanObject,true);
 		} catch(Exception e){
 			log.error("Exception caught trying to convert from proxy to domain object: ", e);
 			throw new XMLUtilityException("Exception caught trying to convert from proxy to domain object: ", e);

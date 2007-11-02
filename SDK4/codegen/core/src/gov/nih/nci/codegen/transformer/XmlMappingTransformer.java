@@ -343,7 +343,7 @@ public class XmlMappingTransformer implements Transformer {
 				Element bind = new Element("bind-xml");
 				bind.setAttribute("name", otherEndTypeName );
 				bind.setAttribute("type", associationPackage + Constant.DOT + otherEndTypeName );
-				bind.setAttribute("location", otherEnd.getRoleName() ); //otherEnd.getName());	                 
+				bind.setAttribute("location",(otherEndTypeName.equals(otherEnd.getRoleName())) ? otherEndTypeName.toLowerCase(): otherEnd.getRoleName() ); //otherEnd.getName());	                 
 				bind.setAttribute("node", "element");
 				field.addContent(bind);
 
@@ -369,7 +369,7 @@ public class XmlMappingTransformer implements Transformer {
 
 				bind.setAttribute("name", otherEndTypeName );
 				bind.setAttribute("type", associationPackage+Constant.DOT + otherEndTypeName);
-				bind.setAttribute("location", otherEnd.getRoleName() ); //otherEnd.getName());
+				bind.setAttribute("location", (otherEndTypeName.equals(otherEnd.getRoleName())) ? otherEndTypeName.toLowerCase(): otherEnd.getRoleName()  ); //otherEnd.getName());
 				bind.setAttribute("node", "element");
 
 				field.addContent(bind);
