@@ -38,11 +38,11 @@ public class CastorDomainObjectFieldHandler
      */
     public Object convertUponGet(Object value) {
 
-    	log.debug("Value: " + value);
+    	//log.debug("Value: " + value);
     	if (value == null) return null;
 
     	try {
-    		value = convertObject(value);
+    		value = convertObject(value,false);
     	} catch (Exception e){
     		log.error("Exception caught: ", e);
     	}
