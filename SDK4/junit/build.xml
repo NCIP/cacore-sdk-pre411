@@ -67,14 +67,19 @@
 		<delete dir="${report.dir}"/>
 	</target>
 	
+	<target name="stop">
+		<fail if="fail-prop" message="Test case execution failed"/>
+		<fail if="error-prop" message="Test case execution error"/>
+	</target>
+	
 	<!-- ************************************************************************************************-->
 	<!--                                Run Test                              	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runtest" depends="createDir,compile,runJunit,generateReport"/>
+	<target name="runtest" depends="createDir,compile,runJunit,generateReport,stop"/>
 	
 	<target name="runJunit">
-		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="true">
+		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
 			<classpath>
 				<path refid="thick-client-cp"/>
 			</classpath>
@@ -91,10 +96,10 @@
 	<!--                                Run Quick Test                              	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runQuickTest" depends="createDir,compile,runQuickJunit,generateReport"/>
+	<target name="runQuickTest" depends="createDir,compile,runQuickJunit,generateReport,stop"/>
 	
 	<target name="runQuickJunit">		
-		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="true">
+		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
 			<classpath>
 				<path refid="thick-client-cp"/>
 			</classpath>
@@ -107,10 +112,10 @@
 	<!--                                Run Quick Test                              	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runClientTest" depends="createDir,compile,runClientJunit,generateReport"/>
+	<target name="runClientTest" depends="createDir,compile,runClientJunit,generateReport,stop"/>
 		
 	<target name="runClientJunit">		
-		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="true">
+		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
 			<classpath>
 				<path refid="client-cp"/>
 			</classpath>
