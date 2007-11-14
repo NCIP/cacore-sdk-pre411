@@ -45,6 +45,7 @@
 	</target>
 		
 	<target name="generateReport">
+		<echo>Generating report in ${report.dir}</echo>
 		<junitreport todir="${report.dir}">
 			<fileset dir="${report.dir}" includes="TEST-*.xml" />
 			<report format="frames" todir="${report.dir}" />
