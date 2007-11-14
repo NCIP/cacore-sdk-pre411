@@ -69,8 +69,10 @@
 	</target>
 	
 	<target name="stop">
+		<!--
 		<fail if="fail-prop" message="Test case execution failed"/>
 		<fail if="error-prop" message="Test case execution error"/>
+		-->
 	</target>
 	
 	<!-- ************************************************************************************************-->
