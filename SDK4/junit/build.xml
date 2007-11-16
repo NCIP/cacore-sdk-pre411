@@ -4,7 +4,7 @@
 <!-- ****************************************************************************************************-->
 
 
-<project name="caCORE SDK Test" default="runQuickTest" basedir=".">
+<project name="caCORE SDK Test" default="runThickClientQuickTest" basedir=".">
 
 	<property name="sdk.home" value=".." />
 
@@ -134,9 +134,9 @@
 	<!--                                Run JUnits for Thick client            	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runtest" depends="createDir,compile,runJunit,stop" description="Run JUnits for Thick client"/>
+	<target name="runThickClient" depends="createDir,compile,runThickClientJUnit,stop" description="Run JUnits for Thick client"/>
 	
-	<target name="runJunit">
+	<target name="runThickClientJUnit">
 		<SDKRunJUnit junitclasspath="thick-client-cp" junitoutputdir="${output.dir.thick-client}" junitsuffix="Test"/>
 		<SDKGenerateReport junitoutputdir="${output.dir.thick-client}"/>
 	</target>	
@@ -145,9 +145,9 @@
 	<!--                                Run JUnit for Thick Client (Quick Mode)                          -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runQuickTest" depends="createDir,compile,runQuickJunit,stop" description="Run JUnit for Thick Client (Quick Mode)"/>
+	<target name="runThickClientQuickTest" depends="createDir,compile,runThickClientQuickJUnit,stop" description="Run JUnit for Thick Client (Quick Mode)"/>
 	
-	<target name="runQuickJunit">
+	<target name="runThickClientQuickJUnit">
 		<SDKRunJUnitSuite junitclasspath="thick-client-cp" junitoutputdir="${output.dir.thick-client}" junitsuite="test.gov.nih.nci.cacoresdk.SDKTestSuite"/>
 		<SDKGenerateReport junitoutputdir="${output.dir.thick-client}"/>
 	</target>	
@@ -156,9 +156,9 @@
 	<!--                                Run JUnit for Remote Client           	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runClientTest" depends="createDir,compile,runClientJunit,stop" description="Run JUnit for Remote Client"/>
+	<target name="runRemoteClientTest" depends="createDir,compile,runRemoteClientJUnit,stop" description="Run JUnit for Remote Client"/>
 		
-	<target name="runClientJunit">
+	<target name="runRemoteClientJUnit">
 		<SDKRunJUnit junitclasspath="remote-client-cp" junitoutputdir="${output.dir.remote-client}" junitsuffix="Test"/>
 		<SDKGenerateReport junitoutputdir="${output.dir.remote-client}"/>
 	</target>
