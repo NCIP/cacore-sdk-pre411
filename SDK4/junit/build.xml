@@ -6,18 +6,23 @@
 
 <project name="caCORE SDK Test" default="runQuickTest" basedir=".">
 
-	<property name="thick-client.dir" value="../output/example/package/local-client" /> 
-	<property name="client.dir" value="../output/example/package/remote-client" /> 
-	<property name="client.lib.dir" value="${client.dir}/lib" />
-	<property name="thick-client.lib.dir" value="${thick-client.dir}/lib" />
-	<property name="src.dir" value="src" />
-	<property name="lib.dir" value="lib" />
-	<property name="report.dir" value="report" />
-	<property name="classes.dir" value="classes" />
+	<property name="sdk.home" value=".." />
+
+	<property file="${sdk.home}/conf/deploy.properties" />
+	<property file="${sdk.home}/build.properties" prefix="sdk"/>
+	<property file="build.properties" />
+
+	<property name="output.dir" value="report/${PROJECT_NAME}" />
+	<property name="output.dir.thick-client" value="${output.dir}/thick-client" />
+	<property name="output.dir.remote-client" value="${output.dir}/remote-client" />
+	
+	<!--***********************************************************************
+	*** Classpath entries
+	*********************************************************************** -->
 	
 	<path id="client-cp">
-		<pathelement path="${client.dir}/conf"/>
-		<fileset dir="${client.lib.dir}">
+		<pathelement path="${remote-client.conf.dir}"/>
+		<fileset dir="${remote-client.lib.dir}">
 			<include name="**/*.jar"/>
 		</fileset>
 		<fileset dir="${lib.dir}">
@@ -37,23 +42,71 @@
 		<pathelement path="${classes.dir}"/>
 	</path>
 	
+	<!--***********************************************************************
+	*** Macro definitions to run JUnits
+	*********************************************************************** -->
+	
+	<macrodef name="SDKGenerateReport">
+		<attribute name="junitOutputDir" />
+		<sequential>
+			<mkdir dir="@{junitOutputDir}/report"/>
+			<junitreport todir="@{junitOutputDir}/report">
+				<fileset dir="@{junitOutputDir}" includes="TEST-*.xml" />
+				<report format="frames" todir="@{junitOutputDir}/report" />
+			</junitreport>	
+		</sequential>
+	</macrodef>
+
+	<macrodef name="SDKRunJUnit">
+		<attribute name="junitClasspath" />
+		<attribute name="junitOutputDir" />
+		<attribute name="junitSuffix" />
+		<sequential>
+			<delete dir="${junitOutputDir}"/>
+			<mkdir dir="${junitOutputDir}"/>
+			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
+				<classpath>
+					<path refid="@{junitClasspath}"/>
+				</classpath>
+				<formatter type="xml"/>
+				<batchtest haltonfailure="no" todir="@{junitOutputDir}">
+					<fileset dir="${classes.dir}">
+						<include name="**/*@{junitSuffix}.class"/>
+					</fileset>
+				</batchtest>			
+			</junit>
+		</sequential>
+	</macrodef>
+	
+
+	<macrodef name="SDKRunJUnitSuite">
+		<attribute name="junitClasspath" />
+		<attribute name="junitOutputDir" />
+		<attribute name="junitSuite" />
+		<sequential>
+			<delete dir="${junitOutputDir}"/>
+			<mkdir dir="${junitOutputDir}"/>
+			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
+				<classpath>
+					<path refid="@{junitClasspath}"/>
+				</classpath>
+				<formatter type="xml"/>
+				<test name="@{junitSuite}" todir="@{junitOutputDir}" />
+			</junit>
+		</sequential>
+	</macrodef>
+
+	<!--***********************************************************************
+	*** Creates new directories
+	*********************************************************************** -->
 	<target name="createDir">
-		<delete dir="${report.dir}"/>
-		<delete dir="${classes.dir}"/>
-		<mkdir dir="${report.dir}"/>
-		<mkdir dir="${classes.dir}"/>		
+		<mkdir dir="${output.dir}"/>
+		<mkdir dir="${classes.dir}"/>
 	</target>
 		
-	<target name="generateReport">
-		<!--
-		<echo>Generating report in ${report.dir}</echo>
-		<junitreport todir="${report.dir}">
-			<fileset dir="${report.dir}" includes="TEST-*.xml" />
-			<report format="frames" todir="${report.dir}" />
-		</junitreport>	
-		-->
-	</target>
-
+	<!--***********************************************************************
+	*** Compiles the JUnit classes
+	*********************************************************************** -->
 	<target name="compile">
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="lines,vars,source">
 			<include name="**/*.java"/>
@@ -67,7 +120,7 @@
 	<target name="clean" description="Cleans the generated directories and files">
 		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
 		<delete dir="${classes.dir}"/>
-		<delete dir="${report.dir}"/>
+		<delete dir="${output.dir}"/>
 	</target>
 	
 	<target name="stop">
@@ -78,58 +131,36 @@
 	</target>
 	
 	<!-- ************************************************************************************************-->
-	<!--                                Run Test                              	                         -->
+	<!--                                Run JUnits for Thick client            	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runtest" depends="createDir,compile,runJunit,generateReport,stop"/>
+	<target name="runtest" depends="createDir,compile,runJunit,stop" description="Run JUnits for Thick client"/>
 	
 	<target name="runJunit">
-		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
-			<classpath>
-				<path refid="thick-client-cp"/>
-			</classpath>
-			<formatter type="xml"/>			
-			<batchtest haltonfailure="no" todir="${report.dir}">
-				<fileset dir="${classes.dir}">
-					<include name="**/*Test.class"/>
-				</fileset>
-			</batchtest>			
-		</junit>
+		<SDKRunJUnit junitclasspath="thick-client-cp" junitoutputdir="${output.dir.thick-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitoutputdir="${output.dir.thick-client}"/>
 	</target>	
 
 	<!-- ************************************************************************************************-->
-	<!--                                Run Quick Test                              	                         -->
+	<!--                                Run JUnit for Thick Client (Quick Mode)                          -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runQuickTest" depends="createDir,compile,runQuickJunit,generateReport,stop"/>
+	<target name="runQuickTest" depends="createDir,compile,runQuickJunit,stop" description="Run JUnit for Thick Client (Quick Mode)"/>
 	
-	<target name="runQuickJunit">		
-		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
-			<classpath>
-				<path refid="thick-client-cp"/>
-			</classpath>
-			<formatter type="xml"/>			
-			<test name="test.gov.nih.nci.cacoresdk.SDKTestSuite" todir="${report.dir}" />
-		</junit>
+	<target name="runQuickJunit">
+		<SDKRunJUnitSuite junitclasspath="thick-client-cp" junitoutputdir="${output.dir.thick-client}" junitsuite="test.gov.nih.nci.cacoresdk.SDKTestSuite"/>
+		<SDKGenerateReport junitoutputdir="${output.dir.thick-client}"/>
 	</target>	
 	
 	<!-- ************************************************************************************************-->
-	<!--                                Run Quick Test                              	                         -->
+	<!--                                Run JUnit for Remote Client           	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runClientTest" depends="createDir,compile,runClientJunit,generateReport,stop"/>
+	<target name="runClientTest" depends="createDir,compile,runClientJunit,stop" description="Run JUnit for Remote Client"/>
 		
-	<target name="runClientJunit">		
-		<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
-			<classpath>
-				<path refid="client-cp"/>
-			</classpath>
-			<formatter type="xml"/>			
-			<batchtest haltonfailure="no" todir="${report.dir}">
-				<fileset dir="${classes.dir}">
-					<include name="**/*Test.class"/>
-				</fileset>
-			</batchtest>			
-		</junit>
-	</target>	
+	<target name="runClientJunit">
+		<SDKRunJUnit junitclasspath="remote-client-cp" junitoutputdir="${output.dir.remote-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitoutputdir="${output.dir.remote-client}"/>
+	</target>
+	
 </project>
