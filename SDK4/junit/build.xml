@@ -148,7 +148,7 @@
 	<target name="runThickClientQuickTest" depends="createDir,compile,runThickClientQuickJUnit,stop" description="Run JUnit for Thick Client (Quick Mode)"/>
 	
 	<target name="runThickClientQuickJUnit">
-		<SDKRunjunitSuite junitClasspath="thick-client-cp" junitOutputDir="${output.dir.thick-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKTestSuite"/>
+		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${output.dir.thick-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKTestSuite"/>
 		<SDKGenerateReport junitOutputDir="${output.dir.thick-client}"/>
 	</target>	
 	
