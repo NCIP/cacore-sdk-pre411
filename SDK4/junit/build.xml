@@ -62,8 +62,8 @@
 		<attribute name="junitOutputDir" />
 		<attribute name="junitSuffix" />
 		<sequential>
-			<delete dir="${junitOutputDir}"/>
-			<mkdir dir="${junitOutputDir}"/>
+			<delete dir="@{junitOutputDir}"/>
+			<mkdir dir="@{junitOutputDir}"/>
 			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
 				<classpath>
 					<path refid="@{junitClasspath}"/>
@@ -84,8 +84,8 @@
 		<attribute name="junitOutputDir" />
 		<attribute name="junitSuite" />
 		<sequential>
-			<delete dir="${junitOutputDir}"/>
-			<mkdir dir="${junitOutputDir}"/>
+			<delete dir="@{junitOutputDir}"/>
+			<mkdir dir="@{junitOutputDir}"/>
 			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
 				<classpath>
 					<path refid="@{junitClasspath}"/>
