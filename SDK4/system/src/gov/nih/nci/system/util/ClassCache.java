@@ -444,7 +444,7 @@ public class ClassCache {
 						}
 						String pkg = packageName.substring(0, packageName.lastIndexOf("."));
 						for(int x=counter; x>1; x--){
-							if(type.startsWith("pkg")){
+							if(type.startsWith(pkg)){
 								roleNames.add(type);
 								break;
 							}
