@@ -1,6 +1,5 @@
 package test.gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin;
 
-import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child;
 import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride;
 import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.InLaw;
 import gov.nih.nci.system.applicationservice.ApplicationException;
@@ -81,7 +80,7 @@ public class O2OMultipleAssociationWJoinTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testOneAssociatedObjectsNestedSearch1() throws ApplicationException
+	public void testZeroAssociatedObjectsNestedSearch1() throws ApplicationException
 	{
 		Bride searchObject = new Bride();
 		searchObject.setId(new Integer(2));
@@ -325,4 +324,34 @@ public class O2OMultipleAssociationWJoinTest extends SDKTestBase
 		assertEquals(new Integer(2),parent.getId());
 	}		
 
+	public void testGetAssociation() throws ApplicationException
+	{
+
+		Bride searchObject = new Bride();
+		searchObject.setId(1);// A Bride with both a Mother- and Father-in-Law
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.Bride",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		InLaw fatherInLaw;
+		InLaw motherInLaw;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Bride result = (Bride)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getName());
+			
+			fatherInLaw = result.getFather();
+			assertNotNull(fatherInLaw);
+			assertNotNull(fatherInLaw.getId());
+			assertNotNull(fatherInLaw.getName());
+			
+			motherInLaw = result.getMother();
+			assertNotNull(motherInLaw);
+			assertNotNull(motherInLaw.getId());
+			assertNotNull(motherInLaw.getName());
+		}
+	}	
 }

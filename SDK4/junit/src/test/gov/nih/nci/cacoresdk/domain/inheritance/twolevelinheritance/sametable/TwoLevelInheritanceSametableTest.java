@@ -73,6 +73,7 @@ public class TwoLevelInheritanceSametableTest extends SDKTestBase
 			CommunistGovt result = (CommunistGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getCountry());
 		}
 	}
 
@@ -97,6 +98,7 @@ public class TwoLevelInheritanceSametableTest extends SDKTestBase
 			DemocraticGovt result = (DemocraticGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getCountry());
 		}
 	}
 
@@ -121,6 +123,7 @@ public class TwoLevelInheritanceSametableTest extends SDKTestBase
 			ParliamantaryGovt result = (ParliamantaryGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getCountry());			
 			assertNotNull(result.getPrimeMinister());
 		}
 	}
@@ -146,6 +149,7 @@ public class TwoLevelInheritanceSametableTest extends SDKTestBase
 			PresidentialGovt result = (PresidentialGovt)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getCountry());	
 			assertNotNull(result.getPresident());
 		}
 	}
@@ -307,18 +311,12 @@ public class TwoLevelInheritanceSametableTest extends SDKTestBase
 	 */
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
-		Goverment searchObject = new Goverment();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt",searchObject );
+		ParliamantaryGovt searchObject = new ParliamantaryGovt();
+		searchObject.setId(1);
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		for(Iterator i = results.iterator();i.hasNext();)
-		{
-			CommunistGovt result = (CommunistGovt)i.next();
-			assertNotNull(result);
-			assertNotNull(result.getId());
-		}
+		assertEquals(0,results.size());
 	}
 
 	
@@ -332,12 +330,18 @@ public class TwoLevelInheritanceSametableTest extends SDKTestBase
 	 */
 	public void testAssociationNestedSearch1() throws ApplicationException
 	{
-		ParliamantaryGovt searchObject = new ParliamantaryGovt();
-		searchObject.setId(1);
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.DemocraticGovt",searchObject );
+		Goverment searchObject = new Goverment();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.CommunistGovt",searchObject );
 
 		assertNotNull(results);
-		assertEquals(0,results.size());
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			CommunistGovt result = (CommunistGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}		
 	}
 
 	/**

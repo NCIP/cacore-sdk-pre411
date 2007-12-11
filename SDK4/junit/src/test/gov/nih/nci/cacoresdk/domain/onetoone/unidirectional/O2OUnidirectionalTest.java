@@ -254,4 +254,30 @@ public class O2OUnidirectionalTest extends SDKTestBase
 		assertNotNull(address.getZip());
 		assertEquals(new Integer(1),address.getId());
 	}	
+	
+	public void testGetAssociation() throws ApplicationException
+	{
+
+		Person searchObject = new Person();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.Person",searchObject );
+
+		assertNotNull(results);
+		assertEquals(5,results.size());
+		
+		Address address;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Person result = (Person)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getName());
+			
+			if (result.getId() < 4){//Person id=1,2,3 have an associated Address; the others don't
+				address = result.getLivesAt();
+				assertNotNull(address);
+				assertNotNull(address.getId());
+				assertNotNull(address.getZip());
+			}
+		}
+	}	
 }

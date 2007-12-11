@@ -245,4 +245,32 @@ public class M2OUnidirectionalTest extends SDKTestBase
 		assertNotNull(restaurant.getName());
 		assertEquals(new Integer(1),restaurant.getId());
 	}	
+	
+	
+	public void testGetAssociation() throws ApplicationException
+	{
+
+		Chef searchObject = new Chef();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef",searchObject );
+
+		assertNotNull(results);
+		assertEquals(4,results.size());
+		
+		Restaurant restaurant;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Chef result = (Chef)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getName());
+			
+			if (result.getId() != 4) { //Chef id=4 has no Restaurant associated with it
+				restaurant = result.getRestaurant();
+				assertNotNull(restaurant);
+				assertNotNull(restaurant.getId());
+				assertNotNull(restaurant.getName());
+			}
+
+		}
+	}		
 }

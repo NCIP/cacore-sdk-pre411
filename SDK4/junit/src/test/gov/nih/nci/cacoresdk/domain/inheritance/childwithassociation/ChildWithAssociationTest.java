@@ -1,18 +1,19 @@
 package test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation;
 
-import java.util.Collection;
-import java.util.Iterator;
-
+import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank;
+import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash;
 import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit;
 import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Payment;
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash;
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
+import java.util.Collection;
+import java.util.Iterator;
+
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
 public class ChildWithAssociationTest extends SDKTestBase
@@ -510,5 +511,29 @@ public class ChildWithAssociationTest extends SDKTestBase
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertEquals(new Integer(3), result.getId());
+	}
+	
+	public void testGetAssociation() throws ApplicationException
+	{
+		Credit searchObject = new Credit();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit",searchObject );
+
+		assertNotNull(results);
+		assertEquals(2,results.size());
+		
+		Bank bank;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Credit result = (Credit)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getAmount());
+			assertNotNull(result.getCardNumber());
+			
+			bank = result.getIssuingBank();
+			assertNotNull(bank);
+			assertNotNull(bank.getId());
+			assertNotNull(bank.getName());
+		}
 	}
 }

@@ -1,16 +1,16 @@
 package test.gov.nih.nci.cacoresdk.domain.onetomany.bidirectional;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive;
 import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer;
+import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
@@ -145,8 +145,6 @@ public class O2MBidirectionalTest extends SDKTestBase
 		
 		HardDrive hardDrive = (HardDrive)j.next();
 		assertNotNull(hardDrive);
-		
-		assertNotNull(hardDrive);
 		assertNotNull(hardDrive.getId());
 		assertNotNull(hardDrive.getSize());
 		assertEquals(new Integer(1),hardDrive.getId());
@@ -172,9 +170,7 @@ public class O2MBidirectionalTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		HardDrive hardDrive = (HardDrive)i.next();
-		assertNotNull(hardDrive);
-		
+		HardDrive hardDrive = (HardDrive)i.next();		
 		assertNotNull(hardDrive);
 		assertNotNull(hardDrive.getId());
 		assertNotNull(hardDrive.getSize());
@@ -311,4 +307,27 @@ public class O2MBidirectionalTest extends SDKTestBase
 		assertEquals(0,results.size());
 	}	
 	
+	public void testGetAssociation() throws ApplicationException
+	{
+
+		HardDrive searchObject = new HardDrive();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive",searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.size());
+		
+		Computer computer;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			HardDrive result = (HardDrive)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getSize());
+			
+			computer = result.getComputer();
+			assertNotNull(computer);
+			assertNotNull(computer.getId());
+			assertNotNull(computer.getType());
+		}
+	}	
 }

@@ -16,8 +16,8 @@ public abstract class SDKTestBase extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		appService = ApplicationServiceProvider.getApplicationService();
-		//String url = "http://localhost:8080/example/http/remoteService";
-		//appService = ApplicationServiceProvider.getRemoteInstance(url);
+//		String url = "http://localhost:8080/example";
+//		appService = ApplicationServiceProvider.getApplicationServiceFromUrl(url);
 	}
 
 

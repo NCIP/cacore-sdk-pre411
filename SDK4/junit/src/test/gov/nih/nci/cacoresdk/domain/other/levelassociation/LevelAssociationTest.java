@@ -69,6 +69,8 @@ public class LevelAssociationTest extends SDKTestBase
 			Card result = (Card)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getImage());
+			assertNotNull(result.getName());			
 		}
 	}
 
@@ -93,6 +95,7 @@ public class LevelAssociationTest extends SDKTestBase
 			Suit result = (Suit)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getName());			
 		}
 	}
 
@@ -117,6 +120,7 @@ public class LevelAssociationTest extends SDKTestBase
 			Deck result = (Deck)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getName());
 		}
 	}
 
@@ -292,7 +296,7 @@ public class LevelAssociationTest extends SDKTestBase
 		target.setAssociation(association);
 		query.setTarget(target);
 		
-		Collection results = getApplicationService().query(query,"gov.nih.nci.cacoresdk.domain.other.levelassociation.Card");
+		Collection results = getApplicationService().query(query);
 
 		assertNotNull(results);
 		assertEquals(3,results.size());
@@ -337,7 +341,7 @@ public class LevelAssociationTest extends SDKTestBase
 		target.setGroup(group);
 		query.setTarget(target);
 		
-		Collection results = getApplicationService().query(query,"gov.nih.nci.cacoresdk.domain.other.levelassociation.Card");
+		Collection results = getApplicationService().query(query);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
@@ -376,7 +380,7 @@ public class LevelAssociationTest extends SDKTestBase
 		target.setAssociation(association2);
 		query.setTarget(target);
 		
-		Collection results = getApplicationService().query(query,"gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit");
+		Collection results = getApplicationService().query(query);
 
 		assertNotNull(results);
 		assertEquals(3,results.size());
@@ -420,7 +424,7 @@ public class LevelAssociationTest extends SDKTestBase
 		target.setAssociation(association3);
 		query.setTarget(target);
 		
-		Collection results = getApplicationService().query(query,"gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck");
+		Collection results = getApplicationService().query(query);
 
 		assertNotNull(results);
 		assertEquals(1,results.size());

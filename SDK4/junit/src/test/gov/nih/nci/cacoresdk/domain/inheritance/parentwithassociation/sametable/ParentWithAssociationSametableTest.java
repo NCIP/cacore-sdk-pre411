@@ -513,4 +513,28 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		assertNotNull(result.getId());
 		assertEquals(new Integer(4), result.getId());
 	}
+	
+	
+	public void testGetAssociation() throws ApplicationException
+	{
+		Luggage searchObject = new Luggage();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
+
+		assertNotNull(results);
+		assertEquals(4,results.size());
+		
+		Wheel wheel;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Luggage result = (Luggage)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getCapacity());
+			
+			wheel = result.getWheel();
+			assertNotNull(wheel);
+			assertNotNull(wheel.getId());
+			assertNotNull(wheel.getRadius());
+		}
+	}
 }

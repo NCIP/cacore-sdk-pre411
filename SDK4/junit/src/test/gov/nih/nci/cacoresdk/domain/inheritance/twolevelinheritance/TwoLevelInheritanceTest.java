@@ -261,6 +261,25 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 	 */
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
+		CRTMonitor searchObject = new CRTMonitor();
+		searchObject.setBrand("B");
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor",searchObject );
+
+		assertNotNull(results);
+		assertEquals(0,results.size());		
+	}
+
+	
+	/**
+	 * Uses Nested Search Criteria for inheritance as association in search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testAssociationNestedSearch1() throws ApplicationException
+	{
 		Monitor searchObject = new Monitor();
 		searchObject.setBrand("A");
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.CRTMonitor",searchObject );
@@ -275,25 +294,6 @@ public class TwoLevelInheritanceTest extends SDKTestBase
 			assertNotNull(result.getId());
 			assertNotNull(result.getBrand());
 		}
-	}
-
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationNestedSearch1() throws ApplicationException
-	{
-		CRTMonitor searchObject = new CRTMonitor();
-		searchObject.setBrand("B");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.Monitor",searchObject );
-
-		assertNotNull(results);
-		assertEquals(0,results.size());
 	}
 
 	/**

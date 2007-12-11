@@ -140,13 +140,11 @@ public class O2OBidirectionalWJoinTest extends SDKTestBase
 		assertNotNull(result.getId());
 		assertNotNull(result.getShape());
 		
-		Chain Chain = result.getChain();
-		assertNotNull(Chain);
-		
-		assertNotNull(Chain);
-		assertNotNull(Chain.getId());
-		assertNotNull(Chain.getMetal());
-		assertEquals(new Integer(1),Chain.getId());
+		Chain chain = result.getChain();
+		assertNotNull(chain);
+		assertNotNull(chain.getId());
+		assertNotNull(chain.getMetal());
+		assertEquals(new Integer(1),chain.getId());
 	}
 
 	/**
@@ -169,13 +167,13 @@ public class O2OBidirectionalWJoinTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		Chain Chain = (Chain)i.next();
-		assertNotNull(Chain);
+		Chain chain = (Chain)i.next();
+		assertNotNull(chain);
 		
-		assertNotNull(Chain);
-		assertNotNull(Chain.getId());
-		assertNotNull(Chain.getMetal());
-		assertEquals(new Integer(1),Chain.getId());
+		assertNotNull(chain);
+		assertNotNull(chain.getId());
+		assertNotNull(chain.getMetal());
+		assertEquals(new Integer(1),chain.getId());
 	}
 
 	/**
@@ -198,13 +196,13 @@ public class O2OBidirectionalWJoinTest extends SDKTestBase
 		
 		Iterator i = results.iterator();
 		
-		Pendant Pendant = (Pendant)i.next();
-		assertNotNull(Pendant);
+		Pendant pendant = (Pendant)i.next();
+		assertNotNull(pendant);
 		
-		assertNotNull(Pendant);
-		assertNotNull(Pendant.getId());
-		assertNotNull(Pendant.getShape());
-		assertEquals(new Integer(1),Pendant.getId());
+		assertNotNull(pendant);
+		assertNotNull(pendant.getId());
+		assertNotNull(pendant.getShape());
+		assertEquals(new Integer(1),pendant.getId());
 	}	
 	/**
 	 * Uses CQL Criteria for search
@@ -377,4 +375,56 @@ public class O2OBidirectionalWJoinTest extends SDKTestBase
 		assertNull(result.getPendant());
 		
 	}
+	
+	public void testGetAssociation1() throws ApplicationException
+	{
+
+		Pendant searchObject = new Pendant();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant",searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.size());
+		
+		Chain chain;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Pendant result = (Pendant)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getShape());
+			
+			if (result.getId() != 3){ // Pendant id = 3 does not have an associated Chain			
+				chain = result.getChain();
+				assertNotNull(chain);
+				assertNotNull(chain.getId());
+				assertNotNull(chain.getMetal());
+			}
+		}
+	}
+	
+	public void testGetAssociation2() throws ApplicationException
+	{
+
+		Chain searchObject = new Chain();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain",searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.size());
+		
+		Pendant pendant;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Chain result = (Chain)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getMetal());
+			
+			if (result.getId() != 3){ // Chain id = 3 does not have an associated Pendant
+				pendant = result.getPendant();
+				assertNotNull(pendant);
+				assertNotNull(pendant.getId());
+				assertNotNull(pendant.getShape());
+			}
+		}
+	}		
 }

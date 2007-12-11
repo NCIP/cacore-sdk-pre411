@@ -93,8 +93,8 @@ public class O2MUnidirectionalWJoinTest extends SDKTestBase
 		assertNotNull(result.getId());
 		assertNotNull(result.getStyle());
 		
-		Collection ButtonCollection = result.getButtonCollection();
-		assertEquals(0, ButtonCollection.size());
+		Collection buttonCollection = result.getButtonCollection();
+		assertEquals(0, buttonCollection.size());
 	}
 
 	/**
@@ -138,15 +138,15 @@ public class O2MUnidirectionalWJoinTest extends SDKTestBase
 		assertNotNull(result.getId());
 		assertNotNull(result.getStyle());
 		
-		Collection ButtonCollection = result.getButtonCollection();
-		assertEquals(true, ButtonCollection.size()>0);
+		Collection buttonCollection = result.getButtonCollection();
+		assertEquals(true, buttonCollection.size()>0);
 		
-		Iterator j = ButtonCollection.iterator();
-		Button Button = (Button)j.next();
-		assertNotNull(Button);
-		assertNotNull(Button.getId());
-		assertNotNull(Button.getHoles());
-		assertEquals(new Integer(1),Button.getId());
+		Iterator j = buttonCollection.iterator();
+		Button button = (Button)j.next();
+		assertNotNull(button);
+		assertNotNull(button.getId());
+		assertNotNull(button.getHoles());
+		assertEquals(new Integer(1),button.getId());
 	}
 
 	/**

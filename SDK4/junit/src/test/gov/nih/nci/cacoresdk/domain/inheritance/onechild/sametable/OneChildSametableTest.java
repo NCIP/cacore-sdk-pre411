@@ -67,6 +67,7 @@ public class OneChildSametableTest extends SDKTestBase
 			Note result = (Note)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getCountry());			
 			assertNotNull(result.getValue());
 		}
 	}

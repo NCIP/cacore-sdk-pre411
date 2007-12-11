@@ -144,8 +144,6 @@ public class M2MBidirectionalTest extends SDKTestBase
 		
 		Project project = (Project)j.next();
 		assertNotNull(project);
-		
-		assertNotNull(project);
 		assertNotNull(project.getId());
 		assertNotNull(project.getName());
 		assertEquals(new Integer(1),project.getId());
@@ -175,8 +173,6 @@ public class M2MBidirectionalTest extends SDKTestBase
 		Iterator i = results.iterator();
 		
 		Project project = (Project)i.next();
-		assertNotNull(project);
-		
 		assertNotNull(project);
 		assertNotNull(project.getId());
 		assertNotNull(project.getName());

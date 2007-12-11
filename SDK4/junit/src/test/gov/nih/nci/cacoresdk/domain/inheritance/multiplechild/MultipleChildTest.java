@@ -198,33 +198,6 @@ public class MultipleChildTest extends SDKTestBase
 	 */
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
-		Student searchObject = new Student();
-		searchObject.setName("Student_Name1");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.UndergraduateStudent",searchObject );
-
-		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		for(Iterator i = results.iterator();i.hasNext();)
-		{
-			UndergraduateStudent result = (UndergraduateStudent)i.next();
-			assertNotNull(result);
-			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-		}
-	}
-
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationNestedSearch1() throws ApplicationException
-	{
 		UndergraduateStudent searchObject = new UndergraduateStudent();
 		searchObject.setName("Student_Name8");
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.Student",searchObject );
@@ -233,6 +206,7 @@ public class MultipleChildTest extends SDKTestBase
 		assertEquals(0,results.size());
 	}
 
+	
 	/**
 	 * Uses CQL Search Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
@@ -269,7 +243,7 @@ public class MultipleChildTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch2() throws ApplicationException
+	public void testAssociationNestedSearch1() throws ApplicationException
 	{
 		UndergraduateStudent searchObject = new UndergraduateStudent();
 		searchObject.setName("Student_Name2");
@@ -295,7 +269,7 @@ public class MultipleChildTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch3() throws ApplicationException
+	public void testAssociationNestedSearch2() throws ApplicationException
 	{
 		Student searchObject = new Student();
 		searchObject.setName("Student_Name6");
@@ -321,7 +295,7 @@ public class MultipleChildTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch4() throws ApplicationException
+	public void testAssociationNestedSearch3() throws ApplicationException
 	{
 		GraduateStudent searchObject = new GraduateStudent();
 		searchObject.setName("Student_Name7");

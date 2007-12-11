@@ -377,4 +377,56 @@ public class O2OBidirectionalTest extends SDKTestBase
 		assertNull(result.getProduct());
 		
 	}
+	
+	public void testGetAssociation1() throws ApplicationException
+	{
+
+		Product searchObject = new Product();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product",searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.size());
+		
+		OrderLine line;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Product result = (Product)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getName());
+			
+			if (result.getId() < 3){ // Product id = 3 does not have an associated Orderline			
+				line = result.getLine();
+				assertNotNull(line);
+				assertNotNull(line.getId());
+				assertNotNull(line.getName());
+			}
+		}
+	}
+	
+	public void testGetAssociation2() throws ApplicationException
+	{
+
+		OrderLine searchObject = new OrderLine();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.OrderLine",searchObject );
+
+		assertNotNull(results);
+		assertEquals(5,results.size());
+		
+		Product product;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			OrderLine result = (OrderLine)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getName());
+			
+			if (result.getId() < 3){ // OrderLine id = 3,4, and 5 don't have an associated Product
+				product = result.getProduct();
+				assertNotNull(product);
+				assertNotNull(product.getId());
+				assertNotNull(product.getName());
+			}
+		}
+	}		
 }

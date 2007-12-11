@@ -1,10 +1,7 @@
 package test.gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Song;
 import gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Album;
+import gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Song;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
@@ -12,11 +9,14 @@ import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
 public class M2OUnidirectionalWJoinTest extends SDKTestBase
 {
-	public static String getTestCaseTitle()
+	public static String getTestCaseName()
 	{
 		return "Many to One Unidirectional With Join Test Case";
 	}
@@ -164,11 +164,11 @@ public class M2OUnidirectionalWJoinTest extends SDKTestBase
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Album Album = (Album)i.next();
-		assertNotNull(Album);
-		assertNotNull(Album.getId());
-		assertNotNull(Album.getTitle());
-		assertEquals(new Integer(1),Album.getId());
+		Album album = (Album)i.next();
+		assertNotNull(album);
+		assertNotNull(album.getId());
+		assertNotNull(album.getTitle());
+		assertEquals(new Integer(1),album.getId());
 	}
 	
 
@@ -244,5 +244,32 @@ public class M2OUnidirectionalWJoinTest extends SDKTestBase
 		assertNotNull(Song.getId());
 		assertNotNull(Song.getTitle());
 		assertEquals(new Integer(2),Song.getAlbum().getId());
+	}
+	
+	public void testGetAssociation() throws ApplicationException
+	{
+
+		Song searchObject = new Song();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.withjoin.Song",searchObject );
+
+		assertNotNull(results);
+		assertEquals(12,results.size());
+		
+		Album album;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Song result = (Song)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getTitle());
+			
+			if (result.getId() != 12) { //Song id=12 has no Album associated with it
+				album = result.getAlbum();
+				assertNotNull(album);
+				assertNotNull(album.getId());
+				assertNotNull(album.getTitle());
+			}
+
+		}
 	}	
 }

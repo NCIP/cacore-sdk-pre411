@@ -143,11 +143,11 @@ public class M2MUnidirectionalTest extends SDKTestBase
 		assertEquals(true, authorCollection.size()==1);
 		
 		Iterator j = authorCollection.iterator();
-		Author key = (Author)j.next();
-		assertNotNull(key);
-		assertNotNull(key.getId());
-		assertNotNull(key.getName());
-		assertEquals(new Integer(1),key.getId());
+		Author author = (Author)j.next();
+		assertNotNull(author);
+		assertNotNull(author.getId());
+		assertNotNull(author.getName());
+		assertEquals(new Integer(1),author.getId());
 	}
 
 	/**
@@ -169,11 +169,11 @@ public class M2MUnidirectionalTest extends SDKTestBase
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Author key = (Author)i.next();
-		assertNotNull(key);
-		assertNotNull(key.getId());
-		assertNotNull(key.getName());
-		assertEquals(new Integer(1),key.getId());
+		Author author = (Author)i.next();
+		assertNotNull(author);
+		assertNotNull(author.getId());
+		assertNotNull(author.getName());
+		assertEquals(new Integer(1),author.getId());
 	}
 	
 
@@ -244,10 +244,10 @@ public class M2MUnidirectionalTest extends SDKTestBase
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Author key = (Author)i.next();
-		assertNotNull(key);
-		assertNotNull(key.getId());
-		assertNotNull(key.getName());
-		assertEquals(new Integer(1),key.getId());
+		Author author = (Author)i.next();
+		assertNotNull(author);
+		assertNotNull(author.getId());
+		assertNotNull(author.getName());
+		assertEquals(new Integer(1),author.getId());
 	}	
 }

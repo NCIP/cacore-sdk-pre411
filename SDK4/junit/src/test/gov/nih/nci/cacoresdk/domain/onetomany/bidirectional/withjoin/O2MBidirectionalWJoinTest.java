@@ -1,16 +1,16 @@
 package test.gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger;
 import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight;
+import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
@@ -94,8 +94,8 @@ public class O2MBidirectionalWJoinTest extends SDKTestBase
 		assertNotNull(result.getId());
 		assertNotNull(result.getDestination());
 		
-		Collection PassangerCollection = result.getPassangerCollection();
-		assertEquals(0,PassangerCollection.size());
+		Collection passangerCollection = result.getPassangerCollection();
+		assertEquals(0,passangerCollection.size());
 	}
 
 	/**
@@ -143,13 +143,12 @@ public class O2MBidirectionalWJoinTest extends SDKTestBase
 		Collection PassangerCollection = result.getPassangerCollection();
 		Iterator j = PassangerCollection.iterator();
 		
-		Passanger Passanger = (Passanger)j.next();
-		assertNotNull(Passanger);
+		Passanger passanger = (Passanger)j.next();
+		assertNotNull(passanger);
 		
-		assertNotNull(Passanger);
-		assertNotNull(Passanger.getId());
-		assertNotNull(Passanger.getName());
-		assertEquals(new Integer(1),Passanger.getId());
+		assertNotNull(passanger.getId());
+		assertNotNull(passanger.getName());
+		assertEquals(new Integer(1),passanger.getId());
 	}
 
 	/**
@@ -310,5 +309,29 @@ public class O2MBidirectionalWJoinTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(0,results.size());
 	}	
+	
+	public void testGetAssociation() throws ApplicationException
+	{
+
+		Passanger searchObject = new Passanger();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger",searchObject );
+
+		assertNotNull(results);
+		assertEquals(2,results.size());
+		
+		Flight flight;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Passanger result = (Passanger)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getName());
+			
+			flight = result.getFlight();
+			assertNotNull(flight);
+			assertNotNull(flight.getId());
+			assertNotNull(flight.getDestination());
+		}
+	}		
 	
 }

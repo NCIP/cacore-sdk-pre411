@@ -68,6 +68,7 @@ public class OneChildTest extends SDKTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getDiet());
+			assertNotNull(result.getHairColor());
 		}
 	}
 

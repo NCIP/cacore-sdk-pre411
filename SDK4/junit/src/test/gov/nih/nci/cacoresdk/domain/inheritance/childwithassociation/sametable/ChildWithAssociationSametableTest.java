@@ -68,6 +68,7 @@ public class ChildWithAssociationSametableTest extends SDKTestBase
 			SportsShoes result = (SportsShoes)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
+			assertNotNull(result.getColor());
 			assertNotNull(result.getSportsType());
 		}
 	}
@@ -94,6 +95,38 @@ public class ChildWithAssociationSametableTest extends SDKTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getColor());
+		}
+	}
+	
+	/**
+	 * Uses Nested Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testGetAssociation() throws ApplicationException
+	{
+		DesignerShoes searchObject = new DesignerShoes();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.DesignerShoes",searchObject );
+
+		assertNotNull(results);
+		assertEquals(2,results.size());
+		
+		Designer designer;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			DesignerShoes result = (DesignerShoes)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getColor());
+			
+			designer = result.getDesigner();
+			
+			assertNotNull(designer);
+			assertNotNull(designer.getId());
+			assertNotNull(designer.getName());
 		}
 	}
 	
@@ -259,30 +292,6 @@ public class ChildWithAssociationSametableTest extends SDKTestBase
 		assertEquals(0,results.size());
 	}
 
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationNestedSearch1() throws ApplicationException
-	{
-		Shoes searchObject = new Shoes();
-		searchObject.setColor("Red");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.SportsShoes",searchObject );
-
-		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		SportsShoes result = (SportsShoes)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(2), result.getId());
-	}
-
 	/**
 	 * Uses CQL Search Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
@@ -310,7 +319,30 @@ public class ChildWithAssociationSametableTest extends SDKTestBase
 		assertEquals(0,results.size());
 		
 	}
-	
+		
+	/**
+	 * Uses Nested Search Criteria for inheritance as association in search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testAssociationNestedSearch1() throws ApplicationException
+	{
+		Shoes searchObject = new Shoes();
+		searchObject.setColor("Red");
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.SportsShoes",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		SportsShoes result = (SportsShoes)results.iterator().next();
+		assertNotNull(result);
+		assertNotNull(result.getId());
+		assertEquals(new Integer(2), result.getId());
+	}
+
 	/**
 	 * Uses Nested Search Criteria for inheritance as association in search
 	 * Verifies that the results are returned 

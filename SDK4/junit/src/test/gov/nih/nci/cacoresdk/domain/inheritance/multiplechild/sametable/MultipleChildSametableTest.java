@@ -199,39 +199,15 @@ public class MultipleChildSametableTest extends SDKTestBase
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
 		Organization searchObject = new Organization();
-		searchObject.setName("Public Org Name");
+		searchObject.setName("Private Org Name");// No such GovtOrganization row exists
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.GovtOrganization",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		for(Iterator i = results.iterator();i.hasNext();)
-		{
-			GovtOrganization result = (GovtOrganization)i.next();
-			assertNotNull(result);
-			assertNotNull(result.getId());
-			assertNotNull(result.getName());
-		}
-	}
-
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationNestedSearch1() throws ApplicationException
-	{
-		GovtOrganization searchObject = new GovtOrganization();
-		searchObject.setName("Invalid Name");
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.Organization",searchObject );
-
-		assertNotNull(results);
 		assertEquals(0,results.size());
+	
 	}
+
+
 
 	/**
 	 * Uses CQL Search Criteria for inheritance as association in search
@@ -269,7 +245,7 @@ public class MultipleChildSametableTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch2() throws ApplicationException
+	public void testAssociationNestedSearch1() throws ApplicationException
 	{
 		GovtOrganization searchObject = new GovtOrganization();
 		searchObject.setName("Public Org Name");
@@ -295,7 +271,7 @@ public class MultipleChildSametableTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch3() throws ApplicationException
+	public void testAssociationNestedSearch2() throws ApplicationException
 	{
 		Organization searchObject = new Organization();
 		searchObject.setName("Private Org Name");
@@ -321,7 +297,7 @@ public class MultipleChildSametableTest extends SDKTestBase
 	 * 
 	 * @throws ApplicationException
 	 */
-	public void testAssociationNestedSearch4() throws ApplicationException
+	public void testAssociationNestedSearch3() throws ApplicationException
 	{
 		PvtOrganization searchObject = new PvtOrganization();
 		searchObject.setName("Private Org Name");
@@ -480,4 +456,5 @@ public class MultipleChildSametableTest extends SDKTestBase
 			assertNotNull(result.getName());
 		}
 	}
+	
 }

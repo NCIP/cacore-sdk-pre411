@@ -1,17 +1,17 @@
 package test.gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child;
 import gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Parent;
 import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.dao.QueryException;
 import gov.nih.nci.system.query.cql.CQLAssociation;
 import gov.nih.nci.system.query.cql.CQLAttribute;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
+
+import java.util.Collection;
+import java.util.Iterator;
+
 import test.gov.nih.nci.cacoresdk.SDKTestBase;
 
 public class O2OMultipleAssociationTest extends SDKTestBase
@@ -322,6 +322,36 @@ public class O2OMultipleAssociationTest extends SDKTestBase
 		assertNotNull(parent.getId());
 		assertNotNull(parent.getName());
 		assertEquals(new Integer(2),parent.getId());
-	}		
+	}	
+	
+	public void testGetAssociation() throws ApplicationException
+	{
 
+		Child searchObject = new Child();
+		searchObject.setId(2);// A Child with both a Mother and Father
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.Child",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		Parent father;
+		Parent mother;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Child result = (Child)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getName());
+			
+			father = result.getFather();
+			assertNotNull(father);
+			assertNotNull(father.getId());
+			assertNotNull(father.getName());
+			
+			mother = result.getMother();
+			assertNotNull(mother);
+			assertNotNull(mother.getId());
+			assertNotNull(mother.getName());
+		}
+	}
 }

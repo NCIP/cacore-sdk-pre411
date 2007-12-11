@@ -254,4 +254,30 @@ public class O2OUnidirectionalWJoinTest extends SDKTestBase
 		assertNotNull(handle.getColor());
 		assertEquals(new Integer(1),handle.getId());
 	}	
+	
+	public void testGetAssociation() throws ApplicationException
+	{
+
+		Bag searchObject = new Bag();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetoone.unidirectional.withjoin.Bag",searchObject );
+
+		assertNotNull(results);
+		assertEquals(11,results.size());
+		
+		Handle handle;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Bag result = (Bag)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getStyle());
+			
+			if (result.getId() < 11){
+				handle = result.getHandle();
+				assertNotNull(handle);
+				assertNotNull(handle.getId());
+				assertNotNull(handle.getColor());
+			}
+		}
+	}	
 }
