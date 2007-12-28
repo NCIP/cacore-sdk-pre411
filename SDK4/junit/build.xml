@@ -19,6 +19,8 @@
 	<property name="output.dir.xsd-client" value="${output.dir}/xsd-client" />
 	<property name="output.dir.xml-mapping-client" value="${output.dir}/xml-mapping-client" />
 	<property name="output.dir.xml-data-client" value="${output.dir}/xml-data-client" />
+	<property name="output.dir.security-thick-client" value="${output.dir}/security-client/thick-client" />
+	<property name="output.dir.remote-security-client" value="${output.dir}/security-client/remote-client" />
 	
 	<!--***********************************************************************
 	*** Classpath entries
@@ -103,6 +105,7 @@
 			<delete dir="@{junitOutputDir}"/>
 			<mkdir dir="@{junitOutputDir}"/>
 			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
+				<sysproperty key="java.security.auth.login.config" value="./conf/local.config" />
 				<classpath>
 					<path refid="@{junitClasspath}"/>
 				</classpath>
@@ -161,6 +164,7 @@
 			<exclude name="**/*XSD*.java"/>	
 			<exclude name="**/*XMLMapping*.java"/>
 			<exclude name="**/*XMLData*.java"/>
+			<exclude name="**/*Security*.java"/>
 			<include name="**/*.java" />
 			<classpath refid="thick-client-cp"/>
 		</javac>
@@ -198,6 +202,31 @@
 		<SDKGenerateReport junitOutputDir="${output.dir.thick-client}"/>
 	</target>
 	
+	
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnits for Security client using the Thick Client            -->
+	<!-- ************************************************************************************************-->
+	
+	<target name="runSecurityThickClientTest" depends="clean-classes,createDir,runSecurityThickClientJUnit,stop" description="Run JUnits for XSD Client "/>
+	
+	<target name="runSecurityThickClientJUnit">
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*Security*.java"/>
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${output.dir.security-thick-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${output.dir.security-thick-client}"/>
+	</target>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnits for Security client using the Remote Client            -->
+	<!-- ************************************************************************************************-->
+	
+	<target name="runSecurityRemoteClientTest" depends="clean-classes,createDir,runSecurityRemoteClientJUnit,stop" description="Run JUnits for XSD Client "/>
+	
+	<target name="runSecurityRemoteClientJUnit">
+		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*Security*.java"/>
+		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${output.dir.remote-security-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${output.dir.remote-security-client}"/>
+	</target>	
+	
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for Schema (XSD) client 	                             -->
 	<!-- ************************************************************************************************-->
@@ -211,7 +240,7 @@
 	</target>
 
 	<!-- ************************************************************************************************-->
-	<!--                                Run JUnits for XML Mapping (Castor) client 	                             -->
+	<!--                                Run JUnits for XML Mapping (Castor) client 	                     -->
 	<!-- ************************************************************************************************-->
 	
 	<target name="runXMLMappingClientTest" depends="clean-classes,createDir,runXMLMappingClientJUnit,stop" description="Run JUnits for XML Mapping Client "/>
