@@ -221,8 +221,10 @@
 	*********************************************************************** -->
 	<target name="codegen" depends="prepare-codegen,init" description="Runs the Code Generator">
 		<SDKecho message="${ant.project.name}: Running the code generator"/>
-		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true">
+		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true" >
 			<arg value="${codegen.config.file}" />
+			<jvmarg value="-Xms256M" />
+			<jvmarg value="-Xmx1536M" />
 			<classpath refid="codegen.runtime" />
 		</java>
 	</target>
