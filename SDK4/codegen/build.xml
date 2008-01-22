@@ -34,7 +34,7 @@
 	*** Prepares the directory structure
 	*********************************************************************** -->
 	<target name="init" >
-		<SDKecho message="${ant.project.name}: Preparing directories"/>
+		<SDKecho message="${ant.project.name}: Preparing codegen directories"/>
 		<mkdir dir="${build.classes.dir}"/>
 		<mkdir dir="${dist.dir}"/>
 	</target>
@@ -100,4 +100,11 @@
 		</copy>
 	</target>
 	
+	<!--***********************************************************************
+	*** Dumps the current Code Generator properties  
+	*********************************************************************** -->
+	<target name="show-properties" description="Dumps a list of all currently set Code Generator properties">
+		<echoproperties destfile="antproperties-codegen.txt"/>
+		<echo>Properties were dumped to 'antproperties-codegen.txt'</echo>
+	</target>
 </project>
