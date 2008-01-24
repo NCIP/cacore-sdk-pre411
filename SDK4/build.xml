@@ -224,7 +224,7 @@
 		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true" >
 			<arg value="${codegen.config.file}" />
 			<jvmarg value="-Xms256M" />
-			<jvmarg value="-Xmx1536M" />
+			<jvmarg value="-Xmx512M" />
 			<classpath refid="codegen.runtime" />
 		</java>
 	</target>
