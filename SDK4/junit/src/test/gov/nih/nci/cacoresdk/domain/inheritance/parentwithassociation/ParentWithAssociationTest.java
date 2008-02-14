@@ -523,6 +523,7 @@ public class ParentWithAssociationTest extends SDKTestBase
 		CQLAssociation association = new CQLAssociation();
 		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
 		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Assistant_Name1"));
+		association.setTargetRoleName("assistantCollection");
 		
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
 		target.setAssociation(association);
@@ -555,7 +556,8 @@ public class ParentWithAssociationTest extends SDKTestBase
 
 		CQLAssociation association = new CQLAssociation();
 		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant");
-		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Assistant_Name3"));
+		association.setAttribute(new CQLAttribute("name", CQLPredicate.EQUAL_TO,"Assistant_Name4"));
+		association.setTargetRoleName("assistantCollection");
 		
 		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor");
 		target.setAssociation(association);
@@ -569,6 +571,6 @@ public class ParentWithAssociationTest extends SDKTestBase
 		AssociateProfessor result = (AssociateProfessor)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertEquals(new Integer(3), result.getId());
+		assertEquals(new Integer(6), result.getId());
 	}
 }

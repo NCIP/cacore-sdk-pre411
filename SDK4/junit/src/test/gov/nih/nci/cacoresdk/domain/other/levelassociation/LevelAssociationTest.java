@@ -69,7 +69,6 @@ public class LevelAssociationTest extends SDKTestBase
 			Card result = (Card)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getImage());
 			assertNotNull(result.getName());			
 		}
 	}
