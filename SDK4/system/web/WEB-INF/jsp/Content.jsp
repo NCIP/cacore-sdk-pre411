@@ -2,7 +2,7 @@
 <%@ page import="gov.nih.nci.system.web.util.JSPUtils"%>
 <%
 	JSPUtils jspUtils= JSPUtils.getJSPUtils(config.getServletContext());
-	boolean isSecurityEnabled = jspUtils.isSecurityEnabled();;
+	boolean isSecurityEnabled = jspUtils.isSecurityEnabled();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
