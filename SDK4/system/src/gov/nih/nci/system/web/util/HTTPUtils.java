@@ -122,7 +122,7 @@ public class HTTPUtils implements Serializable{
 	}
 
 	/**
-	 * Sets argument values based on a given queryTest
+	 * Sets argument values based on a given queryText
 	 * @param queryText - http query
 	 * @throws Exception
 	 */
@@ -335,17 +335,20 @@ public class HTTPUtils implements Serializable{
 
 	public List<String> getSearchCriteriaList(String criteria){
 		List<String> criteriaList = new ArrayList<String>();
-		String delimiter = null;
-		if(criteria.indexOf(SystemConstant.FORWARD_SLASH)>0){
-			delimiter = SystemConstant.FORWARD_SLASH_STR;
-		}
-		else {
-			delimiter = SystemConstant.BACK_SLASH;
-		}
-		for(StringTokenizer st = new StringTokenizer(criteria, delimiter); st.hasMoreElements();){
-			String crit = st.nextToken().trim();
-			criteriaList.add(crit);
-		}
+		criteriaList.add(criteria);
+		// Fix for [#8951] GetHTML query syntax does not support slashes in the criteria
+//		String delimiter = null;
+//		
+//		if(criteria.indexOf(SystemConstant.FORWARD_SLASH)>0){
+//			delimiter = SystemConstant.FORWARD_SLASH_STR;
+//		}
+//		else {
+//			delimiter = SystemConstant.BACK_SLASH;
+//		}
+//		for(StringTokenizer st = new StringTokenizer(criteria, delimiter); st.hasMoreElements();){
+//			String crit = st.nextToken().trim();
+//			criteriaList.add(crit);
+//		}
 		return criteriaList;
 	}
 
