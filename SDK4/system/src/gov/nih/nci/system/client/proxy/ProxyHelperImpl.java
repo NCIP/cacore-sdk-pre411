@@ -143,8 +143,9 @@ public class ProxyHelperImpl implements ProxyHelper
 				break;;
 			klass = klass.getSuperclass();
 		}
-		if(method==null) 
-			log.debug("Error: method not found for methodName: " + methodName);
+		if(method==null) {
+			log.debug("Method not found for methodName: " + methodName);
+		}
 		return method;
 	}
 
@@ -164,8 +165,9 @@ public class ProxyHelperImpl implements ProxyHelper
 				break;;
 			klass = klass.getSuperclass();
 		}
-		if(field==null) 
-			log.debug("Error: field not found for fieldName: " + fieldName);
+		if(field==null) {
+			log.debug("Field not found for fieldName: " + fieldName);
+		}
 		return field;
 	}
 
