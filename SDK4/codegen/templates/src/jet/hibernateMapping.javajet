@@ -2,6 +2,7 @@
         class="HibernateMappingTransformer"
         skeleton="ParentClassTransformerBase.skeleton" %>
 <%UMLAttribute idAttr = TransformerUtils.getClassIdAttr(klass);
+String abstractModifier = TransformerUtils.isAbstract(klass) ? "true" : "false";
 String fqcn = TransformerUtils.getFQCN(klass);
 UMLClass table = TransformerUtils.getTable(klass);
 String emptySpace = TransformerUtils.getEmptySpace(level);
@@ -10,7 +11,7 @@ if(level == 0){%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="<%=TransformerUtils.getFullPackageName(klass)%>">
-	<class name="<%=klass.getName()%>" table="<%=table.getName()%>" lazy="true" polymorphism="explicit">
+	<class name="<%=klass.getName()%>" table="<%=table.getName()%>" lazy="true" polymorphism="explicit" abstract="<%=abstractModifier %>">
 		<cache usage="read-write" />
 		<id name="<%=idAttr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(klass,idAttr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+idAttr.getName())%>">
 			<generator class="assigned" />

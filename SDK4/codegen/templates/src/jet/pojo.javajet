@@ -6,7 +6,7 @@ package <%=TransformerUtils.getFullPackageName(klass)%>;
 <%=TransformerUtils.getImports(klass)%>
 import java.io.Serializable;
 <%=TransformerUtils.getJavaDocs(klass)%>
-public class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)%> implements Serializable
+public<%=TransformerUtils.isAbstract(klass)? " abstract" : "" %> class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)%> implements Serializable<%=TransformerUtils.getInterfaceString(klass)%>
 {
 	/**
 	* An attribute to allow serialization of the domain objects
