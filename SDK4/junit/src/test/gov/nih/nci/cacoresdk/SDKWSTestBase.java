@@ -31,8 +31,14 @@ public abstract class SDKWSTestBase extends TestCase {
 		super.tearDown();
 	}
 	
+	
 	protected Object[] getQueryObjectResults(Class targetClass, Object criteria) throws Exception
 	{
+		return getQueryObjectResults(targetClass.getName(), criteria);
+	}
+	protected Object[] getQueryObjectResults(String targetClass, Object criteria) throws Exception
+	{
+
 		Service service = new Service();
 		Call call = (Call) service.createCall();
 
@@ -54,7 +60,7 @@ public abstract class SDKWSTestBase extends TestCase {
 					new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
 		}
 		
-		Object[] results = (Object[])call.invoke(new Object[] { targetClass.getName(), criteria });
+		Object[] results = (Object[])call.invoke(new Object[] { targetClass, criteria });
 		
 		return results;
 		

@@ -220,4 +220,76 @@ public class LevelAssociationWSTest extends SDKWSTestBase
 			assertNotNull(result.getName());			
 		}			
 	}
+
+	/**
+	 * Uses Nested Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testOneLevelAssociationNestedSearch2() throws Exception
+	{
+		Hand searchObject = new Hand();
+		searchObject.setId(new Integer(1));
+		Object[] results = getQueryObjectResults("gov.nih.nci.cacoresdk.domain.other.levelassociation.Card,gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand",searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.length);
+		
+		for(Object obj : results)
+		{
+			Card result = (Card)obj;
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
+	}
+
+	/**
+	 * Uses Nested Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testTwoLevelAssociationNestedSearch() throws Exception
+	{
+		Hand searchObject = new Hand();
+		searchObject.setId(new Integer(1));
+		Object[] results = getQueryObjectResults("gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit,gov.nih.nci.cacoresdk.domain.other.levelassociation.Card",searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.length);
+		
+		for(Object obj : results)
+		{
+			Suit result = (Suit)obj;
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
+	}
+
+	/**
+	 * Uses Nested Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testThreeLevelAssociationNestedSearch() throws Exception
+	{
+		Hand searchObject = new Hand();
+		searchObject.setId(new Integer(1));
+		Object[] results = getQueryObjectResults("gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck,gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit,gov.nih.nci.cacoresdk.domain.other.levelassociation.Card",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.length);
+		
+		for(Object obj : results)
+		{
+			Deck result = (Deck)obj;
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
+	}	
 }
