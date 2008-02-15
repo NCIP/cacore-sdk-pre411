@@ -2,6 +2,7 @@ package test.gov.nih.nci.cacoresdk.domain.inheritance;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.AbstractParentWithAssociationWSTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.ChildWithAssociationWSTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.ChildWithAssociationSametableWSTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.MultipleChildWSTest;
@@ -19,6 +20,7 @@ public class InheritanceWSSuite
 	public static Test suite()
 	{
 		TestSuite suite = new TestSuite("Test for Inheritance WS package");
+		suite.addTest(new TestSuite(AbstractParentWithAssociationWSTest.class,AbstractParentWithAssociationWSTest.getTestCaseName()));
 		suite.addTest(new TestSuite(OneChildWSTest.class,OneChildWSTest.getTestCaseName()));
 		suite.addTest(new TestSuite(OneChildSametableWSTest.class,OneChildSametableWSTest.getTestCaseName()));
 		suite.addTest(new TestSuite(TwoLevelInheritanceWSTest.class,TwoLevelInheritanceWSTest.getTestCaseName()));

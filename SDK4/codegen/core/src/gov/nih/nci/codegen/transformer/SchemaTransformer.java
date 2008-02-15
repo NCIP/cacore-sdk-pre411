@@ -223,6 +223,11 @@ public class SchemaTransformer implements Transformer {
 		Element classEl = new Element("element", w3cNS);
 		classEl.setAttribute("name",klass.getName());
 		classEl.setAttribute("type", klass.getName());
+		
+		if (TransformerUtils.isAbstract(klass)){
+			classEl.setAttribute("abstract", "true");
+		}
+		
 		mappingEl.addContent(classEl);
 		Element classE2 = new Element("complexType", w3cNS);
 

@@ -1,5 +1,8 @@
-package test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation;
+package test.gov.nih.nci.cacoresdk.domain.inheritance.abstrakt;
 
+import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.PrivateTeacher;
+import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Pupil;
+import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Teacher;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor;
@@ -8,23 +11,23 @@ import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredPro
 
 import org.jdom.Document;
 
-import test.gov.nih.nci.cacoresdk.SDKXMLMappingTestBase;
+import test.gov.nih.nci.cacoresdk.SDKXSDTestBase;
 
-public class ParentWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
+public class AbstractParentWithAssociationXSDTest extends SDKXSDTestBase
 {
 	
 	private Document doc = null;
 	
 	public static String getTestCaseName()
 	{
-		return "Parent With Association XML Mapping Test Case";
+		return "Abstract Parent With Association XSD Test Case";
 	}
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		String xmlMappingFileName = "xml-mapping.xml";
-		doc = getDocument(filepath + xmlMappingFileName);
+		String schemaFileName = "gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.xsd";
+		doc = getDocument(filepath + schemaFileName);
 	}
 
 	public Document getDoc() {
@@ -51,12 +54,14 @@ public class ParentWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	 */
 	public void testClassElement1() throws Exception
 	{
-		Class targetClass = Professor.class;
+		Class targetClass = Teacher.class;
 
-		validateClassElements(targetClass,"id");
+		validateClassElements(targetClass);
 
-		validateFieldElement(targetClass, "id", "Integer");
-		validateFieldElement(targetClass, "name", "String");	
+		validateAttributeElement(targetClass, "id", "Integer");
+		validateAttributeElement(targetClass, "name", "String");
+		
+		validateClassIsAbstract(targetClass);
 	}	
 	
 	/**
@@ -68,10 +73,10 @@ public class ParentWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	 */
 	public void testClassElement2() throws Exception
 	{
-		Class targetClass = AssociateProfessor.class;
+		Class targetClass = PrivateTeacher.class;
 
-		validateSubclassElements(targetClass,"id");
-		validateFieldElement(targetClass, "yearsServed","Integer");
+		validateSubclassElements(targetClass);
+		validateSubclassAttributeElement(targetClass, "yearsExperience","Integer");
 
 	}	
 	
@@ -84,42 +89,12 @@ public class ParentWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	 */
 	public void testClassElement3() throws Exception
 	{
-		Class targetClass = TenuredProfessor.class;
+		Class targetClass = Pupil.class;
 
-		validateSubclassElements(targetClass,"id");
-		validateFieldElement(targetClass, "tenuredYear","Integer");
-	}
-	
-	/**
-	 * Verifies that the 'element' and 'complexType' elements 
-	 * corresponding to the Class are present in the XSD
-	 * Verifies that the Class attributes are present in the XSD
-	 * 
-	 * @throws Exception
-	 */
-	public void testClassElement4() throws Exception
-	{
-		Class targetClass = AssistantProfessor.class;
+		validateClassElements(targetClass);
 
-		validateSubclassElements(targetClass,"id");
-		validateFieldElement(targetClass, "joiningYear","Integer");
-	}
-		
-	/**
-	 * Verifies that the 'element' and 'complexType' elements 
-	 * corresponding to the Class are present in the XSD
-	 * Verifies that the Class attributes are present in the XSD
-	 * 
-	 * @throws Exception
-	 */
-	public void testClassElement5() throws Exception
-	{
-		Class targetClass = Assistant.class;
-
-		validateClassElements(targetClass,"id");
-
-		validateFieldElement(targetClass, "id", "Integer");
-		validateFieldElement(targetClass, "name", "String");	
+		validateAttributeElement(targetClass, "id", "Integer");
+		validateAttributeElement(targetClass, "name", "String");	
 	}	
 	
 	/**
@@ -131,9 +106,9 @@ public class ParentWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	 */
 	public void testAssociationElements() throws Exception
 	{
-		Class targetClass = Professor.class;
-		Class associatedClass = Assistant.class;
+		Class targetClass = Teacher.class;
+		Class associatedClass = Pupil.class;
 
-		validateClassAssociationElements(targetClass, associatedClass, "assistantCollection",true);
+		validateClassAssociationElements(targetClass, associatedClass, "pupilCollection","0","unbounded");
 	}	
 }

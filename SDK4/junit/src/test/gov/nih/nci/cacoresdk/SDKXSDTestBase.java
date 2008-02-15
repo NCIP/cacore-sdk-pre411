@@ -123,7 +123,13 @@ public abstract class SDKXSDTestBase extends TestCase {
 		List<Element> elts = queryXSD(doc, xpath);
 		assertEquals(1, elts.size());
 		Element klassElt = elts.get(0);
-		assertEquals(2, klassElt.getAttributes().size());
+		
+		if (!(null == klassElt.getAttribute("abstract")) && klassElt.getAttributeValue("abstract").equals("true")){
+			assertEquals(3, klassElt.getAttributes().size());
+		} else{
+			assertEquals(2, klassElt.getAttributes().size());
+		}
+		
 		assertTrue(klassElt.getAttributeValue("name").equals(klassName));
 		assertTrue(klassElt.getAttributeValue("type").equals(klassName));
 
@@ -134,6 +140,29 @@ public abstract class SDKXSDTestBase extends TestCase {
 		Element complexTypeElt = elts.get(0);
 		assertEquals(1, complexTypeElt.getAttributes().size());
 		assertTrue(complexTypeElt.getAttributeValue("name").equals(klassName));
+	}
+	
+	/**
+	 * Uses xpath to query the generated XSD Verifies that common elements
+	 * attributes(name, type) are present Verifies that the element 'name'
+	 * attribute matches the class name
+	 * 
+	 * @throws Exception
+	 */
+	public void validateClassIsAbstract(Class klass)
+	throws Exception {
+
+		Document doc = getDoc();
+
+		String klassName = klass.getSimpleName();
+		String xpath = "/xs:schema/xs:element[@name='" + klassName + "']";
+
+		List<Element> elts = queryXSD(doc, xpath);
+		assertEquals(1, elts.size());
+		Element klassElt = elts.get(0);
+		
+		assertNotNull(klassElt.getAttributeValue("abstract"));
+		assertTrue(klassElt.getAttributeValue("abstract").equals("true"));
 	}
 
 	/**
