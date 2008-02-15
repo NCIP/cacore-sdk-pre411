@@ -17,6 +17,7 @@
 			<list>
 				<ref bean="HibernateMappingTransformer"/>
 				<ref bean="BeanTransformer"/>
+				<ref bean="InterfaceTransformer"/>
 				<ref bean="EHCacheTransformer"/>
 				<ref bean="HibernateCfgTransformer"/>
 				<ref bean="XmlMappingMarshallerTransformer"/>
@@ -85,6 +86,18 @@
 		</property>
 		<property name="enabled" value="@GENERATE_BEANS@"/>
 		<property name="name" value="Bean Transformer"/>		
+	</bean>
+	
+	<bean name="InterfaceTransformer" class="gov.nih.nci.codegen.transformer.jet.InterfaceTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="true"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>				
+				<property name="suffix" value=".java"/>									
+			</bean>
+		</property>
+		<property name="enabled" value="@GENERATE_BEANS@"/>
+		<property name="name" value="Interface Transformer"/>		
 	</bean>
 	
 	<bean name="EHCacheTransformer" class="gov.nih.nci.codegen.transformer.jet.EHCacheTransformer">
