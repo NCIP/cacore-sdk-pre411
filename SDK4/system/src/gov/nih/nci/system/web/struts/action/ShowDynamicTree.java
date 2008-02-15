@@ -3,6 +3,7 @@ package gov.nih.nci.system.web.struts.action;
 import gov.nih.nci.system.web.ajax.tree.Category;
 import gov.nih.nci.system.web.util.JSPUtils;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,10 +69,28 @@ public class ShowDynamicTree extends BaseActionSupport {
 							klassName = className;
 						}
 						
-						// id just needs to be unique
-						tmpClassCat = new Category(categoryId++, klassName, packageName, new Category[0]);
+						try {
+							Class klass = Class.forName(className);
+							
+							for (Class interfaze : klass.getInterfaces()){
+								if (!(interfaze.getSimpleName().equalsIgnoreCase("Serializable"))){
+									tmpClassCat = new Category(categoryId++, interfaze.getSimpleName() + " (interface)", packageName, new Category[0]);
+									log.debug("About to add Category: " + tmpClassCat);
+									
+									classes.add(tmpClassCat);
+								}
 
+							}
+							
+							if (Modifier.isAbstract(klass.getModifiers())) {
+								klassName += " (abstract)";
+							}
+
+						} catch (ClassNotFoundException e) {
+							log.error("Trying to determine if class " + klassName + " is abstract, but was not able to find such a class", e);
+						}	
 						
+						tmpClassCat = new Category(categoryId++, klassName, packageName, new Category[0]);
 						log.debug("About to add Category: " + tmpClassCat);
 						
 						classes.add(tmpClassCat);

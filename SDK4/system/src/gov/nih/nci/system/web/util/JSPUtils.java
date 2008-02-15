@@ -117,12 +117,16 @@ public class JSPUtils {
 				}
 
 			}
+		} catch (ClassNotFoundException e) {
+			// Do nothing.  Abstract class names have been purposely modified 
+			// with a " (abstract)" suffix on the UI, and thus are no longer found in the cache
+			// This is intentional; abtract classes cannot be used as a target or 
+			// search criteria object since they cannot be instantiated via Class.forName().newInstance();
+			log.debug("Searchable fields not found for class: " + className + ".  This warning can be safely ignored if the class is abstract.");
 		} catch (Exception e) {
-			log.error("Exception caught: " + e);
-
+			log.error("Exception caught: ", e);
 		}
 		return searchableFields;
-
 	}
 
 	/**
