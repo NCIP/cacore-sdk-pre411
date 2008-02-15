@@ -3,6 +3,7 @@ package gov.nih.nci.codegen.artifact;
 import gov.nih.nci.codegen.Artifact;
 import gov.nih.nci.codegen.util.TransformerUtils;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLInterface;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 
 /**
@@ -44,6 +45,15 @@ public class BaseArtifact implements Artifact
 	 */
 	public void createSourceName(UMLClass klass) {
 		sourceName = TransformerUtils.getFQCN(klass).replace('.','/');
+	}	
+	
+	/**
+	 * Creates the source name for the artifact from the <code>interface</code>
+	 * 
+	 * @param interfaze
+	 */
+	public void createSourceName(UMLInterface interfaze) {
+		sourceName = TransformerUtils.getFQCN(interfaze).replace('.','/');
 	}	
 	
 	
