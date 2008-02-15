@@ -79,10 +79,18 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 	
 		return alteredResults;
 	}
-	
 
 	private List getNestedCriteriaResultSet(String targetClassName, Object searchCriteria, int startIndex) throws Exception{
+		
+		if(targetClassName==null || searchCriteria == null){
+			throw new Exception("Invalid arguments passed over to the server");
+		}
 
+		// Nested Search criteria
+		if (targetClassName.indexOf(',') > 0){ 
+			return applicationService.search(targetClassName, searchCriteria);
+		}
+		
 		List results = new ArrayList();
 		String searchClassName = getSearchClassName(targetClassName);
 
@@ -135,7 +143,6 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 		
 		return alteredResults;
 	}	
-
 
 	private List getHQLResultSet(String targetClassName, Object searchCriteria, int startIndex) throws Exception{
 
