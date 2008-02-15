@@ -8,6 +8,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDatatype;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLInterface;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggableElement;
@@ -16,12 +17,10 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -58,6 +57,7 @@ public class TransformerUtils
 	
 	private static String STEREO_TYPE_TABLE = "table";
 	private static String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
+	private static String STEREO_TYPE_REALIZE_DEPENDENCY = "Realize";
 
 	//private static String TV_TYPE = "type"; -- used to recognize CLOB
 	
@@ -86,11 +86,26 @@ public class TransformerUtils
 		}
 	}
 	
+	
 	public static boolean isIncluded(UMLClass klass)
 	{
 		String fqcn = getFQCN(klass);
 		String pkgName = getFullPackageName(klass);
 		
+		return isIncluded(fqcn, pkgName);
+	}
+	
+	public static boolean isIncluded(UMLInterface interfaze)
+	{
+		String fqcn = getFQCN(interfaze);
+		String pkgName = getFullPackageName(interfaze);
+		
+		return isIncluded(fqcn, pkgName);
+	}
+	
+	public static boolean isIncluded(String fqcn, String pkgName)
+	{
+
 		Set<String> FQCN_PACKAGE_NAMES = new HashSet<String>();		
 		for(String packageToken:fqcn.split("\\.")){
 			FQCN_PACKAGE_NAMES.add(packageToken.trim());
@@ -115,7 +130,7 @@ public class TransformerUtils
 		
 		return included;
 	}
-
+	
 	public static boolean isIncluded(UMLPackage pkg)
 	{
 		String pkgName = getFullPackageName(pkg);
@@ -144,10 +159,14 @@ public class TransformerUtils
 		
 		return spaces;
 	}
-
 	public static String getFQCN(UMLClass klass)
 	{
 		return removeBasePackage(ModelUtil.getFullName(klass));
+	}
+
+	public static String getFQCN(UMLInterface interfaze)
+	{
+		return removeBasePackage(ModelUtil.getFullName(interfaze));
 	}
 
 	public static String getFullPackageName(UMLClass klass)
@@ -155,6 +174,11 @@ public class TransformerUtils
 		return removeBasePackage(ModelUtil.getFullPackageName(klass));
 	}
 
+	public static String getFullPackageName(UMLInterface interfaze)
+	{
+		return removeBasePackage(ModelUtil.getFullPackageName(interfaze));
+	}
+	
 	public static String getFullPackageName(UMLPackage pkg)
 	{
 		return removeBasePackage(ModelUtil.getFullPackageName(pkg));
@@ -196,12 +220,41 @@ public class TransformerUtils
 		else 
 			return "extends " + superClass.getName();
 	}
+	
+	public static UMLInterface[] getInterfaces(UMLClass klass) throws GenerationException
+	{
+		UMLInterface[] interfaces = ModelUtil.getInterfaces(klass);
+
+		if(interfaces.length == 0) {
+			log.debug("*** Getting interface for class " + klass.getName() + ": " + null);
+			return null;
+		}
+
+		log.debug("*** Getting superclass for class " + klass.getName() + ": " + interfaces[0].getName());
+		
+		return interfaces;
+	}	
+	
+	public static String getInterfaceString(UMLClass klass) throws GenerationException
+	{
+		UMLInterface[] interfaces = getInterfaces(klass);
+		if(interfaces == null) 
+			return "";
+		else {
+			String interfaceStr = "";
+			for (UMLInterface interfaze : interfaces){
+				interfaceStr += ", " + interfaze.getName();
+			}
+			return interfaceStr;
+		}
+	}
 
 	public static String getImports(UMLClass klass) throws GenerationException
 	{
 		StringBuilder sb = new StringBuilder();
 		Set<String> importList = new HashSet<String>();
 		UMLClass[] superClasses = ModelUtil.getSuperclasses(klass);
+		UMLInterface[] interfaces = ModelUtil.getInterfaces(klass);
 
 		if(superClasses.length>1)
 			throw new GenerationException("Class can not have more than one super classes");
@@ -212,6 +265,12 @@ public class TransformerUtils
 			String superPkg = getFullPackageName(superClasses[0]);
 			if(!pkgName.equals(superPkg))
 				importList.add(getFQCN(superClasses[0]));
+		}
+		
+		for (UMLInterface interfaze : interfaces) {
+			String interfacePkg = getFullPackageName(interfaze);
+			if (!pkgName.equals(interfacePkg))
+				importList.add(getFQCN(interfaze));
 		}
 		
 		for(UMLAttribute attr: klass.getAttributes())
@@ -472,6 +531,10 @@ public class TransformerUtils
 		return ("1".equalsIgnoreCase(tValue.getValue()));
 	}
 	
+	public static boolean isAbstract(UMLClass klass){	
+		return klass.getAbstractModifier().isAbstract();
+	}
+	
 	public static String getType(UMLAssociationEnd assocEnd){
 		
 		UMLTaggedValue tValue = assocEnd.getTaggedValue("type");
@@ -681,7 +744,42 @@ public class TransformerUtils
 		getAllClasses(rootPkg.getPackages(),classes);
 	}	
 	
+	/**
+	 * Returns all the interfaces in the XMI file which do not belong to java.lang or java.util package 
+	 * @param model
+	 * @return
+	 */
+	public static Collection<UMLInterface> getAllInterfaces(UMLModel model) throws GenerationException
+	{
+		Collection<UMLInterface> interfaces = null;
+		try {
+			interfaces = new HashSet<UMLInterface>();
+			getAllInterfaces(model.getPackages(),interfaces);
+		} catch(Exception e){
+			log.error("Unable to retrieve interfaces from model: ", e);
+			throw new GenerationException("Unable to retrieve interfaces from model: ", e);
+		}
+		return interfaces;
+	}
+	
+	private static void getAllInterfaces(Collection<UMLPackage> pkgCollection,Collection<UMLInterface> interfaces)
+	{
+		for(UMLPackage pkg:pkgCollection)
+			getAllInterfaces(pkg,interfaces);
+	}
 
+	private static void getAllInterfaces(UMLPackage rootPkg,Collection<UMLInterface> interfaces)
+	{
+		if(isIncluded(rootPkg))
+		{
+			for(UMLInterface interfaze:rootPkg.getInterfaces())
+			{
+				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(interfaze.getStereotype()) && isIncluded(interfaze))
+					interfaces.add(interfaze);
+			}
+		}
+		getAllInterfaces(rootPkg.getPackages(),interfaces);
+	}	
 	
 	/**
 	 * Returns all the classes (not the tables) in the XMI file which do not belong to java.lang or java.util package.
@@ -717,8 +815,8 @@ public class TransformerUtils
 
 	/**
 	 * Retrieves the table corresponding to the Dependency link between class and a table. 
-	 * If there are no Dependencies that links the class to table or there are more than
-	 * one Dependencies then in that case the method throws an exception
+	 * If there are no Dependencies that links the class to table or there is more than
+	 * one Dependency then the method throws an exception
 	 *  
 	 * @param klass
 	 * @return
