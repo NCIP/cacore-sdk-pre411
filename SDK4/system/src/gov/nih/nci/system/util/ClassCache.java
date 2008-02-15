@@ -418,15 +418,12 @@ public class ClassCache {
 			String fieldName = field.getName();
 			log.debug("fieldName: " + fieldName);
 			if(!field.getType().isPrimitive()){
-				if(fieldName.endsWith("Collection") || (type.startsWith("java") && type.endsWith("Collection"))){
+				if((type.startsWith("java") && type.endsWith("Collection"))){
 					String roleClassName;
 					String beanName;
-					if(fieldName.endsWith("Collection")){
-						beanName = fieldName.substring(0, fieldName.lastIndexOf("Collection"));
-					} else {
-						beanName = fieldName;
-					} 
-
+					
+					beanName = getReturnType(field.getGenericType().toString());
+					log.debug("*** Class: " + className + "; fieldName: " + fieldName + "; beanName: " + beanName );
 					roleClassName = locateClass(beanName, packageName);
 					log.debug("roleClassName: " + roleClassName);
 					if(roleClassName != null){
