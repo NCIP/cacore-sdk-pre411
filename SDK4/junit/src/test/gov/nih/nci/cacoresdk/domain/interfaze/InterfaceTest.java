@@ -4,8 +4,8 @@ import gov.nih.nci.cacoresdk.domain.interfaze.Canidae;
 import gov.nih.nci.cacoresdk.domain.interfaze.Carnivora;
 import gov.nih.nci.cacoresdk.domain.interfaze.Digitigrade;
 import gov.nih.nci.cacoresdk.domain.interfaze.Dog;
-import gov.nih.nci.cacoresdk.domain.interfaze.Female;
 import gov.nih.nci.cacoresdk.domain.interfaze.Mammalia;
+import gov.nih.nci.cacoresdk.domain.interfaze.Pet;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLQuery;
@@ -104,7 +104,7 @@ public class InterfaceTest extends SDKTestBase
 		List<Class> implementedInterfaces = new ArrayList<Class>();
 		implementedInterfaces.add(Serializable.class);
 		implementedInterfaces.add(Canidae.class);
-		implementedInterfaces.add(Female.class);
+		implementedInterfaces.add(Pet.class);
 		
 		for (Class interfaceKlass : Dog.class.getInterfaces()){
 			assertTrue(implementedInterfaces.contains(interfaceKlass));
@@ -137,14 +137,14 @@ public class InterfaceTest extends SDKTestBase
 	
 	public void testIsInterface5() throws ApplicationException
 	{
-		assertTrue(Modifier.isInterface(Female.class.getModifiers()));
-		assertTrue(Female.class.isInterface());
+		assertTrue(Modifier.isInterface(Pet.class.getModifiers()));
+		assertTrue(Pet.class.isInterface());
 	}
 	
 	public void testInstanceof() throws ApplicationException
 	{
 		Dog dog = new Dog();
-		assertTrue(dog instanceof Female);
+		assertTrue(dog instanceof Pet);
 		assertTrue(dog instanceof Canidae);
 		assertTrue(dog instanceof Carnivora);
 		assertTrue(dog instanceof Digitigrade);
