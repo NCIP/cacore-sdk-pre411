@@ -10,6 +10,7 @@ import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLPredicate;
 import gov.nih.nci.system.query.cql.CQLQuery;
 
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -407,4 +408,9 @@ public class AbstractParentWithAssociationTest extends SDKTestBase
 			}
 		}
 	}	
+	
+	public void testIsAbstract() throws ApplicationException
+	{
+		assertTrue(Modifier.isAbstract(Teacher.class.getModifiers()));
+	}
 }

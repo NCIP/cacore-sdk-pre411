@@ -3,11 +3,11 @@
         skeleton="InterfaceTransformerBase.skeleton" %>
 package <%=TransformerUtils.getFullPackageName(interfaze)%>;
 
-
-public interface <%=interfaze.getName()%>
+<%=TransformerUtils.getJavaDocs(interfaze)%> 
+public interface <%=interfaze.getName()%> <%=TransformerUtils.getSuperInterfaceString(interfaze)%>
 {
 	/**
-	* This is a Marker interface without any behavior
+	* This is a Marker Interface without any behavior
 	*/
 
 }

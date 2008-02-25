@@ -3,11 +3,6 @@ package test.gov.nih.nci.cacoresdk.domain.inheritance.abstrakt;
 import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.PrivateTeacher;
 import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Pupil;
 import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Teacher;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Assistant;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssistantProfessor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.AssociateProfessor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.Professor;
-import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.TenuredProfessor;
 
 import org.jdom.Document;
 

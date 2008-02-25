@@ -221,6 +221,37 @@ public class TransformerUtils
 			return "extends " + superClass.getName();
 	}
 	
+	public static UMLInterface[] getSuperInterface(UMLInterface interfaze) throws GenerationException
+	{
+		UMLInterface[] superInterfaces = ModelUtil.getSuperInterfaces(interfaze);
+
+		if(superInterfaces.length == 0) {
+			log.debug("*** Getting superinterface for interface " + interfaze.getName() + ": " + null);
+			return null;
+		}
+
+		log.debug("*** Getting superinterface for interface " + interfaze.getName() + ": " + superInterfaces[0].getName());
+		
+		return superInterfaces;
+	}	
+	
+	public static String getSuperInterfaceString(UMLInterface interfaze) throws GenerationException
+	{
+		String superInterfaceStr = "extends ";
+		UMLInterface[] superInterfaces = getSuperInterface(interfaze);
+		if(superInterfaces == null) 
+			return "";
+		else {
+			superInterfaceStr += superInterfaces[0].getName();
+
+			for (int i = 1; i < superInterfaces.length; i++){
+				superInterfaceStr += ", " + superInterfaces[i].getName();
+			}
+
+		}
+		return superInterfaceStr;
+	}
+	
 	public static UMLInterface[] getInterfaces(UMLClass klass) throws GenerationException
 	{
 		UMLInterface[] interfaces = ModelUtil.getInterfaces(klass);
@@ -503,7 +534,7 @@ public class TransformerUtils
 		{
 			if(gen.getSubtype() == klass && gen.getSupertype() != klass)
 			{
-				UMLAttribute superId = getClassIdAttr(gen.getSupertype());
+				UMLAttribute superId = getClassIdAttr((UMLClass)gen.getSupertype());
 				if(superId != null)
 					return superId;
 			}
@@ -1191,7 +1222,12 @@ public class TransformerUtils
 		doc.append("	**/");
 		return doc.toString();
 
-	}	
+	}
+	
+	public static String getJavaDocs(UMLInterface interfaze) throws GenerationException 
+	{
+		return getJavaDocs(interfaze.getTaggedValues());
+	}
 	
 	public static String getJavaDocs(UMLClass klass) throws GenerationException 
 	{

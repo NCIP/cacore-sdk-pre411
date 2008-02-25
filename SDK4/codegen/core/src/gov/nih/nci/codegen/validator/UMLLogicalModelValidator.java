@@ -10,6 +10,11 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDatatype;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLDependencyEnd;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralizable;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLInterface;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
 import java.util.Collection;
@@ -43,7 +48,7 @@ import org.apache.log4j.Logger;
  * <LI>Parent class of any class should be in the included package and not excluded</LI>
  * </UL>
  * 
- * @author Satish Patel
+ * @author Satish Patel, Dan Dumitru
  *
  */
 public class UMLLogicalModelValidator implements Validator
@@ -69,6 +74,13 @@ public class UMLLogicalModelValidator implements Validator
 			return errors;
 		}
 		
+		validateClasses(model, errors);
+		validateInterfaces(model, errors);
+		
+		return errors;
+	}
+	
+	private void validateClasses(UMLModel model, GeneratorErrors errors) {
 		Collection<UMLClass> classes = null;
 
 		try {
@@ -104,12 +116,50 @@ public class UMLLogicalModelValidator implements Validator
 				{
 					String class2Name = TransformerUtils.getFQCN(klass2);
 					if(klass1!=klass2 && class1Name!=null && class1Name.equals(class2Name))
-						errors.addError(new GeneratorError(getName() + ": Duplicate class found for the "+class1Name));					
+						errors.addError(new GeneratorError(getName() + ": Duplicate class found for "+class1Name));					
 				}
 				validateClass(klass1, errors);
 			}
 		}
-		return errors;
+	}
+	
+	private void validateInterfaces(UMLModel model, GeneratorErrors errors) {
+		Collection<UMLInterface> interfaces = null;
+
+		try {
+			interfaces = TransformerUtils.getAllInterfaces(model);
+		} catch(GenerationException ge){
+			errors.addError(new GeneratorError(getName() + ": Unable to retrieve interfaces from model"));
+		}
+
+		if (interfaces != null){
+			for(UMLInterface interface1:interfaces)
+			{
+				String interface1Name = TransformerUtils.getFQCN(interface1);
+				if(interface1Name ==null || interface1Name.trim().length()==0)
+					interface1Name = "";
+				else
+					interface1Name = interface1Name.trim();
+
+				if(interface1Name.length()==0)
+					errors.addError(new GeneratorError(getName() + ": Interface name empty "+interface1Name));
+				if(interface1Name.indexOf(' ')>0)
+					errors.addError(new GeneratorError(getName() + ": Interface name contains empty spaces "+interface1Name));
+				if(interface1Name.indexOf("..")>0)
+					errors.addError(new GeneratorError(getName() + ": Interface name contains empty package name "+interface1Name));
+				if(interface1Name.indexOf("..")>0)
+					errors.addError(new GeneratorError(getName() + ": Interface name contains empty package name "+interface1Name));
+				if(interface1Name.length() >0 && !Character.isLetter(interface1Name.charAt(0)))
+					errors.addError(new GeneratorError(getName() + ": Interface name starts with non-character value "+interface1Name));
+				for(UMLInterface interface2:interfaces)
+				{
+					String interface2Name = TransformerUtils.getFQCN(interface2);
+					if(interface1!=interface2 && interface1Name!=null && interface1Name.equals(interface2Name))
+						errors.addError(new GeneratorError(getName() + ": Duplicate interface found for "+interface1Name));					
+				}
+				validateInterface(interface1, errors);
+			}
+		}
 	}
 
 	private void validateClass(UMLClass klass,GeneratorErrors errors) {
@@ -117,7 +167,70 @@ public class UMLLogicalModelValidator implements Validator
 		validateAttributes(klass, errors);
 		validateAssociations(klass, errors);
 	}
+	
+	private void validateInterface(UMLInterface interfaze,GeneratorErrors errors) {
+		validateDependencies(interfaze, errors);
+		validateAssociations(interfaze, errors);
+		validateGeneralizations(interfaze, errors);
+		validateGeneralizations(interfaze, errors);
+		validateAttributes(interfaze, errors);
+	}
+	
+	private void validateDependencies(UMLInterface interfaze, GeneratorErrors errors) 
+	{
+		
+		for(UMLDependency dependency: interfaze.getDependencies())
+		{
+			try 
+			{
+				UMLDependencyEnd clientEnd = dependency.getClient();
+				UMLDependencyEnd supplierEnd = dependency.getSupplier();
+				
+				if (!(clientEnd instanceof UMLClass)){
+					errors.addError(new GeneratorError(getName() + ": Source (client) end of dependency to interface " + interfaze.getName() + " needs to be a class"));
+				}
+				
+				if (!(supplierEnd instanceof UMLInterface && ((UMLInterface)supplierEnd).getName().equalsIgnoreCase(interfaze.getName()))){
+					errors.addError(new GeneratorError(getName() + ": Target (supplier) end of dependency to interface " + interfaze.getName() + " needs to be the interface itself"));
+				}			
+			}
+			catch (Exception e) 
+			{
+				//errors.addError(new GeneratorError(getName() + ": Interface  validation failed", e));
+			}
+		}
+	}
+	
+	private void validateAssociations(UMLInterface interfaze, GeneratorErrors errors) 
+	{
+		if (!interfaze.getAssociations().isEmpty()){
+			errors.addError(new GeneratorError(getName() + ": Association between two interfaces or between an interface and a class is not supported for interface "+interfaze.getName()));
+		}
+	}	
+	
+	private void validateGeneralizations(UMLInterface interfaze, GeneratorErrors errors) 
+	{
+		for(UMLGeneralization generalization: interfaze.getGeneralizations())
+		{
+			UMLGeneralizable subtype = generalization.getSubtype();
+			UMLGeneralizable supertype = generalization.getSupertype();
+			if (subtype instanceof UMLClass){
+				errors.addError(new GeneratorError(getName() + ": Generalization between class " +subtype.getName() + " and interface " + supertype.getName() + " is not supported"));
+			}
+			
+			if (supertype instanceof UMLClass){
+				errors.addError(new GeneratorError(getName() + ": Generalization between interface " +subtype.getName() + " and class " + supertype.getName() + " is not supported"));
+			}
+		}
+	}	
 
+	private void validateAttributes(UMLInterface interfaze, GeneratorErrors errors) 
+	{
+		if (!interfaze.getAttributes().isEmpty()){
+			errors.addError(new GeneratorError(getName() + ": Attributes not supported for interface "+interfaze.getName()));
+		}
+	}
+	
 	private void validateAssociations(UMLClass klass, GeneratorErrors errors) 
 	{
 		for(UMLAssociation association: klass.getAssociations())

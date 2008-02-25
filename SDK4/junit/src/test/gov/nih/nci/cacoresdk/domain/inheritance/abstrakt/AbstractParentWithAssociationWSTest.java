@@ -187,7 +187,6 @@ public class AbstractParentWithAssociationWSTest extends SDKWSTestBase
 	 */
 	public void testAssociationNestedSearch3() throws Exception
 	{
-		//Class targetClass = AssociateProfessor.class;
 		Class targetClass = Teacher.class;
 		PrivateTeacher criteria = new PrivateTeacher();
 		criteria.setId(new Integer(2));
