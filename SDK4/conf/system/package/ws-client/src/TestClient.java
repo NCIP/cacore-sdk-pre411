@@ -246,8 +246,7 @@ public class TestClient
 				break;;
 			klass = klass.getSuperclass();
 		}
-		if(field==null) 
-			System.out.println("Error: field not found for fieldName: " + fieldName);
+
 		return field;
 	}	
 	
