@@ -18,7 +18,7 @@
 	}%>
 
 		<!-- Mapped Resources -->
-<%for(UMLClass klass:TransformerUtils.getAllParentClasses(model)){%>
+<%for(UMLClass klass:TransformerUtils.getAllHibernateClasses(model)){%>
 		<mapping resource="<%=TransformerUtils.getFQCN(klass).replace('.','/')%>.hbm.xml" />
 <%}%>
 <%if("true".equalsIgnoreCase((String)configurationParams.get("INCLUDE_SEARCH_EVENT_LISTENER"))){%>

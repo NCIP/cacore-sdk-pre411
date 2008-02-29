@@ -26,7 +26,7 @@ public class CLASS extends UMLClassJetTransformer{
 	}
 
 	protected Collection<UMLClass> getAllClasses(UMLModel model){
-		return TransformerUtils.getAllParentClasses(model);		
+		return TransformerUtils.getAllHibernateClasses(model);	
 	}	
 
 	private String generate(UMLModel model, UMLClass klass, Integer level)  throws GenerationException{

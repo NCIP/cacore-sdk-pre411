@@ -21,7 +21,7 @@ if(level == 0){%>
 		}
 }
 		UMLClass currentKlass = klass;
-		//do{
+		do{
 			if(currentKlass.getAttributes().size()>0){%>
 		<%=emptySpace%><!-- Attributes mapping for the <%=currentKlass.getName()%> class --><%
 				for(UMLAttribute attr:currentKlass.getAttributes()){
@@ -37,8 +37,15 @@ if(level == 0){%>
 			<%=emptySpace%><element type="<%=elementType%>" column="<%=elementColumnName%>" />
 		<%=emptySpace%></set>
 						<%}
-						else{%>
-		<%=emptySpace%><property name="<%=attr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(currentKlass,attr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+attr.getName())%>"/><%
+						else{
+						    UMLClass temp;
+							if (TransformerUtils.isImplicitParent(currentKlass)){
+								temp = klass;
+							} else {
+								temp = currentKlass;
+							}
+						%>
+		<%=emptySpace%><property name="<%=attr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(temp,attr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+attr.getName())%>"/><%
 						}
 					}
 				}
@@ -159,7 +166,7 @@ if(level == 0){%>
 				}
 			}
 			currentKlass = TransformerUtils.getSuperClass(currentKlass);
-		//}while(currentKlass!=null && discriminatorColumnName!=null);
+		}while(currentKlass!=null && TransformerUtils.isImplicitParent(currentKlass));
 		for(UMLGeneralization gen:klass.getGeneralizations()){
 			UMLClass subKlass = (UMLClass)gen.getSubtype();
 			if(subKlass!=klass){
