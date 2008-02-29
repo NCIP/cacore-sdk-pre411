@@ -132,7 +132,9 @@ public class UMLModelMappingValidator implements Validator
 		{
 			table = TransformerUtils.getTable(klass);
 		} catch (GenerationException e) {
-			errors.addError(new GeneratorError(getName() + ": Table search failed for "+fqcn+" ", e));
+			if (!TransformerUtils.isImplicitParent(klass)){
+				errors.addError(new GeneratorError(getName() + ": Table search failed for "+fqcn+" ", e));
+			}
 		}
 		if(table != null)
 			validateClass(model, klass, table, errors);

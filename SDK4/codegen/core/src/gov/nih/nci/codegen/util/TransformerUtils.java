@@ -57,7 +57,7 @@ public class TransformerUtils
 	
 	private static String STEREO_TYPE_TABLE = "table";
 	private static String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
-	private static String STEREO_TYPE_REALIZE_DEPENDENCY = "Realize";
+	private static String STEREO_TYPE_REALIZE_DEPENDENCY = "realize";
 
 	//private static String TV_TYPE = "type"; -- used to recognize CLOB
 	
@@ -390,6 +390,7 @@ public class TransformerUtils
 
 	public static String getHibernateDataType(UMLClass klass, UMLAttribute attr) throws GenerationException
 	{
+		log.debug("getHibernateDataType for klass: " + klass.getName() + ", attr: " + attr.getName());
 		String fqcn = getFQCN(klass);
 		UMLClass table = getTable(klass);
 		UMLAttribute col = getMappedColumn(table,fqcn+"."+attr.getName());
@@ -812,6 +813,14 @@ public class TransformerUtils
 		getAllInterfaces(rootPkg.getPackages(),interfaces);
 	}	
 	
+	public static Collection<UMLClass> getAllHibernateClasses(UMLModel model)
+	{
+		Collection<UMLClass> allHibernateClasses = getAllParentClasses(model);
+		allHibernateClasses.addAll(getAllImplicitParentLeafClasses(model));
+		
+		return allHibernateClasses;	
+	}	
+	
 	/**
 	 * Returns all the classes (not the tables) in the XMI file which do not belong to java.lang or java.util package.
 	 * The class also have to be the root class in the inheritnace hierarchy to be included in the final list 
@@ -830,6 +839,7 @@ public class TransformerUtils
 		for(UMLPackage pkg:pkgCollection)
 			getAllParentClasses(pkg,classes);
 	}
+
 	
 	private static void getAllParentClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
 	{
@@ -837,12 +847,49 @@ public class TransformerUtils
 		{
 			for(UMLClass klass:rootPkg.getClasses())
 			{
-				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass) && ModelUtil.getSuperclasses(klass).length == 0)
+				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass) && ModelUtil.getSuperclasses(klass).length == 0 && !isImplicitParent(klass))
 					classes.add(klass);
 			}
 		}
 		getAllParentClasses(rootPkg.getPackages(),classes);
 	}
+	
+	/**
+	 * Returns all the classes (not the tables) in the XMI file which do not belong to java.lang or java.util package.
+	 * The class also has to be an implicit parent (parent class with no table mapping) in the inheritnace hierarchy to be included in the final list 
+	 * @param model
+	 * @return
+	 */
+	public static Collection<UMLClass> getAllImplicitParentLeafClasses(UMLModel model)
+	{
+		Collection<UMLClass> classes = new ArrayList<UMLClass>();
+		getAllImplicitParentLeafClasses(model.getPackages(),classes);
+		return classes;
+	}
+	
+	private static void getAllImplicitParentLeafClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes)
+	{
+		for(UMLPackage pkg:pkgCollection)
+			getAllImplicitParentLeafClasses(pkg,classes);
+	}
+	
+	private static void getAllImplicitParentLeafClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
+	{
+		if(isIncluded(rootPkg))
+		{
+			for(UMLClass klass:rootPkg.getClasses())
+			{
+				try {
+					if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass) && isImplicitParent(getSuperClass(klass)))
+						classes.add(klass);
+				} catch(GenerationException e){
+					continue;
+				}
+			}
+		}
+		getAllImplicitParentLeafClasses(rootPkg.getPackages(),classes);
+	}
+	
 
 	/**
 	 * Retrieves the table corresponding to the Dependency link between class and a table. 
@@ -873,6 +920,53 @@ public class TransformerUtils
 		
 		return result;
 	}
+	
+	/**
+	 * Determines whether the input class is an implicit superclass.  Used 
+	 * by the code generator to determine whether an implicit inheritance 
+	 * hibernate mapping should be created for the input class
+	 * @param klass
+	 * @return
+	 * @throws GenerationException
+	 */
+	public static boolean isImplicitParent(UMLClass klass)
+	{
+		return (isSuperclass(klass) && hasNoTableMapping(klass));
+	}
+	
+	/**
+	 * Determines whether the input class is a superclass
+	 * @param klass
+	 * @return
+	 */
+	private static boolean isSuperclass(UMLClass klass)
+	{
+		boolean isSuperClass = false;
+
+		if (klass != null)
+			for(UMLGeneralization gen:klass.getGeneralizations())
+			{
+				if(gen.getSupertype() instanceof UMLClass && ((UMLClass)gen.getSupertype()) == klass) 
+					return true;
+			}
+
+		return isSuperClass;
+	}
+	
+	/**
+	 * Determines whether the input class is a superclass
+	 * @param klass
+	 * @return
+	 */
+	private static boolean hasNoTableMapping(UMLClass klass)
+	{
+		try {
+			getTable(klass);
+		} catch (GenerationException e){
+			return true;
+		}
+		return false;
+	}	
 	
 	/**
 	 * Scans the tag values of the association to determine which JOIN table the association is using. 
@@ -989,9 +1083,11 @@ public class TransformerUtils
 	public static String findDiscriminatingColumnName(UMLClass klass) throws GenerationException
 	{
 		UMLClass superKlass = klass;
+		
 		UMLClass temp = klass;
-		while ((temp = getSuperClass(temp))!=null)
+		while ((temp = getSuperClass(temp))!=null && !isImplicitParent(temp))
 			superKlass = temp;
+
 		UMLClass table = getTable(superKlass);
 		String fqcn = getFQCN(superKlass);
 		return getColumnName(table,TV_DISCR_COLUMN,fqcn,false,0,1);
