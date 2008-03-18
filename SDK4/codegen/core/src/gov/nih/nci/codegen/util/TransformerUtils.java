@@ -390,7 +390,7 @@ public class TransformerUtils
 
 	public static String getHibernateDataType(UMLClass klass, UMLAttribute attr) throws GenerationException
 	{
-		log.debug("getHibernateDataType for klass: " + klass.getName() + ", attr: " + attr.getName());
+			log.debug("getHibernateDataType for klass: " + klass.getName() + ", attr: " + attr.getName());
 		String fqcn = getFQCN(klass);
 		UMLClass table = getTable(klass);
 		UMLAttribute col = getMappedColumn(table,fqcn+"."+attr.getName());
@@ -452,6 +452,7 @@ public class TransformerUtils
 	{
 		UMLAssociationEnd end1 = assocEnds.get(0);
 		UMLAssociationEnd end2 = assocEnds.get(1);
+		
 		if(end1.getUMLElement().equals(klass))
 			return end1;
 		else if(end2.getUMLElement().equals(klass))
@@ -469,7 +470,7 @@ public class TransformerUtils
 		else if(end2.getUMLElement().equals(klass))
 			return end1;
 		else
-			throw new GenerationException("Could not figureout this end");
+			throw new GenerationException("Could not figureout other end" );
 	}
 
 	public static Boolean isAssociationEndMany(UMLAssociationEnd assocEnd)
@@ -478,6 +479,11 @@ public class TransformerUtils
 			return true;
 		else
 			return false;
+	}
+	
+	public static Boolean isImplicitParent(UMLAssociationEnd assocEnd)
+	{
+		return isImplicitParent((UMLClass)assocEnd.getUMLElement());
 	}
 
 	public static String getGetterMethodName(UMLAssociationEnd assocEnd)
@@ -521,7 +527,7 @@ public class TransformerUtils
 	public static UMLAttribute getClassIdAttr(UMLClass klass) throws GenerationException
 	{
 		String fqcn = getFQCN(klass);
-
+		
 		UMLAttribute idAttr = getColumn(klass,TV_ID_ATTR_COLUMN, fqcn,true,0,1);
 		
 		if(idAttr !=null) return idAttr;
@@ -540,6 +546,7 @@ public class TransformerUtils
 					return superId;
 			}
 		}
+		
 		return null;
 		//throw new GenerationException("No attribute found that maps to the primary key identifier for class : "+fqcn);
 	}
@@ -626,7 +633,17 @@ public class TransformerUtils
 	 */
 	public static boolean isMany2One(UMLAssociationEnd thisEnd, UMLAssociationEnd otherEnd) {
 		return isAssociationEndMany(thisEnd) && !isAssociationEndMany(otherEnd);
-	}	
+	}
+	
+	/**
+	 * @param thisEnd
+	 * @param otherEnd
+	 * @return
+	 */
+	public static boolean isAny(UMLAssociationEnd thisEnd,UMLAssociationEnd otherEnd) {
+		return isAssociationEndMany(thisEnd) && !isAssociationEndMany(otherEnd) && isImplicitParent(otherEnd);
+	}
+	
 	/**
 	 * @param thisEnd
 	 * @param otherEnd
@@ -644,6 +661,15 @@ public class TransformerUtils
 	public static boolean isMany2Many(UMLAssociationEnd thisEnd,UMLAssociationEnd otherEnd) {
 		return isAssociationEndMany(thisEnd) && isAssociationEndMany(otherEnd);
 	}	
+	
+	/**
+	 * @param thisEnd
+	 * @param otherEnd
+	 * @return
+	 */
+	public static boolean isMany2Any(UMLAssociationEnd thisEnd,UMLAssociationEnd otherEnd) {
+		return isAssociationEndMany(thisEnd) && isAssociationEndMany(otherEnd) && isImplicitParent(otherEnd);
+	}
 	
 	/**
 	 * @param thisEnd
@@ -880,7 +906,7 @@ public class TransformerUtils
 			for(UMLClass klass:rootPkg.getClasses())
 			{
 				try {
-					if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass) && isImplicitParent(getSuperClass(klass)))
+					if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass) && isImplicitParent(getSuperClass(klass)) && !isImplicitParent(klass))
 						classes.add(klass);
 				} catch(GenerationException e){
 					continue;
@@ -917,6 +943,7 @@ public class TransformerUtils
 
 		if(count!=1)
 			throw new GenerationException("No table found for : "+getFQCN(klass)+".  Make sure the corresponding Data Model table (class) has a 'table' Stereotype assigned, and the Dependency between the Data Model table and Logical Model class has a 'DataSource' Stereotype assigned.");
+
 		
 		return result;
 	}
@@ -931,7 +958,29 @@ public class TransformerUtils
 	 */
 	public static boolean isImplicitParent(UMLClass klass)
 	{
+		if (klass != null)
+			log.debug("isImplicitClass " + klass.getName()+": " + (isSuperclass(klass) && hasNoTableMapping(klass)));
+		
 		return (isSuperclass(klass) && hasNoTableMapping(klass));
+	}
+	
+	public static boolean hasImplicitParent(UMLClass klass){
+		UMLClass superclass = klass;
+		do {
+			try {
+				superclass = getSuperClass(superclass);
+
+				if(isImplicitParent(superclass)){
+					return true;
+				}
+			} catch (GenerationException e) {
+				log.error("ERROR encountered checking if class " +klass.getName() + " has an implicit parent: ", e);
+				return false;
+			}
+
+		} while (!(superclass==null) && !(superclass.getName().equalsIgnoreCase("java.lang.Object")));
+
+		return false;
 	}
 	
 	/**
@@ -1038,15 +1087,18 @@ public class TransformerUtils
 		String col2 = getColumnName(table,TV_ASSOC_COLUMN,getFQCN(assocKlass) +"."+ thisEnd.getRoleName(),false,0,1);
 		String col3 = getColumnName(table,TV_INVERSE_ASSOC_COLUMN,getFQCN(assocKlass) +"."+ thisEnd.getRoleName(),false,0,1);
 		
+		log.debug("***** col1: " + col1 + "; col2: " + col2 + "; col3: " + col3);
+		
 		if("".equals(col1)) col1=null;
 		if("".equals(col2)) col2=null;
 		if("".equals(col3)) col3=null;
 		
 		if((col1==null && col3==null && isJoin && throwException) || (col1==null && col2==null && !isJoin && throwException)){
+			log.debug("***** col1: " + col1 + "; col2: " + col2 + "; col3: " + col3);
 			log.debug("table: " + table.getName());
 			log.debug("isJoin: " + isJoin);
 			log.debug("otherEnd.getRoleName(): " +otherEnd.getRoleName());
-			log.debug("thisEnd.getRoleName(): " +thisEnd.getRoleName());			
+			log.debug("thisEnd.getRoleName(): " +thisEnd.getRoleName());	
 			throw new GenerationException("Could not determine the column for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
 		}
 		/*if(col1!=null && col2!=null && !col1.equals(col2))
@@ -1087,7 +1139,7 @@ public class TransformerUtils
 		UMLClass temp = klass;
 		while ((temp = getSuperClass(temp))!=null && !isImplicitParent(temp))
 			superKlass = temp;
-
+		
 		UMLClass table = getTable(superKlass);
 		String fqcn = getFQCN(superKlass);
 		return getColumnName(table,TV_DISCR_COLUMN,fqcn,false,0,1);
@@ -1097,15 +1149,31 @@ public class TransformerUtils
 	{
 		return getTagValue(klass,TV_DISCR_COLUMN,null, 1,1);
 	}
+	
+	public static String getImplicitDiscriminatorColumn(UMLClass klass, UMLClass implicitKlass) throws GenerationException
+	{
+		UMLClass table = TransformerUtils.getTable(klass);
+		return getColumnName(table,TV_DISCR_COLUMN,getFQCN(implicitKlass),false,0,1);
+	}
+	
+	public static String getImplicitIdColumn(UMLClass klass, UMLAssociationEnd otherEnd) throws GenerationException
+	{
+		UMLClass table = TransformerUtils.getTable(klass);
+		UMLClass implicitKlass = (UMLClass)otherEnd.getUMLElement();
+		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass)+"."+otherEnd.getRoleName(),false,0,1);
+	}
 
 	public static boolean isLazyLoad(UMLClass klass, UMLAssociation association) throws GenerationException
 	{
+		//TODO :: investigate what should be done here
+		if (hasImplicitParent(klass)) return false;
+		
 		String temp = getTagValue(klass,association, TV_LAZY_LOAD,null, 0,1);
 		temp = (temp == null || temp.trim().length()==0) ? "yes" : temp;
 		return "yes".equalsIgnoreCase(temp)? true : false;
 	}
 	
-	private static String getTagValue(UMLClass klass, String key, String value, int minOccurence, int maxOccurence) throws GenerationException
+	private static String getTagValue(UMLClass klass, String key, String value, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
 		String result = null;
 		int count = 0;
@@ -1131,8 +1199,8 @@ public class TransformerUtils
 			}
 		}
 		
-		if(count < minOccurence || (minOccurence>0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No value found for "+key+" tag in class : "+getFQCN(klass));
-		if(count > maxOccurence) throw new GenerationException("More than one value found for "+key+" tag in class : "+getFQCN(klass));
+		if(count < minOccurrence || (minOccurrence>0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No value found for "+key+" tag in class : "+getFQCN(klass));
+		if(count > maxOccurrence) throw new GenerationException("More than one value found for "+key+" tag in class : "+getFQCN(klass));
 		
 		return result;
 	}
@@ -1152,14 +1220,15 @@ public class TransformerUtils
 	}	
 	
 
-	private static String getColumnName(UMLClass klass, String key, String value,  boolean isValuePrefix, int minOccurence, int maxOccurence) throws GenerationException
+	private static String getColumnName(UMLClass klass, String key, String value,  boolean isValuePrefix, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
-		UMLAttribute attr = getColumn(klass,key,value,isValuePrefix,minOccurence,maxOccurence);
+		UMLAttribute attr = getColumn(klass,key,value,isValuePrefix,minOccurrence,maxOccurrence);
 		return (attr==null) ? "" : attr.getName();
 	}
 
-	private static UMLAttribute getColumn(UMLClass klass, String key, String value, boolean isValuePrefix, int minOccurence, int maxOccurence) throws GenerationException
+	private static UMLAttribute getColumn(UMLClass klass, String key, String value, boolean isValuePrefix, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
+	
 		UMLAttribute result = null;
 		int count = 0;
 		for(UMLAttribute attr: klass.getAttributes())
@@ -1191,22 +1260,24 @@ public class TransformerUtils
 				}
 			}
 		}
-		if(count < minOccurence) throw new GenerationException("No value of "+value+" found for "+key+" tag in class : "+getFQCN(klass));
-		if(count > maxOccurence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
+		if(count < minOccurrence) throw new GenerationException("No value of "+value+" found for "+key+" tag in class : "+getFQCN(klass));
+		if(count > maxOccurrence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
 		
 		return result;
 	}
 	
 	
-	private static String getTagValue(UMLClass klass, UMLAttribute attribute, String key, String value, Boolean isValuePrefix, int minOccurence, int maxOccurence) throws GenerationException
+	private static String getTagValue(UMLClass klass, UMLAttribute attribute, String key, String value, Boolean isValuePrefix, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
 		String result = null;
 		int count = 0;
 		for(UMLTaggedValue tv: attribute.getTaggedValues())
 		{
+			log.debug("Processing tv: " + tv.getName());
 			if (key.equals(tv.getName()))
 			{
 				String tvValue = tv.getValue();
+				log.debug("Key equals tv.  TV value is: " + tv.getValue());
 				String[] tvValues = tvValue.split(",");
 				for(String val:tvValues)
 				{
@@ -1229,13 +1300,13 @@ public class TransformerUtils
 			}
 		}
 		
-		if(count < minOccurence) throw new GenerationException("No value of "+value+" found for "+key+" tag in class : "+getFQCN(klass));
-		if(count > maxOccurence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
-		
+		if(count < minOccurrence) throw new GenerationException("No value of "+value+" found for "+key+" tag in class : "+getFQCN(klass));
+		if(count > maxOccurrence) throw new GenerationException("More than one values found for "+key+" tag in class : "+getFQCN(klass));
+	
 		return result;
 	}	
 		
-	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, Boolean isValuePrefix, int minOccurence, int maxOccurence) throws GenerationException
+	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, Boolean isValuePrefix, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
 		
 		List <UMLAssociationEnd>ends = association.getAssociationEnds();
@@ -1243,7 +1314,6 @@ public class TransformerUtils
 		UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass, ends);
 		String thisClassName = TransformerUtils.getFQCN(((UMLClass)thisEnd.getUMLElement()));
 		String otherClassName = TransformerUtils.getFQCN(((UMLClass)otherEnd.getUMLElement()));
-			
 		
 		String result = null;
 		int count = 0;
@@ -1275,23 +1345,22 @@ public class TransformerUtils
 		}
 		
 		
-		if(count < minOccurence || (minOccurence >0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No tag value of "+key+" found for association between "+thisClassName +" and "+ otherClassName +":"+count+":"+result);
-		
-		if(count > maxOccurence) throw new GenerationException("More than one tag values of "+key+" found for association between "+thisClassName +" and "+ otherClassName);
+		if(count < minOccurrence || (minOccurrence >0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No tag value of "+key+" found for association between "+thisClassName +" and "+ otherClassName +":"+count+":"+result);
+		if(count > maxOccurrence) throw new GenerationException("More than one tag values of "+key+" found for association between "+thisClassName +" and "+ otherClassName);
 		
 		return result;
 	}	
 	
-	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, int minOccurence, int maxOccurence) throws GenerationException
+	private static String getTagValue(UMLClass klass, UMLAssociation association, String key, String value, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
-		return getTagValue(klass, association, key, value,false, minOccurence, maxOccurence);
+		return getTagValue(klass, association, key, value,false, minOccurrence, maxOccurrence);
 	}	
 	
-	private static String getTagValue(Collection<UMLTaggedValue> tagValues, String key, int maxOccurence) throws GenerationException
+	private static String getTagValue(Collection<UMLTaggedValue> tagValues, String key, int maxOccurrence) throws GenerationException
 	{
 		StringBuilder temp = new StringBuilder();
 		
-		for(int i=0;i<maxOccurence;i++)
+		for(int i=0;i<maxOccurrence;i++)
 		{
 			String searchKey = i==0 ? key : key + (i+1);
 			for(UMLTaggedValue tv:tagValues)
@@ -1470,6 +1539,27 @@ public class TransformerUtils
 				return "short";	
 		}
 		return name;
+	}
+	
+	public static List<UMLClass> getNonImplicitSubclasses(UMLClass implicitKlass){
+		
+		ArrayList<UMLClass> nonImplicitSubclasses = new ArrayList<UMLClass>();
+		
+		getNonImplicitSubclasses(implicitKlass, nonImplicitSubclasses);
+		
+		return nonImplicitSubclasses;
+	}
+	
+	private static void getNonImplicitSubclasses(UMLClass klass, ArrayList<UMLClass> nonImplicitSubclasses){
+		for(UMLGeneralization gen:klass.getGeneralizations()){
+			UMLClass subKlass = (UMLClass)gen.getSubtype();
+			if(subKlass!=klass && !isImplicitParent(subKlass)){
+				nonImplicitSubclasses.add(subKlass);
+			}
+			
+			if(subKlass!=klass)
+				getNonImplicitSubclasses(subKlass, nonImplicitSubclasses);
+		}
 	}
 
 }
