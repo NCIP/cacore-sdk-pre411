@@ -149,11 +149,15 @@ public class UMLModelMappingValidator implements Validator
 
 	private void validateSubClass(UMLModel model, UMLClass klass, UMLClass table, GeneratorErrors errors) {
 		if(!hasSubClass(klass)) return;
+		log.debug("Validating subClass for klass: " +klass.getName());
 		String fqcn = TransformerUtils.getFQCN(klass);
+		log.debug("fqcn: " + fqcn);
 		try 
 		{
 			UMLAttribute idAttr = TransformerUtils.getClassIdAttr(klass);
+			log.debug("idAttr: " + idAttr.getName());
 			String discriminatorColumnName = TransformerUtils.findDiscriminatingColumnName(klass);		
+			log.debug("discriminatorColumnName: " + discriminatorColumnName);
 			if(discriminatorColumnName == null || "".equals(discriminatorColumnName))
 			{
 				for(UMLGeneralization gen:klass.getGeneralizations())
@@ -176,22 +180,27 @@ public class UMLModelMappingValidator implements Validator
 				for(UMLGeneralization gen:klass.getGeneralizations())
 				{
 					UMLClass subKlass = (UMLClass)gen.getSubtype();
+					log.debug("subKlass: " + subKlass.getName());
 					if(subKlass!=klass)
 					{
 						String subFqcn = TransformerUtils.getFQCN(subKlass);
+						log.debug("subFqcn: " + subFqcn);
 						String discriminatorValue = TransformerUtils.getDiscriminatorValue(subKlass);
+						log.debug("discriminatorValue: " + discriminatorValue);
 						if(discriminatorValue == null || discriminatorValue.trim().length() ==0)
 							errors.addError(new GeneratorError(getName() + ": Discriminator value not present for the "+subFqcn+" class"));
 						if(discriminatorValues.get(discriminatorValue)!= null)
 							errors.addError(new GeneratorError(getName() + ": Same discriminator value for "+subFqcn+" and "+discriminatorValues.get(discriminatorValue)+ " class"));
 						if(TransformerUtils.getTable(subKlass) != table)
 						{
-							for(UMLGeneralization subgen:klass.getGeneralizations())
+							log.debug("klass table: " + table.getName() + "; subKlass table: " + TransformerUtils.getTable(subKlass).getName());
+							for(UMLGeneralization subgen:subKlass.getGeneralizations())
 							{
 								UMLClass subSubKlass = (UMLClass)subgen.getSubtype();
+								log.debug("subSubKlass: " + subSubKlass.getName());
 								if(subKlass!=subSubKlass && subSubKlass!=TransformerUtils.getSuperClass(subKlass))
 								{
-									errors.addError(new GeneratorError(getName() + ": When the discriminating column is present, the subclass and the parent class should be presisted in the same table unless subclass do not have any subclasses : "+subFqcn));
+									errors.addError(new GeneratorError(getName() + ": When the discriminating column is present, the subclass and the parent class should be persisted in the same table unless the subclass does not have any subclasses : "+subFqcn));
 								}
 							}
 							
@@ -247,8 +256,11 @@ public class UMLModelMappingValidator implements Validator
 				if(otherEnd.isNavigable())
 				{
 					UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
-					if(TransformerUtils.isMany2Many(thisEnd,otherEnd))
-					{
+					if(TransformerUtils.isAny(thisEnd,otherEnd)){
+						//add implicit polymorphic validations here for isAny associations
+					} else if(TransformerUtils.isMany2Any(thisEnd,otherEnd)){
+						//add implicit polymorphic validations here for isManyToAny associations
+					} else if(TransformerUtils.isMany2Many(thisEnd,otherEnd)){
 						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
 						String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd,true);
 						String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
@@ -260,8 +272,19 @@ public class UMLModelMappingValidator implements Validator
 						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
 						if (correlationTable == null) //One to Many - No Join Table
 						{
-							UMLClass assocTable = TransformerUtils.getTable(assocKlass);
-							String keyColumnName = TransformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd,klass,otherEnd, false);
+							UMLClass assocTable = null;
+							try 
+							{
+								assocTable = TransformerUtils.getTable(assocKlass);
+							} catch (GenerationException e) {
+								if (!TransformerUtils.isImplicitParent(assocKlass)){
+									throw e;
+								}
+							}
+							
+							if (assocTable != null){
+								String keyColumnName = TransformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd,klass,otherEnd, false);
+							}
 						}else{ //One to Many - Join Table
 							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
 							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);

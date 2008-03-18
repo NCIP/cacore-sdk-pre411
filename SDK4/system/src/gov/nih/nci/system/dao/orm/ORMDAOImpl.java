@@ -16,7 +16,6 @@ import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
-import gov.nih.nci.system.util.ClassCache;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.dao.UserCache;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.JDBCException;
@@ -216,7 +214,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		    		log.debug("Setting First Row to " + firstRow);
 			        query.setFirstResult(firstRow.intValue());				    		
 		    	}
-		    	
+
 		    	query.setMaxResults(resultCountPerQuery);
 
 		    	rs = query.list();

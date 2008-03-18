@@ -527,19 +527,24 @@ public class NestedCriteria2HQL
 		HashMap criterions = new HashMap();
 		String objClassName = obj.getClass().getName();
 		PersistentClass pclass = cfg.getClassMapping(objClassName);
-		setAttrCriterion(obj, pclass, criterions);
-
-		while (pclass.getSuperclass() != null)
-		{
-			pclass = pclass.getSuperclass();
+		
+		if (pclass != null){
 			setAttrCriterion(obj, pclass, criterions);
-		}
 
-		String identifier = pclass.getIdentifierProperty().getName();
-		Field idField = pclass.getMappedClass().getDeclaredField(identifier);
-		idField.setAccessible(true);
-		if (idField.get(obj) != null)
-			criterions.put(identifier, idField.get(obj));
+			while (pclass.getSuperclass() != null)
+			{
+				pclass = pclass.getSuperclass();
+				if(pclass != null && !pclass.isAbstract()){
+					setAttrCriterion(obj, pclass, criterions);
+				}
+			}
+
+			String identifier = pclass.getIdentifierProperty().getName();
+			Field idField = getDeclaredField(pclass.getMappedClass(), identifier);
+			idField.setAccessible(true);
+			if (idField.get(obj) != null)
+				criterions.put(identifier, idField.get(obj));
+		}
 
 		return criterions;
 	}
@@ -553,7 +558,7 @@ public class NestedCriteria2HQL
 			if (!prop.getType().isAssociationType())
 			{
 				String fieldName = prop.getName();
-				Field field = pclass.getMappedClass().getDeclaredField(fieldName);
+				Field field = getDeclaredField(pclass.getMappedClass(), fieldName);
 				field.setAccessible(true);
 
 				if (field.get(obj) != null)
@@ -654,7 +659,7 @@ public class NestedCriteria2HQL
 			if (prop.getType().isAssociationType())
 			{
 				String fieldName = prop.getName();
-				Field field = pclass.getMappedClass().getDeclaredField(fieldName);
+				Field field = getDeclaredField(pclass.getMappedClass(), fieldName);
 				field.setAccessible(true);
 				Object value = field.get(obj);
 				if (value != null)
@@ -671,12 +676,15 @@ public class NestedCriteria2HQL
 		String objClassName = obj.getClass().getName();
 
 		PersistentClass pclass = cfg.getClassMapping(objClassName);
-
-		setAssocCriterion(obj, pclass, criterions);
-		while (pclass.isJoinedSubclass())
-		{
-			pclass = pclass.getSuperclass();
+		if (pclass != null){
 			setAssocCriterion(obj, pclass, criterions);
+			while (pclass.isJoinedSubclass())
+			{
+				pclass = pclass.getSuperclass();
+				if(pclass != null && !pclass.isAbstract()){
+					setAssocCriterion(obj, pclass, criterions);
+				}
+			}
 		}
 		return criterions;
 	}
@@ -712,5 +720,26 @@ public class NestedCriteria2HQL
 
 	public void setCaseSensitive(boolean caseSensitive) {
 		this.caseSensitive = caseSensitive;
+	}
+	
+	
+	private Field getDeclaredField(Class klass, String fieldName) throws NoSuchFieldException {
+		
+		Field field = null;
+		
+		do {
+			
+			try {
+				field = klass.getDeclaredField(fieldName);
+			} catch (NoSuchFieldException e) {
+				field = null;
+				klass = klass.getSuperclass();
+			}
+		} while (!klass.getName().equals("java.lang.Object" ) && field == null);
+		
+		if (field == null)
+			throw new NoSuchFieldException("fieldName: " + fieldName);
+		
+		return field;
 	}
 }

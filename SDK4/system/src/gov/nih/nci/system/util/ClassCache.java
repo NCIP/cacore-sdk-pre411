@@ -602,7 +602,7 @@ public class ClassCache {
 		HashSet<String> tmpPackageNames = new HashSet<String>();
 
 		List<String> allClassNames;
-		Set<String> implictClassNames = new HashSet<String>();
+		Set<String> implicitClassNames = new HashSet<String>();
 
 		for(DAO dao:daoList){
 
@@ -611,17 +611,17 @@ public class ClassCache {
 			// Implicit superclasses have no hibernate mapping and so are not part of the dao class names  
 			String implicitSuperclass = null;
 			for(String klassName:allClassNames){
-
+				implicitSuperclass = klassName;
 				do {
 					try {
-						implicitSuperclass = Class.forName(klassName).getSuperclass().getName();
+						implicitSuperclass = Class.forName(implicitSuperclass).getSuperclass().getName();
 						log.debug("Checking if class " + implicitSuperclass + " is implicit");
-						log.debug("allClassNames.contains(" +implicitSuperclass+ ") ? " + allClassNames.contains(implicitSuperclass));
+						
 						if(!(implicitSuperclass.equalsIgnoreCase("java.lang.Object"))
 								&& !(allClassNames.contains(implicitSuperclass))){
-							implictClassNames.add(implicitSuperclass);
+							log.debug("Adding " +implicitSuperclass+ " as an implicit superclass");
+							implicitClassNames.add(implicitSuperclass);
 						}
-						implicitSuperclass = Class.forName(klassName).getSuperclass().getName();
 					} catch (ClassNotFoundException e){
 						log.error("Error:  Class not found: " + implicitSuperclass);
 						implicitSuperclass = null;
@@ -629,7 +629,8 @@ public class ClassCache {
 				} while ((!implicitSuperclass.equalsIgnoreCase("java.lang.Object")) && !(implicitSuperclass == null));
 			} 
 			
-			allClassNames.addAll(implictClassNames);
+			log.debug("Number of implicit superclasses found: " + implicitClassNames.size());
+			allClassNames.addAll(implicitClassNames);
 
 			// Certain metadata needs to be generated prior to caching the rest of the info
 			for(String klassName:allClassNames){
