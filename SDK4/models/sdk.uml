@@ -93,10 +93,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Mar 17 18:28:32 PST 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Mar 18 15:28:04 PST 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-03-18 23:22:32 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-03-18 23:55:05 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -14860,12 +14860,12 @@
                                               <UML:Association.connection>
                                                 <UML:AssociationEnd xmi.id = '-64--88-1-103-39e5b5:118a4b62dba:-8000:00000000000014B6'
                                                   name = 'fishCollection' visibility = 'public' isSpecification = 'false'
-                                                  isNavigable = 'false' ordering = 'unordered' aggregation = 'none' targetScope = 'instance'
+                                                  isNavigable = 'true' ordering = 'unordered' aggregation = 'none' targetScope = 'instance'
                                                   changeability = 'changeable'>
                                                   <UML:AssociationEnd.multiplicity>
-                                                    <UML:Multiplicity xmi.id = '-64--88-1-103-39e5b5:118a4b62dba:-8000:00000000000014C5'>
+                                                    <UML:Multiplicity xmi.id = '-64--88-1-108-888e6c:118c390a4ee:-8000:00000000000014D5'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = '-64--88-1-103-39e5b5:118a4b62dba:-8000:00000000000014C4'
+                                                        <UML:MultiplicityRange xmi.id = '-64--88-1-108-888e6c:118c390a4ee:-8000:00000000000014D4'
                                                           lower = '0' upper = '-1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
@@ -14879,10 +14879,10 @@
                                                   isNavigable = 'true' ordering = 'unordered' aggregation = 'none' targetScope = 'instance'
                                                   changeability = 'changeable'>
                                                   <UML:AssociationEnd.multiplicity>
-                                                    <UML:Multiplicity xmi.id = '-64--88-1-103-888e6c:118bdf7d2af:-8000:00000000000014D8'>
+                                                    <UML:Multiplicity xmi.id = '-64--88-1-108-888e6c:118c390a4ee:-8000:00000000000014E1'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = '-64--88-1-103-888e6c:118bdf7d2af:-8000:00000000000014D7'
-                                                          lower = '0' upper = '-1'/>
+                                                        <UML:MultiplicityRange xmi.id = '-64--88-1-108-888e6c:118c390a4ee:-8000:00000000000014E0'
+                                                          lower = '1' upper = '1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
                                                   </UML:AssociationEnd.multiplicity>
