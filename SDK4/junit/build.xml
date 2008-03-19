@@ -12,15 +12,16 @@
 	<property file="${sdk.home}/build.properties" prefix="sdk"/>
 	<property file="build.properties" />
 
-	<property name="output.dir" value="report/${PROJECT_NAME}" />
-	<property name="output.dir.thick-client" value="${output.dir}/thick-client" />
-	<property name="output.dir.remote-client" value="${output.dir}/remote-client" />
-	<property name="output.dir.ws-client" value="${output.dir}/ws-client" />
-	<property name="output.dir.xsd-client" value="${output.dir}/xsd-client" />
-	<property name="output.dir.xml-mapping-client" value="${output.dir}/xml-mapping-client" />
-	<property name="output.dir.xml-data-client" value="${output.dir}/xml-data-client" />
-	<property name="output.dir.security-thick-client" value="${output.dir}/security-client/thick-client" />
-	<property name="output.dir.remote-security-client" value="${output.dir}/security-client/remote-client" />
+	<property name="output.dir" value="output" />
+	<property name="report.dir" value="report/${PROJECT_NAME}" />
+	<property name="report.dir.thick-client" value="${report.dir}/thick-client" />
+	<property name="report.dir.remote-client" value="${report.dir}/remote-client" />
+	<property name="report.dir.ws-client" value="${report.dir}/ws-client" />
+	<property name="report.dir.xsd-client" value="${report.dir}/xsd-client" />
+	<property name="report.dir.xml-mapping-client" value="${report.dir}/xml-mapping-client" />
+	<property name="report.dir.xml-data-client" value="${report.dir}/xml-data-client" />
+	<property name="report.dir.security-thick-client" value="${report.dir}/security-client/thick-client" />
+	<property name="report.dir.remote-security-client" value="${report.dir}/security-client/remote-client" />
 	
 	<!--***********************************************************************
 	*** Classpath entries
@@ -152,6 +153,7 @@
 	*********************************************************************** -->
 	<target name="createDir">
 		<mkdir dir="${output.dir}"/>
+		<mkdir dir="${report.dir}"/>
 		<mkdir dir="${classes.dir}"/>
 	</target>
 		
@@ -177,6 +179,7 @@
 		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
 		<delete dir="${classes.dir}"/>
 		<delete dir="${output.dir}"/>
+		<delete dir="${report.dir}"/>
 	</target>
 	
 	<target name="clean-classes" description="Cleans the classes directory">
@@ -198,8 +201,8 @@
 	<target name="runThickClient" depends="clean-classes,createDir,compile,runThickClientJUnit,stop" description="Run JUnits for Thick client"/>
 	
 	<target name="runThickClientJUnit">
-		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${output.dir.thick-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.thick-client}"/>
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitsuffix="*Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.thick-client}"/>
 	</target>
 	
 	
@@ -211,8 +214,8 @@
 	
 	<target name="runSecurityThickClientJUnit">
 		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*Security*.java"/>
-		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${output.dir.security-thick-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.security-thick-client}"/>
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.security-thick-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.security-thick-client}"/>
 	</target>
 	
 	<!-- ************************************************************************************************-->
@@ -223,8 +226,8 @@
 	
 	<target name="runSecurityRemoteClientJUnit">
 		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*Security*.java"/>
-		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${output.dir.remote-security-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.remote-security-client}"/>
+		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-security-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.remote-security-client}"/>
 	</target>	
 	
 	<!-- ************************************************************************************************-->
@@ -235,8 +238,8 @@
 	
 	<target name="runXSDClientJUnit">
 		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java"/>
-		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${output.dir.xsd-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.xsd-client}"/>
+		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}"/>
 	</target>
 
 	<!-- ************************************************************************************************-->
@@ -247,8 +250,8 @@
 	
 	<target name="runXMLMappingClientJUnit">
 		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java"/>
-		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${output.dir.xml-mapping-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.xml-mapping-client}"/>
+		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}"/>
 	</target>
 	
 
@@ -260,8 +263,8 @@
 	
 	<target name="runXMLDataClientJUnit">
 		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java"/>
-		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${output.dir.xml-data-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.xml-data-client}"/>
+		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}"/>
 	</target>
 	
 	<!-- ************************************************************************************************-->
@@ -272,8 +275,8 @@
 	
 	<target name="runWSClientJUnit">
 		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java"/>
-		<SDKRunJUnit junitClasspath="ws-client-cp" junitOutputDir="${output.dir.ws-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.ws-client}"/>
+		<SDKRunJUnit junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}"/>
 	</target>
 	
 	<!-- ************************************************************************************************-->
@@ -283,8 +286,8 @@
 	<target name="runThickClientQuickTest" depends="clean-classes,createDir,compile,runThickClientQuickJUnit,stop" description="Run JUnit for Thick Client (Quick Mode)"/>
 	
 	<target name="runThickClientQuickJUnit">
-		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${output.dir.thick-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.thick-client}"/>
+		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKTestSuite"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.thick-client}"/>
 	</target>
 	
 	<!-- ************************************************************************************************-->
@@ -295,8 +298,8 @@
 	
 	<target name="runWSClientQuickJUnit">
 		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java"/>
-		<SDKRunJUnitSuite junitClasspath="ws-client-cp" junitOutputDir="${output.dir.ws-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWSTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.ws-client}"/>
+		<SDKRunJUnitSuite junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWSTestSuite"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}"/>
 	</target>
 	
 	<!-- ************************************************************************************************-->
@@ -307,8 +310,8 @@
 	
 	<target name="runXMLDataClientQuickJUnit">
 		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java"/>
-		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${output.dir.xml-data-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLDataTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.xml-data-client}"/>
+		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLDataTestSuite"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}"/>
 	</target>
 	
 	
@@ -320,8 +323,8 @@
 	
 	<target name="runXMLMappingClientQuickJUnit">
 		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java"/>
-		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${output.dir.xml-mapping-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLMappingTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.xml-mapping-client}"/>
+		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLMappingTestSuite"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}"/>
 	</target>
 	
 	<!-- ************************************************************************************************-->
@@ -332,8 +335,8 @@
 	
 	<target name="runXSDClientQuickJUnit">
 		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java"/>
-		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${output.dir.xsd-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXSDTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.xsd-client}"/>
+		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXSDTestSuite"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}"/>
 	</target>	
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for Remote Client           	                         -->
@@ -342,8 +345,8 @@
 	<target name="runRemoteClientTest" depends="clean-classes,createDir,compile,runRemoteClientJUnit,stop" description="Run JUnit for Remote Client"/>
 		
 	<target name="runRemoteClientJUnit">
-		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${output.dir.remote-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${output.dir.remote-client}"/>
+		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-client}" junitsuffix="Test"/>
+		<SDKGenerateReport junitOutputDir="${report.dir.remote-client}"/>
 	</target>
 	
 </project>
