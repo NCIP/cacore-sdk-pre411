@@ -245,90 +245,123 @@ public class UMLModelMappingValidator implements Validator
 
 	private void validateAssociations(UMLModel model, UMLClass klass, UMLClass table, GeneratorErrors errors) 
 	{
-		for(UMLAssociation association: klass.getAssociations())
-		{
-			try 
+		UMLClass currentKlass = klass;
+		do{
+
+			for(UMLAssociation association: currentKlass.getAssociations())
 			{
-				List <UMLAssociationEnd>ends = association.getAssociationEnds();
-				UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(klass, ends);
-				UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass, ends);
-
-				if(otherEnd.isNavigable())
+				try 
 				{
-					UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
-					if(TransformerUtils.isAny(thisEnd,otherEnd)){
-						//add implicit polymorphic validations here for isAny associations
-					} else if(TransformerUtils.isMany2Any(thisEnd,otherEnd)){
-						//add implicit polymorphic validations here for isManyToAny associations
-					} else if(TransformerUtils.isMany2Many(thisEnd,otherEnd)){
-						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
-						String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd,true);
-						String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
-						String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
-						if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-							errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
-					}else if(TransformerUtils.isOne2Many(thisEnd,otherEnd)){
-						
-						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
-						if (correlationTable == null) //One to Many - No Join Table
-						{
-							UMLClass assocTable = null;
-							try 
-							{
-								assocTable = TransformerUtils.getTable(assocKlass);
-							} catch (GenerationException e) {
-								if (!TransformerUtils.isImplicitParent(assocKlass)){
-									throw e;
-								}
-							}
-							
-							if (assocTable != null){
-								String keyColumnName = TransformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd,klass,otherEnd, false);
-							}
-						}else{ //One to Many - Join Table
-							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
-							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
-							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
-							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-								errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
-						}
-					}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
-						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
-						if (correlationTable == null) //Many to One - No Join Table
-						{
-							String keyColumnName = TransformerUtils.findAssociatedColumn(table,klass,otherEnd,assocKlass,thisEnd, false);
-						}else{ // Many to One - Join Table
-							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
-							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
-							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
-							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-								errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
-						}
-						
-					}else{
+					List <UMLAssociationEnd>ends = association.getAssociationEnds();
+					UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(currentKlass, ends);
+					UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(currentKlass, ends);
 
-						UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
-						if (correlationTable == null) //One to One - No Join Table
-						{
-							String keyColumnName = TransformerUtils.findAssociatedColumn(table,klass,otherEnd,assocKlass,thisEnd,false, false);
-							Boolean keyColumnPresent = (keyColumnName!=null && !"".equals(keyColumnName));
-							if(!thisEnd.isNavigable() && !keyColumnPresent)
-									errors.addError(new GeneratorError(getName() + ": One to one unidirectional mapping requires key column to be present in the source class"+TransformerUtils.getFQCN(klass)));
-						}else{
-							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,klass,otherEnd, true);
-							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,klass,otherEnd,assocKlass,thisEnd, true);
+					if(otherEnd.isNavigable())
+					{
+						UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
+						if(TransformerUtils.isAny(thisEnd,otherEnd)){
+							//implicit polymorphic validations for isAny associations
+							UMLClass implicitClass = (UMLClass)otherEnd.getUMLElement();
+
+							for (UMLClass nonImplicitSubclass:TransformerUtils.getNonImplicitSubclasses(implicitClass)){
+								TransformerUtils.getDiscriminatorValue(nonImplicitSubclass);
+								TransformerUtils.getFQCN(nonImplicitSubclass);
+							}
+
+							TransformerUtils.getImplicitDiscriminatorColumn(currentKlass,assocKlass);
+							TransformerUtils.getImplicitIdColumn(currentKlass,otherEnd.getRoleName());
+						} else if(TransformerUtils.isMany2Any(thisEnd,otherEnd)){
+							//implicit polymorphic validations for isManyToAny associations
+							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd, currentKlass,otherEnd, true);
+							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd, assocKlass, thisEnd, true);
+							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
+							
+							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
+								errors.addError(new GeneratorError(getName() + "Different columns used for implements-association and inverse-of of the same association"));
+							
+							String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false";
+							String joinTableName = correlationTable.getName();
+							UMLClass implicitClass = (UMLClass)otherEnd.getUMLElement();
+
+							for (UMLClass nonImplicitSubclass:TransformerUtils.getNonImplicitSubclasses(implicitClass)){
+								TransformerUtils.getDiscriminatorValue(nonImplicitSubclass);
+								TransformerUtils.getFQCN(nonImplicitSubclass);
+							}
+
+							TransformerUtils.getImplicitCollectionDiscriminatorColumn(correlationTable,assocKlass);
+							TransformerUtils.getImplicitCollectionIdColumn(correlationTable,currentKlass,otherEnd.getRoleName());
+
+						} else if(TransformerUtils.isMany2Many(thisEnd,otherEnd)){
+							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
+							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,currentKlass,otherEnd,true);
+							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
 							String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
 								errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
+						}else if(TransformerUtils.isOne2Many(thisEnd,otherEnd)){
+
+							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
+							if (correlationTable == null) //One to Many - No Join Table
+							{
+								UMLClass assocTable = null;
+								try 
+								{
+									assocTable = TransformerUtils.getTable(assocKlass);
+								} catch (GenerationException e) {
+									if (!TransformerUtils.isImplicitParent(assocKlass)){
+										throw e;
+									}
+								}
+
+								if (assocTable != null){
+									String keyColumnName = TransformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd,currentKlass,otherEnd, false);
+								}
+							}else{ //One to Many - Join Table
+								String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,currentKlass,otherEnd, true);
+								String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
+								String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
+								if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
+									errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
+							}
+						}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
+							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
+							if (correlationTable == null) //Many to One - No Join Table
+							{
+								String keyColumnName = TransformerUtils.findAssociatedColumn(table,currentKlass,otherEnd,assocKlass,thisEnd, false);
+							}else{ // Many to One - Join Table
+								String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,currentKlass,otherEnd, true);
+								String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
+								String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
+								if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
+									errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
+							}
+
+						}else{
+
+							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
+							if (correlationTable == null) //One to One - No Join Table
+							{
+								String keyColumnName = TransformerUtils.findAssociatedColumn(table,currentKlass,otherEnd,assocKlass,thisEnd,false, false);
+								Boolean keyColumnPresent = (keyColumnName!=null && !"".equals(keyColumnName));
+								if(!thisEnd.isNavigable() && !keyColumnPresent)
+									errors.addError(new GeneratorError(getName() + ": One to one unidirectional mapping requires key column to be present in the source class"+TransformerUtils.getFQCN(currentKlass)));
+							}else{
+								String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,currentKlass,otherEnd, true);
+								String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
+								String inverseColumnName =  TransformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
+								if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
+									errors.addError(new GeneratorError(getName() + ": Different columns used for implements-association and inverse-of of the same association"));
+							}
 						}
 					}
 				}
-			}
-			catch (GenerationException e) 
-			{
-				errors.addError(new GeneratorError(getName() + ": Association validation failed ", e));
-			}
-		}
+				catch (GenerationException e) 
+				{
+					errors.addError(new GeneratorError(getName() + ": Association validation failed ", e));
+				}
+			} // for
+		} while(currentKlass!=null && TransformerUtils.isImplicitParent(currentKlass));
 	}
 
 	private void validateAttributesMapping(UMLModel model, UMLClass klass, UMLClass table, GeneratorErrors errors) 
