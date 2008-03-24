@@ -526,7 +526,7 @@ public class NestedCriteria2HQL
 	{
 		HashMap criterions = new HashMap();
 		String objClassName = obj.getClass().getName();
-		PersistentClass pclass = cfg.getClassMapping(objClassName);
+		PersistentClass pclass = getPersistentClass(objClassName);
 		
 		if (pclass != null){
 			setAttrCriterion(obj, pclass, criterions);
@@ -534,7 +534,7 @@ public class NestedCriteria2HQL
 			while (pclass.getSuperclass() != null)
 			{
 				pclass = pclass.getSuperclass();
-				if(pclass != null && !pclass.isAbstract()){
+				if(pclass != null){
 					setAttrCriterion(obj, pclass, criterions);
 				}
 			}
@@ -561,12 +561,16 @@ public class NestedCriteria2HQL
 				Field field = getDeclaredField(pclass.getMappedClass(), fieldName);
 				field.setAccessible(true);
 
-				if (field.get(obj) != null)
-				{
-					if (prop.getType().getName().equals("gov.nih.nci.system.util.StringClobType"))
-						criterions.put(fieldName, field.get(obj) + "*");
-					else
-						criterions.put(fieldName, field.get(obj));
+				try {
+					if (field.get(obj) != null)
+					{
+						if (prop.getType().getName().equals("gov.nih.nci.system.util.StringClobType"))
+							criterions.put(fieldName, field.get(obj) + "*");
+						else
+							criterions.put(fieldName, field.get(obj));
+					}
+				} catch (Exception e) {
+					// Do nothing - when dealing with implicit queries, pclass would be the concrete subclass of obj, and thus contain fields that are not in obj
 				}
 			}
 		}
@@ -661,10 +665,14 @@ public class NestedCriteria2HQL
 				String fieldName = prop.getName();
 				Field field = getDeclaredField(pclass.getMappedClass(), fieldName);
 				field.setAccessible(true);
-				Object value = field.get(obj);
-				if (value != null)
-					if ((value instanceof Collection && ((Collection) value).size() > 0) || !(value instanceof Collection))
-						criterions.put(fieldName, field.get(obj));
+				try {
+					Object value = field.get(obj);
+					if (value != null)
+						if ((value instanceof Collection && ((Collection) value).size() > 0) || !(value instanceof Collection))
+							criterions.put(fieldName, field.get(obj));
+				} catch (Exception e) {
+					// Do nothing - when dealing with implicit queries, pclass would be the concrete subclass of obj, and thus contain fields that are not in obj
+				}
 			}
 		}
 	}
@@ -672,16 +680,15 @@ public class NestedCriteria2HQL
 	private HashMap getObjAssocCriterion(Object obj, Configuration cfg) throws Exception
 	{
 		HashMap criterions = new HashMap();
-		List propertyList = new ArrayList();
 		String objClassName = obj.getClass().getName();
 
-		PersistentClass pclass = cfg.getClassMapping(objClassName);
+		PersistentClass pclass = getPersistentClass(objClassName);
 		if (pclass != null){
 			setAssocCriterion(obj, pclass, criterions);
 			while (pclass.isJoinedSubclass())
 			{
 				pclass = pclass.getSuperclass();
-				if(pclass != null && !pclass.isAbstract()){
+				if(pclass != null){
 					setAssocCriterion(obj, pclass, criterions);
 				}
 			}
@@ -741,5 +748,36 @@ public class NestedCriteria2HQL
 			throw new NoSuchFieldException("fieldName: " + fieldName);
 		
 		return field;
+	}
+	
+	private PersistentClass getPersistentClass(String objClassName){
+		PersistentClass pclass = cfg.getClassMapping(objClassName);
+		
+		if (pclass == null) {//might be dealing with an implicit class.  Check to see if we have a persistent subclass mapping we can use instead
+			
+			Iterator iter = cfg.getClassMappings();
+			Class objClass = null;
+			try {
+				objClass = Class.forName(objClassName);
+			} catch (ClassNotFoundException e1) {
+				log.error("Class not found for " + objClassName);
+				return null;
+			}
+			
+			while (iter.hasNext()){
+				pclass = (PersistentClass)iter.next();
+				
+				try { 
+					(pclass.getMappedClass()).asSubclass(objClass);
+					log.debug("Searching for persistent subclass of " + objClassName +"; found " + pclass.getClassName());
+					return pclass;
+				} catch (Exception e) {
+					//do nothing
+				}
+
+			}// while
+		}
+		
+		return pclass;
 	}
 }

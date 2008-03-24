@@ -146,7 +146,7 @@ public class AbstractParentWithAssociationTest extends SDKTestBase
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
 		PrivateTeacher searchObject = new PrivateTeacher();
-		searchObject.setName("Invalid Name");
+		searchObject.setName("Non-existent name");
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.PrivateTeacher",searchObject );
 
 		assertNotNull(results);

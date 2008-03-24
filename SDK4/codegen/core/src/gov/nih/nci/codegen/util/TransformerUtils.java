@@ -1095,11 +1095,13 @@ public class TransformerUtils
 		
 		if((col1==null && col3==null && isJoin && throwException) || (col1==null && col2==null && !isJoin && throwException)){
 			log.debug("***** col1: " + col1 + "; col2: " + col2 + "; col3: " + col3);
+			log.debug("klass: " + klass.getName());
+			log.debug("assocKlass: " + assocKlass.getName());
 			log.debug("table: " + table.getName());
 			log.debug("isJoin: " + isJoin);
 			log.debug("otherEnd.getRoleName(): " +otherEnd.getRoleName());
 			log.debug("thisEnd.getRoleName(): " +thisEnd.getRoleName());	
-			throw new GenerationException("Could not determine the column for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
+			throw new GenerationException("Could not determine the column for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass) +". Check for missing implements-association/inverse-of/correlation-table tag(s), where appropriate");
 		}
 		/*if(col1!=null && col2!=null && !col1.equals(col2))
 			throw new GenerationException("More than one column found for the association between "+getFQCN(klass)+" and "+getFQCN(assocKlass));
@@ -1156,11 +1158,21 @@ public class TransformerUtils
 		return getColumnName(table,TV_DISCR_COLUMN,getFQCN(implicitKlass),false,0,1);
 	}
 	
-	public static String getImplicitIdColumn(UMLClass klass, UMLAssociationEnd otherEnd) throws GenerationException
+	
+	public static String getImplicitCollectionDiscriminatorColumn(UMLClass correlationTable, UMLClass implicitKlass) throws GenerationException
+	{
+		return getColumnName(correlationTable,TV_DISCR_COLUMN,getFQCN(implicitKlass),false,0,1);
+	}
+	
+	public static String getImplicitIdColumn(UMLClass klass, String roleName) throws GenerationException
 	{
 		UMLClass table = TransformerUtils.getTable(klass);
-		UMLClass implicitKlass = (UMLClass)otherEnd.getUMLElement();
-		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass)+"."+otherEnd.getRoleName(),false,0,1);
+		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass)+"."+roleName,false,0,1);
+	}
+	
+	public static String getImplicitCollectionIdColumn(UMLClass correlationTable, UMLClass klass, String roleName) throws GenerationException
+	{
+		return getColumnName(correlationTable,TV_ASSOC_COLUMN,getFQCN(klass)+"."+roleName,false,0,1);
 	}
 
 	public static boolean isLazyLoad(UMLClass klass, UMLAssociation association) throws GenerationException

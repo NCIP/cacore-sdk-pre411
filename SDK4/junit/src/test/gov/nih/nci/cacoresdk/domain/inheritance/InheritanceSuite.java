@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.AbstractParentWithAssociationTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.ChildWithAssociationTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.ChildWithAssociationSametableTest;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.implicit.ImplicitParentWithAssociationTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.MultipleChildTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.MultipleChildSametableTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.onechild.OneChildTest;
@@ -21,6 +22,7 @@ public class InheritanceSuite
 	{
 		TestSuite suite = new TestSuite("Test for Inheritance package");
 		suite.addTest(new TestSuite(AbstractParentWithAssociationTest.class,AbstractParentWithAssociationTest.getTestCaseName()));
+		suite.addTest(new TestSuite(ImplicitParentWithAssociationTest.class,ImplicitParentWithAssociationTest.getTestCaseName()));
 		suite.addTest(new TestSuite(OneChildTest.class,OneChildTest.getTestCaseName()));
 		suite.addTest(new TestSuite(OneChildSametableTest.class,OneChildSametableTest.getTestCaseName()));
 		suite.addTest(new TestSuite(TwoLevelInheritanceTest.class,TwoLevelInheritanceTest.getTestCaseName()));

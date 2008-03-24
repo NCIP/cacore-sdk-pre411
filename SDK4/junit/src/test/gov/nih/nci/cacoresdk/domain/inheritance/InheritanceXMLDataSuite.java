@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.AbstractParentWithAssociationXMLDataTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.ChildWithAssociationXMLDataTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.ChildWithAssociationSametableXMLDataTest;
+import test.gov.nih.nci.cacoresdk.domain.inheritance.implicit.ImplicitParentWithAssociationXMLDataTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.MultipleChildXMLDataTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.multiplechild.sametable.MultipleChildSametableXMLDataTest;
 import test.gov.nih.nci.cacoresdk.domain.inheritance.onechild.OneChildXMLDataTest;
@@ -20,7 +21,8 @@ public class InheritanceXMLDataSuite
 	public static Test suite()
 	{
 		TestSuite suite = new TestSuite("Test for Inheritance XML Data package");
-		suite.addTest(new TestSuite(AbstractParentWithAssociationXMLDataTest.class,AbstractParentWithAssociationXMLDataTest.getTestCaseName()));
+		suite.addTest(new TestSuite(AbstractParentWithAssociationXMLDataTest.class,AbstractParentWithAssociationXMLDataTest.getTestCaseName()));		
+		suite.addTest(new TestSuite(ImplicitParentWithAssociationXMLDataTest.class,ImplicitParentWithAssociationXMLDataTest.getTestCaseName()));
 		suite.addTest(new TestSuite(OneChildXMLDataTest.class,OneChildXMLDataTest.getTestCaseName()));
 		suite.addTest(new TestSuite(OneChildSametableXMLDataTest.class,OneChildSametableXMLDataTest.getTestCaseName()));
 		suite.addTest(new TestSuite(TwoLevelInheritanceXMLDataTest.class,TwoLevelInheritanceXMLDataTest.getTestCaseName()));
