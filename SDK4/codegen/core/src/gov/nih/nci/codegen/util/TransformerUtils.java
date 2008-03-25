@@ -57,9 +57,7 @@ public class TransformerUtils
 	
 	private static String STEREO_TYPE_TABLE = "table";
 	private static String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
-	private static String STEREO_TYPE_REALIZE_DEPENDENCY = "realize";
 
-	//private static String TV_TYPE = "type"; -- used to recognize CLOB
 	
 	static
 	{
@@ -1152,34 +1150,19 @@ public class TransformerUtils
 		return getTagValue(klass,TV_DISCR_COLUMN,null, 1,1);
 	}
 	
-	public static String getImplicitDiscriminatorColumn(UMLClass klass, UMLClass implicitKlass) throws GenerationException
+	public static String getImplicitDiscriminatorColumn(UMLClass table, UMLClass klass, String roleName) throws GenerationException
 	{
-		UMLClass table = TransformerUtils.getTable(klass);
-		return getColumnName(table,TV_DISCR_COLUMN,getFQCN(implicitKlass),false,0,1);
+		log.debug("**** getImplicitDiscriminator: table: " + table.getName() +"; klass: " + klass.getName() +"; roleName: " + roleName);
+		return getColumnName(table,TV_DISCR_COLUMN,getFQCN(klass)+"."+roleName,false,1,1);
 	}
 	
-	
-	public static String getImplicitCollectionDiscriminatorColumn(UMLClass correlationTable, UMLClass implicitKlass) throws GenerationException
+	public static String getImplicitIdColumn(UMLClass table, UMLClass klass, String roleName) throws GenerationException
 	{
-		return getColumnName(correlationTable,TV_DISCR_COLUMN,getFQCN(implicitKlass),false,0,1);
-	}
-	
-	public static String getImplicitIdColumn(UMLClass klass, String roleName) throws GenerationException
-	{
-		UMLClass table = TransformerUtils.getTable(klass);
-		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass)+"."+roleName,false,0,1);
-	}
-	
-	public static String getImplicitCollectionIdColumn(UMLClass correlationTable, UMLClass klass, String roleName) throws GenerationException
-	{
-		return getColumnName(correlationTable,TV_ASSOC_COLUMN,getFQCN(klass)+"."+roleName,false,0,1);
+		return getColumnName(table,TV_ASSOC_COLUMN,getFQCN(klass)+"."+roleName,false,1,1);
 	}
 
 	public static boolean isLazyLoad(UMLClass klass, UMLAssociation association) throws GenerationException
 	{
-		//TODO :: investigate what should be done here
-		if (hasImplicitParent(klass)) return false;
-		
 		String temp = getTagValue(klass,association, TV_LAZY_LOAD,null, 0,1);
 		temp = (temp == null || temp.trim().length()==0) ? "yes" : temp;
 		return "yes".equalsIgnoreCase(temp)? true : false;

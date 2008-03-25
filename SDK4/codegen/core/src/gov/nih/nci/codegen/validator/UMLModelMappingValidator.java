@@ -32,6 +32,23 @@ import org.apache.log4j.Logger;
  * </UL>
  * 
  * <BR>Association validation rules are as follows
+ * <P> When it is a one to many implicit polymorphic relationship (Hibernate any relationship) between classes and other end of the association is navigable
+ * 	<UL>
+ * 	<LI>Associated object table should be present</LI>
+ * 	<LI>Key column to fetch the associated objects should be present in the associated object table</LI>
+ * 	<LI>Key column to fetch itself from the associated class should be present in the associated object table</LI>
+ * 	<LI>Subclasses of non-implicit parent object(s) should each be marked with a discriminating value</LI>
+ * 	</UL>
+ * </P>
+ * <P> When it is a many to many implicit polymorphic relationship (Hibernate many-to-any relationship) between classes and other end of the association is navigable
+ * 	<UL>
+ * 	<LI>Join table should be present</LI>
+ * 	<LI>Key column to fetch the associated objects should be present in the join table</LI>
+ * 	<LI>Key column to fetch itself from the associated class should be present in the join table</LI>
+ * 	<LI>It should be clearly indicated that one of the two columns in the joint table is inverse of the second column</LI>
+ *  <LI>Subclasses of non-implicit parent object(s) should each be marked with a discriminating value</LI>
+ * 	</UL>
+ * </P> 
  * <P> When it is many to many relationship between classes and other end of the association is navigable
  * 	<UL>
  * 	<LI>Join table should be present</LI>
@@ -260,7 +277,7 @@ public class UMLModelMappingValidator implements Validator
 					{
 						UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
 						if(TransformerUtils.isAny(thisEnd,otherEnd)){
-							//implicit polymorphic validations for isAny associations
+							//implicit polymorphic validations for Any associations
 							UMLClass implicitClass = (UMLClass)otherEnd.getUMLElement();
 
 							for (UMLClass nonImplicitSubclass:TransformerUtils.getNonImplicitSubclasses(implicitClass)){
@@ -268,10 +285,11 @@ public class UMLModelMappingValidator implements Validator
 								TransformerUtils.getFQCN(nonImplicitSubclass);
 							}
 
-							TransformerUtils.getImplicitDiscriminatorColumn(currentKlass,assocKlass);
-							TransformerUtils.getImplicitIdColumn(currentKlass,otherEnd.getRoleName());
+							UMLClass anyTable = TransformerUtils.getTable(currentKlass);
+							TransformerUtils.getImplicitDiscriminatorColumn(anyTable,currentKlass,otherEnd.getRoleName());
+							TransformerUtils.getImplicitIdColumn(anyTable,currentKlass,otherEnd.getRoleName());
 						} else if(TransformerUtils.isMany2Any(thisEnd,otherEnd)){
-							//implicit polymorphic validations for isManyToAny associations
+							//implicit polymorphic validations for Many-To-Any associations
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
 							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd, currentKlass,otherEnd, true);
 							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd, assocKlass, thisEnd, true);
@@ -289,8 +307,8 @@ public class UMLModelMappingValidator implements Validator
 								TransformerUtils.getFQCN(nonImplicitSubclass);
 							}
 
-							TransformerUtils.getImplicitCollectionDiscriminatorColumn(correlationTable,assocKlass);
-							TransformerUtils.getImplicitCollectionIdColumn(correlationTable,currentKlass,otherEnd.getRoleName());
+							TransformerUtils.getImplicitDiscriminatorColumn(correlationTable,currentKlass,otherEnd.getRoleName());
+							TransformerUtils.getImplicitIdColumn(correlationTable,currentKlass,otherEnd.getRoleName());
 
 						} else if(TransformerUtils.isMany2Many(thisEnd,otherEnd)){
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
