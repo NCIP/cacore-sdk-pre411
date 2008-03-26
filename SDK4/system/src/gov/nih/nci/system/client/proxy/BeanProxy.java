@@ -20,6 +20,6 @@ public class BeanProxy implements MethodInterceptor
 	    if(!proxyHelper.isInitialized(invocation))
 	    	return proxyHelper.lazyLoad(as,invocation);
 	    else
-	    	return invocation.proceed();
+	    	return proxyHelper.convertToProxy(as,invocation.proceed());
 	}
 }
