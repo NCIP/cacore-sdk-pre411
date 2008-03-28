@@ -93,10 +93,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Mar 24 22:19:03 PST 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu Mar 27 22:08:44 PST 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-03-25 06:57:49 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-03-28 07:08:27 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -15393,10 +15393,25 @@
                                                   </UML:StructuralFeature.type>
                                                 </UML:Attribute>
                                                 <UML:Attribute xmi.id = '-64--88-1-103-888e6c:1189f1ef342:-8000:00000000000014C4'
-                                                  name = 'numGallons' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                                                  name = 'numGallons' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                   changeability = 'changeable' targetScope = 'instance'>
                                                   <UML:StructuralFeature.type>
                                                     <UML:Class xmi.idref = 'EAID_61D84993_837B_48c3_9F63_E3020F52FA13'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001559'
+                                                  name = 'id' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.multiplicity>
+                                                    <UML:Multiplicity xmi.id = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001564'>
+                                                      <UML:Multiplicity.range>
+                                                        <UML:MultiplicityRange xmi.id = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001563'
+                                                          lower = '1' upper = '1'/>
+                                                      </UML:Multiplicity.range>
+                                                    </UML:Multiplicity>
+                                                  </UML:StructuralFeature.multiplicity>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001560'/>
                                                   </UML:StructuralFeature.type>
                                                 </UML:Attribute>
                                               </UML:Classifier.feature>
@@ -15433,17 +15448,7 @@
                                             </UML:Generalization>
                                             <UML:Class xmi.id = '-64--88-1-103-888e6c:118a3fb9e44:-8000:00000000000014DC'
                                               name = 'Tank' visibility = 'public' isSpecification = 'false' isRoot = 'false'
-                                              isLeaf = 'false' isAbstract = 'false' isActive = 'false'>
-                                              <UML:Classifier.feature>
-                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:118a3fb9e44:-8000:00000000000014DE'
-                                                  name = 'id' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
-                                                  changeability = 'changeable' targetScope = 'instance'>
-                                                  <UML:StructuralFeature.type>
-                                                    <UML:Class xmi.idref = 'EAID_61D84993_837B_48c3_9F63_E3020F52FA13'/>
-                                                  </UML:StructuralFeature.type>
-                                                </UML:Attribute>
-                                              </UML:Classifier.feature>
-                                            </UML:Class>
+                                              isLeaf = 'false' isAbstract = 'false' isActive = 'false'/>
                                             <UML:Class xmi.id = '-64--88-1-103-888e6c:118a3fb9e44:-8000:00000000000014E3'
                                               name = 'FreshwaterFishTank' visibility = 'public' isSpecification = 'false'
                                               isRoot = 'false' isLeaf = 'false' isAbstract = 'false' isActive = 'false'>
@@ -19974,6 +19979,21 @@
           isAbstract = 'false'>
           <UML:Stereotype.baseClass>Stereotype</UML:Stereotype.baseClass>
         </UML:Stereotype>
+        <UML:Package xmi.id = '-64--88-1-103-888e6c:118f3faa956:-8000:000000000000155E'
+          name = 'java' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'>
+          <UML:Namespace.ownedElement>
+            <UML:Package xmi.id = '-64--88-1-103-888e6c:118f3faa956:-8000:000000000000155F'
+              name = 'lang' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+              isAbstract = 'false'>
+              <UML:Namespace.ownedElement>
+                <UML:Class xmi.id = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001560'
+                  name = 'Integer' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                  isAbstract = 'false' isActive = 'false'/>
+              </UML:Namespace.ownedElement>
+            </UML:Package>
+          </UML:Namespace.ownedElement>
+        </UML:Package>
       </UML:Namespace.ownedElement>
     </UML:Model>
   </XMI.content>
@@ -27360,7 +27380,7 @@
       textsize="10"
     >FishTank</text>
     <group name="Fig77.3"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[1305, 1260, 105, 26]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[1305, 1267, 105, 20]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -27371,9 +27391,9 @@
       
       <rectangle name="Fig77.3.0"
         x="1305"
-        y="1260"
+        y="1267"
         width="105"
-        height="26"
+        height="20"
         fill="1"
         fillcolor="white"
         stroke="0"
@@ -27387,13 +27407,13 @@
         strokecolor="black"
       >
         <moveto x="1305"
-                y="1260" />
+                y="1267" />
         <lineto x="1410"
-                y="1260" />
+                y="1267" />
       </path>
     </group>
     <group name="Fig77.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[1305, 1216, 105, 43]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[1305, 1216, 105, 50]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -27406,7 +27426,7 @@
         x="1305"
         y="1216"
         width="105"
-        height="43"
+        height="50"
         fill="1"
         fillcolor="white"
         stroke="0"
@@ -27444,6 +27464,16 @@
         font="Dialog"
         textsize="10"
       >numGallons : Integer</text>
+      <text name="Fig77.4.4"
+        x="1305"
+        y="1245"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >id : Integer</text>
     </group>
     <rectangle name="Fig77.5"
       x="1304"
@@ -27560,7 +27590,7 @@
       textsize="10"
     >Tank</text>
     <group name="Fig80.3"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[1305, 1127, 89, 20]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[1305, 1126, 89, 20]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -27571,7 +27601,7 @@
       
       <rectangle name="Fig80.3.0"
         x="1305"
-        y="1127"
+        y="1126"
         width="89"
         height="20"
         fill="1"
@@ -27587,13 +27617,13 @@
         strokecolor="black"
       >
         <moveto x="1305"
-                y="1127" />
+                y="1126" />
         <lineto x="1394"
-                y="1127" />
+                y="1126" />
       </path>
     </group>
     <group name="Fig80.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[1305, 1104, 89, 22]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[1305, 1104, 89, 21]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -27606,7 +27636,7 @@
         x="1305"
         y="1104"
         width="89"
-        height="22"
+        height="21"
         fill="1"
         fillcolor="white"
         stroke="0"
@@ -27624,16 +27654,6 @@
         <lineto x="1394"
                 y="1104" />
       </path>
-      <text name="Fig80.4.2"
-        x="1305"
-        y="1105"
-        fill="0"
-        fillcolor="white"
-        stroke="0"
-        strokecolor="black"
-        font="Dialog"
-        textsize="10"
-      >id : Integer</text>
     </group>
     <rectangle name="Fig80.5"
       x="1304"
