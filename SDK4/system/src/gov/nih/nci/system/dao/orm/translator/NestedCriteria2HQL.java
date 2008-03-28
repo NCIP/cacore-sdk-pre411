@@ -690,12 +690,12 @@ public class NestedCriteria2HQL
 		PersistentClass pclass = getPersistentClass(objClassName);
 		if (pclass != null){
 			setAssocCriterion(obj, pclass, criterions);
-			while (pclass.isJoinedSubclass())
+			
+			pclass = pclass.getSuperclass();
+			while (pclass != null)
 			{
+				setAssocCriterion(obj, pclass, criterions);
 				pclass = pclass.getSuperclass();
-				if(pclass != null){
-					setAssocCriterion(obj, pclass, criterions);
-				}
 			}
 		}
 		return criterions;

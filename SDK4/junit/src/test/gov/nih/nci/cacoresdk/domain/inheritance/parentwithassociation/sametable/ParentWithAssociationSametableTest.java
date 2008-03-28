@@ -272,7 +272,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 	public void testAssociationNestedSearch() throws ApplicationException
 	{
 		HardTop searchObject = new HardTop();
-		searchObject.setKeyCode(627);
+
 		Wheel wheel = new Wheel();
 		wheel.setRadius(1);
 		
