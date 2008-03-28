@@ -262,6 +262,36 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		assertNotNull(results);
 		assertEquals(0,results.size());
 	}
+	
+	/**
+	 * Uses Nested Search Criteria for inheritance as association in search
+	 * Verifies that the result set is empty
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testAssociationNestedSearch() throws ApplicationException
+	{
+		HardTop searchObject = new HardTop();
+		searchObject.setKeyCode(627);
+		Wheel wheel = new Wheel();
+		wheel.setRadius(1);
+		
+		searchObject.setWheel(wheel);
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			HardTop result = (HardTop)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertNotNull(result.getKeyCode());
+			assertNotNull(result.getCapacity());
+			assertEquals(result.getKeyCode(),new Integer(627));
+		}
+	}
 
 	
 	/**

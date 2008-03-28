@@ -113,6 +113,19 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 	protected void validateClassElements(Class klass, String identity)
 	throws Exception {
 
+		validateClassElements(klass, identity, true);
+	}
+	
+	/**
+	 * Uses xpath to query the generated XSD Verifies that common elements
+	 * attributes(name, type) are present Verifies that the element 'name'
+	 * attribute matches the class name
+	 * 
+	 * @throws Exception
+	 */
+	protected void validateClassElements(Class klass, String identity, boolean validateIdentity)
+	throws Exception {
+
 		Document doc = getDoc();
 
 		String xpath = "/mapping/class[@name='" + klass.getName() + "']";
@@ -132,7 +145,8 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 //		assertEquals(5, klassElt.getAttributes().size());//name, identity, access, auto-complete, verify-constructable
 
 		assertTrue(klassElt.getAttributeValue("name").equals(klass.getName()));
-		assertTrue(klassElt.getAttributeValue("identity").equals(identity));
+		if (validateIdentity)
+			assertTrue(klassElt.getAttributeValue("identity").equals(identity));
 
 		xpath = "/mapping/class[@name='" + klass.getName() + "']"
 			+ "/map-to[@xml='" + klass.getSimpleName() + "']";		

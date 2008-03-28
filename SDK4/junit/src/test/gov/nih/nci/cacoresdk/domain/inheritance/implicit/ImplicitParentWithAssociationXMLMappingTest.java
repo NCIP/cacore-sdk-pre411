@@ -109,9 +109,7 @@ public class ImplicitParentWithAssociationXMLMappingTest extends SDKXMLMappingTe
 	{
 		Class targetClass = Tank.class;
 
-		validateClassElements(targetClass,"id");
-		
-		validateFieldElement(targetClass, "id","Integer");
+		validateClassElements(targetClass,"id",false);
 
 	}	
 	
@@ -128,6 +126,7 @@ public class ImplicitParentWithAssociationXMLMappingTest extends SDKXMLMappingTe
 
 		validateSubclassElements(targetClass,"id");
 		
+		validateFieldElement(targetClass, "id","Integer");
 		validateFieldElement(targetClass, "shape","String");
 		validateFieldElement(targetClass, "numGallons","Integer");
 

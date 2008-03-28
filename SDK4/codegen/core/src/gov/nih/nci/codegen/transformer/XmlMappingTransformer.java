@@ -209,14 +209,20 @@ public class XmlMappingTransformer implements Transformer {
 		
 		String idAttrName = "";
 		try {
-			idAttrName = TransformerUtils.getClassIdAttr(klass).getName();
+			UMLAttribute classIdAttr = TransformerUtils.getClassIdAttr(klass);
+			if (classIdAttr == null && !TransformerUtils.isImplicitParent(klass))
+				throw new GenerationException("No id attribute found for class " + klass.getName());
+			if (classIdAttr != null)
+				idAttrName = TransformerUtils.getClassIdAttr(klass).getName();
 			log.debug("className: " + klass.getName() + "; idAttrName: " + idAttrName);
 		} catch (GenerationException ge){
 			log.error("ERROR: ", ge);
 			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 		}
-				
-		classEl.setAttribute("identity", idAttrName);
+			
+		if (idAttrName != null)
+			classEl.setAttribute("identity", idAttrName);
+		
 		if (superClassName!=null){
 			classEl.setAttribute("extends", superClassName);
 		}

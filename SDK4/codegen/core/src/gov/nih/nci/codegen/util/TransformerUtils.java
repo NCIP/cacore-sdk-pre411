@@ -388,7 +388,7 @@ public class TransformerUtils
 
 	public static String getHibernateDataType(UMLClass klass, UMLAttribute attr) throws GenerationException
 	{
-			log.debug("getHibernateDataType for klass: " + klass.getName() + ", attr: " + attr.getName());
+		log.debug("getHibernateDataType for klass: " + klass.getName() + ", attr: " + attr.getName());
 		String fqcn = getFQCN(klass);
 		UMLClass table = getTable(klass);
 		UMLAttribute col = getMappedColumn(table,fqcn+"."+attr.getName());
@@ -524,6 +524,8 @@ public class TransformerUtils
 
 	public static UMLAttribute getClassIdAttr(UMLClass klass) throws GenerationException
 	{
+		
+		
 		String fqcn = getFQCN(klass);
 		
 		UMLAttribute idAttr = getColumn(klass,TV_ID_ATTR_COLUMN, fqcn,true,0,1);
@@ -534,7 +536,10 @@ public class TransformerUtils
 		for(UMLAttribute attribute:klass.getAttributes())
 			if(idAttrName.equals(attribute.getName()))
 				return attribute;
-
+			
+		if (isImplicitParent(klass))
+			return null;
+			
 		for(UMLGeneralization gen: klass.getGeneralizations())
 		{
 			if(gen.getSubtype() == klass && gen.getSupertype() != klass)
@@ -932,6 +937,7 @@ public class TransformerUtils
 		for(UMLDependency dependency:dependencies)
 		{
 			UMLClass client = (UMLClass) dependency.getClient();
+			log.debug("getTable: klass: " + klass.getName() + "Client stereotype: " +client.getStereotype() + "; dependency stereotype: " + dependency.getStereotype());
 			if(STEREO_TYPE_TABLE.equalsIgnoreCase(client.getStereotype()) && STEREO_TYPE_DATASOURCE_DEPENDENCY.equalsIgnoreCase(dependency.getStereotype()))
 			{
 				count++;
@@ -939,8 +945,10 @@ public class TransformerUtils
 			}
 		}
 
-		if(count!=1)
+		if(count!=1){
+			log.debug("getTable: klass: " +klass.getName()+"; count: " + count);
 			throw new GenerationException("No table found for : "+getFQCN(klass)+".  Make sure the corresponding Data Model table (class) has a 'table' Stereotype assigned, and the Dependency between the Data Model table and Logical Model class has a 'DataSource' Stereotype assigned.");
+		}
 
 		
 		return result;

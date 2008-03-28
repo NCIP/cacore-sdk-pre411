@@ -231,7 +231,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		{
 			Tank result = (Tank)i.next();
 			assertNotNull(result);
-			assertNotNull(result.getId());
 		}
 	}	
 
@@ -503,7 +502,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		{
 			Tank result = (Tank)i.next();
 			assertNotNull(result);
-			assertNotNull(result.getId());
 		}
 	}
 	
@@ -545,8 +543,8 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 	 */
 	public void testZeroAssociationNestedSearch() throws ApplicationException
 	{
-		Tank searchObject = new Tank();
-		searchObject.setId(5);// no such row
+		FishTank searchObject = new FishTank();
+		searchObject.setId(5);
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.FishTank",searchObject );
 
 		assertNotNull(results);
@@ -640,18 +638,16 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 	public void testAssociationNestedSearch3() throws ApplicationException
 	{
 		Tank searchObject = new Tank();
-		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.FishTank",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(4,results.size());
 		
 		FishTank result = (FishTank)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertNotNull(result.getNumGallons());
 		assertNotNull(result.getShape());
-		assertEquals(new Integer(1),result.getId());
 	}
 
 	/**
@@ -673,8 +669,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		
 		Tank result = (Tank)results.iterator().next();
 		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(1), result.getId());
 	}	
 	
 	/**
@@ -748,8 +742,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		
 		Tank result = (Tank)results.iterator().next();
 		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(4), result.getId());
 	}	
 	
 	/**
@@ -763,17 +755,15 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 	public void testAssociationNestedSearch8() throws ApplicationException
 	{
 		Tank searchObject = new Tank();
-		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Fish",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(4,results.size());
 		
 		Fish result = (Fish)results.iterator().next();
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertNotNull(result.getGenera());
-		assertEquals(new Integer(4), result.getId());
 	}
 	
 	/**
@@ -788,11 +778,11 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 	{
 		TankAccessory searchObject = new TankAccessory();
 		searchObject.setId(new Integer(4));
-		Collection results;
+		
 		
 		boolean flag = false;
 		try {
-			results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Tank",searchObject );
+			getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Tank",searchObject );
 		} catch (Exception e) { //outer join fetches not currently supported by hibernate for implicit polymorphic queries
 			flag = true;
 		}
@@ -801,29 +791,28 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 
 	}	
 	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationNestedSearch10() throws ApplicationException
-	{
-		Tank searchObject = new Tank();
-		searchObject.setId(new Integer(4));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.TankAccessory",searchObject );
-
-		assertNotNull(results);
-		assertEquals(3,results.size());
-		
-		TankAccessory result = (TankAccessory)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertNotNull(result.getName());
-		assertEquals(new Integer(1), result.getId());
-	}	
+//	/**
+//	 * Uses Nested Search Criteria for inheritance as association in search
+//	 * Verifies that the results are returned 
+//	 * Verifies size of the result set
+//	 * Verifies that none of the attribute is null
+//	 * 
+//	 * @throws ApplicationException
+//	 */
+//	public void testAssociationNestedSearch10() throws ApplicationException
+//	{
+//		Tank searchObject = new Tank();
+//		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.TankAccessory",searchObject );
+//
+//		assertNotNull(results);
+//		assertEquals(3,results.size());
+//		
+//		TankAccessory result = (TankAccessory)results.iterator().next();
+//		assertNotNull(result);
+//		assertNotNull(result.getId());
+//		assertNotNull(result.getName());
+//		assertEquals(new Integer(1), result.getId());
+//	}	
 	
 	/**
 	 * Uses Nested Search Criteria for inheritance as association in search
@@ -980,8 +969,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		
 		Tank result = (Tank)results.iterator().next();
 		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(1), result.getId());
 	}
 	
 	/**
@@ -1080,8 +1067,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		
 		Tank result = (Tank)results.iterator().next();
 		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(4), result.getId());
 	}
 	
 
@@ -1149,8 +1134,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		
 		Tank result = (Tank)results.iterator().next();
 		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(3), result.getId());
 	}
 	
 
@@ -1178,7 +1161,7 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		
 		boolean flag = false;
 		try {
-			Collection results = getApplicationService().query(cqlQuery);
+			getApplicationService().query(cqlQuery);
 		} catch (Exception e){
 			flag = true;
 		}
@@ -1226,18 +1209,16 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 	public void testGetAssociation1() throws ApplicationException
 	{
 		Tank searchObject = new Tank();
-		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Tank",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(4,results.size());
 
 		TankAccessory tankAccessory;
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
 			Tank result = (Tank)i.next();
 			assertNotNull(result);
-			assertNotNull(result.getId());
 
 			for(Iterator j = result.getTankAccessoryCollection().iterator();j.hasNext();)
 			{
@@ -1252,18 +1233,16 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 	public void testGetAssociation2() throws ApplicationException
 	{
 		Tank searchObject = new Tank();
-		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Tank",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(4,results.size());
 
 		Fish fish;
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
 			Tank result = (Tank)i.next();
 			assertNotNull(result);
-			assertNotNull(result.getId());
 
 			for(Iterator j = result.getFishCollection().iterator();j.hasNext();)
 			{
@@ -1321,7 +1300,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 
 			tank = fish.getTank();
 			assertNotNull(tank);
-			assertNotNull(tank.getId());
 		}		
 	}
 	
@@ -1345,7 +1323,7 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 			flag = false;
 			
 			try {
-				Collection tankCollection = tankAccessory.getTankCollection();
+				tankAccessory.getTankCollection();
 			} catch (Exception e) {
 				flag = true; //Outer-join fetching is not currently supported by Hibernate
 			}

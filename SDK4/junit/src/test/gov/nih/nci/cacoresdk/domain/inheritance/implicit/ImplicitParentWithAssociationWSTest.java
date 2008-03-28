@@ -1,8 +1,6 @@
 package test.gov.nih.nci.cacoresdk.domain.inheritance.implicit;
 
 
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.Designer;
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.DesignerShoes;
 import gov.nih.nci.cacoresdk.domain.inheritance.implicit.AngelFish;
 import gov.nih.nci.cacoresdk.domain.inheritance.implicit.DiscusFish;
 import gov.nih.nci.cacoresdk.domain.inheritance.implicit.Fish;
@@ -258,7 +256,6 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 		for (Object obj : results){
 			Tank result = (Tank)obj;
 			assertNotNull(result);
-			assertNotNull(result.getId());
 		}			
 	}
 
@@ -299,7 +296,7 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 	public void testZeroAssociationNestedSearch() throws Exception
 	{
 		Class targetClass = Tank.class;
-		Tank criteria = new Tank();
+		FishTank criteria = new FishTank();
 		criteria.setId(10);//No such row exists
 
 		Object[] results = getQueryObjectResults(targetClass, criteria);
@@ -382,8 +379,6 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 		
 		Tank result = (Tank)results[0];
 		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(2), result.getId());		
 	}
 
 	/**
@@ -398,19 +393,17 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 	{
 		Class targetClass = FishTank.class;
 		Tank criteria = new Tank();
-		criteria.setId(new Integer(2));
 
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
 		assertNotNull(results);
-		assertEquals(1,results.length);
+		assertEquals(4,results.length);
 		
 		FishTank result = (FishTank)results[0];
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertNotNull(result.getNumGallons());
-		assertNotNull(result.getShape());
-		assertEquals(new Integer(2), result.getId());			
+		assertNotNull(result.getShape());	
 	}
 	
 	/**
@@ -488,9 +481,7 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 		assertEquals(1,results.length);
 		
 		Tank result = (Tank)results[0];
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(1), result.getId());			
+		assertNotNull(result);	
 	}	
 	
 	/**
@@ -505,18 +496,16 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 	{
 		Class targetClass = Fish.class;
 		Tank criteria = new Tank();
-		criteria.setId(new Integer(1));
 
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
 		assertNotNull(results);
-		assertEquals(1,results.length);
+		assertEquals(4,results.length);
 		
 		Fish result = (Fish)results[0];
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getGenera());
-		assertEquals(new Integer(1), result.getId());			
+		assertNotNull(result.getGenera());	
 	}	
 	
 	/**
@@ -557,18 +546,16 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 	{
 		Class targetClass = TankAccessory.class;
 		Tank criteria = new Tank();
-		criteria.setId(new Integer(4));
 
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
 		assertNotNull(results);
-		assertEquals(3,results.length);
+		assertEquals(6,results.length);
 		
 		TankAccessory result = (TankAccessory)results[0];
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertNotNull(result.getName());
-		assertEquals(new Integer(1), result.getId());			
+		assertNotNull(result.getName());		
 	}	
 	
 	/**
@@ -620,7 +607,6 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 		{
 			Tank tank = (Tank)obj;
 			assertNotNull(tank);
-			assertNotNull(tank.getId());
 			
 			Object[] associatedResults = getAssociationResults(tank, "fishCollection", 0);
 			for (Object obj2 : associatedResults){
@@ -661,7 +647,6 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 			for (Object obj2 : associatedResults){
 				tank = (Tank)obj2;
 				assertNotNull(tank);
-				assertNotNull(tank.getId());
 			}
 		}
 	}	
@@ -689,7 +674,6 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 		{
 			Tank tank = (Tank)obj;
 			assertNotNull(tank);
-			assertNotNull(tank.getId());
 			
 			Object[] associatedResults = getAssociationResults(tank, "tankAccessoryCollection", 0);
 			for (Object obj2 : associatedResults){

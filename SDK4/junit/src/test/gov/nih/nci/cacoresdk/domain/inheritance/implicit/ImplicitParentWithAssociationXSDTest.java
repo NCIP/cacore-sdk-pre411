@@ -1,7 +1,5 @@
 package test.gov.nih.nci.cacoresdk.domain.inheritance.implicit;
 
-import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Pupil;
-import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Teacher;
 import gov.nih.nci.cacoresdk.domain.inheritance.implicit.AngelFish;
 import gov.nih.nci.cacoresdk.domain.inheritance.implicit.DiscusFish;
 import gov.nih.nci.cacoresdk.domain.inheritance.implicit.Fish;
@@ -108,8 +106,7 @@ public class ImplicitParentWithAssociationXSDTest extends SDKXSDTestBase
 	{
 		Class targetClass = Tank.class;
 
-		validateClassElements(targetClass);
-		validateAttributeElement(targetClass, "id", "Integer");	
+		validateClassElements(targetClass);	
 	}	
 	
 	
@@ -125,6 +122,7 @@ public class ImplicitParentWithAssociationXSDTest extends SDKXSDTestBase
 		Class targetClass = FishTank.class;
 
 		validateSubclassElements(targetClass);
+		validateSubclassAttributeElement(targetClass, "id", "Integer");
 		validateSubclassAttributeElement(targetClass, "shape", "String");
 		validateSubclassAttributeElement(targetClass, "numGallons", "Integer");
 	}	

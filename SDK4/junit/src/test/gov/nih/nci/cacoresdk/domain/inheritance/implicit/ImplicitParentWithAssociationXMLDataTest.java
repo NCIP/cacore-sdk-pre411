@@ -44,14 +44,12 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 			toXML(result);
 			
 			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
 			
 			assertTrue(validateXMLData(result, searchObject.getClass()));
 
 			Tank result2 = (Tank)fromXML(result);
 			
 			assertNotNull(result2);
-			assertNotNull(result2.getId());
 		}
 	}
 
@@ -415,11 +413,10 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 	public void testAssociationNestedSearch3() throws Exception
 	{
 		Tank searchObject = new Tank();
-		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.FishTank",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(4,results.size());
 		
 		FishTank result = (FishTank)results.iterator().next();
 		toXML(result);
@@ -429,7 +426,6 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 		assertNotNull(result2.getId());
 		assertNotNull(result2.getNumGallons());
 		assertNotNull(result2.getShape());
-		assertEquals(new Integer(1), result2.getId());
 	}
 
 	/**
@@ -455,8 +451,6 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 		Tank result2 = (Tank)fromXML(result);
 
 		assertNotNull(result2);
-		assertNotNull(result2.getId());
-		assertEquals(new Integer(2), result2.getId());
 	}
 	
 	/**
@@ -541,8 +535,6 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 		Tank result2 = (Tank)fromXML(result);
 
 		assertNotNull(result2);
-		assertNotNull(result2.getId());
-		assertEquals(new Integer(1), result2.getId());
 	}
 	
 	/**
@@ -557,11 +549,10 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 	{
 		Tank searchObject = new Tank();
 	
-		searchObject.setId(new Integer(1));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Fish",searchObject );
 
 		assertNotNull(results);
-		assertEquals(1,results.size());
+		assertEquals(4,results.size());
 		
 		Fish result = (Fish)results.iterator().next();
 		toXML(result);
@@ -570,7 +561,6 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 		assertNotNull(result2);
 		assertNotNull(result2.getId());
 		assertNotNull(result2.getGenera());
-		assertEquals(new Integer(1), result2.getId());
 	}
 	
 	/**
@@ -585,11 +575,10 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 	{
 		Tank searchObject = new Tank();
 	
-		searchObject.setId(new Integer(4));
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.TankAccessory",searchObject );
 
 		assertNotNull(results);
-		assertEquals(3,results.size());
+		assertEquals(6,results.size());
 		
 		TankAccessory result = (TankAccessory)results.iterator().next();
 		toXML(result);
@@ -598,7 +587,6 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 		assertNotNull(result2);
 		assertNotNull(result2.getId());
 		assertNotNull(result2.getName());
-		assertEquals(new Integer(1), result2.getId());
 	}	
 	
 	/**

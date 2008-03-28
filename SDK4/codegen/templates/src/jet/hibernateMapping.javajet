@@ -141,7 +141,6 @@ if(level == 0){%>
 		<%=emptySpace%></set><%
 							}
 						}else if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
-							if (!TransformerUtils.isImplicitParent(currentKlass)){
 								UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
 								if (correlationTable == null) //Many to One - No Join Table
 								{
@@ -162,7 +161,6 @@ if(level == 0){%>
 				<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" not-null="true"/>
 			<%=emptySpace%></join><%
 								}
-							}
 						}else{	//One to One
 							String lazyValue = lazy == true ? "proxy" : "false";
 

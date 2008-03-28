@@ -542,8 +542,13 @@ public class NestedCriteria2HQL
 			String identifier = pclass.getIdentifierProperty().getName();
 			Field idField = getDeclaredField(pclass.getMappedClass(), identifier);
 			idField.setAccessible(true);
-			if (idField.get(obj) != null)
-				criterions.put(identifier, idField.get(obj));
+			try {
+				if (idField.get(obj) != null)
+					criterions.put(identifier, idField.get(obj));
+			} catch (Exception e) {
+				// Do nothing - when dealing with implicit queries, pclass would be the concrete subclass of obj, 
+				// and the identifier field might be in a subclass of obj				
+			}
 		}
 
 		return criterions;
