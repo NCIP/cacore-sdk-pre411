@@ -36,7 +36,7 @@ public interface ApplicationService
 	 * @see {@link #query(CQLQuery)}
 	 */
 	@Deprecated
-	public List<Object> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException;
+	public List<?> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the CQL query. The CQL query structure is converted into the
@@ -54,7 +54,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> query(CQLQuery cqlQuery) throws ApplicationException;
+	public List<?> query(CQLQuery cqlQuery) throws ApplicationException;
 
 	/**
 	 * Retrieves the result from the data source using the DetachedCriteria query. The DetachedCriteria query structure 
@@ -77,7 +77,7 @@ public interface ApplicationService
 	 * @see {@link #query(DetachedCriteria)}
 	 */
 	@Deprecated
-	public List<Object> query(DetachedCriteria detachedCriteria, String targetClassName) throws ApplicationException;
+	public List<?> query(DetachedCriteria detachedCriteria, String targetClassName) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the DetachedCriteria query. The DetachedCriteria query structure 
@@ -94,7 +94,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> query(DetachedCriteria detachedCriteria) throws ApplicationException;
+	public List<?> query(DetachedCriteria detachedCriteria) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the HQL query. The HQL query structure can be used only by 
@@ -117,7 +117,7 @@ public interface ApplicationService
 	 * @see {@link #query(HQLCriteria)}
 	 */
 	@Deprecated
-	public List<Object> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException;
+	public List<?> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the HQL query. The HQL query structure can be used only by 
@@ -134,7 +134,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> query(HQLCriteria hqlCriteria) throws ApplicationException;
+	public List<?> query(HQLCriteria hqlCriteria) throws ApplicationException;
 
 	/**
 	 * Retrieves the result from the data source using the Query by Example. The <code>targetClass</code> specifies 
@@ -156,7 +156,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> search(Class targetClass, List<?> objList) throws ApplicationException;
+	public List<?> search(Class targetClass, List<?> objList) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the Query by Example. The <code>targetClass</code> specifies 
@@ -177,7 +177,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> search(Class targetClass, Object obj) throws ApplicationException;
+	public List<?> search(Class targetClass, Object obj) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using a Nested Search Criteria. The <code>path</code> specifies 
@@ -198,7 +198,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> search(String path, List<?> objList) throws ApplicationException;
+	public List<?> search(String path, List<?> objList) throws ApplicationException;
 	
 	/**
 	 * Retrieves the result from the data source using the Nested Search Criteria. The <code>path</code> specifies 
@@ -219,7 +219,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> search(String path, Object obj) throws ApplicationException;	
+	public List<?> search(String path, Object obj) throws ApplicationException;	
 
 	/**
 	 * Used by the infrastructure to get next chunk of records in the result set. Use this method in conjunction with the 
@@ -231,7 +231,7 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException;
+	public List<?> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException;
 	
 	/**
 	 * Returns the number of records that meet the search criteria. The method is used by the client framework to determine 
@@ -260,5 +260,5 @@ public interface ApplicationService
 	 * @return
 	 * @throws ApplicationException
 	 */
-	public List<Object> getAssociation(Object source, String associationName) throws ApplicationException;
+	public List<?> getAssociation(Object source, String associationName) throws ApplicationException;
 }
