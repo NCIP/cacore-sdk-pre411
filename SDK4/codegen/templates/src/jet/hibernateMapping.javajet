@@ -11,7 +11,7 @@ String discriminatorColumnName = TransformerUtils.findDiscriminatingColumnName(k
 if(level == 0){%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="<%=TransformerUtils.getFullPackageName(klass)%>">
+<hibernate-mapping package="<%=TransformerUtils.getFullPackageName(klass)%>" auto-import="false">
 	<class name="<%=klass.getName()%>" table="<%=table.getName()%>" lazy="true" polymorphism="<%=polymorphismAttr%>" abstract="<%=abstractModifier%>">
 		<cache usage="read-write" />
 		<id name="<%=idAttr.getName()%>" type="<%=TransformerUtils.getHibernateDataType(klass,idAttr)%>" column="<%=TransformerUtils.getMappedColumnName(table,fqcn+"."+idAttr.getName())%>">
@@ -205,25 +205,25 @@ if(level == 0){%>
 		}while(currentKlass!=null && TransformerUtils.isImplicitParent(currentKlass));
 		for(UMLGeneralization gen:klass.getGeneralizations()){
 			UMLClass subKlass = (UMLClass)gen.getSubtype();
+			String subFqcn = TransformerUtils.getFQCN(subKlass);
 			if(subKlass!=klass){
 				if(discriminatorColumnName == null || "".equals(discriminatorColumnName)){
 				UMLClass superKlass = (UMLClass)gen.getSupertype();
 				UMLClass subTable = TransformerUtils.getTable(subKlass);
-				String subFqcn = TransformerUtils.getFQCN(subKlass);
 				String keyColumnName = TransformerUtils.getMappedColumnName(subTable,subFqcn+"."+idAttr.getName());%>
-		<%=emptySpace%><joined-subclass name="<%=subKlass.getName()%>" table="<%=subTable.getName()%>" lazy="true">
+		<%=emptySpace%><joined-subclass name="<%=subFqcn%>" table="<%=subTable.getName()%>" lazy="true">
 			<%=emptySpace%><key column="<%=keyColumnName%>" /><%=generate(model, subKlass, level+1)%>
 		<%=emptySpace%></joined-subclass><%
 				}else{
 					String discriminatorValue = TransformerUtils.getDiscriminatorValue(subKlass);
 					UMLClass subTable = TransformerUtils.getTable(subKlass);
 					if(subTable == table){%>
-		<%=emptySpace%><subclass name="<%=subKlass.getName()%>" discriminator-value="<%=discriminatorValue%>"><%=generate(model, subKlass, level+1)%>
+		<%=emptySpace%><subclass name="<%=subFqcn%>" discriminator-value="<%=discriminatorValue%>"><%=generate(model, subKlass, level+1)%>
 		<%=emptySpace%></subclass><%
 					}else{
 						String subFqcn = TransformerUtils.getFQCN(subKlass);
 						String keyColumnName = TransformerUtils.getMappedColumnName(subTable,subFqcn+"."+idAttr.getName());%>
-		<%=emptySpace%><subclass name="<%=subKlass.getName()%>" discriminator-value="<%=discriminatorValue%>">
+		<%=emptySpace%><subclass name="<%=subFqcn%>" discriminator-value="<%=discriminatorValue%>">
 			<%=emptySpace%><join table="<%=subTable.getName()%>">
 				<%=emptySpace%><key column="<%=keyColumnName%>" /><%=generate(model, subKlass, level+1)%>
 			<%=emptySpace%></join>
