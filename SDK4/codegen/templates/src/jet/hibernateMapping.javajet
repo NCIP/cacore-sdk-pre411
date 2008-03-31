@@ -221,7 +221,6 @@ if(level == 0){%>
 		<%=emptySpace%><subclass name="<%=subFqcn%>" discriminator-value="<%=discriminatorValue%>"><%=generate(model, subKlass, level+1)%>
 		<%=emptySpace%></subclass><%
 					}else{
-						String subFqcn = TransformerUtils.getFQCN(subKlass);
 						String keyColumnName = TransformerUtils.getMappedColumnName(subTable,subFqcn+"."+idAttr.getName());%>
 		<%=emptySpace%><subclass name="<%=subFqcn%>" discriminator-value="<%=discriminatorValue%>">
 			<%=emptySpace%><join table="<%=subTable.getName()%>">
