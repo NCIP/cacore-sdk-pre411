@@ -63,7 +63,9 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
     }
 	
 	public int getTotalNumberOfRecords(String targetClassName, Object criteria) throws Exception{
-		return getNestedCriteriaResultSet(targetClassName, criteria, 0).size();
+		NestedCriteriaPath criteriaPath=getNestedCriteriaPath(targetClassName, criteria);
+		Integer queryRowCount = applicationService.getQueryRowCount(criteriaPath, targetClassName);
+		return queryRowCount;
 	}
 
 	public List queryObject(String targetClassName, Object criteria) throws Exception
@@ -81,26 +83,14 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 	}
 
 	private List getNestedCriteriaResultSet(String targetClassName, Object searchCriteria, int startIndex) throws Exception{
-		
-		if(targetClassName==null || searchCriteria == null){
-			throw new Exception("Invalid arguments passed over to the server");
-		}
 
-		// Nested Search criteria
-		if (targetClassName.indexOf(',') > 0){ 
-			return applicationService.search(targetClassName, searchCriteria);
-		}
-		
 		List results = new ArrayList();
 		String searchClassName = getSearchClassName(targetClassName);
 
 		try
 		{
 			if(searchClassName != null && searchCriteria != null){
-				List<Object> paramList = new ArrayList<Object>();
-				paramList.add(searchCriteria);
-				NestedCriteriaPath pathCriteria = new NestedCriteriaPath(targetClassName,paramList);
-				
+				NestedCriteriaPath pathCriteria = getNestedCriteriaPath(targetClassName, searchCriteria);				
 				results = applicationService.query(pathCriteria, startIndex, targetClassName);			
 			}
 			else{
@@ -115,6 +105,14 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 		}
 		return results;
 	}
+
+	private NestedCriteriaPath getNestedCriteriaPath(String targetClassName,Object searchCriteria) {
+		List<Object> paramList = new ArrayList<Object>();
+		paramList.add(searchCriteria);
+		NestedCriteriaPath pathCriteria = new NestedCriteriaPath(targetClassName, paramList);
+		return pathCriteria;
+	}
+	
 	public List getAssociation(Object source, String associationName, int startIndex) throws Exception
 	{
 
