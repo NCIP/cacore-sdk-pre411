@@ -83,7 +83,12 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 	}
 
 	private List getNestedCriteriaResultSet(String targetClassName, Object searchCriteria, int startIndex) throws Exception{
-
+		
+		// Nested Search criteria - 
+		if (targetClassName.indexOf(',') > 0){ 
+			return applicationService.search(targetClassName, searchCriteria);
+		}
+		
 		List results = new ArrayList();
 		String searchClassName = getSearchClassName(targetClassName);
 
