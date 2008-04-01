@@ -76,7 +76,8 @@ public class LevelAssociationWSTest extends SDKWSTestBase
 			Card result = (Card)obj;
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getImage());
+			if (result.getId() == 1)
+				assertNotNull(result.getImage());// Only row with id=1 has an image
 			assertNotNull(result.getName());			
 		}	
 	}
