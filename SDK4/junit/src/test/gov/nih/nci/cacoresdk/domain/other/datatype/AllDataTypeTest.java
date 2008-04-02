@@ -539,7 +539,7 @@ public class AllDataTypeTest extends SDKTestBase
 	 */
 	public void testQueryRowCountHQL() throws ApplicationException
 	{
-		HQLCriteria criteria = new HQLCriteria("from AllDataType a where a.intValue > 3");
+		HQLCriteria criteria = new HQLCriteria("from gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType a where a.intValue > 3");
 		int count = getApplicationService().getQueryRowCount(criteria, "gov.nih.nci.cacoresdk.domain.other.datatype.AllDataType");
 
 		assertEquals(2,count);
