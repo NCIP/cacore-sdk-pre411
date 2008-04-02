@@ -107,6 +107,7 @@
 			<mkdir dir="@{junitOutputDir}"/>
 			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
 				<sysproperty key="java.security.auth.login.config" value="./conf/login.config" />
+				<sysproperty key="webservice.url" value="${SERVER_URL}/services/${WEBSERVICE_NAME}" />
 				<classpath>
 					<path refid="@{junitClasspath}"/>
 				</classpath>
@@ -128,6 +129,8 @@
 			<delete dir="@{junitOutputDir}"/>
 			<mkdir dir="@{junitOutputDir}"/>
 			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
+				<sysproperty key="java.security.auth.login.config" value="./conf/login.config" />
+				<sysproperty key="webservice.url" value="${SERVER_URL}/services/${WEBSERVICE_NAME}" />				
 				<classpath>
 					<path refid="@{junitClasspath}"/>
 				</classpath>
