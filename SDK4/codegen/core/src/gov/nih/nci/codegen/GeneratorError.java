@@ -17,6 +17,6 @@ public class GeneratorError
 	
 	public String toString()
 	{
-		return message + " : "+(ge == null ? "" :ge.getMessage());
+		return message + (ge == null ? "" :" : "+ge.getMessage());
 	}
 }
