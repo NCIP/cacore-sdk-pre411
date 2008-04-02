@@ -219,7 +219,40 @@ public class UMLModelMappingValidator implements Validator
 									errors.addError(new GeneratorError(getName() + ": When the discriminating column is present, the subclass and the parent class should be persisted in the same table unless the subclass does not have any subclasses : "+subFqcn));
 								}
 							}
-							
+							for (UMLAssociation association : subKlass.getAssociations()) {
+								List<UMLAssociationEnd> ends = association.getAssociationEnds();
+								UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(subKlass, ends);
+								UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(subKlass, ends);
+								
+								if(otherEnd.isNavigable()){
+									UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
+									String otherEndKlassName = TransformerUtils.getFQCN(assocKlass);
+									if(TransformerUtils.isMany2Many(thisEnd,otherEnd)){
+											errors.addError(new GeneratorError(getName() + ": Many-to-Many association between "+subFqcn+" and "+otherEndKlassName+" is not supported. In table per inheritance hierarchy, association from leaf class in seperate table can only be of type many-to-one or one-to-one with no join tables."));
+									}
+									if (TransformerUtils.isOne2Many(thisEnd,otherEnd)) {
+										errors.addError(new GeneratorError(getName() + ": One-to-Many association between "+subFqcn+" and "+otherEndKlassName+" is not supported. In table per inheritance hierarchy, association from leaf class in seperate table can only be of type many-to-one or one-to-one with no join tables."));									
+									}	
+									if(TransformerUtils.isMany2One(thisEnd,otherEnd)){
+										UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
+										String correlationTableName=TransformerUtils.getFQCN(correlationTable);
+										if(correlationTable!=null){
+											errors.addError(new GeneratorError(getName() + ": Many-to-One association between "+subFqcn+" and "+otherEndKlassName+"  with join table "+correlationTableName+" is not supported. In table per inheritance hierarchy, association from leaf class in seperate table can only be of type many-to-one or one-to-one with no join tables."));							}
+									}
+									if (TransformerUtils.isOne2One(thisEnd,otherEnd)) {										
+										UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass, false);
+										if (correlationTable == null){ //One to One - No Join Table
+											String keyColumnName = TransformerUtils.findAssociatedColumn(TransformerUtils.getTable(subKlass),subKlass,otherEnd,assocKlass,thisEnd,false, false);
+											Boolean keyColumnPresent = (keyColumnName!=null && !"".equals(keyColumnName));
+											if(!keyColumnPresent)
+													errors.addError(new GeneratorError(getName() + ": One-to-One unidirectional mapping between "+subFqcn+" and "+otherEndKlassName+" requires key column to be present in the source class "+subFqcn));
+										}else{
+											String correlationTableName=TransformerUtils.getFQCN(correlationTable);
+											errors.addError(new GeneratorError(getName() + ": One-to-One association between "+subFqcn+" and "+otherEndKlassName+"  with join table "+correlationTableName+" is not supported. In table per inheritance hierarchy, association from leaf class in seperate table can only be of type many-to-one or one-to-one with no join tables."));							
+										}
+									}
+								}
+							}							
 						}
 						discriminatorValues.put(discriminatorValue, subFqcn);
 						validateClass(model,subKlass, errors);
