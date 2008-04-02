@@ -22,7 +22,7 @@ public class AbstractParentWithAssociationXSDTest extends SDKXSDTestBase
 		super.setUp();
 		
 		String schemaFileName = "gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.xsd";
-		doc = getDocument(filepath + schemaFileName);
+		doc = getDocument(schemaFileName);
 	}
 
 	public Document getDoc() {

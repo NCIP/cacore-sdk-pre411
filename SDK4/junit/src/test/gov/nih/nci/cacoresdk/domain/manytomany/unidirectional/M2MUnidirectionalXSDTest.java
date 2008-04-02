@@ -24,7 +24,7 @@ public class M2MUnidirectionalXSDTest extends SDKXSDTestBase
 		super.setUp();
 		
 		String schemaFileName = "gov.nih.nci.cacoresdk.domain.manytomany.unidirectional.xsd";
-		doc = getDocument(filepath + schemaFileName);
+		doc = getDocument(schemaFileName);
 	}
 
 	public Document getDoc() {

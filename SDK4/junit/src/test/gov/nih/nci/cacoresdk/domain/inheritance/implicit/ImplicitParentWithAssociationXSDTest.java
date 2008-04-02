@@ -28,7 +28,7 @@ public class ImplicitParentWithAssociationXSDTest extends SDKXSDTestBase
 		super.setUp();
 		
 		String schemaFileName = "gov.nih.nci.cacoresdk.domain.inheritance.implicit.xsd";
-		doc = getDocument(filepath + schemaFileName);
+		doc = getDocument(schemaFileName);
 	}
 
 	public Document getDoc() {

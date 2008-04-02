@@ -201,7 +201,16 @@ public class M2OUnidirectionalWSTest extends SDKWSTestBase
 		assertNotNull(result.getId());
 		assertNotNull(result.getName());
 		
+		result = null;
+		for(int i=0;i<results.length;i++)
+		{
+			if(((Chef)results[i]).getId().equals(1))
+				result = (Chef)results[i];
+		}
+		assertNotNull(result);
 		Object[] restaurantResults = getAssociationResults(result, "restaurant", 0);
+		assertNotNull(restaurantResults);
+		assertEquals(1,restaurantResults.length);
 		Restaurant restaurant = (Restaurant)restaurantResults[0];
 		assertNotNull(restaurant);
 		assertNotNull(restaurant.getId());

@@ -23,7 +23,7 @@ public class ChildWithAssociationSametableXSDTest extends SDKXSDTestBase
 		super.setUp();
 		
 		String schemaFileName = "gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.sametable.xsd";
-		doc = getDocument(filepath + schemaFileName);
+		doc = getDocument( schemaFileName);
 	}
 
 	public Document getDoc() {

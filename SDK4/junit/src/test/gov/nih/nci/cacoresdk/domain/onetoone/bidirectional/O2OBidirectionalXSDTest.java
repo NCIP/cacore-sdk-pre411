@@ -21,7 +21,7 @@ public class O2OBidirectionalXSDTest extends SDKXSDTestBase
 		super.setUp();
 		
 		String schemaFileName = "gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.xsd";
-		doc = getDocument(filepath + schemaFileName);
+		doc = getDocument(schemaFileName);
 	}
 
 	public Document getDoc() {

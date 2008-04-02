@@ -20,7 +20,7 @@ public class AllDataTypeXMLMappingTest extends SDKXMLMappingTestBase
 		super.setUp();
 		
 		String xmlMappingFileName = "xml-mapping.xml";
-		doc = getDocument(filepath + xmlMappingFileName);
+		doc = getDocument(xmlMappingFileName);
 	}
 
 	public Document getDoc() {

@@ -21,7 +21,7 @@ public class OneChildSametableXSDTest extends SDKXSDTestBase
 		super.setUp();
 		
 		String schemaFileName = "gov.nih.nci.cacoresdk.domain.inheritance.onechild.sametable.xsd";
-		doc = getDocument(filepath + schemaFileName);
+		doc = getDocument( schemaFileName);
 	}
 
 	public Document getDoc() {

@@ -24,7 +24,7 @@ public class O2OMultipleAssociationWJoinXSDTest extends SDKXSDTestBase
 		super.setUp();
 		
 		String schemaFileName = "gov.nih.nci.cacoresdk.domain.onetoone.multipleassociation.withjoin.xsd";
-		doc = getDocument(filepath + schemaFileName);
+		doc = getDocument(schemaFileName);
 	}
 
 	public Document getDoc() {

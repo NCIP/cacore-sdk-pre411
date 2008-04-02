@@ -9,6 +9,7 @@ import org.jaxen.jdom.JDOMXPath;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Dan Dumitru
@@ -16,8 +17,6 @@ import org.jdom.input.SAXBuilder;
 public abstract class SDKXSDTestBase extends TestCase {
 
 	private   String namespace = "http://www.w3.org/2001/XMLSchema";
-	protected String filepath  = "../output/example/package/remote-client/conf/";
-
 	String prefix = "xs";
 
 	protected void setUp() throws Exception {
@@ -53,7 +52,8 @@ public abstract class SDKXSDTestBase extends TestCase {
 		Document doc;
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			doc = builder.build(filename);
+			ClassPathResource  classPathResource=new ClassPathResource(filename);
+			doc = builder.build(classPathResource.getInputStream());
 		} catch (Exception ex) {
 			throw new RuntimeException("Error reading XSD file: " + filename,ex);
 		}
@@ -309,15 +309,4 @@ public abstract class SDKXSDTestBase extends TestCase {
 		Element elt = attributeElts.get(0);
 		assertEquals(elt.getAttributeValue("type").toLowerCase(),"xs:"+attributeType.toLowerCase());
 	}
-
-	public String getFilepath() {
-		return filepath;
-	}
-
-	public void setFilepath(String filepath) {
-		this.filepath = filepath;
-	}
-	
-	
-
 }

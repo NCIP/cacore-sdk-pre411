@@ -9,13 +9,12 @@ import org.jaxen.jdom.JDOMXPath;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Dan Dumitru
  */
 public abstract class SDKXMLMappingTestBase extends TestCase {
-
-	protected String filepath  = "../output/example/package/remote-client/conf/";
 
 	private String uriPrefix = "gme://caCORE.caCORE/3.2/";
 
@@ -52,7 +51,8 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 		Document doc;
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			doc = builder.build(filename);
+			ClassPathResource classPathResource=new ClassPathResource(filename);
+			doc = builder.build(classPathResource.getInputStream());
 
 		} catch (Exception ex) {
 			throw new RuntimeException("Error reading XML Mapping file: " + filename,
@@ -305,13 +305,5 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 		assertEquals(bindElt.getAttributeValue("name"),attributeName);		
 		assertEquals(bindElt.getAttributeValue("node"),"attribute");
 		
-	}
-
-	public String getFilepath() {
-		return filepath;
-	}
-
-	public void setFilepath(String filepath) {
-		this.filepath = filepath;
 	}
 }

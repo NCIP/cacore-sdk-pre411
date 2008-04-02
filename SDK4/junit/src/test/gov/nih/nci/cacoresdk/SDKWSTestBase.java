@@ -1,8 +1,6 @@
 package test.gov.nih.nci.cacoresdk;
 
 import java.util.Collection;
-import java.util.List;
-
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
@@ -17,12 +15,15 @@ import org.apache.axis.client.Service;
 public abstract class SDKWSTestBase extends TestCase {
 
 
-	private String url = "http://localhost:8080/example/services/exampleService";
-
+	private static String url =null;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
+		url = System.getProperty("webservice.url");
+		if (url == null || "".equals(url)) {
+			url="http://localhost:8080/example/services/exampleService";
+		}
 	}
-
 	
 	protected abstract Collection<Class> getClasses() throws Exception;
 
@@ -59,6 +60,10 @@ public abstract class SDKWSTestBase extends TestCase {
 					new org.apache.axis.encoding.ser.BeanSerializerFactory(klassToMap, searchClassQNameToMap),
 					new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
 		}
+		QName searchClassQNameToMap = new QName("urn:Character.lang.java", "Character");
+		call.registerTypeMapping(Character.class, searchClassQNameToMap,
+				new org.apache.axis.encoding.ser.BeanSerializerFactory(Character.class, searchClassQNameToMap),
+				new org.apache.axis.encoding.ser.BeanDeserializerFactory(Character.class, searchClassQNameToMap));
 		
 		Object[] results = (Object[])call.invoke(new Object[] { targetClass, criteria });
 		

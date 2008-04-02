@@ -24,7 +24,7 @@ public class O2OMultipleAssociationWJoinXMLMappingTest extends SDKXMLMappingTest
 		super.setUp();
 		
 		String xmlMappingFileName = "xml-mapping.xml";
-		doc = getDocument(filepath + xmlMappingFileName);
+		doc = getDocument(xmlMappingFileName);
 	}
 
 	public Document getDoc() {
