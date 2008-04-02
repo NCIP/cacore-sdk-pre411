@@ -292,6 +292,8 @@ public class UMLLogicalModelValidator implements Validator
 				errors.addError(new GeneratorError(getName() + ": Attribute name empty in "+thisClassName+": "+attribute.getName()));
 			if(attribute.getName()!=null && attribute.getName().indexOf(' ')>0)
 				errors.addError(new GeneratorError(getName() + ": Attribute name contains empty spaces in "+thisClassName+": "+attribute.getName()));
+			if(attribute.getName().length()>1 && Character.isLowerCase(attribute.getName().charAt(0)) && Character.isUpperCase(attribute.getName().charAt(1)))
+				errors.addError(new GeneratorError(getName() + ": Attribute name contains first character lower case and second character as upper case in "+thisClassName+": "+attribute.getName()+". This combination is currently not supported."));
 
 			UMLDatatype dataType = attribute.getDatatype();
 			String name = dataType.getName();
@@ -303,8 +305,6 @@ public class UMLLogicalModelValidator implements Validator
 				errors.addError(new GeneratorError(getName() + ": Attribute type empty in "+thisClassName+": "+attribute.getName()));
 			if(name.indexOf(' ')>0)
 				errors.addError(new GeneratorError(getName() + ": Attribute type contains empty spaces in "+thisClassName+": "+attribute.getName()));
-			if(name.length()>1 && Character.isLowerCase(name.charAt(0)) && Character.isUpperCase(name.charAt(1)))
-				errors.addError(new GeneratorError(getName() + ": Attribute name contains first character lower case and second character as upper case in "+thisClassName+": "+attribute.getName()+". This combination is currently not supported."));
 			
 			if(name.startsWith("java.lang."))
 				name = name.substring("java.lang.".length());
