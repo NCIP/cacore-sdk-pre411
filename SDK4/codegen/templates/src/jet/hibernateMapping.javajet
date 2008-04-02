@@ -52,7 +52,7 @@ if(level == 0){%>
 				}
 			}
 			if(currentKlass.getAssociations().size()>0){%>
-		<%=emptySpace%><!-- Associations mapping for the <%=klass.getName()%> class --><%
+		<%=emptySpace%><!-- Associations mapping for the <%=currentKlass.getName()%> class --><%
 				for(UMLAssociation association:currentKlass.getAssociations()){
 					List<UMLAssociationEnd> assocEnds = association.getAssociationEnds();
 					UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(currentKlass,assocEnds);
