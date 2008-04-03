@@ -1,6 +1,6 @@
 package test.gov.nih.nci.cacoresdk.domain.onetomany.unidirectional;
 
-import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key;
+import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey;
 import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class O2MUnidirectionalWSTest extends SDKWSTestBase
 	{	
 		Collection<Class> mappedKlasses = new ArrayList<Class>();
 		
-		mappedKlasses.add(Key.class);
+		mappedKlasses.add(LatchKey.class);
 		mappedKlasses.add(KeyChain.class);
 		
 		return mappedKlasses;
@@ -62,8 +62,8 @@ public class O2MUnidirectionalWSTest extends SDKWSTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws Exception
 	{
-		Class targetClass = Key.class;
-		Key criteria = new Key();
+		Class targetClass = LatchKey.class;
+		LatchKey criteria = new LatchKey();
 
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
@@ -71,7 +71,7 @@ public class O2MUnidirectionalWSTest extends SDKWSTestBase
 		assertEquals(3,results.length);
 		
 		for (Object obj : results){
-			Key result = (Key)obj;
+			LatchKey result = (LatchKey)obj;
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			assertNotNull(result.getType());	
@@ -115,7 +115,7 @@ public class O2MUnidirectionalWSTest extends SDKWSTestBase
 	 */
 	public void testZeroAssociatedObjectsNestedSearch2() throws Exception
 	{
-		Class targetClass = Key.class;
+		Class targetClass = LatchKey.class;
 		KeyChain criteria = new KeyChain();
 		criteria.setId(new Integer(4));
 
@@ -153,7 +153,7 @@ public class O2MUnidirectionalWSTest extends SDKWSTestBase
 		Object[] keyCollection = getAssociationResults(result, "keyCollection", 0);
 		assertEquals(1,keyCollection.length);
 		
-		Key key = (Key)keyCollection[0];
+		LatchKey key = (LatchKey)keyCollection[0];
 		assertNotNull(key);
 		assertNotNull(key.getId());
 		assertNotNull(key.getType());
@@ -171,7 +171,7 @@ public class O2MUnidirectionalWSTest extends SDKWSTestBase
 	 */
 	public void testOneAssociatedObjectNestedSearch2() throws Exception
 	{
-		Class targetClass = Key.class;
+		Class targetClass = LatchKey.class;
 		KeyChain criteria = new KeyChain();
 		criteria.setId(new Integer(1));
 
@@ -180,7 +180,7 @@ public class O2MUnidirectionalWSTest extends SDKWSTestBase
 		assertNotNull(results);
 		assertEquals(1,results.length);
 		
-		Key key = (Key)results[0];
+		LatchKey key = (LatchKey)results[0];
 		assertNotNull(key);
 		assertNotNull(key.getId());
 		assertEquals(new Integer(1),key.getId());		

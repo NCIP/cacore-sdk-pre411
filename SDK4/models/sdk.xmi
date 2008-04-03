@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-03-27 23:05:49">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-04-01 13:00:46">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -10826,7 +10826,7 @@
 										<UML:TaggedValue tag="dst_isNavigable" value="false"/>
 									</UML:ModelElement.taggedValue>
 								</UML:Dependency>
-								<UML:Class name="KEY" xmi.id="EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+								<UML:Class name="LATCH_KEY" xmi.id="EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396" visibility="public" namespace="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 									<UML:ModelElement.stereotype>
 										<UML:Stereotype name="table"/>
 									</UML:ModelElement.stereotype>
@@ -10837,7 +10837,7 @@
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="package" value="EAPK_6693F63C_DA3B_4a30_B5CD_EC5DEAC518E8"/>
 										<UML:TaggedValue tag="date_created" value="2006-10-24 12:38:02"/>
-										<UML:TaggedValue tag="date_modified" value="2006-10-24 16:16:19"/>
+										<UML:TaggedValue tag="date_modified" value="2008-04-01 12:45:03"/>
 										<UML:TaggedValue tag="gentype" value="Oracle"/>
 										<UML:TaggedValue tag="tagged" value="0"/>
 										<UML:TaggedValue tag="package_name" value="Data Model"/>
@@ -10848,7 +10848,7 @@
 										<UML:TaggedValue tag="status" value="Proposed"/>
 										<UML:TaggedValue tag="stereotype" value="table"/>
 										<UML:TaggedValue tag="ea_localid" value="885"/>
-										<UML:TaggedValue tag="eventflags" value="LNK=12a2;"/>
+										<UML:TaggedValue tag="eventflags" value="LNK=12a2;OPN=5136;"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=0;HSwimLanes=0;BorderStyle=0;"/>
 										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={00F60F0E-554A-47e6-91A4-C4B8ACB067D5}$XID;$NAM=CustomProperties$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isActive@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={70EC47AD-F5C0-4c81-889D-ED0F777F1396}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 									</UML:ModelElement.taggedValue>
@@ -10877,7 +10877,7 @@
 												<UML:TaggedValue tag="duplicates" value="1"/>
 												<UML:TaggedValue tag="ea_guid" value="{C4D4125F-09CD-4735-A2B6-CEA3124547E5}"/>
 												<UML:TaggedValue tag="ea_localid" value="1438"/>
-												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key.id" xmi.id="EAID_4FBE0A7C_71A2_4854_8140_E2D504397F35"/>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey.id" xmi.id="EAID_4FBE0A7C_71A2_4854_8140_E2D504397F35"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
 										<UML:Attribute name="KEYCHAIN_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -10931,10 +10931,10 @@
 												<UML:TaggedValue tag="duplicates" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{4CCA9770-3E8D-46a8-AC3B-A6D5AC31D8A1}"/>
 												<UML:TaggedValue tag="ea_localid" value="1439"/>
-												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key.type" xmi.id="EAID_3D585977_EAD1_4E1F_A3FD_00F94C9DEBB0"/>
+												<UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey.type" xmi.id="EAID_3D585977_EAD1_4E1F_A3FD_00F94C9DEBB0"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Attribute>
-										<UML:Operation name="FK_KEY_KEYCHAIN" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+										<UML:Operation name="FK_LATCH_KEY_KEYCHAIN" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
 											<UML:ModelElement.stereotype>
 												<UML:Stereotype name="FK"/>
 											</UML:ModelElement.stereotype>
@@ -10977,7 +10977,7 @@
 												</UML:Parameter>
 											</UML:BehavioralFeature.parameter>
 										</UML:Operation>
-										<UML:Operation name="PK_KEY" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
+										<UML:Operation name="PK_LATCH_KEY" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
 											<UML:ModelElement.stereotype>
 												<UML:Stereotype name="PK"/>
 											</UML:ModelElement.stereotype>
@@ -10985,7 +10985,7 @@
 												<UML:TaggedValue tag="const" value="false"/>
 												<UML:TaggedValue tag="stereotype" value="PK"/>
 												<UML:TaggedValue tag="synchronised" value="0"/>
-												<UML:TaggedValue tag="position" value="0"/>
+												<UML:TaggedValue tag="position" value="1"/>
 												<UML:TaggedValue tag="returnarray" value="0"/>
 												<UML:TaggedValue tag="pure" value="0"/>
 												<UML:TaggedValue tag="ea_guid" value="{CAE1A625-0145-4985-896E-EC3F86FAD960}"/>
@@ -11039,8 +11039,8 @@
 										<UML:TaggedValue tag="headStyle" value="0"/>
 										<UML:TaggedValue tag="lineStyle" value="0"/>
 										<UML:TaggedValue tag="ea_localid" value="841"/>
-										<UML:TaggedValue tag="ea_sourceName" value="KEY"/>
-										<UML:TaggedValue tag="ea_targetName" value="Key"/>
+										<UML:TaggedValue tag="ea_sourceName" value="LATCH_KEY"/>
+										<UML:TaggedValue tag="ea_targetName" value="LatchKey"/>
 										<UML:TaggedValue tag="ea_sourceType" value="Class"/>
 										<UML:TaggedValue tag="ea_targetType" value="Class"/>
 										<UML:TaggedValue tag="ea_sourceID" value="885"/>
@@ -11072,7 +11072,7 @@
 										<UML:TaggedValue tag="headStyle" value="0"/>
 										<UML:TaggedValue tag="lineStyle" value="0"/>
 										<UML:TaggedValue tag="ea_localid" value="840"/>
-										<UML:TaggedValue tag="ea_sourceName" value="KEY"/>
+										<UML:TaggedValue tag="ea_sourceName" value="LATCH_KEY"/>
 										<UML:TaggedValue tag="ea_targetName" value="KEYCHAIN"/>
 										<UML:TaggedValue tag="ea_sourceType" value="Class"/>
 										<UML:TaggedValue tag="ea_targetType" value="Class"/>
@@ -28905,7 +28905,7 @@
 																						<UML:TaggedValue tag="ea_stype" value="Public"/>
 																					</UML:ModelElement.taggedValue>
 																					<UML:Namespace.ownedElement>
-																						<UML:Class name="Key" xmi.id="EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B" visibility="public" namespace="EAPK_90541191_3BE6_41cc_A777_A003F1EFD796" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
+																						<UML:Class name="LatchKey" xmi.id="EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B" visibility="public" namespace="EAPK_90541191_3BE6_41cc_A777_A003F1EFD796" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">
 																							<UML:ModelElement.taggedValue>
 																								<UML:TaggedValue tag="isSpecification" value="false"/>
 																								<UML:TaggedValue tag="ea_stype" value="Class"/>
@@ -28913,7 +28913,7 @@
 																								<UML:TaggedValue tag="version" value="1.0"/>
 																								<UML:TaggedValue tag="package" value="EAPK_90541191_3BE6_41cc_A777_A003F1EFD796"/>
 																								<UML:TaggedValue tag="date_created" value="2006-10-24 11:39:15"/>
-																								<UML:TaggedValue tag="date_modified" value="2006-10-24 11:39:15"/>
+																								<UML:TaggedValue tag="date_modified" value="2008-04-01 12:44:15"/>
 																								<UML:TaggedValue tag="gentype" value="Java"/>
 																								<UML:TaggedValue tag="tagged" value="0"/>
 																								<UML:TaggedValue tag="package_name" value="unidirectional"/>
@@ -28992,7 +28992,7 @@
 																								<UML:TaggedValue tag="lineStyle" value="0"/>
 																								<UML:TaggedValue tag="ea_localid" value="726"/>
 																								<UML:TaggedValue tag="ea_sourceName" value="KeyChain"/>
-																								<UML:TaggedValue tag="ea_targetName" value="Key"/>
+																								<UML:TaggedValue tag="ea_targetName" value="LatchKey"/>
 																								<UML:TaggedValue tag="ea_sourceType" value="Class"/>
 																								<UML:TaggedValue tag="ea_targetType" value="Class"/>
 																								<UML:TaggedValue tag="ea_sourceID" value="1023"/>

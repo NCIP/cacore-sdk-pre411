@@ -1,11 +1,10 @@
 package test.gov.nih.nci.cacoresdk.domain.onetomany.unidirectional;
 
+import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
+import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey;
+
 import java.util.Collection;
 import java.util.Iterator;
-
-import gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.Computer;
-import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key;
-import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
 
 import test.gov.nih.nci.cacoresdk.SDKXMLDataTestBase;
 
@@ -61,24 +60,24 @@ public class O2MUnidirectionalXMLDataTest extends SDKXMLDataTestBase
 	 */
 	public void testEntireObjectNestedSearch2() throws Exception
 	{
-		Key searchObject = new Key();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key",searchObject );
+		LatchKey searchObject = new LatchKey();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey",searchObject );
 
 		assertNotNull(results);
 		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
-			Key result = (Key)i.next();
+			LatchKey result = (LatchKey)i.next();
 			toXML(result);
 			
 			validateClassElements(result);
 			validateAttribute(result,"id",result.getId());
-			validateAttribute(result,"key",result.getType());
+			validateAttribute(result,"type",result.getType());
 			
 			assertTrue(validateXMLData(result, searchObject.getClass()));
 
-			Key result2 = (Key)fromXML(result);
+			LatchKey result2 = (LatchKey)fromXML(result);
 			
 			assertNotNull(result2);
 			assertNotNull(result2.getId());
@@ -143,13 +142,13 @@ public class O2MUnidirectionalXMLDataTest extends SDKXMLDataTestBase
 		assertNotNull(result2.getId());
 		assertNotNull(result2.getName());
 		
-		validateAssociation(result,"Key","keyCollection");
+		validateAssociation(result,"LatchKey","keyCollection");
 		
 		Collection keyCollection = result2.getKeyCollection();
 		assertEquals(true, keyCollection.size()>0);
 		
 		Iterator j = keyCollection.iterator();
-		Key key = (Key)j.next();
+		LatchKey key = (LatchKey)j.next();
 		assertNotNull(key);
 		assertNotNull(key.getId());
 		assertNotNull(key.getType());
@@ -169,15 +168,15 @@ public class O2MUnidirectionalXMLDataTest extends SDKXMLDataTestBase
 	{
 		KeyChain searchObject = new KeyChain();
 		searchObject.setId(new Integer(1));
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key",searchObject );
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey",searchObject );
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
 		
 		Iterator i = results.iterator();
-		Key result = (Key)i.next();
+		LatchKey result = (LatchKey)i.next();
 		toXML(result);
-		Key result2 = (Key)fromXML(result);
+		LatchKey result2 = (LatchKey)fromXML(result);
 		
 		assertNotNull(result2);
 		assertNotNull(result2.getId());

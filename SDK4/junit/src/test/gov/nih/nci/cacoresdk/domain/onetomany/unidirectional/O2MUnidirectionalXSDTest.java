@@ -1,6 +1,6 @@
 package test.gov.nih.nci.cacoresdk.domain.onetomany.unidirectional;
 
-import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key;
+import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey;
 import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class O2MUnidirectionalXSDTest extends SDKXSDTestBase
 	 */
 	public void testClassElement1() throws Exception
 	{
-		Class targetClass = Key.class;
+		Class targetClass = LatchKey.class;
 
 		validateClassElements(targetClass);
 		validateAttributeElement(targetClass, "id", "Integer");
@@ -86,7 +86,7 @@ public class O2MUnidirectionalXSDTest extends SDKXSDTestBase
 	public void testAssociationElements1() throws Exception
 	{
 		Class targetClass = KeyChain.class;
-		Class associatedClass = Key.class;
+		Class associatedClass = LatchKey.class;
 
 		validateClassAssociationElements(targetClass, associatedClass, "keyCollection","0","unbounded");
 	}	
@@ -101,10 +101,10 @@ public class O2MUnidirectionalXSDTest extends SDKXSDTestBase
 	 */
 	public void testAssociationElements2() throws Exception
 	{
-		Class targetClass = Key.class;
+		Class targetClass = LatchKey.class;
 		Class associatedClass = KeyChain.class;
 
-		//No Association from Key to KeyChain
+		//No Association from LatchKey to KeyChain
 		String xpath = "/xs:schema/xs:complexType[@name='" + targetClass.getSimpleName() + "']" 
 		+ "/xs:sequence/xs:element"
 		+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedClass.getSimpleName() + "']";

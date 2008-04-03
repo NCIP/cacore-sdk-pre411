@@ -1,6 +1,6 @@
 package test.gov.nih.nci.cacoresdk.domain.onetomany.unidirectional;
 
-import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key;
+import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey;
 import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class O2MUnidirectionalXMLMappingTest extends SDKXMLMappingTestBase
 	 */
 	public void testClassElement1() throws Exception
 	{
-		Class targetClass = Key.class;
+		Class targetClass = LatchKey.class;
 
 		validateClassElements(targetClass,"id");
 
@@ -87,7 +87,7 @@ public class O2MUnidirectionalXMLMappingTest extends SDKXMLMappingTestBase
 	public void testAssociationElements1() throws Exception
 	{
 		Class targetClass = KeyChain.class;
-		Class associatedClass = Key.class;
+		Class associatedClass = LatchKey.class;
 
 		validateClassAssociationElements(targetClass, associatedClass, "keyCollection",true);
 	}	
@@ -102,7 +102,7 @@ public class O2MUnidirectionalXMLMappingTest extends SDKXMLMappingTestBase
 	 */
 	public void testAssociationElements2() throws Exception
 	{
-		Class targetClass = Key.class;
+		Class targetClass = LatchKey.class;
 		Class associatedClass = KeyChain.class;
 
 		//No Association from Key to KeyChain

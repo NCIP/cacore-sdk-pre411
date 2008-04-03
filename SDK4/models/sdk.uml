@@ -93,10 +93,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu Mar 27 22:08:44 PST 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Apr 01 17:27:50 PST 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-03-28 07:08:27 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-04-03 22:22:00 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -2761,7 +2761,7 @@
                     </UML:Operation>
                   </UML:Classifier.feature>
                 </UML:Class>
-                <UML:Class xmi.id = 'EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396' name = 'KEY'
+                <UML:Class xmi.id = 'EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396' name = 'LATCH_KEY'
                   visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
                   isAbstract = 'false' isActive = 'false'>
                   <UML:ModelElement.clientDependency>
@@ -2791,7 +2791,7 @@
                       <UML:ModelElement.taggedValue>
                         <UML:TaggedValue xmi.id = 'EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396_fix_2_fix_0_fix_0'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key.id</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey.id</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
                           </UML:TaggedValue.type>
@@ -2821,7 +2821,7 @@
                       <UML:ModelElement.taggedValue>
                         <UML:TaggedValue xmi.id = 'EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396_fix_2_fix_1_fix_0'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key.type</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey.type</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
                           </UML:TaggedValue.type>
@@ -2851,7 +2851,7 @@
                       <UML:ModelElement.taggedValue>
                         <UML:TaggedValue xmi.id = 'EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396_fix_2_fix_2_fix_0'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.Key.keyRing</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey.keyRing</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-107-16925b0:1120c726d7c:-8000:0000000000003170'/>
                           </UML:TaggedValue.type>
@@ -2862,7 +2862,7 @@
                       </UML:StructuralFeature.type>
                     </UML:Attribute>
                     <UML:Operation xmi.id = 'EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396_fix_2_fix_3'
-                      name = 'FK_KEY_KEYCHAIN' visibility = 'public' isSpecification = 'false'
+                      name = 'FK_LATCH_KEY_KEYCHAIN' visibility = 'public' isSpecification = 'false'
                       ownerScope = 'instance' isQuery = 'false' concurrency = 'sequential' isRoot = 'false'
                       isLeaf = 'false' isAbstract = 'false'>
                       <UML:ModelElement.stereotype>
@@ -2887,7 +2887,7 @@
                       </UML:BehavioralFeature.parameter>
                     </UML:Operation>
                     <UML:Operation xmi.id = 'EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396_fix_2_fix_4'
-                      name = 'PK_KEY' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      name = 'PK_LATCH_KEY' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
                       isQuery = 'false' concurrency = 'sequential' isRoot = 'false' isLeaf = 'false'
                       isAbstract = 'false'>
                       <UML:ModelElement.stereotype>
@@ -16488,7 +16488,7 @@
                                           visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
                                           isAbstract = 'false'>
                                           <UML:Namespace.ownedElement>
-                                            <UML:Class xmi.id = 'EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B' name = 'Key'
+                                            <UML:Class xmi.id = 'EAID_024059C8_1B42_42ec_AB1D_FCA70ECC0E0B' name = 'LatchKey'
                                               visibility = 'public' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
                                               isAbstract = 'false' isActive = 'false'>
                                               <UML:Classifier.feature>
@@ -30060,7 +30060,7 @@
       strokecolor="red"
       font="Dialog"
       textsize="10"
-    >Key</text>
+    >LatchKey</text>
     <group name="Fig2.3"
          description="org.argouml.uml.diagram.ui.FigOperationsCompartment[521, 469, 89, 20]"
          fill="1"
@@ -42413,7 +42413,7 @@
     />
   </group>
   <group name="Fig3"
-       description="org.argouml.uml.diagram.static_structure.ui.FigClass[736, 472, 278, 127]pathVisible=false;operationsVisible=true;attributesVisible=true"
+       description="org.argouml.uml.diagram.static_structure.ui.FigClass[736, 472, 318, 127]pathVisible=false;operationsVisible=true;attributesVisible=true"
        href="EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396"
        fill="1"
        fillcolor="white"
@@ -42426,7 +42426,7 @@
     <rectangle name="Fig3.0"
       x="736"
       y="472"
-      width="278"
+      width="318"
       height="127"
       fill="1"
       fillcolor="white"
@@ -42434,7 +42434,7 @@
       strokecolor="black"
     />
     <group name="Fig3.1"
-         description="org.argouml.uml.diagram.ui.FigStereotypesCompartment[736, 472, 278, 16]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesCompartment[736, 472, 318, 16]"
          href="EAID_70EC47AD_F5C0_4c81_889D_ED0F777F1396"
          fill="1"
          fillcolor="white"
@@ -42447,7 +42447,7 @@
       <rectangle name="Fig3.1.0"
         x="736"
         y="472"
-        width="278"
+        width="318"
         height="16"
         fill="1"
         fillcolor="white"
@@ -42474,9 +42474,9 @@
       strokecolor="red"
       font="Dialog"
       textsize="10"
-    >KEY</text>
+    >LATCH_KEY</text>
     <group name="Fig3.3"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[737, 562, 277, 36]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[737, 562, 317, 36]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -42488,7 +42488,7 @@
       <rectangle name="Fig3.3.0"
         x="737"
         y="562"
-        width="277"
+        width="317"
         height="36"
         fill="1"
         fillcolor="white"
@@ -42504,7 +42504,7 @@
       >
         <moveto x="737"
                 y="562" />
-        <lineto x="1014"
+        <lineto x="1054"
                 y="562" />
       </path>
       <text name="Fig3.3.2"
@@ -42516,7 +42516,7 @@
         strokecolor="black"
         font="Dialog"
         textsize="10"
-      >&lt;&lt;FK&gt;&gt; FK_KEY_KEYCHAIN(KEYCHAIN_ID : NUMBER) :</text>
+      >&lt;&lt;FK&gt;&gt; FK_LATCH_KEY_KEYCHAIN(KEYCHAIN_ID : NUMBER) :</text>
       <text name="Fig3.3.3"
         x="737"
         y="577"
@@ -42526,10 +42526,10 @@
         strokecolor="black"
         font="Dialog"
         textsize="10"
-      >&lt;&lt;PK&gt;&gt; PK_KEY(ID : NUMBER) :</text>
+      >&lt;&lt;PK&gt;&gt; PK_LATCH_KEY(ID : NUMBER) :</text>
     </group>
     <group name="Fig3.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[737, 510, 277, 51]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[737, 510, 317, 51]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -42541,7 +42541,7 @@
       <rectangle name="Fig3.4.0"
         x="737"
         y="510"
-        width="277"
+        width="317"
         height="51"
         fill="1"
         fillcolor="white"
@@ -42557,7 +42557,7 @@
       >
         <moveto x="737"
                 y="510" />
-        <lineto x="1014"
+        <lineto x="1054"
                 y="510" />
       </path>
       <text name="Fig3.4.2"
@@ -42594,7 +42594,7 @@
     <rectangle name="Fig3.5"
       x="736"
       y="472"
-      width="278"
+      width="318"
       height="127"
       fill="0"
       fillcolor="white"
