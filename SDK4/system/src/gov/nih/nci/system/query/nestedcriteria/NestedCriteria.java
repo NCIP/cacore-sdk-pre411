@@ -19,7 +19,9 @@ public class NestedCriteria implements Serializable{
 	private String sourceObjectName;
 	private String roleName;
 	private boolean targetCollection;
-
+	private String sourceRoleName; 
+	private boolean sourceCollection;
+	
 	private List sourceObjectList = new ArrayList();
 
 	private NestedCriteria internalNestedCriteria;
@@ -87,6 +89,26 @@ public class NestedCriteria implements Serializable{
 	public void setTargetCollection(boolean targetCollection)
 	{
 		this.targetCollection = targetCollection;
+	}
+
+	public boolean isSourceCollection() {
+		return sourceCollection;
+	}
+
+	public void setSourceCollection(boolean sourceCollection) {
+		this.sourceCollection = sourceCollection;
+	}
+
+	public String getSourceRoleName() {
+		return sourceRoleName;
+	}
+
+	public void setSourceRoleName(String sourceRoleName) {
+		this.sourceRoleName = sourceRoleName;
+	}
+
+	public String getSourceObjectName() {
+		return sourceObjectName;
 	}
 
 	public NestedCriteria(String sourceObjectName, String targetObjectName, String roleName, NestedCriteria internalNestedCriteria)
