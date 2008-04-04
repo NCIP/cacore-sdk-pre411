@@ -220,7 +220,7 @@ public class XmlMappingTransformer implements Transformer {
 			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 		}
 			
-		if (idAttrName != null)
+		if (idAttrName != null && idAttrName.length() > 0)//implicit polymorphic classes need not have an id
 			classEl.setAttribute("identity", idAttrName);
 		
 		if (superClassName!=null){
@@ -246,7 +246,7 @@ public class XmlMappingTransformer implements Transformer {
 			if (qName.equalsIgnoreCase("collection")) {
 				log.debug("Handling type 'collection' - qName: " + qName);            	 
 				field.setAttribute("type", "string");
-				field.setAttribute("collection", qName);
+				field.setAttribute("collection", "set");
 				Namespace namespace = Namespace.getNamespace(qName,nsURI);
 
 				Element bind = new Element("bind-xml");
@@ -366,7 +366,7 @@ public class XmlMappingTransformer implements Transformer {
 				field.setAttribute("name", otherEnd.getRoleName() ); //otherEnd.getName());
 				String associationPackage = TransformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
 				field.setAttribute("type", associationPackage + Constant.DOT + otherEndTypeName);
-				field.setAttribute("collection", "collection" );
+				field.setAttribute("collection", "set" );
 				if (includeFieldHandler) {
 					field.setAttribute("handler", "gov.nih.nci.system.client.util.xml.CastorCollectionFieldHandler" );
 				}
