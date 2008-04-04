@@ -210,13 +210,13 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			else if((isCount != null && !isCount.booleanValue()) || isCount == null)
 		    {	
 				//TODO :: contact Hibernate as to why implicit query does not work if firstResult/maxResult is set
-//		    	if(firstRow != null)
-//		    	{
-//		    		log.debug("Setting First Row to " + firstRow);
-//			        query.setFirstResult(firstRow.intValue());				    		
-//		    	}
-//
-//		    	query.setMaxResults(resultCountPerQuery);
+		    	if(firstRow != null)
+		    	{
+		    		log.debug("Setting First Row to " + firstRow);
+			        query.setFirstResult(firstRow.intValue());				    		
+		    	}
+
+		    	query.setMaxResults(resultCountPerQuery);
 
 		    	rs = query.list();
 		    	
@@ -267,12 +267,13 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			}
 			log.info("HQL Criteria Query :"+hqlQuery.getQueryString());
 			
-//	    	if(firstRow != null)
-//	    	{
-//	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
-//	    	}
-//	    	
-//	    	hqlQuery.setMaxResults(resultCountPerQuery);
+//			TODO :: contact Hibernate as to why implicit query does not work if firstResult/maxResult is set
+	    	if(firstRow != null)
+	    	{
+	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
+	    	}
+	    	
+	    	hqlQuery.setMaxResults(resultCountPerQuery);
 	    	
 	    	rs = hqlQuery.list();
 	    	rsp.setRowCount(rs.size());
@@ -322,13 +323,15 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			for(int i = 0; i<params.size();i++)
 				hqlQuery.setParameter(i,params.get(i) );
 
-//			hqlQuery.setMaxResults(100000);
-//	    	if(firstRow != null)
-//	    	{
-//	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
-//	    	}
-//	    	
-//	    	hqlQuery.setMaxResults(resultCountPerQuery);
+			hqlQuery.setMaxResults(100000);
+			
+//			TODO :: contact Hibernate as to why implicit query does not work if firstResult/maxResult is set
+	    	if(firstRow != null)
+	    	{
+	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
+	    	}
+	    	
+	    	hqlQuery.setMaxResults(resultCountPerQuery);
 	    	
 	    	rs = hqlQuery.list();
 	    	rsp.setRowCount(rs.size());
