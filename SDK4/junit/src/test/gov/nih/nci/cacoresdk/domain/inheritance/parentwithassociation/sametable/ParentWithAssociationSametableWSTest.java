@@ -28,6 +28,24 @@ public class ParentWithAssociationSametableWSTest extends SDKWSTestBase
 		
 		return mappedKlasses;
 	}	
+	/**
+	 * Uses Nested Search Criteria for search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws Exception
+	 */
+	public void testGetTotalNumberRecords() throws Exception
+	{
+		String targetClassName = Luggage.class.getName();
+		Luggage criteria = new Luggage();
+
+		Object result = getTotalNumberOfRecords(targetClassName, criteria);
+
+		assertEquals(4,result);
+
+	}
 	
 	/**
 	 * Uses Nested Search Criteria for search
