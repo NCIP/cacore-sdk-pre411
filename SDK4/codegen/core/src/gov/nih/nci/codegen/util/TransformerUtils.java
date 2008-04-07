@@ -525,7 +525,6 @@ public class TransformerUtils
 	public static UMLAttribute getClassIdAttr(UMLClass klass) throws GenerationException
 	{
 		
-		
 		String fqcn = getFQCN(klass);
 		
 		UMLAttribute idAttr = getColumn(klass,TV_ID_ATTR_COLUMN, fqcn,true,0,1);
@@ -536,10 +535,7 @@ public class TransformerUtils
 		for(UMLAttribute attribute:klass.getAttributes())
 			if(idAttrName.equals(attribute.getName()))
 				return attribute;
-			
-		if (isImplicitParent(klass))
-			return null;
-			
+
 		for(UMLGeneralization gen: klass.getGeneralizations())
 		{
 			if(gen.getSubtype() == klass && gen.getSupertype() != klass)
