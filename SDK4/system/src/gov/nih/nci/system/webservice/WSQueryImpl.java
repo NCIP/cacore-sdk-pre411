@@ -64,7 +64,7 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 	
 	public int getTotalNumberOfRecords(String targetClassName, Object criteria) throws Exception{
 		NestedCriteriaPath criteriaPath=getNestedCriteriaPath(targetClassName, criteria);
-		Integer queryRowCount = applicationService.getQueryRowCount(criteriaPath, targetClassName);
+		Integer queryRowCount = applicationService.getQueryRowCount(criteriaPath, getTargetClassName(targetClassName));
 		return queryRowCount;
 	}
 
@@ -83,11 +83,7 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 	}
 
 	private List getNestedCriteriaResultSet(String targetClassName, Object searchCriteria, int startIndex) throws Exception{
-		
-		// Nested Search criteria - 
-		if (targetClassName.indexOf(',') > 0){ 
-			return applicationService.search(targetClassName, searchCriteria);
-		}
+	
 		
 		List results = new ArrayList();
 		String searchClassName = getSearchClassName(targetClassName);
@@ -96,7 +92,7 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 		{
 			if(searchClassName != null && searchCriteria != null){
 				NestedCriteriaPath pathCriteria = getNestedCriteriaPath(targetClassName, searchCriteria);				
-				results = applicationService.query(pathCriteria, startIndex, targetClassName);			
+				results = applicationService.query(pathCriteria, startIndex, getTargetClassName(targetClassName));			
 			}
 			else{
 				throw new Exception("Invalid arguments passed over to the server");
@@ -208,6 +204,21 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 		WSUtils util = new WSUtils();
 		objList = (List)util.convertToProxy(null, objList);
 		return objList;
+	}
+	
+	private String getTargetClassName(String path){
+		
+		
+		if (path.indexOf(',') <= 0){ 
+			return path;
+		}
+		
+		// We have a comma-delimited Nested Search criteria path
+		String targetClassName = "";
+		StringTokenizer tokens = new StringTokenizer(path, ",");
+		targetClassName = tokens.nextToken().trim();
+		
+		return targetClassName;
 	}
 	
 }
