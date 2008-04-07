@@ -1,8 +1,10 @@
 package gov.nih.nci.system.dao.orm.translator;
+import gov.nih.nci.system.client.proxy.BeanProxy;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.util.SystemConstant;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -89,7 +91,9 @@ public class NestedCriteria2HQL
 			return true;
 		return false;
 	}
-			
+	
+	
+	//Single Object with query by example
 	private void solveScenario1(StringBuffer hql, NestedCriteria criteria) throws Exception {
 		
 		Collection sourceObjectList = criteria.getSourceObjectList();
@@ -104,7 +108,7 @@ public class NestedCriteria2HQL
 
 		if (sourceObjectList.size() == 1 ){
 			log.debug("Scenario1: Processing single object in source object list");
-			String select = getObjectCriterion(sourceObjectList.iterator().next(), cfg);
+			String select = getObjectCriterion(sourceObjectList.iterator().next(), cfg, false);
 			hql.append(select);
 			log.debug("Scenario1: Single object HQL sub-select: " + select);
 		} else {
@@ -114,13 +118,14 @@ public class NestedCriteria2HQL
 			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
 			{
 				Object obj = i.next();
-				hql.append(destAlias + " in (" + getObjectCriterion(obj, cfg)+" )");
+				hql.append(destAlias + " in (" + getObjectCriterion(obj, cfg, false)+" )");
 				if (i.hasNext())
 					hql.append(" or ");
 			}
 		}
 	}
 	
+	//Getting association for the query by example
 	private void solveScenario2(StringBuffer hql, NestedCriteria criteria) throws Exception {
 		
 		Collection sourceObjectList = criteria.getSourceObjectList();
@@ -155,9 +160,20 @@ public class NestedCriteria2HQL
 				
 				log.debug("Scenario2: roleName: " + roleName);
 				selectBuffer.append(destAlias).append("=").append(srcAlias);
-					
-				selectBuffer.append(" and ").append(srcAlias).append(" in (")
-					.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg)).append(")");
+
+				if(isObjectEmpty(sourceObjectList.iterator().next()))
+				{
+					selectBuffer.append(" and ").append(srcAlias).append(" is not null ");
+				}
+				else if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
+				{
+					selectBuffer.append(" and ").append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
+				}
+				else
+				{
+					selectBuffer.append(" and ").append(srcAlias).append(" in (")
+						.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, false)).append(")");
+				}
 			}
 			else
 			{
@@ -172,25 +188,82 @@ public class NestedCriteria2HQL
 						.append(" inner join ").append(srcAlias).append(".").append(criteria.getRoleName()).append(" ").append(destAlias)
 						.append(" where ");*/
 
-						selectBuffer.append("select ").append(destAlias).append(" from ")
-						.append(targetObjectName).append(" ").append(destAlias)
-						.append(", ").append(sourceObjectName).append(" ")
-						.append(srcAlias).append(" where ");
-						selectBuffer.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
-						selectBuffer.append(" and ");
+						if(isObjectEmpty(sourceObjectList.iterator().next()))
+						{
+							if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ")
+								.append(targetObjectName).append(" ").append(destAlias).append(" where ");
+								selectBuffer.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id is not null ");
+							}
+							else
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ")
+								.append(targetObjectName).append(" ").append(destAlias)
+								.append(", ").append(sourceObjectName).append(" ")
+								.append(srcAlias).append(" where ");
+								selectBuffer.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
+								selectBuffer.append(" and ").append(srcAlias).append(".id is not null ");;
+							}
+						}
+						else
+						{
+							if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ")
+								.append(targetObjectName).append(" ").append(destAlias)
+								.append(", ").append(sourceObjectName).append(" ")
+								.append(srcAlias).append(" where ");
+								selectBuffer.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id").append("=").append(srcAlias).append(".id");
+								selectBuffer.append(" and ");
+							}
+							else
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ")
+								.append(targetObjectName).append(" ").append(destAlias)
+								.append(", ").append(sourceObjectName).append(" ")
+								.append(srcAlias).append(" where ");
+								selectBuffer.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
+								selectBuffer.append(" and ");
+							}
+							if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
+								selectBuffer.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
+							else
+							{
+								selectBuffer.append(srcAlias).append(" in (")
+								.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, false)).append(")");
+							}
+						}
 					}
 					else
 					{
-						selectBuffer.append("select ").append(destAlias).append(" from ")
-						.append(targetObjectName).append(" ").append(destAlias)
-						.append(", ").append(sourceObjectName).append(" ")
-						.append(srcAlias).append(" where ");
-						selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
-						selectBuffer.append(" and ");
+						if(isObjectEmpty(sourceObjectList.iterator().next()))
+						{
+							selectBuffer.append("select ").append(destAlias).append(" from ")
+							.append(targetObjectName).append(" ").append(destAlias).append(" where ");
+							selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
+							selectBuffer.append(" and ").append(srcAlias).append(".id is not null");							
+						}
+						else
+						{
+							selectBuffer.append("select ").append(destAlias).append(" from ")
+							.append(targetObjectName).append(" ").append(destAlias)
+							.append(", ").append(sourceObjectName).append(" ")
+							.append(srcAlias).append(" where ");
+							selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
+							selectBuffer.append(" and ");
+							
+							if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
+							{
+								selectBuffer.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
+							}
+							else
+							{
+								selectBuffer.append(srcAlias).append(" in (")
+								.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg,false)).append(")");
+							}
+						}
 					}
-						
-					selectBuffer.append(srcAlias).append(" in (")
-						.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg)).append(")");
 				}
 			}
 			log.debug("Scenario2: single object HQL sub-select: " + selectBuffer.toString());	
@@ -221,12 +294,24 @@ public class NestedCriteria2HQL
 						//.append(sourceObjectName).append(" ").append(srcAlias)
 						//.append(" inner join ").append(srcAlias).append(".").append(criteria.getRoleName()).append(" ").append(destAlias)
 						//.append(" where ");
-						hql.append("select ").append(destAlias).append(" from ")
-						.append(targetObjectName).append(" ").append(destAlias)
-						.append(", ").append(sourceObjectName).append(" ")
-						.append(srcAlias).append(" where ");
-						hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
-						hql.append(" and ");
+						if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
+						{
+							hql.append("select ").append(destAlias).append(" from ")
+							.append(targetObjectName).append(" ").append(destAlias)
+							.append(", ").append(sourceObjectName).append(" ")
+							.append(srcAlias).append(" where ");
+							hql.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id").append("=").append(srcAlias).append(".id");
+							hql.append(" and ");
+						}
+						else
+						{
+							hql.append("select ").append(destAlias).append(" from ")
+							.append(targetObjectName).append(" ").append(destAlias)
+							.append(", ").append(sourceObjectName).append(" ")
+							.append(srcAlias).append(" where ");
+							hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
+							hql.append(" and ");
+						}
 					}
 					else
 					{
@@ -243,13 +328,14 @@ public class NestedCriteria2HQL
 			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
 			{
 				Object obj = i.next();
-				hql.append(srcAlias + " in (" + getObjectCriterion(obj, cfg)).append(")");
+				hql.append(srcAlias + " in (" + getObjectCriterion(obj, cfg,false)).append(")");
 				if (i.hasNext())
 					hql.append(" or ");
 			}
 		}
 	}
 	
+	//Traversing the path of the nested search criteria
 	private void solveScenario3(StringBuffer hql, NestedCriteria criteria) throws Exception {
 		
 		String targetObjectName = criteria.getTargetObjectName();
@@ -277,7 +363,8 @@ public class NestedCriteria2HQL
 			
 			hql.append(" and ").append(srcAlias).append(" in (")
 				.append(internalNestedCriteriaBuffer).append(")");
-		} else 
+		} 
+		else 
 		{
 			if (criteria.isTargetCollection())
 			{
@@ -285,13 +372,24 @@ public class NestedCriteria2HQL
 				//.append(sourceObjectName).append(" ").append(srcAlias)
 				//.append(" inner join ").append(srcAlias).append(".").append(criteria.getRoleName()).append(" ").append(destAlias)
 				//.append(" where ");
-				
+				if(criteria.getSourceRoleName()!=null && !criteria.isSourceCollection())
+				{
+					hql.append("select ").append(destAlias).append(" from ")
+					.append(targetObjectName).append(" ").append(destAlias)
+					.append(", ").append(sourceObjectName).append(" ")
+					.append(srcAlias).append(" where ");
+					hql.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id").append("=").append(srcAlias).append(".id");
+					hql.append(" and ");
+				}
+				else
+				{
 				hql.append("select ").append(destAlias).append(" from ")
 				.append(targetObjectName).append(" ").append(destAlias)
 				.append(", ").append(sourceObjectName).append(" ")
 				.append(srcAlias).append(" where ");
 				hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
 				hql.append(" and ");
+				}
 			}
 			else
 			{
@@ -380,6 +478,12 @@ public class NestedCriteria2HQL
 				}
 			}
 		}
+		if(condition2)
+		{
+			if(isObjectEmpty(criteria.getSourceObjectList().iterator().next()))
+				condition2=false;
+		}
+		//return false;//TODO//FIXME
 		return condition1 || condition2 || condition3;
 	}
 	
@@ -581,13 +685,15 @@ public class NestedCriteria2HQL
 		}
 	}
 
-	private String getObjectCriterion(Object obj, Configuration cfg) throws Exception
+	private String getObjectCriterion(Object obj, Configuration cfg, boolean skipAssociations) throws Exception
 	{
 		String srcAlias = getAlias(obj.getClass().getName(),1);
 		
 		StringBuffer hql = new StringBuffer();
-
-		HashMap associationCritMap = getObjAssocCriterion(obj, cfg);
+		HashMap associationCritMap = null;
+		if(!skipAssociations)
+		{
+		associationCritMap = getObjAssocCriterion(obj, cfg);
 
 		hql.append("select ");
 		hql.append(srcAlias);
@@ -633,7 +739,7 @@ public class NestedCriteria2HQL
 						String alias = getAlias(objs[i].getClass().getName(),counter++);
 						hql.append(alias).append(" in elements(").append(srcAlias).append(".").append(roleName).append(")");
 						hql.append(" and ");
-						hql.append(alias).append(" in (").append(getObjectCriterion(objs[i], cfg)).append(") ");
+						hql.append(alias).append(" in (").append(getObjectCriterion(objs[i], cfg, false)).append(") ");
 						if (i < objs.length-1)
 							hql.append(" and ");
 					}
@@ -642,15 +748,16 @@ public class NestedCriteria2HQL
 					String alias = getAlias(roleValue.getClass().getName(),counter++);
 					hql.append(alias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
 					hql.append(" and ");
-					hql.append(alias).append(" in (").append(getObjectCriterion(roleValue, cfg)).append(") ");
+					hql.append(alias).append(" in (").append(getObjectCriterion(roleValue, cfg, false)).append(") ");
 				}
 				hql.append(" ");
 				if (associationKeys.hasNext())
 					hql.append(" and ");
 			}
 		}
+		}
 		String attributeCriteria = getObjectAttributeCriterion(srcAlias, obj, cfg);
-		if (associationCritMap == null || associationCritMap.size() == 0 && attributeCriteria != null && attributeCriteria.trim().length() > 0)
+		if ((associationCritMap == null || associationCritMap.size() == 0 && attributeCriteria != null && attributeCriteria.trim().length() > 0) && !skipAssociations)
 			hql.append(" where ");
 		if (associationCritMap != null && associationCritMap.size() > 0 && attributeCriteria != null && attributeCriteria.trim().length() > 0)
 			hql.append(" ").append(" and ");
@@ -785,4 +892,68 @@ public class NestedCriteria2HQL
 		
 		return pclass;
 	}
+	
+	private boolean isObjectEmpty(Object obj)
+	{
+		Class klass = obj.getClass();
+		while (!klass.getName().equals("java.lang.Object" ))
+		{
+			for(Field field:klass.getDeclaredFields())
+			{
+				int modifier = field.getModifiers();
+				if(!Modifier.isStatic(modifier))
+				{
+					try {
+						field.setAccessible(true);
+						Object value = field.get(obj);
+						if(value!=null && value instanceof Collection && ((Collection)value).size()>0)
+							return false;
+						if(value!=null)
+							return false;
+					} catch (IllegalArgumentException e) {
+						//No action
+					} catch (IllegalAccessException e) {
+						//No action
+					}
+				}
+			}
+			klass = klass.getSuperclass();
+		}
+		return true;
+	}
+	
+	private boolean isObjectAssociationEmpty(Object obj) throws Exception
+	{
+		Class klass = obj.getClass();
+		while (!klass.getName().equals("java.lang.Object" ))
+		{
+			for(Field field:klass.getDeclaredFields())
+			{
+				int modifier = field.getModifiers();
+				if(!Modifier.isStatic(modifier))
+				{
+					try {
+						field.setAccessible(true);
+						Object value = field.get(obj);
+						if(value!=null)
+						{
+							if(value instanceof Collection && ((Collection)value).size()>0)
+								return false;
+					    	if(!(value instanceof Integer || value instanceof Float || value instanceof Double
+					    			|| value instanceof Character || value instanceof Long || value instanceof Boolean
+					    			|| value instanceof Byte ||  value instanceof Short  
+					    			|| value instanceof String || value instanceof Date))
+							return false;
+						}
+					} catch (IllegalArgumentException e) {
+						//No action
+					} catch (IllegalAccessException e) {
+						//No action
+					}
+				}
+			}
+			klass = klass.getSuperclass();
+		}
+		return true;
+	}	
 }

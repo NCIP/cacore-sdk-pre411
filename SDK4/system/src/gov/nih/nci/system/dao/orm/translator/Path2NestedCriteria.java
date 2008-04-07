@@ -42,6 +42,8 @@ public class Path2NestedCriteria{
 			String dest = (String) stack1.pop();
 			NestedCriteria newCriteria = new NestedCriteria();
 			String roleName = null;
+			String sourceRoleName = null;
+			NestedCriteria newCriteria2 = new NestedCriteria();
 			if (!dest.equals(src) && !noInheritent(src, dest)) {
 				roleName = getRoleName(newCriteria, Class.forName(src), Class
 						.forName(dest).newInstance(), classCache);
@@ -49,11 +51,14 @@ public class Path2NestedCriteria{
 					throw new Exception("No association found from " + src
 							+ " to " + dest
 							+ ", please double check your query path.");
+				sourceRoleName = getRoleName(newCriteria2, Class.forName(dest), Class.forName(src).newInstance(), classCache);
 			}
 
 			newCriteria.setSourceObjectName(src);
 			newCriteria.setTargetObjectName(dest);
 			newCriteria.setRoleName(roleName);
+			newCriteria.setSourceRoleName(sourceRoleName);
+			newCriteria.setSourceCollection(newCriteria2.isSourceCollection());
 			newCriteria.setInternalNestedCriteria(criteria);
 			if (criteria == null)
 				newCriteria.setSourceObjectList(objList);
