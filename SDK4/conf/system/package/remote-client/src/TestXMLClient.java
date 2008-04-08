@@ -8,6 +8,7 @@ import gov.nih.nci.system.client.util.xml.caCOREUnmarshaller;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 
 import javax.xml.XMLConstants;
@@ -37,63 +38,66 @@ public class TestXMLClient extends TestClient
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void testXMLUtility() throws Exception
 	{
 		//Application Service retrieval for secured system
 		//ApplicationService appService = ApplicationServiceProvider.getApplicationService("userId","password");
-		
+
 		ApplicationService appService = ApplicationServiceProvider.getApplicationService();
 		Collection<Class> classList = getClasses();
-		
+
 		Marshaller marshaller = new caCOREMarshaller("xml-mapping.xml", false);
 		Unmarshaller unmarshaller = new caCOREUnmarshaller("unmarshaller-xml-mapping.xml", false);		
 		XMLUtility myUtil = new XMLUtility(marshaller, unmarshaller);
 		for(Class klass:classList)
 		{
-			Object o = klass.newInstance();
-			System.out.println("Searching for "+klass.getName());
-			try
-			{
-				Collection results = appService.search(klass, o);
-				for(Object obj : results)
+			if (!Modifier.isAbstract(klass.getModifiers())){
+
+				Object o = klass.newInstance();
+				System.out.println("Searching for "+klass.getName());
+				try
 				{
-					File myFile = new File("./output/" + klass.getName() + "_test.xml");						
+					Collection results = appService.search(klass, o);
+					for(Object obj : results)
+					{
+						File myFile = new File("./output/" + klass.getName() + "_test.xml");						
 
-					FileWriter myWriter = new FileWriter(myFile);
-					myUtil.toXML(obj, myWriter);
-					myWriter.close();
-					printObject(obj, klass);					
-					DocumentBuilder parser = DocumentBuilderFactory
-							.newInstance().newDocumentBuilder();
-					Document document = parser.parse(myFile);
-					SchemaFactory factory = SchemaFactory
-							.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+						FileWriter myWriter = new FileWriter(myFile);
+						myUtil.toXML(obj, myWriter);
+						myWriter.close();
+						printObject(obj, klass);					
+						DocumentBuilder parser = DocumentBuilderFactory
+						.newInstance().newDocumentBuilder();
+						Document document = parser.parse(myFile);
+						SchemaFactory factory = SchemaFactory
+						.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-					try {
-						System.out.println("Validating " + klass.getName() + " against the schema......\n\n");						
-						Source schemaFile = new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(klass.getPackage().getName() + ".xsd"));
-						Schema schema = factory.newSchema(schemaFile);
-						Validator validator = schema.newValidator();
+						try {
+							System.out.println("Validating " + klass.getName() + " against the schema......\n\n");						
+							Source schemaFile = new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(klass.getPackage().getName() + ".xsd"));
+							Schema schema = factory.newSchema(schemaFile);
+							Validator validator = schema.newValidator();
 
-						validator.validate(new DOMSource(document));
-						System.out.println(klass.getName() + " has been validated!!!\n\n");
-					} catch (Exception e) {
-						System.out.println(klass.getName() + " has failed validation!!!  Error reason is: \n\n" + e.getMessage());
+							validator.validate(new DOMSource(document));
+							System.out.println(klass.getName() + " has been validated!!!\n\n");
+						} catch (Exception e) {
+							System.out.println(klass.getName() + " has failed validation!!!  Error reason is: \n\n" + e.getMessage());
+						}
+
+						System.out.println("Un-marshalling " + klass.getName() + " from " + myFile.getName() +"......\n\n");
+						Object myObj = (Object) myUtil.fromXML(myFile);	
+
+						printObject(myObj, klass);
+						break;
 					}
-					
-					System.out.println("Un-marshalling " + klass.getName() + " from " + myFile.getName() +"......\n\n");
-					Object myObj = (Object) myUtil.fromXML(myFile);	
-					
-					printObject(myObj, klass);
-					break;
+				}catch(Exception e)
+				{
+					System.out.println("Exception caught: " + e.getMessage());
+					e.printStackTrace();
 				}
-			}catch(Exception e)
-			{
-				System.out.println("Exception caught: " + e.getMessage());
-				e.printStackTrace();
+				//break;
 			}
-			//break;
 		}
 	}
 }

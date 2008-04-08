@@ -1,5 +1,6 @@
 import java.io.File;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -34,19 +35,21 @@ public class TestClient
 		Collection<Class> classList = getClasses();
 		for(Class klass:classList)
 		{
-			Object o = klass.newInstance();
-			System.out.println("Searching for "+klass.getName());
-			try
-			{
-				Collection results = appService.search(klass, o);
-				for(Object obj : results)
+			if (!Modifier.isAbstract(klass.getModifiers())){
+				Object o = klass.newInstance();
+				System.out.println("Searching for "+klass.getName());
+				try
 				{
-					printObject(obj, klass);
-					break;
+					Collection results = appService.search(klass, o);
+					for(Object obj : results)
+					{
+						printObject(obj, klass);
+						break;
+					}
+				}catch(Exception e)
+				{
+					System.out.println(">>>"+e.getMessage());
 				}
-			}catch(Exception e)
-			{
-				System.out.println(">>>"+e.getMessage());
 			}
 		}
 	}

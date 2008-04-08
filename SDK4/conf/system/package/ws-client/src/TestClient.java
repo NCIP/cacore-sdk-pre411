@@ -1,6 +1,7 @@
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -41,31 +42,33 @@ public class TestClient
 
 		for(Class klass:classList)
 		{
-			try 
-			{
-				call = (Call) service.createCall();
+			if (!Modifier.isAbstract(klass.getModifiers())){
 
-				for(Class klassToMap:classList)
+				try 
 				{
-					QName searchClassQNameToMap = new QName("urn:"+getInversePackageName(klassToMap), klassToMap.getSimpleName());
-					call.registerTypeMapping(klassToMap, searchClassQNameToMap,
-							new org.apache.axis.encoding.ser.BeanSerializerFactory(klassToMap, searchClassQNameToMap),
-							new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
-				}
-				QName searchClassQNameToMap = new QName("urn:Character.lang.java", "Character");
-				call.registerTypeMapping(Character.class, searchClassQNameToMap,
-						new org.apache.axis.encoding.ser.BeanSerializerFactory(Character.class, searchClassQNameToMap),
-						new org.apache.axis.encoding.ser.BeanDeserializerFactory(Character.class, searchClassQNameToMap));
-				
-				QName searchClassQName = new QName("urn:"+getInversePackageName(klass), klass.getSimpleName());
+					call = (Call) service.createCall();
 
-				call.setTargetEndpointAddress(new java.net.URL(url));
-				call.setOperationName(new QName("@WEBSERVICE_NAME@", "queryObject"));
-				call.addParameter("arg1", org.apache.axis.encoding.XMLType.XSD_STRING, ParameterMode.IN);
-				call.addParameter("arg2", searchClassQName, ParameterMode.IN);
-				call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
+					for(Class klassToMap:classList)
+					{
+						QName searchClassQNameToMap = new QName("urn:"+getInversePackageName(klassToMap), klassToMap.getSimpleName());
+						call.registerTypeMapping(klassToMap, searchClassQNameToMap,
+								new org.apache.axis.encoding.ser.BeanSerializerFactory(klassToMap, searchClassQNameToMap),
+								new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
+					}
+					QName searchClassQNameToMap = new QName("urn:Character.lang.java", "Character");
+					call.registerTypeMapping(Character.class, searchClassQNameToMap,
+							new org.apache.axis.encoding.ser.BeanSerializerFactory(Character.class, searchClassQNameToMap),
+							new org.apache.axis.encoding.ser.BeanDeserializerFactory(Character.class, searchClassQNameToMap));
 
-				/*
+					QName searchClassQName = new QName("urn:"+getInversePackageName(klass), klass.getSimpleName());
+
+					call.setTargetEndpointAddress(new java.net.URL(url));
+					call.setOperationName(new QName("@WEBSERVICE_NAME@", "queryObject"));
+					call.addParameter("arg1", org.apache.axis.encoding.XMLType.XSD_STRING, ParameterMode.IN);
+					call.addParameter("arg2", searchClassQName, ParameterMode.IN);
+					call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_ARRAY);
+
+					/*
 				//This block inserts the security headers in the service call
 				SOAPHeaderElement headerElement = new SOAPHeaderElement(call.getOperationName().getNamespaceURI(),"SecurityHeader");
 				headerElement.setPrefix("security");
@@ -75,47 +78,48 @@ public class TestClient
 				SOAPElement passwordElement = headerElement.addChildElement("password");
 				passwordElement.addTextNode("password");
 				call.addHeader(headerElement);				
-				*/
-				
-				Object o = klass.newInstance();
+					 */
 
-				System.out.println("Searching for "+klass.getName());
-				Object[] results = (Object[])call.invoke(new Object[] { klass.getName(), o });
+					Object o = klass.newInstance();
 
-				if (results!=null &&  results.length> 0) {
-					for(Object obj : results)
-					{
-						printObject(obj, klass);
+					System.out.println("Searching for "+klass.getName());
+					Object[] results = (Object[])call.invoke(new Object[] { klass.getName(), o });
 
-						for (Method method : obj.getClass().getMethods()){
+					if (results!=null &&  results.length> 0) {
+						for(Object obj : results)
+						{
+							printObject(obj, klass);
 
-							if(method.getName().startsWith("get") && !method.getName().equals("getClass"))
-							{
-								if (!(method.getReturnType().getName().startsWith("java") 
-										|| method.getReturnType().isPrimitive()
-										|| method.getReturnType().getName().indexOf("Collection")>0) ) {
-									System.out.println("Testing getAssociation() call for Class: " + klass.getName() + ", Method: " + method.getName() + ", of type: " + method.getReturnType().getName());
-									
-									String rolename = String.valueOf(method.getName().charAt(3)).toLowerCase() + method.getName().substring(4);
-									Field field = getField(obj, rolename); 
-						    		
-						    		if (field == null){
-						    			rolename = Character.toUpperCase(rolename.charAt(0)) + rolename.substring(1);
-						    			field = getField(obj, rolename);
-						    		}
-						    		rolename = field.getName();
-									testGetAssociation(url, service, obj, method.getReturnType(), rolename);
+							for (Method method : obj.getClass().getMethods()){
+
+								if(method.getName().startsWith("get") && !method.getName().equals("getClass"))
+								{
+									if (!(method.getReturnType().getName().startsWith("java") 
+											|| method.getReturnType().isPrimitive()
+											|| method.getReturnType().getName().indexOf("Collection")>0) ) {
+										System.out.println("Testing getAssociation() call for Class: " + klass.getName() + ", Method: " + method.getName() + ", of type: " + method.getReturnType().getName());
+
+										String rolename = String.valueOf(method.getName().charAt(3)).toLowerCase() + method.getName().substring(4);
+										Field field = getField(obj, rolename); 
+
+										if (field == null){
+											rolename = Character.toUpperCase(rolename.charAt(0)) + rolename.substring(1);
+											field = getField(obj, rolename);
+										}
+										rolename = field.getName();
+										testGetAssociation(url, service, obj, method.getReturnType(), rolename);
+									}
 								}
 							}
-						}
 
-						break;
+							break;
+						}
 					}
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
 				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				//break
 			}
-			//break
 		}
 	}
 
@@ -132,7 +136,7 @@ public class TestClient
 					new org.apache.axis.encoding.ser.BeanSerializerFactory(klassToMap, searchClassQNameToMap),
 					new org.apache.axis.encoding.ser.BeanDeserializerFactory(klassToMap, searchClassQNameToMap));
 		}
-		
+
 		QName searchClassQName = new QName("urn:"+getInversePackageName(associationClass), associationClass.getSimpleName());
 
 		call.setTargetEndpointAddress(new java.net.URL(url));
@@ -152,8 +156,8 @@ public class TestClient
 		SOAPElement passwordElement = headerElement.addChildElement("password");
 		passwordElement.addTextNode("password");
 		call.addHeader(headerElement);				
-		*/
-		
+		 */
+
 		System.out.println("Searching for association: " + containingObj.getClass().getName() + "." + rolename);
 		Object[] results = (Object[])call.invoke(new Object[] { containingObj, rolename, 0 });
 
@@ -227,11 +231,11 @@ public class TestClient
 		}
 		return list;
 	}	
-	
+
 	protected Field getField(Object bean, String fieldName) {
 		Field field = null;
 		if(bean == null) return null;
-		
+
 		Class klass = bean.getClass();
 		while(klass!=null && klass!= Object.class)
 		{
@@ -244,10 +248,10 @@ public class TestClient
 			}
 			if(field!=null) 
 				break;;
-			klass = klass.getSuperclass();
+				klass = klass.getSuperclass();
 		}
 
 		return field;
 	}	
-	
+
 }

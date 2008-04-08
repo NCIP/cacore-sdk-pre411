@@ -1,6 +1,7 @@
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
@@ -40,33 +41,36 @@ public class TestGetXMLClient extends TestClient
 		String serverUrl = "@SERVER_URL@";
 		for(Class klass:classList)
 		{
-			System.out.println("Searching for "+klass.getName());
-			try
-			{
-				String searchUrl = serverUrl+"/GetXML?query="+klass.getName()+"&"+klass.getName();
-				URL url = new URL(searchUrl);
-				URLConnection conn = url.openConnection();
-				
-				//Uncomment following two lines for secured system and provide proper username and password
-				//String base64 = "userId" + ":" + "password";
-				//conn.setRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64(base64.getBytes())));
-				
-				File myFile = new File("./output/" + klass.getName() + "_test-getxml.xml");						
+			if (!Modifier.isAbstract(klass.getModifiers())){
 
-				FileWriter myWriter = new FileWriter(myFile);
-				DataInputStream dis = new DataInputStream(conn.getInputStream());
-				
-				String s = null;
-				while ((s = dis.readLine()) != null)
-					myWriter.write(s);
-				
-				myWriter.close();
-			}catch(Exception e)
-			{
-				System.out.println("Exception caught: " + e.getMessage());
-				e.printStackTrace();
+				System.out.println("Searching for "+klass.getName());
+				try
+				{
+					String searchUrl = serverUrl+"/GetXML?query="+klass.getName()+"&"+klass.getName();
+					URL url = new URL(searchUrl);
+					URLConnection conn = url.openConnection();
+
+					//Uncomment following two lines for secured system and provide proper username and password
+					//String base64 = "userId" + ":" + "password";
+					//conn.setRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64(base64.getBytes())));
+
+					File myFile = new File("./output/" + klass.getName() + "_test-getxml.xml");						
+
+					FileWriter myWriter = new FileWriter(myFile);
+					DataInputStream dis = new DataInputStream(conn.getInputStream());
+
+					String s = null;
+					while ((s = dis.readLine()) != null)
+						myWriter.write(s);
+
+					myWriter.close();
+				}catch(Exception e)
+				{
+					System.out.println("Exception caught: " + e.getMessage());
+					e.printStackTrace();
+				}
+				//break;
 			}
-			break;
 		}
 	}
 }
