@@ -3,6 +3,7 @@ package test.gov.nih.nci.cacoresdk.domain.other;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import test.gov.nih.nci.cacoresdk.domain.other.datatype.AllDataTypeXMLMappingTest;
+import test.gov.nih.nci.cacoresdk.domain.other.differentpackage.DifferentPackageWithAssociationXMLMappingTest;
 import test.gov.nih.nci.cacoresdk.domain.other.levelassociation.LevelAssociationXMLMappingTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterKeyXMLMappingTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterPrimitiveKeyXMLMappingTest;
@@ -26,6 +27,7 @@ public class OtherXMLMappingSuite
 		suite.addTest(new TestSuite(AllDataTypeXMLMappingTest.class,AllDataTypeXMLMappingTest.getTestCaseName()));
 		suite.addTest(new TestSuite(CharacterKeyXMLMappingTest.class,CharacterKeyXMLMappingTest.getTestCaseName()));
 		suite.addTest(new TestSuite(CharacterPrimitiveKeyXMLMappingTest.class,CharacterPrimitiveKeyXMLMappingTest.getTestCaseName()));
+		suite.addTest(new TestSuite(DifferentPackageWithAssociationXMLMappingTest.class,DifferentPackageWithAssociationXMLMappingTest.getTestCaseName()));
 		suite.addTest(new TestSuite(DoubleKeyXMLMappingTest.class,DoubleKeyXMLMappingTest.getTestCaseName()));
 		suite.addTest(new TestSuite(DoublePrimitiveKeyXMLMappingTest.class,DoublePrimitiveKeyXMLMappingTest.getTestCaseName()));
 		suite.addTest(new TestSuite(FloatKeyXMLMappingTest.class,FloatKeyXMLMappingTest.getTestCaseName()));

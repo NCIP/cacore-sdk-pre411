@@ -3,6 +3,7 @@ package test.gov.nih.nci.cacoresdk.domain.other;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import test.gov.nih.nci.cacoresdk.domain.other.datatype.AllDataTypeTest;
+import test.gov.nih.nci.cacoresdk.domain.other.differentpackage.DifferentPackageWithAssociationTest;
 import test.gov.nih.nci.cacoresdk.domain.other.levelassociation.LevelAssociationTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterKeyTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterPrimitiveKeyTest;
@@ -26,6 +27,7 @@ public class OtherSuite
 		suite.addTest(new TestSuite(AllDataTypeTest.class,AllDataTypeTest.getTestCaseName()));
 		suite.addTest(new TestSuite(CharacterKeyTest.class,CharacterKeyTest.getTestCaseName()));
 		suite.addTest(new TestSuite(CharacterPrimitiveKeyTest.class,CharacterPrimitiveKeyTest.getTestCaseName()));
+		suite.addTest(new TestSuite(DifferentPackageWithAssociationTest.class,DifferentPackageWithAssociationTest.getTestCaseName()));
 		suite.addTest(new TestSuite(DoubleKeyTest.class,DoubleKeyTest.getTestCaseName()));
 		suite.addTest(new TestSuite(DoublePrimitiveKeyTest.class,DoublePrimitiveKeyTest.getTestCaseName()));
 		suite.addTest(new TestSuite(FloatKeyTest.class,FloatKeyTest.getTestCaseName()));

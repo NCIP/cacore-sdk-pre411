@@ -3,6 +3,7 @@ package test.gov.nih.nci.cacoresdk.domain.other;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import test.gov.nih.nci.cacoresdk.domain.other.datatype.AllDataTypeXSDTest;
+import test.gov.nih.nci.cacoresdk.domain.other.differentpackage.DifferentPackageWithAssociationXSDTest;
 import test.gov.nih.nci.cacoresdk.domain.other.levelassociation.LevelAssociationXSDTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterKeyXSDTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.CharacterPrimitiveKeyXSDTest;
@@ -26,6 +27,7 @@ public class OtherXSDSuite
 		suite.addTest(new TestSuite(AllDataTypeXSDTest.class,AllDataTypeXSDTest.getTestCaseName()));
 		suite.addTest(new TestSuite(CharacterKeyXSDTest.class,CharacterKeyXSDTest.getTestCaseName()));
 		suite.addTest(new TestSuite(CharacterPrimitiveKeyXSDTest.class,CharacterPrimitiveKeyXSDTest.getTestCaseName()));
+		suite.addTest(new TestSuite(DifferentPackageWithAssociationXSDTest.class,DifferentPackageWithAssociationXSDTest.getTestCaseName()));		
 		suite.addTest(new TestSuite(DoubleKeyXSDTest.class,DoubleKeyXSDTest.getTestCaseName()));
 		suite.addTest(new TestSuite(DoublePrimitiveKeyXSDTest.class,DoublePrimitiveKeyXSDTest.getTestCaseName()));
 		suite.addTest(new TestSuite(FloatKeyXSDTest.class,FloatKeyXSDTest.getTestCaseName()));

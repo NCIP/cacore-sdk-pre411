@@ -179,7 +179,8 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 		validateClassElements(klass);
 
-		String superklassName = klass.getSuperclass().getSimpleName();
+		String superklassName = getSuperklassName(klass);
+			
 //		System.out.println("Superclass for class " + klass.getSimpleName()
 //				+ ": " + superklassName);
 		String xpath = "/xs:schema/xs:complexType[@name='"
@@ -210,9 +211,16 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 		validateClassElements(klass);
 		
+		String associatedKlassName = null;
+		if (klass.getPackage().getName().equals(associatedKlass.getPackage().getName()))
+			associatedKlassName = associatedKlass.getSimpleName();
+		else
+			associatedKlassName = associatedKlass.getPackage().getName() + ":" + associatedKlass.getSimpleName();
+
+		
 		String xpath = "/xs:schema/xs:complexType[@name='" + klass.getSimpleName() + "']" 
 			+ "/xs:sequence/xs:element[@name='" + rolename + "']"
-			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlass.getSimpleName() + "']";
+			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlassName + "']";
 
 //		System.out.println("xpath: " + xpath);
 		
@@ -221,7 +229,7 @@ public abstract class SDKXSDTestBase extends TestCase {
 		
 		Element klassElt = elts.get(0);
 		assertEquals(3, klassElt.getAttributes().size()); // ref, minOccurs, maxOccurs
-		assertEquals(klassElt.getAttributeValue("ref"),associatedKlass.getSimpleName());
+		assertEquals(klassElt.getAttributeValue("ref"),associatedKlassName);
 		
 		// TODO :: change eventually to honor minOccurs value passed in
 		// ignore 'minOccurs' value for now, as the Code Generator always sets it to zero
@@ -293,7 +301,8 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 		Document doc = getDoc();
 
-		String superklassName = klass.getSuperclass().getSimpleName();
+		String superklassName = getSuperklassName(klass);
+		
 		String xpath = "/xs:schema/xs:complexType[@name='"
 			+ klass.getSimpleName()
 			+ "']/xs:complexContent/xs:extension[@base='" + superklassName
@@ -308,5 +317,14 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 		Element elt = attributeElts.get(0);
 		assertEquals(elt.getAttributeValue("type").toLowerCase(),"xs:"+attributeType.toLowerCase());
+	}
+	
+	private String getSuperklassName(Class klass){
+
+		if (klass.getPackage().getName().equals(klass.getSuperclass().getPackage().getName()))
+			return klass.getSuperclass().getSimpleName();
+
+		return klass.getSuperclass().getPackage().getName() + ":" + klass.getSuperclass().getSimpleName();
+
 	}
 }
