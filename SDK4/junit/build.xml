@@ -201,10 +201,10 @@
 	<!--                                Run JUnits for Thick client            	                         -->
 	<!-- ************************************************************************************************-->
 	
-	<target name="runThickClient" depends="clean-classes,createDir,compile,runThickClientJUnit,stop" description="Run JUnits for Thick client"/>
+	<target name="runThickClientTest" depends="clean-classes,createDir,compile,runThickClientJUnit,stop" description="Run JUnits for Thick client"/>
 	
 	<target name="runThickClientJUnit">
-		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitsuffix="*Test"/>
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitsuffix="Test"/>
 		<SDKGenerateReport junitOutputDir="${report.dir.thick-client}"/>
 	</target>
 	
