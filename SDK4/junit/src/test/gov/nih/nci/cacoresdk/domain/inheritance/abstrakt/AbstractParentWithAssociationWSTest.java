@@ -187,43 +187,19 @@ public class AbstractParentWithAssociationWSTest extends SDKWSTestBase
 	 */
 	public void testAssociationNestedSearch3() throws Exception
 	{
-		Class targetClass = Teacher.class;
+		Class targetClass = Pupil.class;
 		PrivateTeacher criteria = new PrivateTeacher();
-		criteria.setId(new Integer(2));
+		criteria.setId(new Integer(3));
 
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
 		assertNotNull(results);
-		assertEquals(1,results.length);
+		assertEquals(2,results.length);
 		
-		PrivateTeacher result = (PrivateTeacher)results[0];
+		Pupil result = (Pupil)results[0];
 		assertNotNull(result);
 		assertNotNull(result.getId());
-		assertEquals(new Integer(2), result.getId());		
+		assertEquals(new Integer(3), result.getId());		
 	}
 
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws Exception
-	 */
-	public void testAssociationNestedSearch4() throws Exception
-	{
-		Class targetClass = Teacher.class;
-		PrivateTeacher criteria = new PrivateTeacher();
-		criteria.setId(new Integer(2));
-
-		Object[] results = getQueryObjectResults(targetClass, criteria);
-
-		assertNotNull(results);
-		assertEquals(1,results.length);
-		
-		Teacher result = (Teacher)results[0];
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertEquals(new Integer(2), result.getId());			
-	}
 }
