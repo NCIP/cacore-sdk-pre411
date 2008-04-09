@@ -163,7 +163,7 @@ public class NestedCriteria2HQL
 
 				if(isObjectEmpty(sourceObjectList.iterator().next()))
 				{
-					selectBuffer.append(" and ").append(srcAlias).append(" is not null ");
+					selectBuffer.append(" and ").append(srcAlias).append(".id is not null ");
 				}
 				else if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
 				{
@@ -239,10 +239,21 @@ public class NestedCriteria2HQL
 					{
 						if(isObjectEmpty(sourceObjectList.iterator().next()))
 						{
-							selectBuffer.append("select ").append(destAlias).append(" from ")
-							.append(targetObjectName).append(" ").append(destAlias).append(" where ");
-							selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
-							selectBuffer.append(" and ").append(srcAlias).append(".id is not null");							
+							if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ")
+								.append(targetObjectName).append(" ").append(destAlias).append(" where ");
+								selectBuffer.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id is not null ");
+							}
+							else
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ")
+								.append(targetObjectName).append(" ").append(destAlias)
+								.append(", ").append(sourceObjectName).append(" ").append(srcAlias)
+								.append(" where ");
+								selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
+								selectBuffer.append(" and ").append(srcAlias).append(".id is not null");							
+							}
 						}
 						else
 						{
