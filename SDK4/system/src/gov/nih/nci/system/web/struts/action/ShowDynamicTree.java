@@ -5,7 +5,11 @@ import gov.nih.nci.system.web.util.JSPUtils;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -36,8 +40,9 @@ public class ShowDynamicTree extends BaseActionSupport {
 		log.debug("packages: " + packageNames);
 		List classNames = new ArrayList();
 
-		List packages = new ArrayList();
-		List classes = new ArrayList();
+		Map<String,Category> packages = new HashMap<String,Category>();
+		List<Category> classes = new ArrayList<Category>();
+		List<Category> interfaces = new ArrayList<Category>();
 
 		int pos = 0;
 		int categoryId = 1;
@@ -72,22 +77,14 @@ public class ShowDynamicTree extends BaseActionSupport {
 						try {
 							Class klass = Class.forName(className);
 							
-							for (Class interfaze : klass.getInterfaces()){
-								if (!(interfaze.getSimpleName().equalsIgnoreCase("Serializable"))){
-									tmpClassCat = new Category(categoryId++, interfaze.getSimpleName() + " (interface)", packageName, new Category[0]);
-									log.debug("About to add Category: " + tmpClassCat);
-									
-									classes.add(tmpClassCat);
-								}
-
-							}
+							categoryId = collectInterfaceCategories(klass, interfaces, categoryId);//need to preserve current value of categoryId
 							
 							if (Modifier.isAbstract(klass.getModifiers())) {
 								klassName += " (abstract)";
 							}
 
 						} catch (ClassNotFoundException e) {
-							log.error("Trying to determine if class " + klassName + " is abstract, but was not able to find such a class", e);
+							log.error("Trying to determine if class " + klassName + " is abstract or has interface(s), but was not able to find such a class", e);
 						}	
 						
 						tmpClassCat = new Category(categoryId++, klassName, packageName, new Category[0]);
@@ -99,14 +96,34 @@ public class ShowDynamicTree extends BaseActionSupport {
 
 				tmpPackageCat = new Category(categoryId++, packageName, "", classes);
 
-				packages.add(tmpPackageCat);
+				packages.put(packageName,tmpPackageCat);
 				
 				//Reset classes array for the next package
-				classes = new ArrayList();
+				classes = new ArrayList<Category>();
 
 			}
 
-			root.setChildren(packages);
+		
+			//merge interfaces with the classes
+			Category tmpCategory = null;
+			List children = null;
+			for (Category interfazeCat : interfaces){
+				tmpCategory = packages.get(interfazeCat.getPackageName());
+				
+				if (tmpCategory != null){
+					children = tmpCategory.getChildren();
+					children.add(interfazeCat);
+					tmpCategory.setChildren(children);
+				} else {// new package
+					List<Category> tmpList = new ArrayList<Category>();
+					tmpList.add(interfazeCat);
+					tmpPackageCat = new Category(categoryId++, interfazeCat.getPackageName(), "", tmpList);
+					packages.put(interfazeCat.getPackageName(),tmpPackageCat);
+				}
+			}
+			List<Category> values = new ArrayList<Category>();
+			values.addAll(new TreeMap(packages).values());//sort by key
+			root.setChildren(values);
 		}
 
 		return root;
@@ -131,6 +148,27 @@ public class ShowDynamicTree extends BaseActionSupport {
 		// Category[0]), new Category(19L, "DWR", "", new Category[0])
 		// })
 		// });
+	}
+	
+	private int collectInterfaceCategories(Class klass, List<Category> interfaces, int categoryId){
+		
+		Category tmpInterfaceCat = null;
+		for (Class interfaze : klass.getInterfaces()){
+			
+			Class superInterfaze = interfaze;
+			do {
+				if (!(superInterfaze.getSimpleName().equalsIgnoreCase("Serializable"))){
+					String interfacePackageName = superInterfaze.getPackage().getName();
+					tmpInterfaceCat = new Category(categoryId++, superInterfaze.getSimpleName() + " (interface)", interfacePackageName, new Category[0]);
+					log.debug("About to add Category: " + tmpInterfaceCat);
+
+					interfaces.add(tmpInterfaceCat);
+				}
+				superInterfaze = superInterfaze.getSuperclass();
+			} while (superInterfaze != null);
+		}
+		
+		return categoryId;
 	}
 
 }

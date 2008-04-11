@@ -277,7 +277,27 @@ public class TransformerUtils
 			return interfaceStr;
 		}
 	}
+	
+	public static String getInterfaceImports(UMLInterface interfaze) throws GenerationException
+	{
+		StringBuilder sb = new StringBuilder();
+		Set<String> importList = new HashSet<String>();
+		UMLInterface[] interfaces = ModelUtil.getSuperInterfaces(interfaze);
 
+		String pkgName = getFullPackageName(interfaze);
+		
+		for (UMLInterface superInterfaze : interfaces) {
+			String superInterfacePkg = getFullPackageName(superInterfaze);
+			if (!pkgName.equals(superInterfacePkg))
+				importList.add(getFQCN(superInterfaze));
+		}
+		
+		for(String importClass:importList)
+			sb.append("import ").append(importClass).append(";\n");
+
+		return sb.toString();
+	}
+	
 	public static String getImports(UMLClass klass) throws GenerationException
 	{
 		StringBuilder sb = new StringBuilder();

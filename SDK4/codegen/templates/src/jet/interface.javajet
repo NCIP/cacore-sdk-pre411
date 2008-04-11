@@ -3,6 +3,7 @@
         skeleton="InterfaceTransformerBase.skeleton" %>
 package <%=TransformerUtils.getFullPackageName(interfaze)%>;
 
+<%=TransformerUtils.getInterfaceImports(interfaze)%>
 <%=TransformerUtils.getJavaDocs(interfaze)%> 
 public interface <%=interfaze.getName()%> <%=TransformerUtils.getSuperInterfaceString(interfaze)%>
 {

@@ -1,12 +1,6 @@
 package test.gov.nih.nci.cacoresdk.domain.interfaze;
 
-
-import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.PrivateTeacher;
-import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Pupil;
-import gov.nih.nci.cacoresdk.domain.inheritance.abstrakt.Teacher;
-import gov.nih.nci.cacoresdk.domain.interfaze.Carnivora;
 import gov.nih.nci.cacoresdk.domain.interfaze.Dog;
-import gov.nih.nci.cacoresdk.domain.interfaze.Mammalia;
 
 import java.util.ArrayList;
 import java.util.Collection;

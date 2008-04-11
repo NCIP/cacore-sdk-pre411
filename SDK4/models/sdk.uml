@@ -93,10 +93,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Apr 01 17:27:50 PST 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu Apr 10 11:15:06 PDT 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-04-03 22:22:00 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-04-11 05:32:07 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -18669,14 +18669,6 @@
                                             </UML:Attribute>
                                           </UML:Classifier.feature>
                                         </UML:Class>
-                                        <UML:Interface xmi.id = '-64--88-1-103-8238f4:1183378f56e:-8000:0000000000001434'
-                                          name = 'Canidae' visibility = 'public' isSpecification = 'false' isRoot = 'false'
-                                          isLeaf = 'false' isAbstract = 'false'>
-                                          <UML:GeneralizableElement.generalization>
-                                            <UML:Generalization xmi.idref = '-64--88-1-103-8238f4:1183378f56e:-8000:000000000000143E'/>
-                                            <UML:Generalization xmi.idref = '-64--88-1-103-8238f4:11842d46956:-8000:000000000000146F'/>
-                                          </UML:GeneralizableElement.generalization>
-                                        </UML:Interface>
                                         <UML:Interface xmi.id = '-64--88-1-103-8238f4:1183378f56e:-8000:0000000000001438'
                                           name = 'Carnivora' visibility = 'public' isSpecification = 'false' isRoot = 'false'
                                           isLeaf = 'false' isAbstract = 'false'>
@@ -18750,9 +18742,6 @@
                                         <UML:Interface xmi.id = '-64--88-1-103-8238f4:11842d46956:-8000:0000000000001470'
                                           name = 'Pet' visibility = 'public' isSpecification = 'false' isRoot = 'false'
                                           isLeaf = 'false' isAbstract = 'false'/>
-                                        <UML:Interface xmi.id = '-64--88-1-103-8238f4:11842d46956:-8000:0000000000001474'
-                                          name = 'Mammalia' visibility = 'public' isSpecification = 'false' isRoot = 'false'
-                                          isLeaf = 'false' isAbstract = 'false'/>
                                         <UML:Generalization xmi.id = '-64--88-1-103-8238f4:11842d46956:-8000:0000000000001476'
                                           isSpecification = 'false'>
                                           <UML:Generalization.child>
@@ -18771,6 +18760,25 @@
                                             <UML:Interface xmi.idref = '-64--88-1-103-8238f4:11842d46956:-8000:000000000000146D'/>
                                           </UML:Generalization.parent>
                                         </UML:Generalization>
+                                        <UML:Package xmi.id = '-64--88-1-103-888e6c:1193986d273:-8000:000000000000155E'
+                                          name = 'differentpackage' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                                          isAbstract = 'false'>
+                                          <UML:Namespace.ownedElement>
+                                            <UML:Interface xmi.id = '-64--88-1-103-8238f4:11842d46956:-8000:0000000000001474'
+                                              name = 'Mammalia' visibility = 'public' isSpecification = 'false' isRoot = 'false'
+                                              isLeaf = 'false' isAbstract = 'false'/>
+                                              
+                                            <UML:Interface xmi.id = '-64--88-1-103-8238f4:1183378f56e:-8000:0000000000001434'
+	                                          name = 'Canidae' visibility = 'public' isSpecification = 'false' isRoot = 'false'
+	                                          isLeaf = 'false' isAbstract = 'false'>
+	                                          <UML:GeneralizableElement.generalization>
+	                                            <UML:Generalization xmi.idref = '-64--88-1-103-8238f4:1183378f56e:-8000:000000000000143E'/>
+	                                            <UML:Generalization xmi.idref = '-64--88-1-103-8238f4:11842d46956:-8000:000000000000146F'/>
+	                                          </UML:GeneralizableElement.generalization>
+	                                        </UML:Interface>
+                                              
+                                          </UML:Namespace.ownedElement>
+                                        </UML:Package>
                                       </UML:Namespace.ownedElement>
                                     </UML:Package>
                                   </UML:Namespace.ownedElement>

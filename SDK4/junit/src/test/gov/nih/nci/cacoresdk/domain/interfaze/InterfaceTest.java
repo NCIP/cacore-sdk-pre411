@@ -1,11 +1,11 @@
 package test.gov.nih.nci.cacoresdk.domain.interfaze;
 
-import gov.nih.nci.cacoresdk.domain.interfaze.Canidae;
 import gov.nih.nci.cacoresdk.domain.interfaze.Carnivora;
 import gov.nih.nci.cacoresdk.domain.interfaze.Digitigrade;
 import gov.nih.nci.cacoresdk.domain.interfaze.Dog;
-import gov.nih.nci.cacoresdk.domain.interfaze.Mammalia;
 import gov.nih.nci.cacoresdk.domain.interfaze.Pet;
+import gov.nih.nci.cacoresdk.domain.interfaze.differentpackage.Canidae;
+import gov.nih.nci.cacoresdk.domain.interfaze.differentpackage.Mammalia;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLQuery;
