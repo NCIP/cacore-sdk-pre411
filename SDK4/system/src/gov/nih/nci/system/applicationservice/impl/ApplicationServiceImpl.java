@@ -50,14 +50,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(org.hibernate.criterion.DetachedCriteria, java.lang.String)
 	 */
-	public List<?> query(DetachedCriteria detachedCriteria, String targetClassName) throws ApplicationException {
+	public <E> List<E> query(DetachedCriteria detachedCriteria, String targetClassName) throws ApplicationException {
 		return query(detachedCriteria);
 	}
 
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(org.hibernate.criterion.DetachedCriteria)
 	 */
-	public List<?> query(DetachedCriteria detachedCriteria) throws ApplicationException {
+	public <E> List<E> query(DetachedCriteria detachedCriteria) throws ApplicationException {
 		CriteriaImpl crit = (CriteriaImpl)detachedCriteria.getExecutableCriteria(null);
 		String targetClassName = crit.getEntityOrClassName();
 		return privateQuery(detachedCriteria, targetClassName);
@@ -66,14 +66,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.hibernate.HQLCriteria, java.lang.String)
 	 */
-	public List<?> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
+	public <E> List<E> query(HQLCriteria hqlCriteria, String targetClassName) throws ApplicationException {
 		return query(hqlCriteria);
 	}
 
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.hibernate.HQLCriteria)
 	 */
-	public List<?> query(HQLCriteria hqlCriteria) throws ApplicationException {
+	public <E> List<E> query(HQLCriteria hqlCriteria) throws ApplicationException {
 		String hql = hqlCriteria.getHqlString();
 		
 		String upperHQL = hql.toUpperCase();
@@ -87,14 +87,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.cql.CQLQuery, java.lang.String)
 	 */
-	public List<?> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
+	public <E> List<E> query(CQLQuery cqlQuery, String targetClassName) throws ApplicationException {
 		return query(cqlQuery);
 	}
 
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(gov.nih.nci.system.query.cql.CQLQuery)
 	 */
-	public List<?> query(CQLQuery cqlQuery) throws ApplicationException {
+	public <E> List<E> query(CQLQuery cqlQuery) throws ApplicationException {
 		return privateQuery(cqlQuery, cqlQuery.getTarget().getName());
 	}
 
@@ -102,21 +102,21 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/** 
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.Class, java.lang.Object)
 	 */
-	public List<?> search(Class targetClass, Object obj) throws ApplicationException {
+	public <E> List<E> search(Class targetClass, Object obj) throws ApplicationException {
 		return search(targetClass.getName(), obj);
 	}
 
 	/** 
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.Class, java.util.List)
 	 */
-	public List<?> search(Class targetClass, List<?> objList) throws ApplicationException {
+	public <E> List<E> search(Class targetClass, List objList) throws ApplicationException {
 		return search(targetClass.getName(), objList);
 	}
 
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.String, java.lang.Object)
 	 */
-	public List<?> search(String path, Object obj) throws ApplicationException {
+	public <E> List<E> search(String path, Object obj) throws ApplicationException {
 		List list = new ArrayList();
 		list.add(obj);
 		return search(path, list);
@@ -125,7 +125,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/** 
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#query(java.lang.Object, java.lang.Integer, java.lang.String)
 	 */
-	public List<?> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException {
+	public <E> List<E> query(Object criteria, Integer firstRow, String targetClassName) throws ApplicationException {
 		Request request = new Request(criteria);
 		
 		request.setIsCount(Boolean.valueOf(false));
@@ -133,7 +133,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		request.setDomainObjectName(targetClassName);
 
 		Response response = query(request);
-		List<?> results = (List<?>) response.getResponse();
+		List results = (List) response.getResponse();
 
 		return results;
 	}
@@ -141,7 +141,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#search(java.lang.String, java.util.List)
 	 */
-	public List<?> search(String path, List<?> objList) throws ApplicationException {
+	public <E> List<E> search(String path, List objList) throws ApplicationException {
 
 		try{
 			String targetClassName = "";
@@ -149,7 +149,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 			targetClassName = tokens.nextToken().trim();
 			
 			NestedCriteriaPath crit = new NestedCriteriaPath(path,objList);
-			List<?> results = privateQuery((Object)crit, targetClassName);
+			List results = privateQuery((Object)crit, targetClassName);
 
 			return results;
 		}
@@ -183,7 +183,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	/**
 	 * @see gov.nih.nci.system.applicationservice.ApplicationService#getAssociation(java.lang.Object, java.lang.String)
 	 */
-	public List<?> getAssociation(Object source, String associationName) throws ApplicationException {
+	public <E> List<E> getAssociation(Object source, String associationName) throws ApplicationException {
 		String assocType = "";
 		try{
 			assocType = classCache.getAssociationType(source.getClass(),associationName);
@@ -230,7 +230,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 	 * @return
 	 * @throws ApplicationException
 	 */
-	protected List<?> privateQuery(Object criteria, String targetClassName) throws ApplicationException 
+	protected <E> List<E> privateQuery(Object criteria, String targetClassName) throws ApplicationException 
 	{
 		
 		Request request = new Request(criteria);
@@ -239,7 +239,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		request.setDomainObjectName(targetClassName);
 
 		Response response = query(request);
-		List<?> results = (List<?>) response.getResponse();
+		List results = (List) response.getResponse();
 
 		ListProxy resultList = new ListProxy();
 		resultList.setAppService(this);
