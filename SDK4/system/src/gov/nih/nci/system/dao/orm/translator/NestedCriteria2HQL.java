@@ -177,17 +177,9 @@ public class NestedCriteria2HQL
 			}
 			else
 			{
-				//if(this.criteria.getInternalNestedCriteria()==null)
-				//	selectBuffer.append("select ").append(srcAlias).append(".").append(roleName).append(" ").append(getObjectCriterion(sourceObjectList.iterator().next(), cfg));
-				//else
-				{
 					if (criteria.isTargetCollection())
 					{
-						/*selectBuffer.append("select ").append(destAlias).append(" from ")
-						.append(sourceObjectName).append(" ").append(srcAlias)
-						.append(" inner join ").append(srcAlias).append(".").append(criteria.getRoleName()).append(" ").append(destAlias)
-						.append(" where ");*/
-
+						//No attributes or associations populated
 						if(isObjectEmpty(sourceObjectList.iterator().next()))
 						{
 							if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
@@ -198,90 +190,78 @@ public class NestedCriteria2HQL
 							}
 							else
 							{
-								selectBuffer.append("select ").append(destAlias).append(" from ")
-								.append(targetObjectName).append(" ").append(destAlias)
-								.append(", ").append(sourceObjectName).append(" ")
-								.append(srcAlias).append(" where ");
-								selectBuffer.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
-								selectBuffer.append(" and ").append(srcAlias).append(".id is not null ");;
+								selectBuffer.append("select ").append(destAlias).append(" from ").append(sourceObjectName).append(" ").append(srcAlias)
+								.append(" inner join ").append(srcAlias).append(".").append(roleName).append(" ").append(destAlias).append(" where ")
+								.append(srcAlias).append(".id is not null ");
 							}
 						}
+						//Only some of the attributes populated
+						else if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
+						{
+							if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ").append(targetObjectName).append(" ").append(destAlias)
+								.append(", ").append(sourceObjectName).append(" ").append(srcAlias).append(" where ")
+								.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id").append("=").append(srcAlias).append(".id")
+								.append(" and ")
+								.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
+							}
+							else
+							{
+								selectBuffer.append("select ").append(destAlias).append(" from ").append(sourceObjectName).append(" ").append(srcAlias)
+								.append(" inner join ").append(srcAlias).append(".").append(roleName).append(" ").append(destAlias).append(" where ")
+								.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
+							}
+						}
+						//Attributes and associtions populated
 						else
 						{
-							if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
-							{
-								selectBuffer.append("select ").append(destAlias).append(" from ")
-								.append(targetObjectName).append(" ").append(destAlias)
-								.append(", ").append(sourceObjectName).append(" ")
-								.append(srcAlias).append(" where ");
-								selectBuffer.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id").append("=").append(srcAlias).append(".id");
-								selectBuffer.append(" and ");
-							}
-							else
-							{
-								selectBuffer.append("select ").append(destAlias).append(" from ")
-								.append(targetObjectName).append(" ").append(destAlias)
-								.append(", ").append(sourceObjectName).append(" ")
-								.append(srcAlias).append(" where ");
-								selectBuffer.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
-								selectBuffer.append(" and ");
-							}
-							if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
-								selectBuffer.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
-							else
-							{
-								selectBuffer.append(srcAlias).append(" in (")
-								.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, false)).append(")");
-							}
+							selectBuffer.append("select ").append(destAlias).append(" from ").append(sourceObjectName).append(" ").append(srcAlias)
+							.append(" inner join ").append(srcAlias).append(".").append(roleName).append(" ").append(destAlias).append(" where ")
+							.append(srcAlias).append(" in (")
+							.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, false)).append(")");
+							
 						}
 					}
-					else
+					else //Target is not collection
 					{
+						//No attributes or associations populated
 						if(isObjectEmpty(sourceObjectList.iterator().next()))
 						{
-							if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
-							{
-								selectBuffer.append("select ").append(destAlias).append(" from ")
-								.append(targetObjectName).append(" ").append(destAlias).append(" where ");
-								selectBuffer.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id is not null ");
-							}
-							else
-							{
-								selectBuffer.append("select ").append(destAlias).append(" from ")
-								.append(targetObjectName).append(" ").append(destAlias)
-								.append(", ").append(sourceObjectName).append(" ").append(srcAlias)
-								.append(" where ");
-								selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
-								selectBuffer.append(" and ").append(srcAlias).append(".id is not null");							
-							}
+							selectBuffer.append("select ").append(destAlias).append(" from ").append(sourceObjectName).append(" ").append(srcAlias)
+							.append(" inner join ").append(srcAlias).append(".").append(roleName).append(" ").append(destAlias).append(" where ")
+							.append(srcAlias).append(".id is not null ");
 						}
+						//Only some of the attributes populated
+						else if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
+						{
+							selectBuffer.append("select ").append(destAlias).append(" from ").append(targetObjectName).append(" ").append(destAlias)
+							.append(", ").append(sourceObjectName).append(" ").append(srcAlias).append(" where ")
+							.append(srcAlias).append(".").append(roleName).append(".id").append("=").append(destAlias).append(".id")
+							.append(" and ")
+							.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
+						}
+						//Attributes and associtions populated
 						else
 						{
 							selectBuffer.append("select ").append(destAlias).append(" from ")
 							.append(targetObjectName).append(" ").append(destAlias)
 							.append(", ").append(sourceObjectName).append(" ")
-							.append(srcAlias).append(" where ");
-							selectBuffer.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
-							selectBuffer.append(" and ");
-							
-							if(isObjectAssociationEmpty(sourceObjectList.iterator().next()))
-							{
-								selectBuffer.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, true));
-							}
-							else
-							{
-								selectBuffer.append(srcAlias).append(" in (")
-								.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg,false)).append(")");
-							}
+							.append(srcAlias).append(" where ")
+							.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id")
+							.append(" and ").append(srcAlias).append(" in (")
+							.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg,false)).append(")");
 						}
 					}
 				}
-			}
+			
 			log.debug("Scenario2: single object HQL sub-select: " + selectBuffer.toString());	
 			
 			hql.append(selectBuffer.toString());
 
-		} else {
+		} 
+		else //More than one example objects present
+		{
 			log.debug("Scenario2: Processing multiple objects in source object list");
 			String roleName = criteria.getRoleName();
 			if(roleName==null)
@@ -295,47 +275,31 @@ public class NestedCriteria2HQL
 			}
 			else
 			{
-				//if(this.criteria.getInternalNestedCriteria()==null)
-				//	hql.append("select ").append(srcAlias).append(".").append(roleName).append(" where ");
-				//else
-				{
 					if (criteria.isTargetCollection())
 					{
-						//hql.append("select ").append(destAlias).append(" from ")
-						//.append(sourceObjectName).append(" ").append(srcAlias)
-						//.append(" inner join ").append(srcAlias).append(".").append(criteria.getRoleName()).append(" ").append(destAlias)
-						//.append(" where ");
 						if(criteria.getSourceRoleName() != null && !criteria.isSourceCollection())
 						{
-							hql.append("select ").append(destAlias).append(" from ")
-							.append(targetObjectName).append(" ").append(destAlias)
-							.append(", ").append(sourceObjectName).append(" ")
-							.append(srcAlias).append(" where ");
+							hql.append("select ").append(destAlias).append(" from ").append(targetObjectName).append(" ").append(destAlias)
+							.append(", ").append(sourceObjectName).append(" ").append(srcAlias).append(" where ");
 							hql.append(destAlias).append(".").append(criteria.getSourceRoleName()).append(".id").append("=").append(srcAlias).append(".id");
 							hql.append(" and ");
 						}
 						else
 						{
-							hql.append("select ").append(destAlias).append(" from ")
-							.append(targetObjectName).append(" ").append(destAlias)
-							.append(", ").append(sourceObjectName).append(" ")
-							.append(srcAlias).append(" where ");
-							hql.append(destAlias).append(" in elements(").append(srcAlias).append(".").append(criteria.getRoleName()).append(")");
-							hql.append(" and ");
+							hql.append("select ").append(destAlias).append(" from ").append(sourceObjectName).append(" ").append(srcAlias)
+							.append(" inner join ").append(srcAlias).append(".").append(roleName).append(" ").append(destAlias).append(" where ")
+							.append("1=1 and ");
 						}
 					}
 					else
 					{
-						hql.append("select ").append(destAlias).append(" from ")
-						.append(targetObjectName).append(" ").append(destAlias)
-						.append(", ").append(sourceObjectName).append(" ")
-						.append(srcAlias).append(" where ");
+						hql.append("select ").append(destAlias).append(" from ").append(targetObjectName).append(" ").append(destAlias)
+						.append(", ").append(sourceObjectName).append(" ").append(srcAlias).append(" where ");
 						hql.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
 						hql.append(" and ");
 					}
 				}
-			}
-
+			
 			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
 			{
 				Object obj = i.next();
@@ -491,10 +455,13 @@ public class NestedCriteria2HQL
 		}
 		if(condition2)
 		{
-			if(isObjectEmpty(criteria.getSourceObjectList().iterator().next()))
-				condition2=false;
+			try {
+				if(criteria.isTargetCollection() && !criteria.isSourceCollection() && criteria.getSourceRoleName()!=null && criteria.getSourceObjectList().size()==1 && isObjectAssociationEmpty(criteria.getSourceObjectList().iterator().next()))
+					condition2=false;
+			} catch (Exception e) {
+				//do nothing. In will be added
+			}
 		}
-		//return false;//TODO//FIXME
 		return condition1 || condition2 || condition3;
 	}
 	

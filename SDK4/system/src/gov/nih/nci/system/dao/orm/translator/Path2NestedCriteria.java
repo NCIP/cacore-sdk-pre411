@@ -58,7 +58,7 @@ public class Path2NestedCriteria{
 			newCriteria.setTargetObjectName(dest);
 			newCriteria.setRoleName(roleName);
 			newCriteria.setSourceRoleName(sourceRoleName);
-			newCriteria.setSourceCollection(newCriteria2.isSourceCollection());
+			newCriteria.setSourceCollection(newCriteria2.isTargetCollection());
 			newCriteria.setInternalNestedCriteria(criteria);
 			if (criteria == null)
 				newCriteria.setSourceObjectList(objList);
