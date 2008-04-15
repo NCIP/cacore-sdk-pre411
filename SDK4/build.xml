@@ -177,7 +177,6 @@
 		<delete dir="${output.dir}"/>
 		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${system.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
-		<ant antfile="${junit.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
 	</target>
 
 	<!--***********************************************************************
@@ -433,6 +432,7 @@
 	*** Creates release packages for the SDK  
 	*********************************************************************** -->
 	<target name="package-release-contents" depends="clean-all,prepare-codegen,prepare-system" description="Creates release packages">
+		<ant antfile="${junit.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
 		<SDKecho message="${ant.project.name}: Creates release packages"/>
 		<mkdir dir="${release.dir}"/>
 		<zip destfile="${release.binary.file}" whenempty="skip">
