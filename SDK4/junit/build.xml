@@ -168,6 +168,7 @@
 			<exclude name="**/*WS*.java"/>
 			<exclude name="**/*XSD*.java"/>	
 			<exclude name="**/*XMLMapping*.java"/>
+			<exclude name="**/*HBMMapping*.java"/>
 			<exclude name="**/*XMLData*.java"/>
 			<exclude name="**/*Security*.java"/>
 			<include name="**/*.java" />

@@ -17,10 +17,12 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -54,9 +56,13 @@ public class TransformerUtils
 	private static String TV_MAPPED_ELEMENT_COLUMN = "mapped-element";
 	private static String TV_CADSR_PUBLICID = "CADSR_ConceptualDomainPublicID";
 	private static String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
+	private static String TV_NCI_CASCADE_ASSOCIATION = "NCI_CASCADE_ASSOCIATION";
+	private static String TV_NCI_EAGER_LOAD = "NCI_EAGER_LOAD";
 	
 	private static String STEREO_TYPE_TABLE = "table";
 	private static String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
+	
+	private static Map<String,String> CASCADE_STYLES = new HashMap();
 
 	
 	static
@@ -77,6 +83,12 @@ public class TransformerUtils
 				INCLUDE_PACKAGE_NAMES.add(includeToken.trim());
 			for(String excludeToken:EXCLUDE_NAME.split(","))
 				EXCLUDE_NAMES.add(excludeToken.trim());
+			
+			List cascadeStyles = ((List)ObjectFactory.getObject("CascadeStyles"));
+			for (Object cascadeStyle : cascadeStyles){
+				CASCADE_STYLES.put((String) cascadeStyle, (String)cascadeStyle);
+			}
+
 		}
 		catch (GenerationException e) 
 		{
@@ -1090,7 +1102,7 @@ public class TransformerUtils
 			return null;
 		}
 
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		
 		if (publicID != null)
 			sb.append(TV_CADSR_PUBLICID).append("=\"").append(publicID).append("\"; ");
@@ -1188,8 +1200,11 @@ public class TransformerUtils
 	public static boolean isLazyLoad(UMLClass klass, UMLAssociation association) throws GenerationException
 	{
 		String temp = getTagValue(klass,association, TV_LAZY_LOAD,null, 0,1);
-		temp = (temp == null || temp.trim().length()==0) ? "yes" : temp;
-		return "yes".equalsIgnoreCase(temp)? true : false;
+		
+		if (temp != null)
+			throw new GenerationException("Invalid Tag Value found:  The '" + TV_LAZY_LOAD + "' Tag Value which is attached to the association link has been replaced with the '" + TV_NCI_EAGER_LOAD + "' Tag Value.  Also, it's value must now conform to the following pattern:  <fully qualified class name>.<role name>.  Please update your model accordingly" );
+
+		return true;
 	}
 	
 	private static String getTagValue(UMLClass klass, String key, String value, int minOccurrence, int maxOccurrence) throws GenerationException
@@ -1237,6 +1252,22 @@ public class TransformerUtils
 		
 		return null;
 	}	
+	
+	private static List<String> getTagValues(UMLTaggableElement tgElt, String key) 
+	{
+
+		List<String> tagValues = new ArrayList<String>();
+		for(UMLTaggedValue tv: tgElt.getTaggedValues())
+		{
+			if (key.equals(tv.getName()))
+			{
+				log.debug(tv.getName() + ": " + tv.getValue());
+				tagValues.add(tv.getValue());
+			}
+		}
+		
+		return tagValues;
+	}
 	
 
 	private static String getColumnName(UMLClass klass, String key, String value,  boolean isValuePrefix, int minOccurrence, int maxOccurrence) throws GenerationException
@@ -1364,8 +1395,8 @@ public class TransformerUtils
 		}
 		
 		
-		if(count < minOccurrence || (minOccurrence >0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No tag value of "+key+" found for association between "+thisClassName +" and "+ otherClassName +":"+count+":"+result);
-		if(count > maxOccurrence) throw new GenerationException("More than one tag values of "+key+" found for association between "+thisClassName +" and "+ otherClassName);
+		if(count < minOccurrence || (minOccurrence >0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No tag value of "+key+" found for the association between "+thisClassName +" and "+ otherClassName +":"+count+":"+result);
+		if(count > maxOccurrence) throw new GenerationException("More than the expected maximum number (" + maxOccurrence + ") of tag value occurrences  for "+key+" found for the association between "+thisClassName +" and "+ otherClassName);
 		
 		return result;
 	}	
@@ -1474,7 +1505,7 @@ public class TransformerUtils
 	public static String reversePackageName(String s) {
 		StringTokenizer st = new StringTokenizer(s,".");
 		Vector<String> myVector = new Vector<String>();
-		StringBuffer myStringBuffer = new StringBuffer();
+		StringBuilder myStringBuilder = new StringBuilder();
 		while (st.hasMoreTokens()) {
 			     String t = st.nextToken();
 			     myVector.add(t);
@@ -1482,19 +1513,19 @@ public class TransformerUtils
 	    }
 
         for (int i = myVector.size(); i>0; i--) {
-			  myStringBuffer.append(myVector.elementAt(i-1));
-			  myStringBuffer.append(Constant.DOT);
+			  myStringBuilder.append(myVector.elementAt(i-1));
+			  myStringBuilder.append(Constant.DOT);
 
 	    }
-	    int length1 = myStringBuffer.length();
-	    String finalString1 = myStringBuffer.substring(0,length1-1);
+	    int length1 = myStringBuilder.length();
+	    String finalString1 = myStringBuilder.substring(0,length1-1);
         return finalString1;
     }
 	
 	
 	
 	public static String getWSDDServiceValue(Collection<UMLClass> classColl){
-        StringBuffer nn1 = new StringBuffer();
+        StringBuilder nn1 = new StringBuilder();
         for(UMLClass klass:classColl){
 			String pkgName = TransformerUtils.getFullPackageName(klass);
 			nn1.append(pkgName)
@@ -1580,5 +1611,62 @@ public class TransformerUtils
 				getNonImplicitSubclasses(subKlass, nonImplicitSubclasses);
 		}
 	}
+	
+	/**
+	 * Scans the tag values of the association to determine the cascade-style 
+	 * 
+	 * @param association
+	 * @param model
+	 * @param klass
+	 * @return
+	 * @throws GenerationException
+	 */
+	public static String findCascadeStyle(UMLClass klass, String roleName, UMLAssociation association) throws GenerationException
+	{
+		for (String cascadeStyles : getTagValues(association, TV_NCI_CASCADE_ASSOCIATION)){
 
+			if (cascadeStyles.startsWith(getFQCN(klass)+"."+roleName+"#")){
+
+				List<String> validCascadeStyles = new ArrayList<String>();
+				
+				cascadeStyles = cascadeStyles.substring(cascadeStyles.indexOf("#")+1);
+				for(String cascadeStyle:cascadeStyles.split(",")){
+					validCascadeStyles.add(cascadeStyle.trim());
+				}
+				
+				StringBuilder validCascadeStyleSB = new StringBuilder();
+				validCascadeStyleSB.append(validCascadeStyles.get(0));
+				for (int i = 1; i <validCascadeStyles.size(); i++ ){
+					validCascadeStyleSB.append(",").append(validCascadeStyles.get(i));
+				}
+
+				return validCascadeStyleSB.toString();
+			}
+		}
+		
+		return "none";
+	}
+
+	/**
+	 * Scans the tag values of the association to determine the cascade-style 
+	 * 
+	 * @param association
+	 * @param model
+	 * @param klass
+	 * @return
+	 * @throws GenerationException
+	 */
+	public static boolean isLazyLoad(UMLClass klass, String roleName, UMLAssociation association) throws GenerationException
+	{
+		for (String eagerLoadSetting : getTagValues(association, TV_NCI_EAGER_LOAD)){
+			if (eagerLoadSetting.equalsIgnoreCase(getFQCN(klass)+"."+roleName))
+				return false;
+		}
+
+		return true;
+	}
+	
+	public static Map<String,String> getValidCascadeStyles(){
+		return CASCADE_STYLES;
+	}
 }

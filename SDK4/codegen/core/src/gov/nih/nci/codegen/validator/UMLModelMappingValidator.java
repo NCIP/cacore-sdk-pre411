@@ -12,6 +12,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -305,6 +306,7 @@ public class UMLModelMappingValidator implements Validator
 			{
 				try 
 				{
+					
 					List <UMLAssociationEnd>ends = association.getAssociationEnds();
 					UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(currentKlass, ends);
 					UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(currentKlass, ends);
@@ -312,6 +314,8 @@ public class UMLModelMappingValidator implements Validator
 					if(otherEnd.isNavigable())
 					{
 						UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
+						String cascadeStyle = TransformerUtils.findCascadeStyle(currentKlass, otherEnd.getRoleName(), association);
+						
 						if(TransformerUtils.isAny(thisEnd,otherEnd)){
 							
 							//implicit polymorphic validations for Any associations
@@ -338,8 +342,12 @@ public class UMLModelMappingValidator implements Validator
 							TransformerUtils.getImplicitDiscriminatorColumn(anyTable,currentKlass,otherEnd.getRoleName());
 							TransformerUtils.getImplicitIdColumn(anyTable,currentKlass,otherEnd.getRoleName());
 						} else if(TransformerUtils.isMany2Any(thisEnd,otherEnd)){
+							// implicit polymorphic validations for Many-To-Any associations
 							
-							//implicit polymorphic validations for Many-To-Any associations
+							log.debug("cascadeStyle: "+ cascadeStyle + "; currentKlass: " + TransformerUtils.getFQCN(currentKlass) + "; roleName: " + otherEnd.getRoleName());
+							if (!cascadeStyle.equalsIgnoreCase("none")){
+								errors.addError(new GeneratorError(getName() + ": Cascade-style settings are not supported on the Many-to-Any association between " + TransformerUtils.getFQCN(currentKlass) + " and " + TransformerUtils.getFQCN(assocKlass) +".  Please remove the NCI_CASCADE_ASSOCIATION Tag Value from the association."));
+							}
 							
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
 							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd, currentKlass,otherEnd, true);
@@ -375,6 +383,9 @@ public class UMLModelMappingValidator implements Validator
 							TransformerUtils.getImplicitIdColumn(correlationTable,currentKlass,otherEnd.getRoleName());
 
 						} else if(TransformerUtils.isMany2Many(thisEnd,otherEnd)){
+							if (!cascadeStyle.equalsIgnoreCase("none")){
+								errors.addError(new GeneratorError(getName() + ": Cascade-style settings are not supported on the Many-to-Many association between " + TransformerUtils.getFQCN(currentKlass) + " and " + TransformerUtils.getFQCN(assocKlass) +".  Please remove the NCI_CASCADE_ASSOCIATION Tag Value from the association."));
+							}
 							UMLClass correlationTable = TransformerUtils.findCorrelationTable(association, model, assocKlass);
 							String keyColumnName = TransformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd,currentKlass,otherEnd,true);
 							String assocColumnName = TransformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
@@ -437,6 +448,13 @@ public class UMLModelMappingValidator implements Validator
 								}
 							}
 						}
+						validateCascadeStyles(currentKlass,otherEnd.getRoleName(),cascadeStyle);
+						
+						//Check for usage of deprecated lazy load tag
+						TransformerUtils.isLazyLoad(currentKlass, association);
+						
+						// For sake of consistency, also invoke new lazy load check
+						TransformerUtils.isLazyLoad(currentKlass, otherEnd.getRoleName(), association);
 					}
 				}
 				catch (GenerationException e) 
@@ -486,5 +504,29 @@ public class UMLModelMappingValidator implements Validator
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	private void validateCascadeStyles(UMLClass klass, String roleName, String cascadeStyles) throws GenerationException{
+		
+		Map<String,String>validCascadeStyles = TransformerUtils.getValidCascadeStyles();
+		
+		List<String> invalidCascadeStyles = new ArrayList<String>();
+		for(String cascadeStyle:cascadeStyles.split(",")){
+			if (validCascadeStyles.get(cascadeStyle.trim()) == null){
+				invalidCascadeStyles.add(cascadeStyle.trim()); 
+			}
+		}
+		
+		
+		StringBuilder invalidCascadeStyleSB = new StringBuilder();
+		if(!invalidCascadeStyles.isEmpty()) {
+
+			invalidCascadeStyleSB.append(invalidCascadeStyles.get(0));
+			for (int i = 1; i <invalidCascadeStyles.size(); i++ ){
+				invalidCascadeStyleSB.append(", ").append(invalidCascadeStyles.get(i));
+			}
+
+			throw new GenerationException("The following cascade style(s) from the 'NCI_CASCADE_ASSOCIATION tag value assigned to the " + TransformerUtils.getFQCN(klass) + "." + roleName + " association end is invalid: " + invalidCascadeStyleSB);
+		}	
 	}
 }

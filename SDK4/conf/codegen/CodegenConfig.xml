@@ -48,6 +48,24 @@
 			</props>
 		</constructor-arg>
 	</bean>
+	
+	<bean name="CascadeStyles" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<value>all</value>
+				<value>delete</value>
+				<value>delete-orphan</value>
+				<value>evict</value>
+				<value>lock</value>
+				<value>merge</value>
+				<value>none</value>
+				<value>persist</value>
+				<value>refresh</value>
+				<value>replicate</value>
+				<value>save-update</value>
+			</list>
+		</constructor-arg>
+	</bean>
 
 	<!-- 									 -->
 	<!--  Code Generation Validator			 -->
