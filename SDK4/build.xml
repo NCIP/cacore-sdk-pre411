@@ -154,6 +154,8 @@
 			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY@" value="${ATTRIBUTE_LEVEL_SECURITY}" />
 			<replacefilter token="@INCLUDE_SEARCH_EVENT_LISTENER@" value="${INCLUDE_SEARCH_EVENT_LISTENER}" />			
 			<replacefilter token="@SECURITY_ENABLED@" value="${SECURITY_ENABLED}" />			
+			<replacefilter token="@IDENTITY_GENERATOR_TAG@" value="${IDENTITY_GENERATOR_TAG}" />
+			<replacefilter token="@DATABASE_TYPE@" value="${DATABASE_TYPE}" />
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
