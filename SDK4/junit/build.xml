@@ -9,7 +9,7 @@
 	<property name="sdk.home" value=".." />
 
 	<property file="${sdk.home}/conf/deploy.properties" />
-	<property file="${sdk.home}/build.properties" prefix="sdk"/>
+	<property file="${sdk.home}/build.properties" />
 	<property file="build.properties" />
 
 	<property name="output.dir" value="output" />
@@ -22,62 +22,94 @@
 	<property name="report.dir.xml-data-client" value="${report.dir}/xml-data-client" />
 	<property name="report.dir.security-thick-client" value="${report.dir}/security-client/thick-client" />
 	<property name="report.dir.remote-security-client" value="${report.dir}/security-client/remote-client" />
-	
+	<property name="report.dir.hbm-mapping-client" value="${report.dir}/hbm-mapping-client" />
+	<property name="report.dir.codegen" value="${report.dir}/codegen" />
+
 	<!--***********************************************************************
 	*** Classpath entries
 	*********************************************************************** -->
-	
+
 	<path id="remote-client-cp">
-		<pathelement path="${remote-client.dir}/conf"/>
+		<pathelement path="${remote-client.dir}/conf" />
 		<fileset dir="${remote-client.lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
-		<pathelement path="${classes.dir}"/>
+		<pathelement path="${classes.dir}" />
 	</path>
 
 	<path id="thick-client-cp">
-		<pathelement path="${thick-client.dir}/conf"/>
+		<pathelement path="${thick-client.dir}/conf" />
 		<fileset dir="${thick-client.lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
-		<pathelement path="${classes.dir}"/>
+		<pathelement path="${classes.dir}" />
 	</path>
-	
+
 	<path id="ws-client-cp">
-		<pathelement path="${ws-client.dir}/conf"/>
+		<pathelement path="${ws-client.dir}/conf" />
 		<fileset dir="${ws-client.lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
-		<pathelement path="${classes.dir}"/>
-	</path>	
-	
+		<pathelement path="${classes.dir}" />
+	</path>
+
 	<path id="xsd-client-cp">
-		<pathelement path="${remote-client.dir}/conf"/>
+		<pathelement path="${remote-client.dir}/conf" />
 		<fileset dir="${xsd-client.lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${remote-client.lib.dir}">
-			<include name="**/*.jar"/>
-		</fileset>		
-		<fileset dir="${lib.dir}">
-			<include name="**/*.jar"/>
+			<include name="**/*.jar" />
 		</fileset>
-		<pathelement path="${classes.dir}"/>
-	</path>	
-	
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement path="${classes.dir}" />
+	</path>
+
+	<path id="hbm-client-cp">
+		<pathelement path="../${output.dir}/example/src" />
+		<fileset dir="${xsd-client.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="../system/lib">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement path="${classes.dir}" />
+	</path>
+
+
+	<path id="codegen-cp">
+		<pathelement path="${classes.dir}" />
+		<fileset dir="../${codegen.dir}">
+			<include name="**/*.jar" />
+			<!-- includes sdk-codegen.jar -->
+		</fileset>
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+			<!-- includes junit4.4,easy mock.jar -->
+		</fileset>
+		<fileset dir="../${system.dir}/lib">
+			<!-- includes cglib,asm.jar -->
+		</fileset>
+	</path>
+
 	<!--***********************************************************************
 	*** Macro definitions to run JUnits
 	*********************************************************************** -->
-	
+
 	<macrodef name="SDKecho">
 		<attribute name="message" default="..." />
 		<sequential>
@@ -86,15 +118,15 @@
 			<echo>*****************************************************************</echo>
 		</sequential>
 	</macrodef>
-	
+
 	<macrodef name="SDKGenerateReport">
 		<attribute name="junitOutputDir" />
 		<sequential>
-			<mkdir dir="@{junitOutputDir}/report"/>
+			<mkdir dir="@{junitOutputDir}/report" />
 			<junitreport todir="@{junitOutputDir}/report">
 				<fileset dir="@{junitOutputDir}" includes="TEST-*.xml" />
 				<report format="frames" todir="@{junitOutputDir}/report" />
-			</junitreport>	
+			</junitreport>
 		</sequential>
 	</macrodef>
 
@@ -103,50 +135,50 @@
 		<attribute name="junitOutputDir" />
 		<attribute name="junitSuffix" />
 		<sequential>
-			<delete dir="@{junitOutputDir}"/>
-			<mkdir dir="@{junitOutputDir}"/>
-			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
+			<delete dir="@{junitOutputDir}" />
+			<mkdir dir="@{junitOutputDir}" />
+			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop">
 				<sysproperty key="java.security.auth.login.config" value="./conf/login.config" />
 				<sysproperty key="webservice.url" value="${SERVER_URL}/services/${WEBSERVICE_NAME}" />
 				<classpath>
-					<path refid="@{junitClasspath}"/>
+					<path refid="@{junitClasspath}" />
 				</classpath>
-				<formatter type="xml"/>
+				<formatter type="xml" />
 				<batchtest haltonfailure="no" todir="@{junitOutputDir}">
 					<fileset dir="${classes.dir}">
-						<include name="**/*@{junitSuffix}.class"/>
+						<include name="**/*@{junitSuffix}.class" />
 					</fileset>
-				</batchtest>			
+				</batchtest>
 			</junit>
 		</sequential>
 	</macrodef>
-	
+
 	<macrodef name="SDKRunJUnitSuite">
 		<attribute name="junitClasspath" />
 		<attribute name="junitOutputDir" />
 		<attribute name="junitSuite" />
 		<sequential>
-			<delete dir="@{junitOutputDir}"/>
-			<mkdir dir="@{junitOutputDir}"/>
-			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop" >
+			<delete dir="@{junitOutputDir}" />
+			<mkdir dir="@{junitOutputDir}" />
+			<junit printsummary="yes" fork="yes" maxmemory="512m" showoutput="false" failureproperty="fail-prop" errorproperty="error-prop">
 				<sysproperty key="java.security.auth.login.config" value="./conf/login.config" />
-				<sysproperty key="webservice.url" value="${SERVER_URL}/services/${WEBSERVICE_NAME}" />				
+				<sysproperty key="webservice.url" value="${SERVER_URL}/services/${WEBSERVICE_NAME}" />
 				<classpath>
-					<path refid="@{junitClasspath}"/>
+					<path refid="@{junitClasspath}" />
 				</classpath>
-				<formatter type="xml"/>
+				<formatter type="xml" />
 				<test name="@{junitSuite}" todir="@{junitOutputDir}" />
 			</junit>
 		</sequential>
 	</macrodef>
-	
+
 	<macrodef name="SDKCompileJUnit">
-		<attribute name="compileClasspath"/>
+		<attribute name="compileClasspath" />
 		<attribute name="includePattern" />
 		<sequential>
 			<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="lines,vars,source">
 				<include name="@{includePattern}" />
-				<classpath refid="@{compileClasspath}"/>
+				<classpath refid="@{compileClasspath}" />
 			</javac>
 		</sequential>
 	</macrodef>
@@ -155,202 +187,227 @@
 	*** Creates new directories
 	*********************************************************************** -->
 	<target name="createDir">
-		<mkdir dir="${output.dir}"/>
-		<mkdir dir="${report.dir}"/>
-		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${output.dir}" />
+		<mkdir dir="${report.dir}" />
+		<mkdir dir="${classes.dir}" />
 	</target>
-		
+
 	<!--***********************************************************************
 	*** Compiles the JUnit classes
 	*********************************************************************** -->
 	<target name="compile">
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="lines,vars,source">
-			<exclude name="**/*WS*.java"/>
-			<exclude name="**/*XSD*.java"/>	
-			<exclude name="**/*XMLMapping*.java"/>
-			<exclude name="**/*HBMMapping*.java"/>
-			<exclude name="**/*XMLData*.java"/>
-			<exclude name="**/*Security*.java"/>
+			<exclude name="**/*WS*.java" />
+			<exclude name="**/*XSD*.java" />
+			<exclude name="**/*XMLMapping*.java" />
+			<exclude name="**/*HBMMapping*.java" />
+			<exclude name="**/*XMLData*.java" />
+			<exclude name="**/*Security*.java" />
+			<exclude name="**/*PKGeneratorValidator*.java" />
 			<include name="**/*.java" />
-			<classpath refid="thick-client-cp"/>
+			<classpath refid="thick-client-cp" />
 		</javac>
 	</target>
-	
+
 	<!--***********************************************************************
 	*** Cleans the generated directories and files
 	*********************************************************************** -->
 	<target name="clean" description="Cleans the generated directories and files">
-		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
-		<delete dir="${classes.dir}"/>
-		<delete dir="${output.dir}"/>
-		<delete dir="${report.dir}"/>
+		<SDKecho message="${ant.project.name}: Cleaning directories and files" />
+		<delete dir="${classes.dir}" />
+		<delete dir="${output.dir}" />
+		<delete dir="${report.dir}" />
 	</target>
-	
+
 	<target name="clean-classes" description="Cleans the classes directory">
-		<SDKecho message="${ant.project.name}: Cleaning the classes directory"/>
-		<delete dir="${classes.dir}"/>
+		<SDKecho message="${ant.project.name}: Cleaning the classes directory" />
+		<delete dir="${classes.dir}" />
 	</target>
-	
+
 	<target name="stop">
 		<!--
 		<fail if="fail-prop" message="Test case execution failed"/>
 		<fail if="error-prop" message="Test case execution error"/>
 		-->
 	</target>
-	
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for Thick client            	                         -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runThickClientTest" depends="clean-classes,createDir,compile,runThickClientJUnit,stop" description="Run JUnits for Thick client"/>
-	
+
+	<target name="runThickClientTest" depends="clean-classes,createDir,compile,runThickClientJUnit,stop" description="Run JUnits for Thick client" />
+
 	<target name="runThickClientJUnit">
-		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.thick-client}"/>
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.thick-client}" />
 	</target>
-	
-	
+
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for Security client using the Thick Client            -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runSecurityThickClientTest" depends="clean-classes,createDir,runSecurityThickClientJUnit,stop" description="Run JUnits for XSD Client "/>
-	
+
+	<target name="runSecurityThickClientTest" depends="clean-classes,createDir,runSecurityThickClientJUnit,stop" description="Run JUnits for XSD Client " />
+
 	<target name="runSecurityThickClientJUnit">
-		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*Security*.java"/>
-		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.security-thick-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.security-thick-client}"/>
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*Security*.java" />
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.security-thick-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.security-thick-client}" />
 	</target>
-	
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for Security client using the Remote Client            -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runSecurityRemoteClientTest" depends="clean-classes,createDir,runSecurityRemoteClientJUnit,stop" description="Run JUnits for XSD Client "/>
-	
+
+	<target name="runSecurityRemoteClientTest" depends="clean-classes,createDir,runSecurityRemoteClientJUnit,stop" description="Run JUnits for XSD Client " />
+
 	<target name="runSecurityRemoteClientJUnit">
-		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*Security*.java"/>
-		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-security-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.remote-security-client}"/>
-	</target>	
-	
+		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*Security*.java" />
+		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-security-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.remote-security-client}" />
+	</target>
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for Schema (XSD) client 	                             -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runXSDClientTest" depends="clean-classes,createDir,runXSDClientJUnit,stop" description="Run JUnits for XSD Client "/>
-	
+
+	<target name="runXSDClientTest" depends="clean-classes,createDir,runXSDClientJUnit,stop" description="Run JUnits for XSD Client " />
+
 	<target name="runXSDClientJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java"/>
-		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}"/>
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java" />
+		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}" />
 	</target>
 
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for XML Mapping (Castor) client 	                     -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runXMLMappingClientTest" depends="clean-classes,createDir,runXMLMappingClientJUnit,stop" description="Run JUnits for XML Mapping Client "/>
-	
+
+	<target name="runXMLMappingClientTest" depends="clean-classes,createDir,runXMLMappingClientJUnit,stop" description="Run JUnits for XML Mapping Client " />
+
 	<target name="runXMLMappingClientJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java"/>
-		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}"/>
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java" />
+		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}" />
 	</target>
-	
+
 
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for XML Data client   	                             -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runXMLDataClientTest" depends="clean-classes,createDir,runXMLDataClientJUnit,stop" description="Run JUnits for XML Mapping Client "/>
-	
+
+	<target name="runXMLDataClientTest" depends="clean-classes,createDir,runXMLDataClientJUnit,stop" description="Run JUnits for XML Mapping Client " />
+
 	<target name="runXMLDataClientJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java"/>
-		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}"/>
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java" />
+		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}" />
 	</target>
-	
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnits for Web Service (WS) client 	                         -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runWSClientTest" depends="clean-classes,createDir,runWSClientJUnit,stop" description="Run JUnits for Web Services Client"/>
-	
+
+	<target name="runWSClientTest" depends="clean-classes,createDir,runWSClientJUnit,stop" description="Run JUnits for Web Services Client" />
+
 	<target name="runWSClientJUnit">
-		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java"/>
-		<SDKRunJUnit junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}"/>
+		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java" />
+		<SDKRunJUnit junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}" />
 	</target>
-	
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for Thick Client (Quick Mode)                          -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runThickClientQuickTest" depends="clean-classes,createDir,compile,runThickClientQuickJUnit,stop" description="Run JUnit for Thick Client (Quick Mode)"/>
-	
+
+	<target name="runThickClientQuickTest" depends="clean-classes,createDir,compile,runThickClientQuickJUnit,stop" description="Run JUnit for Thick Client (Quick Mode)" />
+
 	<target name="runThickClientQuickJUnit">
-		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.thick-client}"/>
+		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thick-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.thick-client}" />
 	</target>
-	
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for Web Service (WS) Client (Quick Mode)                          -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runWSClientQuickTest" depends="clean-classes,createDir,runWSClientQuickJUnit,stop" description="Run JUnit for WS Client (Quick Mode)"/>
-	
+
+	<target name="runWSClientQuickTest" depends="clean-classes,createDir,runWSClientQuickJUnit,stop" description="Run JUnit for WS Client (Quick Mode)" />
+
 	<target name="runWSClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java"/>
-		<SDKRunJUnitSuite junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWSTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}"/>
+		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java" />
+		<SDKRunJUnitSuite junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWSTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}" />
 	</target>
-	
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for XML Data Client (Quick Mode)                       -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runXMLDataClientQuickTest" depends="clean-classes,createDir,runXMLDataClientQuickJUnit,stop" description="Run JUnit for XML Data Client (Quick Mode)"/>
-	
+
+	<target name="runXMLDataClientQuickTest" depends="clean-classes,createDir,runXMLDataClientQuickJUnit,stop" description="Run JUnit for XML Data Client (Quick Mode)" />
+
 	<target name="runXMLDataClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java"/>
-		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLDataTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}"/>
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java" />
+		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLDataTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}" />
 	</target>
-	
-	
+
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for XML Mapping Client (Quick Mode)                       -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runXMLMappingClientQuickTest" depends="clean-classes,createDir,runXMLMappingClientQuickJUnit,stop" description="Run JUnit for XML Mapping Client (Quick Mode)"/>
-	
+
+	<target name="runXMLMappingClientQuickTest" depends="clean-classes,createDir,runXMLMappingClientQuickJUnit,stop" description="Run JUnit for XML Mapping Client (Quick Mode)" />
+
 	<target name="runXMLMappingClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java"/>
-		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLMappingTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}"/>
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java" />
+		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLMappingTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}" />
 	</target>
-	
+
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for Schema (XSD) Client (Quick Mode)                   -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runXSDClientQuickTest" depends="clean-classes,createDir,runXSDClientQuickJUnit,stop" description="Run JUnit for Schema (XSD) Client (Quick Mode)"/>
-	
+
+	<target name="runXSDClientQuickTest" depends="clean-classes,createDir,runXSDClientQuickJUnit,stop" description="Run JUnit for Schema (XSD) Client (Quick Mode)" />
+
 	<target name="runXSDClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java"/>
-		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXSDTestSuite"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}"/>
-	</target>	
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java" />
+		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXSDTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}" />
+	</target>
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for Remote Client           	                         -->
 	<!-- ************************************************************************************************-->
-	
-	<target name="runRemoteClientTest" depends="clean-classes,createDir,compile,runRemoteClientJUnit,stop" description="Run JUnit for Remote Client"/>
-		
+
+	<target name="runRemoteClientTest" depends="clean-classes,createDir,compile,runRemoteClientJUnit,stop" description="Run JUnit for Remote Client" />
+
 	<target name="runRemoteClientJUnit">
-		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-client}" junitsuffix="Test"/>
-		<SDKGenerateReport junitOutputDir="${report.dir.remote-client}"/>
+		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.remote-client}" />
 	</target>
-	
+
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnit for HBM Mapping Client (Quick Mode)                       -->
+	<!-- ************************************************************************************************-->
+
+	<target name="runHBMMappingClientQuickTest" depends="clean-classes,createDir,runHBMMappingClientQuickJUnit,stop" description="Run JUnit for HBM Mapping Client (Quick Mode)" />
+
+	<target name="runHBMMappingClientQuickJUnit">
+		<SDKCompileJUnit compileClasspath="hbm-client-cp" includePattern="**/*HBM*.java" />
+		<SDKRunJUnitSuite junitClasspath="hbm-client-cp" junitOutputDir="${report.dir.hbm-mapping-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKHBMMappingTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.hbm-mapping-client}" />
+	</target>
+
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnit for CodeGen package classes                       -->
+	<!-- ************************************************************************************************-->
+
+	<target name="runCodeGenatorClientQuickTest" depends="clean-classes,createDir,runCodeGenatorClientQuickJUnit,stop" description="Run JUnit for HBM Mapping Client (Quick Mode)" />
+
+	<target name="runCodeGenatorClientQuickJUnit">
+		<SDKCompileJUnit compileClasspath="codegen-cp" includePattern="test/gov/nih/nci/codegen/*.java" />
+		<SDKRunJUnitSuite junitClasspath="codegen-cp" junitOutputDir="${report.dir.codegen}" junitSuite="test.gov.nih.nci.codegen.SDKCodeGeneratorTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.codegen}" />
+	</target>
+
 </project>
