@@ -1,6 +1,5 @@
 package test.gov.nih.nci.cacoresdk.domain.other;
 
-import test.gov.nih.nci.cacoresdk.AllHBMMappingTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.IntegerPrimitivePkHBMMappingTest;
 import test.gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKeyPkHBMMappingTest;
 import junit.framework.Test;
