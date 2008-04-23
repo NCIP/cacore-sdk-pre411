@@ -18,7 +18,7 @@ import java.util.List;
 public class CLASS extends UMLClassJetTransformer{
 	
 	public Artifact executeTemplate(UMLModel model, UMLClass klass) throws GenerationException{
-		BaseArtifact artifact = new BaseArtifact();
+		BaseArtifact artifact = new BaseArtifact(transformerUtils);
 		String generatedContent = generate(model, klass, 0);
 		artifact.setContent(generatedContent);
 		artifact.createSourceName(klass);
@@ -26,7 +26,7 @@ public class CLASS extends UMLClassJetTransformer{
 	}
 
 	protected Collection<UMLClass> getAllClasses(UMLModel model){
-		return TransformerUtils.getAllHibernateClasses(model);	
+		return transformerUtils.getAllHibernateClasses(model);	
 	}	
 
 	private String generate(UMLModel model, UMLClass klass, Integer level)  throws GenerationException{

@@ -15,7 +15,7 @@ import java.util.List;
 public class CLASS extends UMLClassJetTransformer{
 
 	public Artifact executeTemplate(UMLModel model, UMLClass klass) throws GenerationException{
-		BaseArtifact artifact = new BaseArtifact();
+		BaseArtifact artifact = new BaseArtifact(transformerUtils);
 		artifact.setContent(generate(model, klass));
 		artifact.createSourceName(klass);
 		return artifact;

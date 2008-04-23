@@ -1,12 +1,12 @@
 <%@ jet package="gov.nih.nci.codegen.transformer.jet" 
         class="POJOTransformer"
         skeleton="ClassTransformerBase.skeleton" %>
-package <%=TransformerUtils.getFullPackageName(klass)%>;
+package <%=transformerUtils.getFullPackageName(klass)%>;
 
-<%=TransformerUtils.getImports(klass)%>
+<%=transformerUtils.getImports(klass)%>
 import java.io.Serializable;
-<%=TransformerUtils.getJavaDocs(klass)%>
-public<%=TransformerUtils.isAbstract(klass)? " abstract" : "" %> class <%=klass.getName()%> <%=TransformerUtils.getSuperClassString(klass)%> implements Serializable<%=TransformerUtils.getInterfaceString(klass)%>
+<%=transformerUtils.getJavaDocs(klass)%>
+public<%=transformerUtils.isAbstract(klass)? " abstract" : "" %> class <%=klass.getName()%> <%=transformerUtils.getSuperClassString(klass)%> implements Serializable<%=transformerUtils.getInterfaceString(klass)%>
 {
 	/**
 	* An attribute to allow serialization of the domain objects
@@ -14,55 +14,55 @@ public<%=TransformerUtils.isAbstract(klass)? " abstract" : "" %> class <%=klass.
 	private static final long serialVersionUID = 1234567890L;
 
 	<%for(UMLAttribute attr:klass.getAttributes()){%>
-	<%=TransformerUtils.getJavaDocs(attr)%>
-	<%=attr.getVisibility().getName()%> <%=TransformerUtils.getDataType(attr)%> <%=attr.getName()%>;
-	<%=TransformerUtils.getGetterMethodJavaDocs(attr)%>
-	public <%=TransformerUtils.getDataType(attr)%> <%=TransformerUtils.getGetterMethodName(attr)%>(){
+	<%=transformerUtils.getJavaDocs(attr)%>
+	<%=attr.getVisibility().getName()%> <%=transformerUtils.getDataType(attr)%> <%=attr.getName()%>;
+	<%=transformerUtils.getGetterMethodJavaDocs(attr)%>
+	public <%=transformerUtils.getDataType(attr)%> <%=transformerUtils.getGetterMethodName(attr)%>(){
 		return <%=attr.getName()%>;
 	}
 
-	<%=TransformerUtils.getSetterMethodJavaDocs(attr)%>
-	public void <%=TransformerUtils.getSetterMethodName(attr)%>(<%=TransformerUtils.getDataType(attr)%> <%=attr.getName()%>){
+	<%=transformerUtils.getSetterMethodJavaDocs(attr)%>
+	public void <%=transformerUtils.getSetterMethodName(attr)%>(<%=transformerUtils.getDataType(attr)%> <%=attr.getName()%>){
 		this.<%=attr.getName()%> = <%=attr.getName()%>;
 	}
 	<%}
 	for(UMLAssociation assoc:klass.getAssociations()){
 		List<UMLAssociationEnd> assocEnds = assoc.getAssociationEnds();
-		UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(klass,assocEnds);
-		UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass,assocEnds);
+		UMLAssociationEnd thisEnd = transformerUtils.getThisEnd(klass,assocEnds);
+		UMLAssociationEnd otherEnd = transformerUtils.getOtherEnd(klass,assocEnds);
 	
 		if(otherEnd.isNavigable())
 		{
 			UMLClass assocKlass = (UMLClass)otherEnd.getUMLElement();
-			if(TransformerUtils.isAssociationEndMany(otherEnd))
+			if(transformerUtils.isAssociationEndMany(otherEnd))
 			{%>
-	<%=TransformerUtils.getJavaDocs(klass, assoc)%>			
+	<%=transformerUtils.getJavaDocs(klass, assoc)%>			
 	private Collection<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>;
-	<%=TransformerUtils.getGetterMethodJavaDocs(klass, assoc)%>
-	public Collection<<%=assocKlass.getName()%>> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
+	<%=transformerUtils.getGetterMethodJavaDocs(klass, assoc)%>
+	public Collection<<%=assocKlass.getName()%>> <%=transformerUtils.getGetterMethodName(otherEnd)%>(){
 		return <%=otherEnd.getRoleName()%>;
 	}
 
-	<%=TransformerUtils.getSetterMethodJavaDocs(klass, assoc)%>
-	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(Collection<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>){
+	<%=transformerUtils.getSetterMethodJavaDocs(klass, assoc)%>
+	public void <%=transformerUtils.getSetterMethodName(otherEnd)%>(Collection<<%=assocKlass.getName()%>> <%=otherEnd.getRoleName()%>){
 		this.<%=otherEnd.getRoleName()%> = <%=otherEnd.getRoleName()%>;
 	}
 		<%}else{%>
-	<%=TransformerUtils.getJavaDocs(klass, assoc)%>			
+	<%=transformerUtils.getJavaDocs(klass, assoc)%>			
 	private <%=assocKlass.getName()%> <%=otherEnd.getRoleName()%>;
-	<%=TransformerUtils.getGetterMethodJavaDocs(klass, assoc)%>	
-	public <%=assocKlass.getName()%> <%=TransformerUtils.getGetterMethodName(otherEnd)%>(){
+	<%=transformerUtils.getGetterMethodJavaDocs(klass, assoc)%>	
+	public <%=assocKlass.getName()%> <%=transformerUtils.getGetterMethodName(otherEnd)%>(){
 		return <%=otherEnd.getRoleName()%>;
 	}
-	<%=TransformerUtils.getSetterMethodJavaDocs(klass, assoc)%>
-	public void <%=TransformerUtils.getSetterMethodName(otherEnd)%>(<%=assocKlass.getName()%> <%=otherEnd.getRoleName()%>){
+	<%=transformerUtils.getSetterMethodJavaDocs(klass, assoc)%>
+	public void <%=transformerUtils.getSetterMethodName(otherEnd)%>(<%=assocKlass.getName()%> <%=otherEnd.getRoleName()%>){
 		this.<%=otherEnd.getRoleName()%> = <%=otherEnd.getRoleName()%>;
 	}
 			<%}
 		}
 	}
 
-	String idGetter = TransformerUtils.getClassIdGetterMthod(klass); 
+	String idGetter = transformerUtils.getClassIdGetterMthod(klass); 
 	if(idGetter!=null){%>
 	/**
 	* Compares <code>obj</code> to it self and returns true if they both are same

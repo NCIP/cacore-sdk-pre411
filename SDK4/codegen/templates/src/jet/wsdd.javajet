@@ -2,7 +2,7 @@
         class="WSDDTransformer"
         skeleton="ModelTransformerBase.skeleton" %>
 <%  
-	Collection<UMLClass> classColl = TransformerUtils.getAllClasses(model);
+	Collection<UMLClass> classColl = transformerUtils.getAllClasses(model);
 	String pkgName;
  %>
 <deployment xmlns="http://xml.apache.org/axis/wsdd/"
@@ -28,11 +28,11 @@
 	<parameter name="className" value="gov.nih.nci.system.webservice.WSQueryImpl"/>
 	<parameter name="allowedMethods" value="*"/>
 	<parameter name="extraClasses"
-	value="<%=TransformerUtils.getWSDDServiceValue(classColl)%>"/>
+	value="<%=transformerUtils.getWSDDServiceValue(classColl)%>"/>
 <% for(UMLClass klass:classColl){
-	pkgName = TransformerUtils.getFullPackageName(klass);
+	pkgName = transformerUtils.getFullPackageName(klass);
 %>	
-	<beanMapping xmlns:myNS="urn:<%=TransformerUtils.reversePackageName(pkgName)%>"  qname="myNS:<%=klass.getName()%>" languageSpecificType="java:<%= pkgName + '.' + klass.getName()%>" />
+	<beanMapping xmlns:myNS="urn:<%=transformerUtils.reversePackageName(pkgName)%>"  qname="myNS:<%=klass.getName()%>" languageSpecificType="java:<%= pkgName + '.' + klass.getName()%>" />
 <% } %>		
 	<beanMapping xmlns:myNS="urn:Character.lang.java"  qname="myNS:Character" languageSpecificType="java:java.lang.Character" />		
 </service>

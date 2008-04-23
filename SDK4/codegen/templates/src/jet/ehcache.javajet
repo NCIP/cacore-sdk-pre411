@@ -12,8 +12,8 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 	
-<%for(UMLClass klass:TransformerUtils.getAllClasses(model)){%>	
-	<cache name="<%=TransformerUtils.getFQCN(klass)%>"
+<%for(UMLClass klass:transformerUtils.getAllClasses(model)){%>	
+	<cache name="<%=transformerUtils.getFQCN(klass)%>"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -21,13 +21,13 @@
 		overflowToDisk="true"/>
 	<%for(UMLAssociation assoc:klass.getAssociations()){
 		List<UMLAssociationEnd> assocEnds = assoc.getAssociationEnds();
-		UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass,assocEnds);
+		UMLAssociationEnd otherEnd = transformerUtils.getOtherEnd(klass,assocEnds);
 
 		if(otherEnd.isNavigable())
 		{
-			if(TransformerUtils.isAssociationEndMany(otherEnd))
+			if(transformerUtils.isAssociationEndMany(otherEnd))
 			{%>
-	<cache name="<%=TransformerUtils.getFQCN(klass)%>.<%=otherEnd.getRoleName()%>"
+	<cache name="<%=transformerUtils.getFQCN(klass)%>.<%=otherEnd.getRoleName()%>"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"

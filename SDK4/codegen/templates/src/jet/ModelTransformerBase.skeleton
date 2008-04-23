@@ -16,7 +16,7 @@ import java.util.Map;
 public class CLASS extends UMLModelJETTransformer{
 
 	public Artifact executeTemplate(UMLModel model, Map<String, Object> configurationParams) throws GenerationException{
-		BaseArtifact artifact = new BaseArtifact();
+		BaseArtifact artifact = new BaseArtifact(transformerUtils);
 		artifact.setContent(generate(model, configurationParams));
 		return artifact;
 	}
