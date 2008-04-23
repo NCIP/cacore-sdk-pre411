@@ -56,7 +56,13 @@ public class SchemaTransformer implements Transformer {
 
 	private boolean enabled = true;
 	
-	private String name = SchemaTransformer.class.getName();	
+	private String name = SchemaTransformer.class.getName();
+	
+	protected TransformerUtils transformerUtils;
+
+	public void setTransformerUtils(TransformerUtils transformerUtils) {
+		this.transformerUtils = transformerUtils;
+	}
 	
 	/* @param model The UMLModel containing the classes for which a 
 	 * Castor Mapping file should be generated
@@ -68,7 +74,7 @@ public class SchemaTransformer implements Transformer {
 		List<UMLClass> classColl = new ArrayList<UMLClass>();
 
 		log.debug("Model name: " + model.getName());
-		TransformerUtils.collectPackages(model.getPackages(), pkgColl, classColl);
+		transformerUtils.collectPackages(model.getPackages(), pkgColl, classColl);
 
 		processPackages(pkgColl, classColl);
 
@@ -100,9 +106,9 @@ public class SchemaTransformer implements Transformer {
 			Collection klasses = (Collection)pkgColl.get(pkg);
 			log.debug("pkg.getName: " + pkg.getName() + " has " + klasses.size() + " classes");
 
-			fQPkgName = TransformerUtils.getFullPackageName(pkg);
+			fQPkgName = transformerUtils.getFullPackageName(pkg);
 
-			artifact = new BaseArtifact();
+			artifact = new BaseArtifact(transformerUtils);
 			artifact.createSourceName(pkg);
 
 			doc = generateRepository(classColl, fQPkgName, pkgColl.get(pkg));
@@ -124,7 +130,7 @@ public class SchemaTransformer implements Transformer {
 		List<Namespace> namespaces = new ArrayList<Namespace>();
 
 		for (UMLClass klass:classColl) {
-			String relatedPackageName = TransformerUtils.getFullPackageName(klass);
+			String relatedPackageName = transformerUtils.getFullPackageName(klass);
 			log.debug("related package name: " + relatedPackageName + "; current package name: " + fQPkgName);
 			if(!relatedPackageName.equals(fQPkgName)) {
 				
@@ -146,7 +152,7 @@ public class SchemaTransformer implements Transformer {
 		
 		for (Iterator i = classColl.iterator(); i.hasNext();) {
 			UMLClass klass = (UMLClass)i.next();
-			String relatedPackageName = TransformerUtils.getFullPackageName(klass);
+			String relatedPackageName = transformerUtils.getFullPackageName(klass);
 			if(!relatedPackageName.equals(fQPkgName)) {
 				if (!tmpList.contains(relatedPackageName)) {
 					String relatedURI = namespaceUriPrefix + relatedPackageName;
@@ -204,15 +210,15 @@ public class SchemaTransformer implements Transformer {
 
 		UMLClass superClass = null;
 		try {
-			superClass = TransformerUtils.getSuperClass(klass);
+			superClass = transformerUtils.getSuperClass(klass);
 		} catch(GenerationException ge){
 			log.error("Exception caught while getting Superclass for " + klass.getName(), ge);
 			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 		}
 
 		if (superClass != null) {
-			String klassPackageName = TransformerUtils.getFullPackageName(klass);
-			String superClassPackageName = TransformerUtils.getFullPackageName(superClass);
+			String klassPackageName = transformerUtils.getFullPackageName(klass);
+			String superClassPackageName = transformerUtils.getFullPackageName(superClass);
 
 			if (klassPackageName.equals(superClassPackageName)){
 				superClassName = superClass.getName();
@@ -224,7 +230,7 @@ public class SchemaTransformer implements Transformer {
 		classEl.setAttribute("name",klass.getName());
 		classEl.setAttribute("type", klass.getName());
 		
-		if (TransformerUtils.isAbstract(klass)){
+		if (transformerUtils.isAbstract(klass)){
 			classEl.setAttribute("abstract", "true");
 		}
 		
@@ -256,11 +262,11 @@ public class SchemaTransformer implements Transformer {
 				log.debug("att.getName(): " + att.getName()); 
 
 				// Only process non-static attributes
-				log.debug("isStatic: " + TransformerUtils.isStatic(att));
-				if (!TransformerUtils.isStatic(att)){
+				log.debug("isStatic: " + transformerUtils.isStatic(att));
+				if (!transformerUtils.isStatic(att)){
 					Element attributeElement = new Element("attribute", w3cNS);
 					attributeElement.setAttribute("name", att.getName());
-					String type = getName(TransformerUtils.getDataType(att));
+					String type = getName(transformerUtils.getDataType(att));
 					log.debug("Attribute type: " + type);
 					if (type.startsWith("xs:collection")) { // handle primitive collections; e.g., collection<string>
 						log.debug("Handling primitive collection type Name: " + type);    
@@ -278,9 +284,9 @@ public class SchemaTransformer implements Transformer {
 				addSequencePrimitiveCollectionElements(sequence, klass, att, w3cNS);			
 			}
 
-			for (Iterator i = TransformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
+			for (Iterator i = transformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
-				UMLAssociationEnd otherEnd = TransformerUtils.getOtherAssociationEnd(thisEnd);
+				UMLAssociationEnd otherEnd = transformerUtils.getOtherAssociationEnd(thisEnd);
 				addSequenceAssociationElement(sequence, klass,thisEnd, otherEnd,w3cNS);
 			}
 
@@ -296,13 +302,13 @@ public class SchemaTransformer implements Transformer {
 				log.debug("att.getName(): " + att.getName());
 
 				// Only process non-static attributes
-				log.debug("isStatic: " + TransformerUtils.isStatic(att));
-				if (!TransformerUtils.isStatic(att)){
+				log.debug("isStatic: " + transformerUtils.isStatic(att));
+				if (!transformerUtils.isStatic(att)){
 
 					Element attributeElement = new Element("attribute", w3cNS);
 					attributeElement.setAttribute("name", att.getName());
 
-					String type = getName(TransformerUtils.getDataType(att));
+					String type = getName(transformerUtils.getDataType(att));
 					log.debug("Attribute type: " + type);
 					
 					if (type.startsWith("xs:collection")) { // handle primitive collections; e.g., collection<string>
@@ -325,16 +331,16 @@ public class SchemaTransformer implements Transformer {
 				addSequencePrimitiveCollectionElements(sequence, klass, att, w3cNS);			
 			}
 			
-			for (Iterator i = TransformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
+			for (Iterator i = transformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
-				UMLAssociationEnd otherEnd = TransformerUtils.getOtherAssociationEnd(thisEnd);
+				UMLAssociationEnd otherEnd = transformerUtils.getOtherAssociationEnd(thisEnd);
 				addSequenceAssociationElement(sequence, klass,thisEnd, otherEnd,w3cNS);
 			}
 		}
 	}
 	
 	private void addCaDSRAnnotation(UMLTaggableElement tgElt, Element elt, Namespace w3cNS) {
-		String caDSRAnnotation = TransformerUtils.getCaDSRAnnotationContent(tgElt);
+		String caDSRAnnotation = transformerUtils.getCaDSRAnnotationContent(tgElt);
 		if (caDSRAnnotation != null){
 			Element annotationElt = new Element("annotation", w3cNS);
 			Element documentationElt = new Element("documentation", w3cNS);
@@ -361,7 +367,7 @@ public class SchemaTransformer implements Transformer {
 
 			associationElement.setAttribute("name", otherEnd.getRoleName());
 
-			String maxOccurs = TransformerUtils.getUpperBound(otherEnd);
+			String maxOccurs = transformerUtils.getUpperBound(otherEnd);
 			log.debug("maxOccurs: " + maxOccurs);
 
 			// A collection - model association as an element with the association name that 
@@ -373,8 +379,8 @@ public class SchemaTransformer implements Transformer {
 			Element innerSequence = new Element("sequence", w3cNS);
 			Element associatedObjElement = new Element("element", w3cNS);
 			
-			String associationPackage = TransformerUtils.getFullPackageName(((UMLClass)(otherEnd.getUMLElement())));
-			String thisPackage = TransformerUtils.getFullPackageName(((UMLClass)(thisEnd.getUMLElement())));
+			String associationPackage = transformerUtils.getFullPackageName(((UMLClass)(otherEnd.getUMLElement())));
+			String thisPackage = transformerUtils.getFullPackageName(((UMLClass)(thisEnd.getUMLElement())));
 			log.debug("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
 			String type = (associationPackage.equals(thisPackage)) ? otherEndType : associationPackage + ":" + otherEndType;
 			
@@ -396,7 +402,7 @@ public class SchemaTransformer implements Transformer {
 			String name = att.getName();
 			field.setAttribute("name", name ); 
 			
-			String type = TransformerUtils.getDataType(att);
+			String type = transformerUtils.getDataType(att);
 			String collectionType = type.substring(type.lastIndexOf("<")+1, type.lastIndexOf(">"));
 			collectionType = getName(collectionType);
 			log.debug("collectionType: " + collectionType);

@@ -52,8 +52,13 @@ public class XmlMappingTransformer implements Transformer {
 
 	private boolean enabled = true;
 	
-	private String name = XmlMappingTransformer.class.getName();	
-
+	private String name = XmlMappingTransformer.class.getName();
+	
+	protected TransformerUtils transformerUtils;
+	
+	public void setTransformerUtils(TransformerUtils transformerUtils) {
+		this.transformerUtils = transformerUtils;
+	}
 	
 	/* @param model The UMLModel containing the classes for which a 
 	 * Castor Mapping file should be generated
@@ -67,7 +72,7 @@ public class XmlMappingTransformer implements Transformer {
 		Collection<UMLClass> classes = null;
 
 		try {
-			classes = TransformerUtils.getAllClasses(model);
+			classes = transformerUtils.getAllClasses(model);
 		} catch(GenerationException ge){
 			errors.addError(new GeneratorError(getName() + ": Error while retrieving classes to process: ", ge));
 		}
@@ -99,7 +104,7 @@ public class XmlMappingTransformer implements Transformer {
 		XMLOutputter p = new XMLOutputter();
 		p.setFormat(Format.getPrettyFormat());	
 
-		BaseArtifact artifact = new BaseArtifact();
+		BaseArtifact artifact = new BaseArtifact(transformerUtils);
 		artifact.setContent(p.outputString(doc));
 
 		try {
@@ -153,7 +158,7 @@ public class XmlMappingTransformer implements Transformer {
 				UMLClass superClass = obj;
 				try {
 					do {
-						superClass = TransformerUtils.getSuperClass(superClass);
+						superClass = transformerUtils.getSuperClass(superClass);
 						count++;
 					} while (superClass!=null);
 
@@ -175,7 +180,7 @@ public class XmlMappingTransformer implements Transformer {
 	 * @return The Namespace URI generated for the UML Class 
 	 */
 	private String getNamespaceURI(UMLClass klass) {
-		String packageName = TransformerUtils.getFullPackageName(klass);
+		String packageName = transformerUtils.getFullPackageName(klass);
 		
 		StringBuffer nsURI = new StringBuffer();
 		nsURI.append(namespaceUriPrefix);
@@ -192,28 +197,28 @@ public class XmlMappingTransformer implements Transformer {
 		
 		UMLClass superClass = null;
 		try {
-			superClass = TransformerUtils.getSuperClass(klass);
+			superClass = transformerUtils.getSuperClass(klass);
 		} catch (GenerationException ge){
 			log.error("ERROR: ", ge);
 			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
 		}	
 
 		if (superClass != null) {
-			superClassName = TransformerUtils.getFullPackageName(superClass)+ Constant.DOT+superClass.getName();
+			superClassName = transformerUtils.getFullPackageName(superClass)+ Constant.DOT+superClass.getName();
 		} 	    
 		String classElName = "class";
 		Element classEl = new Element(classElName);
 		mappingEl.addContent(classEl);
-		classEl.setAttribute("name", TransformerUtils.getFullPackageName(klass)+Constant.DOT+klass.getName());
+		classEl.setAttribute("name", transformerUtils.getFullPackageName(klass)+Constant.DOT+klass.getName());
 		
 		
 		String idAttrName = "";
 		try {
-			UMLAttribute classIdAttr = TransformerUtils.getClassIdAttr(klass);
-			if (classIdAttr == null && !TransformerUtils.isImplicitParent(klass))
+			UMLAttribute classIdAttr = transformerUtils.getClassIdAttr(klass);
+			if (classIdAttr == null && !transformerUtils.isImplicitParent(klass))
 				throw new GenerationException("No id attribute found for class " + klass.getName());
 			if (classIdAttr != null)
-				idAttrName = TransformerUtils.getClassIdAttr(klass).getName();
+				idAttrName = transformerUtils.getClassIdAttr(klass).getName();
 			log.debug("className: " + klass.getName() + "; idAttrName: " + idAttrName);
 		} catch (GenerationException ge){
 			log.error("ERROR: ", ge);
@@ -241,7 +246,7 @@ public class XmlMappingTransformer implements Transformer {
 			field.setAttribute("name", att.getName());
 			log.debug("Field name: " + att.getName());
 
-			String type = TransformerUtils.getDataType(att);
+			String type = transformerUtils.getDataType(att);
 			String qName = getQualifiedTypeName(type);
 			if (qName.equalsIgnoreCase("collection")) {
 				log.debug("Handling type 'collection' - qName: " + qName);            	 
@@ -259,7 +264,7 @@ public class XmlMappingTransformer implements Transformer {
 				primitiveCollectionAtts.add(att);
 				continue;
 			} else {
-				field.setAttribute("type", getQualifiedTypeName(TransformerUtils.getDataType(att)));
+				field.setAttribute("type", getQualifiedTypeName(transformerUtils.getDataType(att)));
 				Element bind = new Element("bind-xml");
 				bind.setAttribute("name", att.getName());
 				bind.setAttribute("node", "attribute");
@@ -278,7 +283,7 @@ public class XmlMappingTransformer implements Transformer {
 			String name = att.getName();
 			field.setAttribute("name", name ); 
 			
-			String type = TransformerUtils.getDataType(att);
+			String type = transformerUtils.getDataType(att);
 			String collectionType = type.substring(type.lastIndexOf("<")+1, type.lastIndexOf(">"));
 			collectionType = getQualifiedTypeName(collectionType);
 			log.debug("collectionType: " + collectionType);
@@ -303,11 +308,11 @@ public class XmlMappingTransformer implements Transformer {
 
 		if (includeAssociations) {
 			log.debug("*********** klass: " + klass.getName());
-			log.debug("*********** TransformerUtils.getAssociationEnds(klass).size(): " + TransformerUtils.getAssociationEnds(klass).size());
+			log.debug("*********** transformerUtils.getAssociationEnds(klass).size(): " + transformerUtils.getAssociationEnds(klass).size());
 
-			for (Iterator i = TransformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
+			for (Iterator i = transformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
-				UMLAssociationEnd otherEnd = TransformerUtils.getOtherAssociationEnd(thisEnd);
+				UMLAssociationEnd otherEnd = transformerUtils.getOtherAssociationEnd(thisEnd);
 				addSequenceAssociationElement(classEl, thisEnd, otherEnd);
 			}
 		}
@@ -330,18 +335,18 @@ public class XmlMappingTransformer implements Transformer {
 			log.debug("otherEnd.getRoleName(): " + otherEnd.getRoleName()); 
 			log.debug("otherEnd.getType().getName(): " + otherEndTypeName);  
 			
-			log.debug("TransformerUtils.isMany2One(thisEnd, otherEnd) || TransformerUtils.isOne2One(thisEnd, otherEnd): " + (TransformerUtils.isMany2One(thisEnd, otherEnd) || TransformerUtils.isOne2One(thisEnd, otherEnd)));
-			log.debug("TransformerUtils.isMany2Many(thisEnd, otherEnd) || TransformerUtils.isOne2Many(thisEnd, otherEnd): " + (TransformerUtils.isMany2Many(thisEnd, otherEnd) || TransformerUtils.isOne2Many(thisEnd, otherEnd))); 
+			log.debug("transformerUtils.isMany2One(thisEnd, otherEnd) || transformerUtils.isOne2One(thisEnd, otherEnd): " + (transformerUtils.isMany2One(thisEnd, otherEnd) || transformerUtils.isOne2One(thisEnd, otherEnd)));
+			log.debug("transformerUtils.isMany2Many(thisEnd, otherEnd) || transformerUtils.isOne2Many(thisEnd, otherEnd): " + (transformerUtils.isMany2Many(thisEnd, otherEnd) || transformerUtils.isOne2Many(thisEnd, otherEnd))); 
 
-			if (TransformerUtils.isMany2One(thisEnd, otherEnd) || TransformerUtils.isOne2One(thisEnd, otherEnd)) {
+			if (transformerUtils.isMany2One(thisEnd, otherEnd) || transformerUtils.isOne2One(thisEnd, otherEnd)) {
 
 				log.debug("UML13Utils.isMany2One(thisEnd, otherEnd): " + true);
-				log.debug("lowerBound: " + TransformerUtils.getLowerBound(otherEnd));
-				log.debug("upperBound: " + TransformerUtils.getUpperBound(otherEnd));
+				log.debug("lowerBound: " + transformerUtils.getLowerBound(otherEnd));
+				log.debug("upperBound: " + transformerUtils.getUpperBound(otherEnd));
 
 				Element field = new Element("field");
 				field.setAttribute("name", otherEnd.getRoleName() ); //otherEnd.getName());
-				String associationPackage = TransformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
+				String associationPackage = transformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
 				field.setAttribute("type", associationPackage + Constant.DOT + ( (UMLClass)otherEnd.getUMLElement() ).getName() );
 				if (includeFieldHandler) {
 					field.setAttribute("handler", "gov.nih.nci.system.client.util.xml.CastorDomainObjectFieldHandler" );
@@ -355,16 +360,16 @@ public class XmlMappingTransformer implements Transformer {
 
 				mappingEl.addContent(field);
 
-			} else if (TransformerUtils.isMany2Many(thisEnd, otherEnd) || TransformerUtils.isOne2Many(thisEnd, otherEnd)){
+			} else if (transformerUtils.isMany2Many(thisEnd, otherEnd) || transformerUtils.isOne2Many(thisEnd, otherEnd)){
 				
-				log.debug("UML13Utils.isMany2Many(thisEnd, otherEnd): " + TransformerUtils.isMany2Many(thisEnd, otherEnd));
-				log.debug("UML13Utils.isOne2Many(thisEnd, otherEnd): " + TransformerUtils.isOne2Many(thisEnd, otherEnd));
-				log.debug("lowerBound: " + TransformerUtils.getLowerBound(otherEnd));
-				log.debug("upperBound: " + TransformerUtils.getUpperBound(otherEnd));
+				log.debug("UML13Utils.isMany2Many(thisEnd, otherEnd): " + transformerUtils.isMany2Many(thisEnd, otherEnd));
+				log.debug("UML13Utils.isOne2Many(thisEnd, otherEnd): " + transformerUtils.isOne2Many(thisEnd, otherEnd));
+				log.debug("lowerBound: " + transformerUtils.getLowerBound(otherEnd));
+				log.debug("upperBound: " + transformerUtils.getUpperBound(otherEnd));
 				
 				Element field = new Element("field");
 				field.setAttribute("name", otherEnd.getRoleName() ); //otherEnd.getName());
-				String associationPackage = TransformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
+				String associationPackage = transformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
 				field.setAttribute("type", associationPackage + Constant.DOT + otherEndTypeName);
 				field.setAttribute("collection", "collection" );
 				if (includeFieldHandler) {
@@ -462,5 +467,4 @@ public class XmlMappingTransformer implements Transformer {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

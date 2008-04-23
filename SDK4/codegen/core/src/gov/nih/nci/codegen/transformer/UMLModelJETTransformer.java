@@ -6,6 +6,8 @@ import gov.nih.nci.codegen.GenerationException;
 import gov.nih.nci.codegen.GeneratorError;
 import gov.nih.nci.codegen.GeneratorErrors;
 import gov.nih.nci.codegen.Transformer;
+import gov.nih.nci.codegen.artifact.BaseArtifact;
+import gov.nih.nci.codegen.util.TransformerUtils;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 
 import java.util.Map;
@@ -26,7 +28,13 @@ public abstract class UMLModelJETTransformer implements Transformer
 	
 	private boolean enabled = true;
 	
-	private String name = UMLModelJETTransformer.class.getName();	
+	private String name = UMLModelJETTransformer.class.getName();
+	
+	protected TransformerUtils transformerUtils;
+
+	public void setTransformerUtils(TransformerUtils transformerUtils) {
+		this.transformerUtils = transformerUtils;
+	}
 	
 	/**
 	 * @param artifactHandler the artifactHandler to set
@@ -78,6 +86,4 @@ public abstract class UMLModelJETTransformer implements Transformer
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 }

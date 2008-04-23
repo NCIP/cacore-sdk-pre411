@@ -60,6 +60,11 @@ public class UMLLogicalModelValidator implements Validator
 	
 	private String name = UMLLogicalModelValidator.class.getName();	
 	
+	private TransformerUtils transformerUtils;
+	
+	public void setTransformerUtils(TransformerUtils transformerUtils) {
+		this.transformerUtils = transformerUtils;
+	}
 	/**
 	 * See description for the this class above
 	 *  
@@ -84,7 +89,7 @@ public class UMLLogicalModelValidator implements Validator
 		Collection<UMLClass> classes = null;
 
 		try {
-			classes = TransformerUtils.getAllClasses(model);
+			classes = transformerUtils.getAllClasses(model);
 
 			if (classes == null || classes.isEmpty()){
 				errors.addError(new GeneratorError(getName() + ": No qualifying classes found within the model to process"));
@@ -96,7 +101,7 @@ public class UMLLogicalModelValidator implements Validator
 		if (classes != null){
 			for(UMLClass klass1:classes)
 			{
-				String class1Name = TransformerUtils.getFQCN(klass1);
+				String class1Name = transformerUtils.getFQCN(klass1);
 				if(class1Name ==null || class1Name.trim().length()==0)
 					class1Name = "";
 				else
@@ -114,7 +119,7 @@ public class UMLLogicalModelValidator implements Validator
 					errors.addError(new GeneratorError(getName() + ": Class name starts with non-character value "+class1Name));
 				for(UMLClass klass2:classes)
 				{
-					String class2Name = TransformerUtils.getFQCN(klass2);
+					String class2Name = transformerUtils.getFQCN(klass2);
 					if(klass1!=klass2 && class1Name!=null && class1Name.equals(class2Name))
 						errors.addError(new GeneratorError(getName() + ": Duplicate class found for "+class1Name));					
 				}
@@ -127,7 +132,7 @@ public class UMLLogicalModelValidator implements Validator
 		Collection<UMLInterface> interfaces = null;
 
 		try {
-			interfaces = TransformerUtils.getAllInterfaces(model);
+			interfaces = transformerUtils.getAllInterfaces(model);
 		} catch(GenerationException ge){
 			errors.addError(new GeneratorError(getName() + ": Unable to retrieve interfaces from model"));
 		}
@@ -135,7 +140,7 @@ public class UMLLogicalModelValidator implements Validator
 		if (interfaces != null){
 			for(UMLInterface interface1:interfaces)
 			{
-				String interface1Name = TransformerUtils.getFQCN(interface1);
+				String interface1Name = transformerUtils.getFQCN(interface1);
 				if(interface1Name ==null || interface1Name.trim().length()==0)
 					interface1Name = "";
 				else
@@ -153,7 +158,7 @@ public class UMLLogicalModelValidator implements Validator
 					errors.addError(new GeneratorError(getName() + ": Interface name starts with non-character value "+interface1Name));
 				for(UMLInterface interface2:interfaces)
 				{
-					String interface2Name = TransformerUtils.getFQCN(interface2);
+					String interface2Name = transformerUtils.getFQCN(interface2);
 					if(interface1!=interface2 && interface1Name!=null && interface1Name.equals(interface2Name))
 						errors.addError(new GeneratorError(getName() + ": Duplicate interface found for "+interface1Name));					
 				}
@@ -238,11 +243,11 @@ public class UMLLogicalModelValidator implements Validator
 			try 
 			{
 				List <UMLAssociationEnd>ends = association.getAssociationEnds();
-				UMLAssociationEnd thisEnd = TransformerUtils.getThisEnd(klass, ends);
-				UMLAssociationEnd otherEnd = TransformerUtils.getOtherEnd(klass, ends);
-				String thisClassName = TransformerUtils.getFQCN(((UMLClass)thisEnd.getUMLElement()));
-				String otherClassName = TransformerUtils.getFQCN(((UMLClass)otherEnd.getUMLElement()));
-				if(!TransformerUtils.isIncluded((UMLClass)otherEnd.getUMLElement()))
+				UMLAssociationEnd thisEnd = transformerUtils.getThisEnd(klass, ends);
+				UMLAssociationEnd otherEnd = transformerUtils.getOtherEnd(klass, ends);
+				String thisClassName = transformerUtils.getFQCN(((UMLClass)thisEnd.getUMLElement()));
+				String otherClassName = transformerUtils.getFQCN(((UMLClass)otherEnd.getUMLElement()));
+				if(!transformerUtils.isIncluded((UMLClass)otherEnd.getUMLElement()))
 					errors.addError(new GeneratorError(getName() + ": Association belongs to the not included or excluded package for association between "+thisClassName +" and "+ otherClassName));
 				if(thisEnd.getRoleName()!=null && thisEnd.getRoleName().length()>0 && !Character.isLetter(thisEnd.getRoleName().charAt(0)))
 					errors.addError(new GeneratorError(getName() + ": Association role name starts with non-character value for association between "+thisClassName +" and "+ otherClassName));
@@ -265,10 +270,10 @@ public class UMLLogicalModelValidator implements Validator
 						List <UMLAssociationEnd>ends2 = assoc.getAssociationEnds();
 						if(ends!=ends2)
 						{
-							UMLAssociationEnd thisEnd2 = TransformerUtils.getThisEnd(klass, ends2);
-							UMLAssociationEnd otherEnd2 = TransformerUtils.getOtherEnd(klass, ends2);
-							String thisClassName2 = TransformerUtils.getFQCN(((UMLClass)thisEnd2.getUMLElement()));
-							String otherClassName2 = TransformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));				
+							UMLAssociationEnd thisEnd2 = transformerUtils.getThisEnd(klass, ends2);
+							UMLAssociationEnd otherEnd2 = transformerUtils.getOtherEnd(klass, ends2);
+							String thisClassName2 = transformerUtils.getFQCN(((UMLClass)thisEnd2.getUMLElement()));
+							String otherClassName2 = transformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));				
 							if(otherEnd.getRoleName()!=null && otherEnd.getRoleName().equals(otherEnd2.getRoleName()))
 								errors.addError(new GeneratorError(getName() + ": Duplicate association between "+thisClassName2 +" and "+ otherClassName2));
 						}
@@ -285,7 +290,7 @@ public class UMLLogicalModelValidator implements Validator
 
 	private void validateAttributes(UMLClass klass, GeneratorErrors errors) 
 	{
-		String thisClassName = TransformerUtils.getFQCN(klass);
+		String thisClassName = transformerUtils.getFQCN(klass);
 		for(UMLAttribute attribute: klass.getAttributes())
 		{
 			if(attribute.getName()==null || attribute.getName().trim().length()==0)
@@ -298,7 +303,7 @@ public class UMLLogicalModelValidator implements Validator
 			UMLDatatype dataType = attribute.getDatatype();
 			String name = dataType.getName();
 			if(dataType instanceof UMLClass)
-				name = TransformerUtils.getFQCN((UMLClass)dataType);
+				name = transformerUtils.getFQCN((UMLClass)dataType);
 			if(name == null) name = "";
 			
 			if(name.trim().length() == 0)
@@ -338,9 +343,9 @@ public class UMLLogicalModelValidator implements Validator
 
 	private void validateSuperClass(UMLClass klass, GeneratorErrors errors) {
 		try {
-			UMLClass superKlass = TransformerUtils.getSuperClass(klass);
-			if(superKlass!=null && !TransformerUtils.isIncluded(superKlass))
-				errors.addError(new GeneratorError(getName() + ": Parent of the class "+TransformerUtils.getFQCN(klass)+" belongs to the not included or excluded package"));
+			UMLClass superKlass = transformerUtils.getSuperClass(klass);
+			if(superKlass!=null && !transformerUtils.isIncluded(superKlass))
+				errors.addError(new GeneratorError(getName() + ": Parent of the class "+transformerUtils.getFQCN(klass)+" belongs to the not included or excluded package"));
 
 		} catch (GenerationException e) {
 			errors.addError(new GeneratorError(getName() + ": Superclass validation failed", e));

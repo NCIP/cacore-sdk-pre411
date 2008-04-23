@@ -14,8 +14,12 @@ public class BaseArtifact implements Artifact
 {
 	private String content;
 	private String sourceName;
+	protected TransformerUtils transformerUtils;
 	
 
+	public BaseArtifact(TransformerUtils transformerUtils) {
+		this.transformerUtils = transformerUtils;
+	}
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.codegen.Artifact#getContent()
 	 */
@@ -44,7 +48,7 @@ public class BaseArtifact implements Artifact
 	 * @param klass
 	 */
 	public void createSourceName(UMLClass klass) {
-		sourceName = TransformerUtils.getFQCN(klass).replace('.','/');
+		sourceName = transformerUtils.getFQCN(klass).replace('.','/');
 	}	
 	
 	/**
@@ -53,7 +57,7 @@ public class BaseArtifact implements Artifact
 	 * @param interfaze
 	 */
 	public void createSourceName(UMLInterface interfaze) {
-		sourceName = TransformerUtils.getFQCN(interfaze).replace('.','/');
+		sourceName = transformerUtils.getFQCN(interfaze).replace('.','/');
 	}	
 	
 	
@@ -63,7 +67,7 @@ public class BaseArtifact implements Artifact
 	 * @param pkg
 	 */
 	public void createSourceName(UMLPackage pkg) {
-		sourceName = TransformerUtils.getFullPackageName(pkg);
+		sourceName = transformerUtils.getFullPackageName(pkg);
 	}		
 		
 }

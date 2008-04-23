@@ -6,6 +6,7 @@ import gov.nih.nci.codegen.GenerationException;
 import gov.nih.nci.codegen.GeneratorError;
 import gov.nih.nci.codegen.GeneratorErrors;
 import gov.nih.nci.codegen.Transformer;
+import gov.nih.nci.codegen.artifact.BaseArtifact;
 import gov.nih.nci.codegen.util.TransformerUtils;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLInterface;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
@@ -29,6 +30,11 @@ public abstract class UMLInterfaceJetTransformer implements Transformer
 	
 	private String name = UMLInterfaceJetTransformer.class.getName();	
 	
+	protected TransformerUtils transformerUtils;
+	
+	public void setTransformerUtils(TransformerUtils transformerUtils) {
+		this.transformerUtils = transformerUtils;
+	}
 	/**
 	 * @param artifactHandler the artifactHandler to set
 	 */
@@ -73,7 +79,7 @@ public abstract class UMLInterfaceJetTransformer implements Transformer
 	
 	protected Collection<UMLInterface> getAllInterfaces(UMLModel model) throws GenerationException
 	{
-		return TransformerUtils.getAllInterfaces(model);
+		return transformerUtils.getAllInterfaces(model);
 	}
 	
 	public void setEnabled(boolean enabled)

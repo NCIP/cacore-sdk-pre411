@@ -27,7 +27,13 @@ public abstract class UMLClassJetTransformer implements Transformer
 
 	private boolean enabled = true;
 	
-	private String name = UMLClassJetTransformer.class.getName();	
+	private String name = UMLClassJetTransformer.class.getName();
+	
+	protected TransformerUtils transformerUtils;
+	
+	public void setTransformerUtils(TransformerUtils transformerUtils) {
+		this.transformerUtils = transformerUtils;
+	}
 	
 	/**
 	 * @param artifactHandler the artifactHandler to set
@@ -71,7 +77,7 @@ public abstract class UMLClassJetTransformer implements Transformer
 	
 	protected Collection<UMLClass> getAllClasses(UMLModel model) throws GenerationException
 	{
-		return TransformerUtils.getAllClasses(model);
+		return transformerUtils.getAllClasses(model);
 	}
 	
 	public void setEnabled(boolean enabled)
