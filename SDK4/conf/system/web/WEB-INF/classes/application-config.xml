@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 
-	<bean name="ApplicationServiceImpl" class="gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl" singleton="true">
+	<bean name="ApplicationServiceImpl" class="@SERVICE_IMPL@" singleton="true">
 		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
 		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>		
 	</bean>
@@ -12,7 +12,7 @@
 		<property name="daoList">
 			<list>
 				<!--  Add any DAO's here -->
-				<ref bean="ORMDAOFactory"/>					
+				<ref bean="ORMDAO"/>					
 			</list>
 		</property>		
 	</bean>
@@ -40,8 +40,8 @@
 			</map>
 		</constructor-arg>
 	</bean>
-			
-	<bean name="ORMDAOFactory" class="gov.nih.nci.system.dao.orm.ORMDAOFactoryBean">
+	
+	<bean name="ORMDAO" class="@DAO_FACTORY@">
 		<constructor-arg value="hibernate.cfg.xml" index="0"></constructor-arg> <!-- configLocation -->
 		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
 		<constructor-arg ref="SystemPropertiesMap" index="2"></constructor-arg>

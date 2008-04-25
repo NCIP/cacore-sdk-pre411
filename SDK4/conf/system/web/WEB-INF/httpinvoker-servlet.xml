@@ -7,7 +7,7 @@
 	<!-- Exposed services -->
 	<!--                  -->
 	<bean name="/applicationService"	class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-		<property name="serviceInterface" value="gov.nih.nci.system.applicationservice.ApplicationService"/>
+		<property name="serviceInterface" value="@SERVICE_INTERFACE@"/>
 		<property name="service"><ref bean="ApplicationServiceImpl" /></property>
 	</bean>
 
