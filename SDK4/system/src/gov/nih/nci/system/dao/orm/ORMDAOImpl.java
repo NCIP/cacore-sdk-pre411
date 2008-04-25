@@ -62,7 +62,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		this.authenticationProvider=authenticationProvider;
 	}
 
-	private Session getSecuredSession()
+	protected Session getSecuredSession()
 	{
 		Session session = null;
 		if (attributeLevelSecurity)
