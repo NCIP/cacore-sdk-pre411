@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<bean id="@PROJECT_NAME@ServiceInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="APPLICATION_SERVICE_BEAN" value="@PROJECT_NAME@ApplicationService"/>
+				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="@PROJECT_NAME@AuthenticationProvider"/>
+				<entry key="APPLICATION_SERVICE_URL"  value="@SERVER_URL@"/>
+				<entry key="APPLICATION_SERVICE_CONFIG"  value-ref="@PROJECT_NAME@ApplicationServiceConfig"/>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="@PROJECT_NAME@Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="true">
+		<property name="proxyFactory">
+			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl"/>
+		</property>
+	</bean>
+	
+	<bean id="@PROJECT_NAME@ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<bean class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+				<property name="serviceUrl" value="@SERVER_URL@/http/applicationService"/>
+				<property name="serviceInterface" value="@SERVICE_INTERFACE@"/>
+				<property name="httpInvokerRequestExecutor">
+					<bean class="org.acegisecurity.context.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor"/>
+				</property>
+			</bean>
+		</property>
+		<property name="interceptorNames" value="@PROJECT_NAME@Interceptor"/>
+		<property name="interfaces" value="@SERVICE_INTERFACE@"/>
+	</bean>	
+	
+	<bean id="@PROJECT_NAME@AuthenticationProvider" class="org.acegisecurity.providers.rcp.RemoteAuthenticationProvider">
+		<property name="remoteAuthenticationManager">
+			<bean class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+			    <property name="serviceUrl" value="@SERVER_URL@/http/remoteAuthenticationManager"/>
+			    <property name="serviceInterface" value="org.acegisecurity.providers.rcp.RemoteAuthenticationManager"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- Dont touch this unless you know what you are doing -->
+	<bean id="@PROJECT_NAME@ApplicationServiceConfig" class="java.lang.String">
+		<constructor-arg>
+			<value>
+				&lt;bean id=&quot;Interceptor&quot; class=&quot;gov.nih.nci.system.client.proxy.ApplicationServiceProxy&quot;&gt;
+					&lt;property name=&quot;proxyFactory&quot;&gt;
+						&lt;bean class=&quot;gov.nih.nci.system.client.proxy.ProxyHelperImpl&quot;/&gt;
+					&lt;/property&gt;
+				&lt;/bean&gt;
+				&lt;bean id=&quot;ApplicationService&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
+					&lt;property name=&quot;target&quot;&gt;
+						&lt;bean class=&quot;org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean&quot;&gt;
+							&lt;property name=&quot;serviceUrl&quot; value=&quot;URL_KEY/http/applicationService&quot;/&gt;
+							&lt;property name=&quot;serviceInterface&quot; value=&quot;@SERVICE_INTERFACE@&quot;/&gt;
+							&lt;property name=&quot;httpInvokerRequestExecutor&quot;&gt;
+								&lt;bean class=&quot;org.acegisecurity.context.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor&quot;/&gt;
+							&lt;/property&gt;
+						&lt;/bean&gt;
+					&lt;/property&gt;
+					&lt;property name=&quot;interceptorNames&quot; value=&quot;Interceptor&quot;/&gt;
+					&lt;property name=&quot;interfaces&quot; value=&quot;@SERVICE_INTERFACE@&quot;/&gt;
+				&lt;/bean&gt;
+				&lt;bean id=&quot;AuthenticationProvider&quot; class=&quot;org.acegisecurity.providers.rcp.RemoteAuthenticationProvider&quot;&gt;
+					&lt;property name=&quot;remoteAuthenticationManager&quot;&gt;
+							&lt;bean class=&quot;org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean&quot;&gt;
+								&lt;property name=&quot;serviceUrl&quot; value=&quot;URL_KEY/http/remoteAuthenticationManager&quot;/&gt;
+								&lt;property name=&quot;serviceInterface&quot; value=&quot;org.acegisecurity.providers.rcp.RemoteAuthenticationManager&quot;/&gt;
+							&lt;/bean&gt;
+					&lt;/property&gt;
+				&lt;/bean&gt;
+                &lt;alias alias="@PROJECT_NAME@ApplicationService" name="ApplicationService"/&gt;
+                &lt;alias alias="@PROJECT_NAME@AuthenticationProvider" name="AuthenticationProvider"/&gt;
+			</value>
+		</constructor-arg>
+	</bean>
+
+</beans>
