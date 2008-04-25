@@ -27,7 +27,7 @@
 			<ref bean="ApplicationServiceImpl"/>
 		</property>
 		<property name="interceptorNames" value="interceptor"/>
-		<property name="interfaces" value="gov.nih.nci.system.applicationservice.ApplicationService"/>
+		<property name="interfaces" value="@SERVICE_INTERFACE@"/>
 	</bean>	
 	
 </beans>
