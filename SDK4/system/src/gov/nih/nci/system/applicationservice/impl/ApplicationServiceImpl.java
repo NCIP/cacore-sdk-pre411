@@ -296,4 +296,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 			throw new ApplicationException("Exception in Base Delegate while getting datasource information: ", exception);
 		}
 	}
+
+	protected ClassCache getClassCache() {
+		return classCache;
+	}
+
+	protected Properties getSystemProperties() {
+		return systemProperties;
+	}
 }
