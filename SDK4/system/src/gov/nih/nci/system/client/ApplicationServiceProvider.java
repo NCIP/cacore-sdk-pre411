@@ -85,8 +85,8 @@ public class ApplicationServiceProvider
 		Map<String,Object> serviceInfoMap = (Map<String, Object>) ctx.getBean(service);
 		if(serviceInfoMap == null)
 		{
-			as = (ApplicationService) context.getBean("applicationService");
-			ap = (AuthenticationProvider)context.getBean("authenticationProvider");
+			as = (ApplicationService) context.getBean("ApplicationService");
+			ap = (AuthenticationProvider)context.getBean("AuthenticationProvider");
 		}
 		else
 		{
@@ -180,8 +180,8 @@ public class ApplicationServiceProvider
 		xmlReader.loadBeanDefinitions(inputStreamResource);
 		context.refresh();
 
-		as = (ApplicationService) context.getBean("applicationService");
-		ap = (AuthenticationProvider)context.getBean("authenticationProvider");
+		as = (ApplicationService) context.getBean("ApplicationService");
+		ap = (AuthenticationProvider)context.getBean("AuthenticationProvider");
 		
 		//Make sure the configuration has the required objects present
 		if(as==null || (secured && ap==null))
