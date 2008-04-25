@@ -11,6 +11,7 @@
 	<property file="build.properties"  />
 	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
 	<property file="${system.dir}/build.properties" prefix="system"  />
+	<property file="${writable-api.dir}/build.properties" prefix="writable-api"  />
 	
 	<!--***********************************************************************
 	*** Import utility script
@@ -75,7 +76,26 @@
 	<condition property="server-exclude-list" value="log4j*.jar" else="">
 		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
 	</condition>
+
+	<condition property="read-api-exclude-list" value="" else="*.jar">
+		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+
+	<condition property="read-api-exclude-list-remote-client" value="${writable-api.file.output.core.writable.name}" else="*.jar">
+		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
 	
+	<condition property="SERVICE_INTERFACE" value="${extension.api.interface}" else="${sdk.api.interface}">
+		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>	
+
+	<condition property="SERVICE_IMPL" value="${extension.api.impl}" else="${sdk.api.impl}">
+		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>	
+
+	<condition property="DAO_FACTORY" value="${extension.dao.factory}" else="${sdk.dao.factory}">
+		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>	
 	
 	<!--***********************************************************************
 	*** Prepares the output directory structure
@@ -156,6 +176,10 @@
 			<replacefilter token="@SECURITY_ENABLED@" value="${SECURITY_ENABLED}" />			
 			<replacefilter token="@IDENTITY_GENERATOR_TAG@" value="${IDENTITY_GENERATOR_TAG}" />
 			<replacefilter token="@DATABASE_TYPE@" value="${DATABASE_TYPE}" />
+			<replacefilter token="@SERVICE_INTERFACE@" value="${SERVICE_INTERFACE}" />
+			<replacefilter token="@SERVICE_IMPL@" value="${SERVICE_IMPL}" />
+			<replacefilter token="@DAO_FACTORY@" value="${DAO_FACTORY}" />
+			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}" />
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
@@ -179,6 +203,7 @@
 		<delete dir="${output.dir}"/>
 		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${system.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
+		<ant antfile="${writable-api.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 	</target>
 
 	<!--***********************************************************************
@@ -214,8 +239,23 @@
 		<SDKecho message="${ant.project.name}: Preparing the system project"/>
 		<ant antfile="${system.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
 	</target>
+
+	<target name="prepare-condition-writable-api" >
+		<SDKecho message="${ant.project.name}: Checking the condition for system project build"/>
+		<condition property="prepare-required-writable-api">
+			<and>
+				<not><available file="${writable-api.dir}/${writable-api.dist.dir}/${writable-api.file.output.core.writable.name}"/></not>
+				<not><available file="${writable-api.dir}/${writable-api.dist.dir}/${writable-api.file.output.client.writable.name}"/></not>
+			</and>
+		</condition>
+	</target>
+
+	<target name="prepare-writable-api" depends="prepare-condition-writable-api" if="prepare-required-writable-api">
+		<SDKecho message="${ant.project.name}: Preparing the writable api project"/>
+		<ant antfile="${writable-api.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
+	</target>
 	
-	<target name="prepare" depends="prepare-codegen,prepare-system"/>
+	<target name="prepare" depends="prepare-codegen,prepare-system,prepare-writable-api"/>
 	
 	<!--***********************************************************************
 	*** Runs the Code Generator 
@@ -243,7 +283,7 @@
 	<!--***********************************************************************
 	*** Packages the generated artifacts 
 	*********************************************************************** -->
-	<target name="package-codegen-artifacts" depends="compile-beans, prepare-system" description="Packages the generated ORM and bean artifacts">
+	<target name="package-codegen-artifacts" depends="compile-beans, prepare-system,prepare-writable-api" description="Packages the generated ORM and bean artifacts">
 		<SDKecho message="${ant.project.name}: Packaging the generated artifacts"/>
 		<jar destfile="${build.jar.dir}\${bean.file}" basedir="${build.classes.dir}">
 			<manifest>
@@ -279,6 +319,9 @@
 			<fileset dir="${system.dir}\${system.dist.dir}">
 				<include name="${system.file.output.client.name}"/>
 			</fileset>
+			<fileset dir="${writable-api.dir}\${writable-api.dist.dir}" includes="*.jar">
+				<exclude name="${read-api-exclude-list-remote-client}"/>
+			</fileset>
 			
 			<fileset dir="${system.dir}\${system.lib.dir}">
 				<include name="${system.file.output.client.name}"/>
@@ -308,6 +351,9 @@
 			<fileset dir="${system.dir}\${system.dist.dir}">
 				<include name="${system.file.output.client.name}"/>
 				<include name="${system.file.output.core.name}"/>
+			</fileset>
+			<fileset dir="${writable-api.dir}\${writable-api.dist.dir}" includes="*.jar">
+				<exclude name="${read-api-exclude-list}"/>
 			</fileset>
 			<fileset dir="${system.dir}\${system.lib.dir}">
 				<include name="${system.file.output.client.name}"/>
@@ -355,6 +401,9 @@
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 			</manifest>
 			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar"/>
+			<lib dir="${writable-api.dir}\${writable-api.dist.dir}" includes="*.jar">
+				<exclude name="${read-api-exclude-list}"/>
+			</lib>
 			<lib dir="${build.jar.dir}" includes="${bean.file}" />
 			<lib dir="${build.jar.dir}" includes="${orm.file}" />
 			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar">
@@ -433,7 +482,7 @@
 	<!--***********************************************************************
 	*** Creates release packages for the SDK  
 	*********************************************************************** -->
-	<target name="package-release-contents" depends="clean-all,prepare-codegen,prepare-system" description="Creates release packages">
+	<target name="package-release-contents" depends="clean-all,prepare-codegen,prepare-system,prepare-writable-api" description="Creates release packages">
 		<ant antfile="${junit.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
 		<SDKecho message="${ant.project.name}: Creates release packages"/>
 		<mkdir dir="${release.dir}"/>
@@ -454,6 +503,8 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build/**/*"/>
 				<exclude name="${system.dir}/${system.src.dir}/**/*"/>
 				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}/**/*"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}/**/*"/>
 				<exclude name="bin"/>
 				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
 				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
@@ -461,6 +512,8 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
 				<exclude name="${system.dir}/${system.src.dir}"/>
 				<exclude name="${system.dir}/${system.build.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}"/>
 				<exclude name="${junit.dir}"/>
 				<exclude name="${junit.dir}/**/*"/>
 			</zipfileset>
@@ -501,6 +554,8 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build/**/*"/>
 				<exclude name="${system.dir}/${system.src.dir}/**/*"/>
 				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}/**/*"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}/**/*"/>
 				<exclude name="bin"/>
 				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
 				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
@@ -508,6 +563,8 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
 				<exclude name="${system.dir}/${system.src.dir}"/>
 				<exclude name="${system.dir}/${system.build.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}"/>
 				<exclude name="${junit.dir}"/>
 				<exclude name="${junit.dir}/**/*"/>
 			</tarfileset>
