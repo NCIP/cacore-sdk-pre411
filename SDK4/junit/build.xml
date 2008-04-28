@@ -9,7 +9,7 @@
 	<property name="sdk.home" value=".." />
 
 	<property file="${sdk.home}/conf/deploy.properties" />
-	<property file="${sdk.home}/build.properties" />
+	<property file="${sdk.home}/build.properties" prefix="sdk"/>
 	<property file="build.properties" />
 
 	<property name="output.dir" value="output" />
@@ -93,7 +93,7 @@
 
 	<path id="codegen-cp">
 		<pathelement path="${classes.dir}" />
-		<fileset dir="../${codegen.dir}">
+		<fileset dir="../${sdk.codegen.dir}">
 			<include name="**/*.jar" />
 			<!-- includes sdk-codegen.jar -->
 		</fileset>
@@ -101,7 +101,7 @@
 			<include name="**/*.jar" />
 			<!-- includes junit4.4,easy mock.jar -->
 		</fileset>
-		<fileset dir="../${system.dir}/lib">
+		<fileset dir="../${sdk.system.dir}/lib">
 			<!-- includes cglib,asm.jar -->
 		</fileset>
 	</path>
@@ -203,7 +203,7 @@
 			<exclude name="**/*HBMMapping*.java" />
 			<exclude name="**/*XMLData*.java" />
 			<exclude name="**/*Security*.java" />
-			<exclude name="**/*PKGeneratorValidator*.java" />
+			<exclude name="**/test/gov/nih/nci/codegen/**/*.java" /> <!-- excluding codegen test classes -->		 	
 			<include name="**/*.java" />
 			<classpath refid="thick-client-cp" />
 		</javac>
@@ -402,9 +402,9 @@
 	<!--                                Run JUnit for CodeGen package classes                       -->
 	<!-- ************************************************************************************************-->
 
-	<target name="runCodeGenatorClientQuickTest" depends="clean-classes,createDir,runCodeGenatorClientQuickJUnit,stop" description="Run JUnit for HBM Mapping Client (Quick Mode)" />
+	<target name="runCodeGeneratorClientQuickTest" depends="clean-classes,createDir,runCodeGeneratorClientQuickJUnit,stop" description="Run JUnit for CodeGen Test classes (Quick Mode)" />
 
-	<target name="runCodeGenatorClientQuickJUnit">
+	<target name="runCodeGeneratorClientQuickJUnit">
 		<SDKCompileJUnit compileClasspath="codegen-cp" includePattern="test/gov/nih/nci/codegen/*.java" />
 		<SDKRunJUnitSuite junitClasspath="codegen-cp" junitOutputDir="${report.dir.codegen}" junitSuite="test.gov.nih.nci.codegen.SDKCodeGeneratorTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.codegen}" />
