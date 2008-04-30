@@ -1678,6 +1678,14 @@ public class TransformerUtils
 		
 		return "none";
 	}
+	
+	public String isFKAttributeNull(UMLAssociationEnd otherEnd) {
+		if (otherEnd.getLowMultiplicity() == 0) {
+			return "false";
+		}
+		return "true";
+	}
+	
 
 	/**
 	 * Scans the tag values of the association to determine the cascade-style 
