@@ -68,7 +68,7 @@ public class TransformerUtils
 	private static String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
 	
 	public static final String  PK_GENERATOR_SYSTEMWIDE = "NCI_GENERATOR_SYSTEMWIDE.";
-	
+
 	
 	public TransformerUtils(Properties umlModelFileProperties) {
 		try 
@@ -424,11 +424,11 @@ public class TransformerUtils
 		
 		return name;
 	}
-	
+
 	public HashMap<String, String> getPKGeneratorTags(UMLClass table,String fqcn,UMLAttribute classIdAttr) throws GenerationException {
 		HashMap<String, String> pkTags = new HashMap<String, String>();
 		String pkgenClassKey = TV_PK_GENERATOR + DATABASE_TYPE;
-		
+
 		UMLAttribute tableIdAttribute=getMappedColumn(table,fqcn+"."+classIdAttr.getName());
 		Collection<UMLTaggedValue> tableTaggedValues = tableIdAttribute.getTaggedValues();
 		String pkGeneratorClass = getTagValue(tableTaggedValues,pkgenClassKey, 1);
@@ -1655,13 +1655,10 @@ public class TransformerUtils
 	 */
 	public String findCascadeStyle(UMLClass klass, String roleName, UMLAssociation association) throws GenerationException
 	{
-		for (String cascadeStyles : getTagValues(association, TV_NCI_CASCADE_ASSOCIATION)){
-
-			if (cascadeStyles.startsWith(getFQCN(klass)+"."+roleName+"#")){
+		for (String cascadeStyles : getTagValues(association, TV_NCI_CASCADE_ASSOCIATION + "#" + getFQCN(klass)+"."+roleName)){
 
 				List<String> validCascadeStyles = new ArrayList<String>();
 				
-				cascadeStyles = cascadeStyles.substring(cascadeStyles.indexOf("#")+1);
 				for(String cascadeStyle:cascadeStyles.split(",")){
 					validCascadeStyles.add(cascadeStyle.trim());
 				}
@@ -1673,12 +1670,11 @@ public class TransformerUtils
 				}
 
 				return validCascadeStyleSB.toString();
-			}
 		}
 		
 		return "none";
 	}
-	
+
 	public String isFKAttributeNull(UMLAssociationEnd otherEnd) {
 		if (otherEnd.getLowMultiplicity() == 0) {
 			return "false";
@@ -1690,23 +1686,59 @@ public class TransformerUtils
 	/**
 	 * Scans the tag values of the association to determine the cascade-style 
 	 * 
+	 * @param klass
+	 * @param roleName
+	 * @param association
+	 * @return
+	 * @throws GenerationException
+	 */
+	public boolean isLazyLoad(UMLClass klass, String roleName, UMLAssociation association) throws GenerationException
+	{
+		for( String eagerLoadValue : getTagValues(association, TV_NCI_EAGER_LOAD + "#" +getFQCN(klass)+"."+roleName)){
+			if ("true".equalsIgnoreCase(eagerLoadValue) || "yes".equalsIgnoreCase(eagerLoadValue) ){
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Scans the tag values of the association to determine the cascade-style 
+	 * 
 	 * @param association
 	 * @param model
 	 * @param klass
 	 * @return
 	 * @throws GenerationException
 	 */
-	public boolean isLazyLoad(UMLClass klass, String roleName, UMLAssociation association) throws GenerationException
-	{
-		for (String eagerLoadSetting : getTagValues(association, TV_NCI_EAGER_LOAD)){
-			if (eagerLoadSetting.equalsIgnoreCase(getFQCN(klass)+"."+roleName))
-				return false;
-		}
-
-		return true;
+	public static Map<String,String> getValidCascadeStyles(){
+		return CASCADE_STYLES;
 	}
 	
-	public Map<String,String> getValidCascadeStyles(){
-		return CASCADE_STYLES;
+	/**
+	 * Scans the tag values of the association to determine whether or not an inverse-of tag 
+	 * is present in any of the table columns 
+	 * 
+	 * @param klass
+	 * @param key
+	 * @return
+	 * @throws GenerationException
+	 */
+	public static List findInverseSettingColumns(UMLClass klass) throws GenerationException
+	{
+		List<String> attrs = new ArrayList<String>();
+		for(UMLAttribute attr: klass.getAttributes())
+		{
+			for(UMLTaggedValue tv: attr.getTaggedValues())
+			{
+				if (TV_INVERSE_ASSOC_COLUMN.equals(tv.getName()))
+				{
+					attrs.add(attr.getName());
+				}
+			}
+		}
+		
+		return attrs;
 	}
 }

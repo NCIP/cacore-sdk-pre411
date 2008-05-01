@@ -100,7 +100,7 @@ if(level == 0){%>
 							String assocColumnName = transformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd, assocKlass, thisEnd, true);
 							String inverseColumnName =  transformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 							if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-								throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
+								throw new GenerationException("Different columns used for 'implements-association' and 'inverse-of' tags of the same association");
 							String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false";
 							String joinTableName = correlationTable.getName();
 							UMLClass implicitClass = (UMLClass)otherEnd.getUMLElement();
@@ -138,9 +138,14 @@ if(level == 0){%>
 							if (correlationTable == null) //One to Many - No Join Table
 							{
 								UMLClass assocTable = transformerUtils.getTable(assocKlass);
-								String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);							
-								String keyColumnName = transformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd, currentKlass, otherEnd, false);%>
-		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>">
+								String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);
+								String keyColumnName = transformerUtils.findAssociatedColumn(assocTable,assocKlass,thisEnd,currentKlass,otherEnd, false);
+								String assocColumnName = transformerUtils.findAssociatedColumn(assocTable,currentKlass,otherEnd,assocKlass,thisEnd, false);
+								String inverseColumnName =  transformerUtils.findInverseColumnValue(assocTable,assocKlass,thisEnd);
+								if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
+									throw new GenerationException("Different columns used for 'implements-association' and 'inverse-of' tags of the same association");
+								String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false"; %>
+		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>" inverse="<%=inverseValue%>">
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" not-null="<%=notNullFkAttr%>" />
 			<%=emptySpace%><one-to-many class="<%=assocKlassName%>"/>
@@ -150,10 +155,10 @@ if(level == 0){%>
 								String assocColumnName = transformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
 								String inverseColumnName =  transformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 								if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-									throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
+									throw new GenerationException("Different columns used for 'implements-association' and 'inverse-of' of the same association");
 								String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false";
 								String joinTableName = correlationTable.getName();%>
-		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" table="<%=joinTableName%>" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>">
+		<%=emptySpace%><set name="<%=otherEnd.getRoleName()%>" table="<%=joinTableName%>" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>" inverse="<%=inverseValue%>">
 			<%=emptySpace%><cache usage="read-write" />
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
 			<%=emptySpace%><many-to-many class="<%=assocKlassName%>" column="<%=assocColumnName%>" unique="true"/>
@@ -173,7 +178,7 @@ if(level == 0){%>
 									String assocColumnName = transformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
 									String inverseColumnName =  transformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 									if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-										throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
+										throw new GenerationException("Different columns used for 'implements-association' and 'inverse-of' of the same association");
 									String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false";
 									String joinTableName = correlationTable.getName();%>
 			<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
@@ -194,14 +199,14 @@ if(level == 0){%>
 								{
 									if(keyColumnPresent){
 										String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" not-null=<%=notNullFkAttr%> cascade="<%=cascadeStyle%>"/><%
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" not-null="<%=notNullFkAttr%>" cascade="<%=cascadeStyle%>"/><%
 									}else{%>
 		<%=emptySpace%><one-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" property-ref="<%=thisEnd.getRoleName()%>" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>"/><%
 									}
 								}else{
 									if(keyColumnPresent){
 										String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);%>
-		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" not-null=<%=notNullFkAttr%> cascade="<%=cascadeStyle%>"/><%
+		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" not-null="<%=notNullFkAttr%>" cascade="<%=cascadeStyle%>"/><%
 									}else {
 									    throw new GenerationException("One to one unidirectional mapping requires key column to be present in the source class"+transformerUtils.getFQCN(currentKlass));
 									}
@@ -211,7 +216,7 @@ if(level == 0){%>
 								String assocColumnName = transformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
 								String inverseColumnName =  transformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
 								if(!"".equals(inverseColumnName) && !assocColumnName.equals(inverseColumnName))
-									throw new GenerationException("Different columns used for implements-association and inverse-of of the same association");
+									throw new GenerationException("Different columns used for 'implements-association' and 'inverse-of' of the same association");
 								String inverseValue = assocColumnName.equals(inverseColumnName) ?"true":"false";
 								String joinTableName = correlationTable.getName();%>
 		<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
