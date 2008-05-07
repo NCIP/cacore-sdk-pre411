@@ -248,9 +248,9 @@ public interface ApplicationService
 	 * Returns the maximum number of records the <code>ApplicationService</code> has been configured to return at one time. 
 	 * 
 	 * @return
-	 * @throws ApplicationException
+	 * 
 	 */
-	public Integer getMaxRecordsCount() throws ApplicationException;
+	public Integer getMaxRecordsCount(); 
 	
 	/**
 	 * Retrieves an associated object for the example object specified by the <code>source</code> parameter.
