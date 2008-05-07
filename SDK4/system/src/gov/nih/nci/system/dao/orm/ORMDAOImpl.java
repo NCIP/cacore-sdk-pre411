@@ -1,10 +1,5 @@
 package gov.nih.nci.system.dao.orm;
 
-import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.acegi.authentication.CSMAuthenticationProvider;
-import gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor;
-import gov.nih.nci.security.authorization.attributeLevel.UserClassAttributeMapCache;
-import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHelper;
 import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
@@ -16,13 +11,13 @@ import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
+import gov.nih.nci.system.security.helper.SecurityInitializationHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.JDBCException;
@@ -32,6 +27,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -40,72 +36,41 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  */
 public class ORMDAOImpl extends HibernateDaoSupport implements DAO 
 {
-	private static Logger log = Logger.getLogger(ORMDAOImpl.class.getName());
+	protected static Logger log = Logger.getLogger(DAO.class.getName());
+
+	private Configuration config;
+	private SecurityInitializationHelper securityHelper;
 
 	private boolean caseSensitive;
 	private int resultCountPerQuery;
+
 	
-	private Configuration config;
-	
-	private boolean instanceLevelSecurity;
-	private boolean attributeLevelSecurity;
-	
-	private CSMAuthenticationProvider authenticationProvider;
-	
-	public ORMDAOImpl(SessionFactory sessionFactory, Configuration config, boolean caseSensitive, int resultCountPerQuery, boolean instanceLevelSecurity, boolean attributeLevelSecurity, CSMAuthenticationProvider authenticationProvider) {
-		this.config = config;
-		this.setSessionFactory(sessionFactory);
-		this.caseSensitive = caseSensitive;
-		this.resultCountPerQuery = resultCountPerQuery;
-		this.instanceLevelSecurity=instanceLevelSecurity;
-		this.attributeLevelSecurity=attributeLevelSecurity;
-		this.authenticationProvider=authenticationProvider;
+	protected HibernateTemplate createHibernateTemplate(SessionFactory sessionFactory)
+	{
+		if(securityHelper!=null && securityHelper.isSecurityEnabled() && securityHelper.getAuthorizationManager()!=null && securityHelper.isInstanceLevelSecurityEnabled())
+			return new FilterableHibernateTemplate(sessionFactory, new CSMFilterParameterSetter(securityHelper));
+		else
+			return super.createHibernateTemplate(sessionFactory);
 	}
 
-	protected Session getSecuredSession()
-	{
-		Session session = null;
-		if (attributeLevelSecurity)
-		{
-			session = this.getSessionFactory().openSession(new AttributeSecuritySessionInterceptor());
-			String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-			AuthorizationManager authorizationManager = authenticationProvider.getUserDetailsService().authorizationManagerInstance();
-			UserClassAttributeMapCache.setAttributeMap(userName,this.getSessionFactory(), authorizationManager);
-		}
-		else
-			session = getSession(); 
-		
-		if (instanceLevelSecurity)
-		{
-			AuthorizationManager authorizationManager = authenticationProvider.getUserDetailsService().authorizationManagerInstance();
-			String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-			InstanceLevelSecurityHelper.initializeFilters(userName, session, authorizationManager);
-		}
-		return session;
-	}
-	
-	
 	public Response query(Request request) throws DAOException 
 	{
-		Session session = (instanceLevelSecurity || attributeLevelSecurity)?getSecuredSession():getSession();
-
+		Session session = getSession();
 		Object obj = request.getRequest();
 
 		try
 		{
 			log.debug("****** obj: " + obj.getClass());
-			
-			if (obj instanceof DetachedCriteria) {				
+			if (obj instanceof DetachedCriteria) 				
 				return query(request, session, (DetachedCriteria) obj); 	
-			} else if (obj instanceof NestedCriteriaPath) {
+			else if (obj instanceof NestedCriteriaPath)
 				return query(request, session, (NestedCriteriaPath) obj); 	
-			} else if (obj instanceof HQLCriteria){
+			else if (obj instanceof HQLCriteria)
 				return query(request, session, (HQLCriteria) obj);
-			} else if (obj instanceof CQLQuery){
+			else if (obj instanceof CQLQuery)
 				return query(request, session, (CQLQuery) obj);
-			} else
+			else
 				throw new DAOException("Can not determine type of the query");
-
 		} catch (JDBCException ex){
 			log.error("JDBC Exception in ORMDAOImpl ", ex);
 			throw new DAOException("JDBC Exception in ORMDAOImpl ", ex);
@@ -115,17 +80,6 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		} catch(Exception e) {
 			log.error("Exception ", e);
 			throw new DAOException("Exception in ORMDAOImpl ", e);
-		} finally {
-			try
-			{
-				session.clear();
-				session.close();
-			}
-			catch (Exception eSession)
-			{
-				log.error("Could not close the session - "+ eSession.getMessage());
-				throw new DAOException("Could not close the session  " + eSession);
-			}
 		}
 	}
 	
@@ -143,36 +97,24 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	
 	private Response query(Request request, Session session, DetachedCriteria obj) throws Exception
 	{
-		List rs = null;
-		Criteria hCriteria = null;
-		Integer rowCount = null;
-		
-		Integer firstRow = request.getFirstRow();
-		Boolean isCount = request.getIsCount();
-		
 		Response rsp = new Response();
-		
-		hCriteria = ((org.hibernate.criterion.DetachedCriteria)request.getRequest()).getExecutableCriteria(session);
+		Criteria hCriteria = ((org.hibernate.criterion.DetachedCriteria)request.getRequest()).getExecutableCriteria(session);
 		log.info("Detached Criteria Query :"+hCriteria.toString());
 
 		if (hCriteria != null)
 		{
-		    if(isCount != null && isCount.booleanValue())
+		    if(request.getIsCount() != null && request.getIsCount())
 		    {
-		        rowCount = (Integer)hCriteria.setProjection(Projections.rowCount()).uniqueResult();
+		        Integer rowCount = (Integer)hCriteria.setProjection(Projections.rowCount()).uniqueResult();
 				log.debug("DetachedCriteria ORMDAOImpl ===== count = " + rowCount);
 				rsp.setRowCount(rowCount);
 		    }
-		    else if((isCount != null && !isCount.booleanValue()) || isCount == null)
+		    else 
 		    {
-				if(firstRow != null){
-		            hCriteria.setFirstResult(firstRow.intValue());
-
-		        }
-		    
+				if(request.getFirstRow() != null)
+		            hCriteria.setFirstResult(request.getFirstRow());
             	hCriteria.setMaxResults(resultCountPerQuery);
-            	
-		        rs = hCriteria.list();
+		        List rs = hCriteria.list();
 		    	rsp.setRowCount(rs.size());
 		        rsp.setResponse(rs);
 		    }
@@ -181,169 +123,111 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		return rsp;
 	}	
 	
+	//	if (obj instanceof NestedCriteriaPath)
 	private Response query(Request request, Session session, NestedCriteriaPath obj) throws Exception	
 	{
-		List rs = null;
-		Integer rowCount = null;
-		
-		Integer firstRow = request.getFirstRow();
-		Boolean isCount = request.getIsCount();		
-		Query query = null;
-		
-		Response rsp = new Response();
-		
-		log.debug("ORMDAOImpl.query: it is a NestedCriteriaPath Object ....");	
 		NestedCriteria nc = Path2NestedCriteria.createNestedCriteria(obj.getpathString(), obj.getParameters(), request.getClassCache());
 		NestedCriteria2HQL converter = new NestedCriteria2HQL(nc, config, session, caseSensitive);
-		query = converter.translate();
-		log.info("HQL Query :"+query.getQueryString());
-		if (query != null)
-		{
-			if(isCount != null && isCount.booleanValue())
-		    {
-				converter.getCountQuery().setMaxResults(1);
-				log.debug("ORMDAOImpl.  isCount .... .... | converter.getCountQuery() = " + converter.getCountQuery().getQueryString());
-				rowCount = Integer.parseInt(converter.getCountQuery().uniqueResult()+"");
-				log.debug("ORMDAOImpl HQL ===== count = " + rowCount);		
-				rsp.setRowCount(rowCount);
-			}
-			else if((isCount != null && !isCount.booleanValue()) || isCount == null)
-		    {	
-				//TODO :: contact Hibernate as to why implicit query does not work if firstResult/maxResult is set
-		    	if(firstRow != null)
-		    	{
-		    		log.debug("Setting First Row to " + firstRow);
-			        query.setFirstResult(firstRow.intValue());				    		
-		    	}
+		Query query = converter.translate();
 
-		    	query.setMaxResults(resultCountPerQuery);
-
-		    	rs = query.list();
-		    	
-		    	rsp.setRowCount(rs.size());
-		    	rsp.setResponse(rs);
-		    }				
-		}
-		
-		return rsp;
-	}
-	
-	//if (obj instanceof HQLCriteria)
-	private Response query(Request request, Session session, HQLCriteria obj) throws Exception
-	{
-		
-		List rs = null;
-		Integer rowCount = null;
-		
-		Integer firstRow = request.getFirstRow();
-		Boolean isCount = request.getIsCount();	
-		
-		Response rsp = new Response();
-		
-		if(isCount != null && isCount.booleanValue())
-	    {
-			Query hqlQuery = session.createQuery(getCountQuery(((HQLCriteria)obj).getHqlString()));
-			if(obj.getParameters()!=null && obj.getParameters().size()>0)
-			{
-				int count=0;
-				for(Object param:obj.getParameters())
-					hqlQuery.setParameter(count++, param);
-			}
-			hqlQuery.setMaxResults(1);
-			log.debug("HQL Criteria Query : isCount = " + hqlQuery.getQueryString());
-			rowCount = Integer.parseInt(hqlQuery.uniqueResult()+"");
-			log.debug("HQL Criteria Query : count = " + rowCount);		
-			rsp.setRowCount(rowCount);
-			
-		}
-		else if((isCount != null && !isCount.booleanValue()) || isCount == null)
-	    {	
-			Query hqlQuery = session.createQuery(((HQLCriteria)obj).getHqlString());
-			if(obj.getParameters()!=null && obj.getParameters().size()>0)
-			{
-				int count=0;
-				for(Object param:obj.getParameters())
-					hqlQuery.setParameter(count++, param);
-			}
-			log.info("HQL Criteria Query :"+hqlQuery.getQueryString());
-			
-//			TODO :: contact Hibernate as to why implicit query does not work if firstResult/maxResult is set
-	    	if(firstRow != null)
-	    	{
-	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
-	    	}
-	    	
-	    	hqlQuery.setMaxResults(resultCountPerQuery);
-	    	
-	    	rs = hqlQuery.list();
-	    	rsp.setRowCount(rs.size());
-	    	rsp.setResponse(rs);
-	    }	
- 		
-		return rsp;
+		if(request.getIsCount() != null && request.getIsCount())
+			return executeCountQuery(converter.getCountQuery());
+		else
+			return executeResultQuery(request, query);
 	}
 	
 	//if (obj instanceof CQLQuery)
 	private Response query(Request request, Session session, CQLQuery obj) throws Exception	
 	{
-		List rs = null;
-		Integer rowCount = null;
+		CQL2HQL converter = new CQL2HQL(request.getClassCache());
+		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive);
+		return query(request, session, hqlCriteria);		
+	}
+
+	//if (obj instanceof HQLCriteria)
+	private Response query(Request request, Session session, HQLCriteria hqlCriteria) throws Exception
+	{
+		Query hqlQuery = null;
 		
-		Integer firstRow = request.getFirstRow();
-		Boolean isCount = request.getIsCount();
+		if(request.getIsCount() != null && request.getIsCount())
+			hqlQuery = session.createQuery(getCountQuery(hqlCriteria.getHqlString()));
+		else
+			hqlQuery = session.createQuery(hqlCriteria.getHqlString());
+		
+		int i=0;
+		for(Object param: hqlCriteria.getParameters())
+			hqlQuery.setParameter(i++,param );
+		
+
+		if(request.getIsCount() != null && request.getIsCount())
+			return executeCountQuery(hqlQuery);
+		else 
+			return executeResultQuery(request, hqlQuery);
+	}
+	
+	
+	private Response executeCountQuery(Query hqlQuery)
+	{
+		log.info("HQL Query :"+hqlQuery.getQueryString());
+		Response rsp = new Response();
+		hqlQuery.setMaxResults(1);
+		Integer rowCount = Integer.parseInt(hqlQuery.uniqueResult()+"");
+		log.debug("HQL Query : count = " + rowCount);		
+		rsp.setRowCount(rowCount);
+		return rsp;
+	}
+
+	private Response executeResultQuery(Request request, Query hqlQuery)
+	{
+		log.info("HQL Query :"+hqlQuery.getQueryString());
 		
 		Response rsp = new Response();
-		
-		CQL2HQL converter = new CQL2HQL(request.getClassCache());
-		if(isCount != null && isCount.booleanValue())
-	    {
-			HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive); 
-			String hql = hqlCriteria.getHqlString();
-			List params = hqlCriteria.getParameters();
-			log.info("CQL Query :"+hql);
-			Query hqlQuery = session.createQuery(getCountQuery(hql));
-			
-			for(int i = 0; i<params.size();i++)
-				hqlQuery.setParameter(i,params.get(i) );
-
-			hqlQuery.setMaxResults(1);
-			log.debug("CQL Criteria Query : isCount = " + hqlQuery.getQueryString());
-			rowCount = Integer.parseInt(hqlQuery.uniqueResult()+"");
-			log.debug("CQL Criteria Query : count = " + rowCount);		
-			rsp.setRowCount(rowCount);
-		}
-		else if((isCount != null && !isCount.booleanValue()) || isCount == null)
-	    {	
-			HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive); 
-			String hql = hqlCriteria.getHqlString();
-			List params = hqlCriteria.getParameters();
-			log.info("CQL Query :"+hql);
-			Query hqlQuery = session.createQuery(hql);
-			
-			for(int i = 0; i<params.size();i++)
-				hqlQuery.setParameter(i,params.get(i) );
-
-			hqlQuery.setMaxResults(100000);
-			
-//			TODO :: contact Hibernate as to why implicit query does not work if firstResult/maxResult is set
-	    	if(firstRow != null)
-	    	{
-	    		hqlQuery.setFirstResult(firstRow.intValue());				    		
-	    	}
-	    	
-	    	hqlQuery.setMaxResults(resultCountPerQuery);
-	    	
-	    	rs = hqlQuery.list();
-	    	rsp.setRowCount(rs.size());
-	    	rsp.setResponse(rs);
-	    }
-		
-		return rsp;		
+    	if(request.getFirstRow() != null)
+    		hqlQuery.setFirstResult(request.getFirstRow().intValue());				    		
+    	
+    	hqlQuery.setMaxResults(resultCountPerQuery);
+    	
+    	List rs = hqlQuery.list();
+    	rsp.setRowCount(rs.size());
+    	rsp.setResponse(rs);
+		return rsp;
 	}
+	
 	
 	private String getCountQuery(String hql)
 	{
 		return NestedCriteria2HQL.getCountQuery(hql);
 	}
 
+	public boolean isCaseSensitive() {
+		return caseSensitive;
+	}
+
+	public void setCaseSensitive(boolean caseSensitive) {
+		this.caseSensitive = caseSensitive;
+	}
+
+	public Configuration getConfig() {
+		return config;
+	}
+
+	public void setConfig(Configuration config) {
+		this.config = config;
+	}
+
+	public int getResultCountPerQuery() {
+		return resultCountPerQuery;
+	}
+
+	public void setResultCountPerQuery(int resultCountPerQuery) {
+		this.resultCountPerQuery = resultCountPerQuery;
+	}
+
+	public SecurityInitializationHelper getSecurityHelper() {
+		return securityHelper;
+	}
+
+	public void setSecurityHelper(SecurityInitializationHelper securityHelper) {
+		this.securityHelper = securityHelper;
+	}
 }
