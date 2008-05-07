@@ -4,7 +4,6 @@
 
 	<bean name="ApplicationServiceImpl" class="@SERVICE_IMPL@" singleton="true">
 		<constructor-arg ref="ClassCache" index="0"></constructor-arg>
-		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>		
 	</bean>
 
 	<!-- Bean Definitions -->
@@ -17,35 +16,90 @@
 		</property>		
 	</bean>
 	
-	<bean name="SystemProperties" class="java.util.Properties">
+	
+	<bean name="WebSystemProperties" class="java.util.Properties">
 		<constructor-arg>
 			<props>
-				<prop key="caseSensitive">false</prop>
-				<prop key="resultCountPerQuery">1000</prop>
 				<prop key="resultOutputFormatter">resultOutputFormatter.xsl</prop>
 				<prop key="rowCounter">200</prop>
 				<prop key="securityEnabled">@SECURITY_ENABLED@</prop>
-				<prop key="instanceLevelSecurityEnabled">@INSTANCE_LEVEL_SECURITY@</prop>
-				<prop key="attributeLevelSecurityEnabled">@ATTRIBUTE_LEVEL_SECURITY@</prop>				
 			</props>
 		</constructor-arg>
 	</bean>
 
-	<bean id="SystemPropertiesMap" class="java.util.HashMap">
-		<constructor-arg>
-			<map>
-				<!--@SECURITY_START@-->
-				<entry key="AUTHENTICATION_PROVIDER" value-ref="authenticationProvider"/>
-				<!--@SECURITY_END@-->
-			</map>
-		</constructor-arg>
+	<bean name="ORMDAOImpl" class="@DAO_IMPL@">
+		<property name="caseSensitive" value="false"/>
+		<property name="resultCountPerQuery" value="1000"/>
+		<property name="sessionFactory"><ref bean="SessionFactory"/></property>
+		<property name="config"><bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration"/></property>
+		<property name="securityHelper"><ref bean="SecurityInitializationHelper"/></property>
 	</bean>
 	
-	<bean name="ORMDAO" class="@DAO_FACTORY@">
-		<constructor-arg value="hibernate.cfg.xml" index="0"></constructor-arg> <!-- configLocation -->
-		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
-		<constructor-arg ref="SystemPropertiesMap" index="2"></constructor-arg>
+	<bean name="HibernateConfigHolder" class="gov.nih.nci.system.dao.orm.HibernateConfigurationHolder"/>
+	
+	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
+		<property name="configLocation" value="hibernate.cfg.xml"/>
+		<property name="dataSource" ref="DataSource"/>
+		<property name="configHolder"><ref bean="HibernateConfigHolder"/></property>
+		<property name="filterDefinitions">
+			<bean factory-bean="SecurityInitializationHelper" factory-method="getFilters"/>
+		</property>
+		<property name="entityInterceptor">
+			<bean factory-bean="SecurityInitializationHelper" factory-method="getInterceptor"/>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.dialect">@DB_DIALECT@</prop>
+				<prop key="hibernate.max_fetch_depth">1</prop>
+				<prop key="hibernate.cglib.use_reflection_optimizer">false</prop>
+				<prop key="hibernate.jdbc.batch_versioned_data">true</prop>
+				<prop key="hibernate.jdbc.use_streams_for_binary">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+			</props>
+		</property>
 	</bean>
 
+	<bean name="SecurityInitializationHelper" class="gov.nih.nci.system.security.helper.SecurityInitializationHelper">
+		<property name="securityEnabled" value="@SECURITY_ENABLED@"/>
+		<property name="instanceLevelSecurityEnabled" value="@INSTANCE_LEVEL_SECURITY@"/>
+		<property name="attributeLevelSecurityEnabled" value="@ATTRIBUTE_LEVEL_SECURITY@"/>
+		<!--@SECURITY_START@-->
+		<property name="authorizationManager">
+			<bean factory-bean="userDetailsService" factory-method="authorizationManagerInstance"/>
+		</property>
+		<!--@SECURITY_END@-->
+	</bean>		
+
+	<!--@DB_CONNECTION_POOL_START@-->
+	<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="@DB_DRIVER@"/>
+		<property name="url" value="@DB_CONNECTION_URL@"/>
+		<property name="username" value="@DB_USERNAME@"/>
+		<property name="password" value="@DB_PASSWORD@"/>
+	</bean>
+	<!--@DB_CONNECTION_POOL_END@-->
+
+	<!--@DB_JNDI_URL_START@-->
+	<bean id="DataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="@DB_JNDI_URL@"/>
+    </bean>
+    <!--@DB_JNDI_URL_END@-->
 	
+	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory"><ref bean="SessionFactory"/></property>
+	</bean>
+
+	<bean id="ORMDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+	    <property name="transactionManager"><ref bean="HibernateTransactionManager"/></property>
+	    <property name="target"><ref bean="ORMDAOImpl"/></property>
+	    <property name="transactionAttributes">
+	        <props>
+	            <prop key="*">PROPAGATION_REQUIRED</prop>
+	        </props>
+	    </property>
+	</bean>
+
 </beans>
