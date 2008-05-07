@@ -183,7 +183,7 @@ if(level == 0){%>
 									String joinTableName = correlationTable.getName();%>
 			<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
 				<%=emptySpace%><key column="<%=keyColumnName%>" />
-				<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" cascade="<%=cascadeStyle%>"/>
+				<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" class="<%=assocKlassName%>" cascade="<%=cascadeStyle%>"/>
 			<%=emptySpace%></join><%
 								}
 						}else{	//One to One
@@ -221,7 +221,7 @@ if(level == 0){%>
 								String joinTableName = correlationTable.getName();%>
 		<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
-			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" unique="true" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>"/>
+			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" class="<%=assocKlassName%>" unique="true" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>"/>
 		<%=emptySpace%></join><%
 							}
 						}
