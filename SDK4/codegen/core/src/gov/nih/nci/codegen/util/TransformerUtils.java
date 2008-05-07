@@ -70,9 +70,7 @@ public class TransformerUtils
 	public static final String  PK_GENERATOR_SYSTEMWIDE = "NCI_GENERATOR_SYSTEMWIDE.";
 
 	
-	public TransformerUtils(Properties umlModelFileProperties) {
-		try 
-		{
+	public TransformerUtils(Properties umlModelFileProperties,List cascadeStyles) {
 			BASE_PKG_LOGICAL_MODEL = umlModelFileProperties.getProperty("Logical Model") == null ? "" :umlModelFileProperties.getProperty("Logical Model").trim();
 			BASE_PKG_DATA_MODEL = umlModelFileProperties.getProperty("Data Model")==null ? "" : umlModelFileProperties.getProperty("Data Model").trim();
 			
@@ -89,16 +87,10 @@ public class TransformerUtils
 			
 			IDENTITY_GENERATOR_TAG = umlModelFileProperties.getProperty("Identity Generator Tag") == null ? "": umlModelFileProperties.getProperty("Identity Generator Tag").trim();
 			DATABASE_TYPE = umlModelFileProperties.getProperty("Database Type") == null ? "": umlModelFileProperties.getProperty("Database Type").trim();
-			List cascadeStyles = ((List)ObjectFactory.getObject("CascadeStyles"));
+			
 			for (Object cascadeStyle : cascadeStyles){
 				CASCADE_STYLES.put((String) cascadeStyle, (String)cascadeStyle);
 			}
-
-		}
-		catch (GenerationException e) 
-		{
-			log.fatal(e);
-		}
 	}
 	
 	public String getDatabaseType() {
