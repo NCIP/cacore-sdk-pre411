@@ -6,7 +6,7 @@
   <bean id='applicationService' class='gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl'/>
   
   <!-- SDK implementation of the SecurityHelper. -->
-  <bean id='securityHelper' class='gov.nih.nci.system.security.SecurityHelperImpl'/>
+  <bean id='securityHelper' class='gov.nih.nci.system.security.acegi.external.SecurityHelperImpl'/>
   
   <!-- This bean defines a proxy for the protected bean. Notice that -->
   <!-- the id defined above is specified. When an application asks Spring -->
@@ -21,7 +21,7 @@
   </bean>
 
   <!-- This bean specifies which roles are assigned to each user. -->
-  <bean id="userDetailsService" class="gov.nih.nci.security.acegi.authentication.CSMUserDetailsService">
+  <bean id="userDetailsService" class="gov.nih.nci.system.security.acegi.authentication.CSMUserDetailsService">
   	<!-- Specify the Application Context required by CSM -->
 	<property name="csmApplicationContext"><value>acegitest</value></property>
   </bean>
@@ -34,7 +34,7 @@
 <!-- 																					-->    
 
   <!-- This bean specifies which roles are authorized to execute which methods. -->
-  <bean id='securityInterceptor' class='gov.nih.nci.security.acegi.CSMMethodSecurityInterceptor'>
+  <bean id='securityInterceptor' class='gov.nih.nci.system.security.acegi.CSMMethodSecurityInterceptor'>
     <property name='securityHelper' ref='securityHelper'/>
     <property name='authenticationManager' ref='authenticationManager'/>
     <property name='accessDecisionManager' ref='accessDecisionManager'/>
@@ -42,10 +42,10 @@
     <property name='objectDefinitionSource' ref='csmMethodDefinitionSource'/>
    </bean>
   
-  <bean id='csmMethodDefinitionSource' class='gov.nih.nci.security.acegi.authorization.CSMMethodDefinitionSource'>
+  <bean id='csmMethodDefinitionSource' class='gov.nih.nci.system.security.acegi.authorization.CSMMethodDefinitionSource'>
   	<property name='methodMapCache' ref='ehCacheBasedMethodMapCache'/>
   </bean>
-  <bean id='ehCacheBasedMethodMapCache' class='gov.nih.nci.security.acegi.authorization.EhCacheBasedMethodMapCache'>
+  <bean id='ehCacheBasedMethodMapCache' class='gov.nih.nci.system.security.acegi.authorization.EhCacheBasedMethodMapCache'>
 	<property name="cache">
         <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
           <property name="cacheManager">
@@ -72,18 +72,18 @@
     </property>
   </bean>
 
-  <bean id='authenticationProvider' class='gov.nih.nci.security.acegi.authentication.CSMAuthenticationProvider'>
+  <bean id='authenticationProvider' class='gov.nih.nci.system.security.acegi.authentication.CSMAuthenticationProvider'>
     <property name='userDetailsService' ref='userDetailsService'/>
   </bean>
 
-  <bean id='roleVoter' class='gov.nih.nci.security.acegi.authorization.CSMRoleVoter'/>
+  <bean id='roleVoter' class='gov.nih.nci.system.security.acegi.authorization.CSMRoleVoter'/>
   
-  <bean id='afterInvocationManager' class='gov.nih.nci.security.acegi.CSMAfterInvocationProviderManager'>
+  <bean id='afterInvocationManager' class='gov.nih.nci.system.security.acegi.CSMAfterInvocationProviderManager'>
 	 <property name='providers'>
       <list><ref bean='afterInvocationProvider'/></list>
     </property>
  </bean>
 
-  <bean id='afterInvocationProvider' class='gov.nih.nci.security.acegi.CSMAfterInvocationProvider'/>
+  <bean id='afterInvocationProvider' class='gov.nih.nci.system.security.acegi.CSMAfterInvocationProvider'/>
 	 
 </beans>
