@@ -65,7 +65,7 @@ public class HTTPUtils implements Serializable{
 		this.classCache = (ClassCache)ctx.getBean("ClassCache");
 		this.applicationService = (ApplicationService)ctx.getBean("ApplicationServiceImpl");
 		
-		Properties systemProperties = (Properties) ctx.getBean("SystemProperties");
+		Properties systemProperties = (Properties) ctx.getBean("WebSystemProperties");
 		
 		try {
 			String rowCounter = systemProperties.getProperty("rowCounter");

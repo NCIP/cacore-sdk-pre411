@@ -57,7 +57,7 @@ public class HTTPQuery extends HttpServlet {
 		context = config.getServletContext();
 		
 		WebApplicationContext ctx =  WebApplicationContextUtils.getWebApplicationContext(context);
-		Properties systemProperties = (Properties) ctx.getBean("SystemProperties");
+		Properties systemProperties = (Properties) ctx.getBean("WebSystemProperties");
 
 		cacoreStyleSheet = systemProperties.getProperty("resultOutputFormatter");
 		log.debug("cacoreStylesheet: " + cacoreStyleSheet);

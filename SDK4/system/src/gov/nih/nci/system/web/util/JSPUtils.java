@@ -34,7 +34,7 @@ public class JSPUtils {
 		WebApplicationContext ctx = WebApplicationContextUtils
 		.getWebApplicationContext(context);
 		this.classCache = (ClassCache) ctx.getBean("ClassCache");
-		Properties systemProperties = (Properties)ctx.getBean("SystemProperties");
+		Properties systemProperties = (Properties)ctx.getBean("WebSystemProperties");
 		String securityEnabled = (String)systemProperties.getProperty("securityEnabled");
 		secured = "yes".equalsIgnoreCase(securityEnabled) || "true".equalsIgnoreCase(securityEnabled);
 	}
