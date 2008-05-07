@@ -7,6 +7,7 @@ import gov.nih.nci.system.dao.DAO;
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
+import gov.nih.nci.system.dao.orm.ORMDAOImpl;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
@@ -32,7 +33,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	private ClassCache classCache;	
 
-	private Properties systemProperties;
+	private Integer maxRecordCount = 1000;
 	
 	private static Logger log = Logger.getLogger(ApplicationServiceImpl.class.getName());
 
@@ -41,10 +42,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 	 * System properties is also a required parameter used to determine system specific parameters
 	 * 
 	 */
-	public ApplicationServiceImpl(ClassCache classCache, Properties systemProperties)
+	public ApplicationServiceImpl(ClassCache classCache)
 	{
 		this.classCache = classCache;
-		this.systemProperties = systemProperties;
+		List<DAO> daoList = classCache.getDaoList();
+		if(daoList!=null && daoList.size()>0)
+		{
+			DAO dao = daoList.get(0);
+			if(dao instanceof ORMDAOImpl)
+				maxRecordCount = ((ORMDAOImpl)dao).getResultCountPerQuery();
+		}
 	}
 	
 	/**
@@ -204,20 +211,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return query(criteria);
 	}
 	
-	public Integer getMaxRecordsCount() throws ApplicationException {
-		if(systemProperties == null) return 0;
-		
-		String temp = systemProperties.getProperty("resultCountPerQuery");
-		if(temp == null || temp.trim().length() == 0) return 0;
-		
-		try{
-			Integer count = Integer.parseInt(temp);
-			return count;
-		}catch(Exception e)
-		{
-			log.error("Could not determine the Max records count from the configuration");
-		}
-		return 0;
+	public Integer getMaxRecordsCount(){
+		return maxRecordCount;
 	}
 	
 	/**
@@ -270,38 +265,35 @@ public class ApplicationServiceImpl implements ApplicationService {
 	 */
 	protected Response query(Request request) throws ApplicationException
 	{
+		DAO dao = getDAO(request.getDomainObjectName());
 		request.setClassCache(classCache);
-		String domainObjectName = request.getDomainObjectName();
-		if (domainObjectName == null || domainObjectName.equals("")){
-			throw new ApplicationException("No Domain Object name specified in the request; unable to locate corresponding DAO");
-		}
-		
-		DAO dao = classCache.getDAOForClass(request.getDomainObjectName());
-		
-		if(dao == null)
-			throw new ApplicationException("Could not obtain DAO for: "+request.getDomainObjectName());
-		
 		try
 		{
 			return dao.query(request);
 			
 		} catch(DAOException daoException) {
-			log.error("Error while getting and querying DAO",daoException);
+			log.error("Error while querying DAO ",daoException);
 			throw daoException;
-		} catch (ApplicationException e1) {
-			log.fatal("Unable to locate Service Locator :",e1);
-			throw new ApplicationException("Unable to locate Service Locator :",e1);
 		} catch(Exception exception) {
-			log.error("Exception while getting datasource information "+ exception.getMessage());
-			throw new ApplicationException("Exception in Base Delegate while getting datasource information: ", exception);
+			log.error("Error while querying DAO ", exception);
+			throw new ApplicationException("Error while querying DAO: ", exception);
 		}
+	}
+	
+	protected DAO getDAO(String classname) throws ApplicationException
+	{
+		if (classname == null || classname.equals(""))
+			throw new ApplicationException("No Domain Object name specified in the request; unable to locate corresponding DAO");
+		
+		DAO dao = classCache.getDAOForClass(classname);
+		
+		if(dao == null)
+			throw new ApplicationException("Could not obtain DAO for: "+classname);
+		
+		return dao;
 	}
 
 	protected ClassCache getClassCache() {
 		return classCache;
-	}
-
-	protected Properties getSystemProperties() {
-		return systemProperties;
 	}
 }
