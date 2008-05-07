@@ -9,7 +9,6 @@ import gov.nih.nci.system.webservice.util.WSUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.xml.rpc.ServiceException;
@@ -24,31 +23,16 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
 	private static ApplicationService applicationService;	
 	private static ClassCache classCache;
 
-	private static int resultCountPerQuery = 1000;
 	private String version = "4.0";
 	
 	public void destroy() {
 		applicationService = null;
 		classCache = null;
-		resultCountPerQuery = 0;
 	}
 
 	protected void onInit() throws ServiceException {
 		classCache = (ClassCache)getWebApplicationContext().getBean("ClassCache");
 		applicationService = (ApplicationService)getWebApplicationContext().getBean("ApplicationServiceImpl");
-		
-		Properties systemProperties = (Properties) getWebApplicationContext().getBean("SystemProperties");
-		
-		try {
-			String count = systemProperties.getProperty("resultCountPerQuery");
-			log.debug("resultCountPerQuery: " + count);
-			if (count != null) {
-				resultCountPerQuery = Integer.parseInt(count);
-			}
-		} catch (Exception ex) {
-			log.error("Exception initializing resultCountPerQuery: ", ex);
-			throw new ServiceException("Exception initializing resultCountPerQuery: ", ex);
-		}
 	}
 
 	public String getVersion(){
@@ -56,10 +40,10 @@ public class WSQueryImpl extends ServletEndpointSupport implements WSQuery{
     }
 
     public int getRecordsPerQuery(){
-        return resultCountPerQuery;
+        return applicationService.getMaxRecordsCount();
     }
     public int getMaximumRecordsPerQuery(){
-        return resultCountPerQuery;
+        return applicationService.getMaxRecordsCount();
     }
 	
 	public int getTotalNumberOfRecords(String targetClassName, Object criteria) throws Exception{
