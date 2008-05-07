@@ -12,6 +12,7 @@
 	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
 	<property file="${system.dir}/build.properties" prefix="system"  />
 	<property file="${writable-api.dir}/build.properties" prefix="writable-api"  />
+	<property file="${security.dir}/build.properties" prefix="security"  />
 	
 	<!--***********************************************************************
 	*** Import utility script
@@ -93,7 +94,7 @@
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>	
 
-	<condition property="DAO_FACTORY" value="${extension.dao.factory}" else="${sdk.dao.factory}">
+	<condition property="DAO_IMPL" value="${extension.dao.impl}" else="${sdk.dao.impl}">
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>	
 	
@@ -178,7 +179,7 @@
 			<replacefilter token="@DATABASE_TYPE@" value="${DATABASE_TYPE}" />
 			<replacefilter token="@SERVICE_INTERFACE@" value="${SERVICE_INTERFACE}" />
 			<replacefilter token="@SERVICE_IMPL@" value="${SERVICE_IMPL}" />
-			<replacefilter token="@DAO_FACTORY@" value="${DAO_FACTORY}" />
+			<replacefilter token="@DAO_IMPL@" value="${DAO_IMPL}" />
 			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}" />
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
@@ -202,7 +203,7 @@
 		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
 		<delete dir="${output.dir}"/>
 		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
-		<ant antfile="${system.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
+		<ant antfile="${system.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${writable-api.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 	</target>
 
@@ -351,6 +352,7 @@
 			<fileset dir="${system.dir}\${system.dist.dir}">
 				<include name="${system.file.output.client.name}"/>
 				<include name="${system.file.output.core.name}"/>
+				<include name="${security.file.output.security.name}"/>
 			</fileset>
 			<fileset dir="${writable-api.dir}\${writable-api.dist.dir}" includes="*.jar">
 				<exclude name="${read-api-exclude-list}"/>
@@ -360,11 +362,12 @@
 				<include name="acegi*.*"/>
 				<include name="asm*.*"/>
 				<include name="antlr*.*"/>
-				<include name="c3p0*.*"/>
 				<include name="cglib*.*"/>
 				<include name="commons-codec*.*"/>
 				<include name="commons-collection*.*"/>
+				<include name="commons-dbcp*.*"/>
 				<include name="commons-logging*.*"/>
+				<include name="commons-pool*.*"/>
 				<include name="csmapi*.*"/>
 				<include name="clm*.*"/>
 				<include name="dom4j*.*"/>
@@ -512,8 +515,10 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
 				<exclude name="${system.dir}/${system.src.dir}"/>
 				<exclude name="${system.dir}/${system.build.dir}"/>
-				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}"/>
-				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.src.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.build.dir}"/>
+				<exclude name="${security.dir.dir}/${security.src.dir}"/>
+				<exclude name="${security.dir.dir}/${security.build.dir}"/>
 				<exclude name="${junit.dir}"/>
 				<exclude name="${junit.dir}/**/*"/>
 			</zipfileset>
@@ -554,8 +559,10 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build/**/*"/>
 				<exclude name="${system.dir}/${system.src.dir}/**/*"/>
 				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
-				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}/**/*"/>
-				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}/**/*"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.src.dir}/**/*"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.build.dir}/**/*"/>
+				<exclude name="${security.dir.dir}/${security.src.dir}/**/*"/>
+				<exclude name="${security.dir.dir}/${security.build.dir}/**/*"/>
 				<exclude name="bin"/>
 				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
 				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
@@ -563,8 +570,10 @@
 				<exclude name="${codegen.dir}/${codegen.codegen.templates.dir}/build"/>
 				<exclude name="${system.dir}/${system.src.dir}"/>
 				<exclude name="${system.dir}/${system.build.dir}"/>
-				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}"/>
-				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.src.dir}"/>
+				<exclude name="${writable-api.dir.dir}/${writable-api.build.dir}"/>
+				<exclude name="${security.dir.dir}/${security.src.dir}"/>
+				<exclude name="${security.dir.dir}/${security.build.dir}"/>
 				<exclude name="${junit.dir}"/>
 				<exclude name="${junit.dir}/**/*"/>
 			</tarfileset>
