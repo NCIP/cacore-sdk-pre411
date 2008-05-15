@@ -1,7 +1,5 @@
 package gov.nih.nci.system.dao.orm;
 
-import java.util.List;
-
 import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
@@ -12,10 +10,7 @@ import gov.nih.nci.system.query.example.InsertExampleQuery;
 import gov.nih.nci.system.query.example.SearchExampleQuery;
 import gov.nih.nci.system.query.example.UpdateExampleQuery;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Example;
+import java.util.List;
 
 public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 {
@@ -42,8 +37,8 @@ public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 			}
 		} catch (Exception e) {
 			throw new DAOException(e);
-		} finally {
-		}
+		} 
+
 		Response resp = new Response();
 		resp.setResponse(retObj);
 		return resp;
