@@ -1,6 +1,9 @@
 package gov.nih.nci.codegen.util;
 
 import gov.nih.nci.codegen.GenerationException;
+import gov.nih.nci.codegen.validator.HibernateValidatorAttribute;
+import gov.nih.nci.codegen.validator.HibernateValidatorClass;
+import gov.nih.nci.codegen.validator.HibernateValidatorModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -43,34 +46,35 @@ public class TransformerUtils
 	private Set<String> EXCLUDE_PACKAGE_NAMES = new HashSet<String>();
 	private Set<String> EXCLUDE_NAMES = new HashSet<String>();
 	private String DATABASE_TYPE;
-	private static Map<String,String> CASCADE_STYLES = new HashMap();
+	private Map<String,String> CASCADE_STYLES = new HashMap<String,String>();
+	private HibernateValidatorModel hvModel;
 	
-	private static String TV_ID_ATTR_COLUMN = "id-attribute";
-	private static String TV_MAPPED_ATTR_COLUMN = "mapped-attributes";
-	private static String TV_ASSOC_COLUMN = "implements-association";
-	private static String TV_INVERSE_ASSOC_COLUMN = "inverse-of";
-	private static String TV_DISCR_COLUMN = "discriminator";
-	private static String TV_CORRELATION_TABLE = "correlation-table";
-	private static String TV_DOCUMENTATION = "documentation";
-	private static String TV_DESCRIPTION = "description";
-	private static String TV_LAZY_LOAD = "lazy-load";
-	private static String TV_TYPE="type";
-	private static String TV_MAPPED_COLLECTION_TABLE = "mapped-collection-table";
-	private static String TV_MAPPED_ELEMENT_COLUMN = "mapped-element";
-	private static String TV_CADSR_PUBLICID = "CADSR_ConceptualDomainPublicID";
-	private static String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
-	private static String TV_NCI_CASCADE_ASSOCIATION = "NCI_CASCADE_ASSOCIATION";
-	private static String TV_NCI_EAGER_LOAD = "NCI_EAGER_LOAD";
+	private static final String TV_ID_ATTR_COLUMN = "id-attribute";
+	private static final String TV_MAPPED_ATTR_COLUMN = "mapped-attributes";
+	private static final String TV_ASSOC_COLUMN = "implements-association";
+	private static final String TV_INVERSE_ASSOC_COLUMN = "inverse-of";
+	private static final String TV_DISCR_COLUMN = "discriminator";
+	private static final String TV_CORRELATION_TABLE = "correlation-table";
+	private static final String TV_DOCUMENTATION = "documentation";
+	private static final String TV_DESCRIPTION = "description";
+	private static final String TV_LAZY_LOAD = "lazy-load";
+	private static final String TV_TYPE="type";
+	private static final String TV_MAPPED_COLLECTION_TABLE = "mapped-collection-table";
+	private static final String TV_MAPPED_ELEMENT_COLUMN = "mapped-element";
+	private static final String TV_CADSR_PUBLICID = "CADSR_ConceptualDomainPublicID";
+	private static final String TV_CADSR_VERSION = "CADSR_ConceptualDomainVersion";
+	private static final String TV_NCI_CASCADE_ASSOCIATION = "NCI_CASCADE_ASSOCIATION";
+	private static final String TV_NCI_EAGER_LOAD = "NCI_EAGER_LOAD";
 	public static final String  TV_PK_GENERATOR = "NCI_GENERATOR.";
 	public static final String  TV_PK_GENERATOR_PROPERTY = "NCI_GENERATOR_PROPERTY";
 	
-	private static String STEREO_TYPE_TABLE = "table";
-	private static String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
+	private static final String STEREO_TYPE_TABLE = "table";
+	private static final String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
 	
 	public static final String  PK_GENERATOR_SYSTEMWIDE = "NCI_GENERATOR_SYSTEMWIDE.";
 
 	
-	public TransformerUtils(Properties umlModelFileProperties,List cascadeStyles) {
+	public TransformerUtils(Properties umlModelFileProperties,List cascadeStyles, HibernateValidatorModel hvModel) {
 			BASE_PKG_LOGICAL_MODEL = umlModelFileProperties.getProperty("Logical Model") == null ? "" :umlModelFileProperties.getProperty("Logical Model").trim();
 			BASE_PKG_DATA_MODEL = umlModelFileProperties.getProperty("Data Model")==null ? "" : umlModelFileProperties.getProperty("Data Model").trim();
 			
@@ -91,7 +95,11 @@ public class TransformerUtils
 			for (Object cascadeStyle : cascadeStyles){
 				CASCADE_STYLES.put((String) cascadeStyle, (String)cascadeStyle);
 			}
-	}
+			
+			this.hvModel = hvModel;
+			log.debug("HibernateValidatorModel: " + hvModel);
+
+		}
 	
 	public String getDatabaseType() {
 		return DATABASE_TYPE;
@@ -354,8 +362,10 @@ public class TransformerUtils
 				importList.add("java.util.Collection");
 		}
 		
+		importList.addAll(getHibernateValidatorConstraintImports(klass));
+		
 		for(String importClass:importList)
-			sb.append("import ").append(importClass).append(";");
+			sb.append("import ").append(importClass).append(";\n");
 
 		return sb.toString();
 	}
@@ -1493,7 +1503,7 @@ public class TransformerUtils
 	public String getGetterMethodJavaDocs(UMLAttribute attr) {
 		StringBuilder doc = new StringBuilder();
 		doc.append("/**");
-		doc.append("\n	* Retreives the value of "+attr.getName()+" attribute");
+		doc.append("\n	* Retrieves the value of the "+attr.getName()+" attribute");
 		doc.append("\n	* @return ").append(attr.getName());
 		doc.append("\n	**/\n");
 		return doc.toString();
@@ -1511,7 +1521,7 @@ public class TransformerUtils
 		UMLAssociationEnd otherEnd = getOtherEnd(klass, assoc.getAssociationEnds());
 		StringBuilder doc = new StringBuilder();
 		doc.append("/**");
-		doc.append("\n	* Retreives the value of "+otherEnd.getRoleName()+" attribue");
+		doc.append("\n	* Retrieves the value of the "+otherEnd.getRoleName()+" attribue");
 		doc.append("\n	* @return ").append(otherEnd.getRoleName());
 		doc.append("\n	**/\n");
 		return doc.toString();
@@ -1704,7 +1714,7 @@ public class TransformerUtils
 	 * @return
 	 * @throws GenerationException
 	 */
-	public static Map<String,String> getValidCascadeStyles(){
+	public Map<String,String> getValidCascadeStyles(){
 		return CASCADE_STYLES;
 	}
 	
@@ -1717,7 +1727,7 @@ public class TransformerUtils
 	 * @return
 	 * @throws GenerationException
 	 */
-	public static List findInverseSettingColumns(UMLClass klass) throws GenerationException
+	public List findInverseSettingColumns(UMLClass klass) throws GenerationException
 	{
 		List<String> attrs = new ArrayList<String>();
 		for(UMLAttribute attr: klass.getAttributes())
@@ -1733,4 +1743,38 @@ public class TransformerUtils
 		
 		return attrs;
 	}
+	
+	
+	public String getHibernateValidatorConstraints(UMLClass klass){
+		
+		HibernateValidatorClass hvClass = hvModel.getClass(getFQCN(klass));
+		
+		if (hvClass==null) return "";
+		
+		return "\t" + hvClass.getConstraintAnnotationString();
+
+	}
+	
+	public String getHibernateValidatorConstraints(UMLClass klass,UMLAttribute attr){
+		
+		HibernateValidatorClass hvClass = hvModel.getClass(getFQCN(klass));
+		
+		if (hvClass==null) return "";
+		
+		HibernateValidatorAttribute hvAttr =  hvClass.getAttribute(attr.getName());
+		
+		if (hvAttr==null) return "";
+
+		return "\t" + hvAttr.getConstraintAnnotationString();
+	}
+	
+	private Set<String> getHibernateValidatorConstraintImports(UMLClass klass){
+		
+		HibernateValidatorClass hvClass = hvModel.getClass(getFQCN(klass));
+		
+		if (hvClass==null) return new HashSet<String>();
+		
+		return hvClass.getConstraintImports();
+	}
+
 }

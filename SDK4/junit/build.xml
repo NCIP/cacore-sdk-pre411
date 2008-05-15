@@ -16,6 +16,7 @@
 	<property name="report.dir" value="report/${PROJECT_NAME}" />
 	<property name="report.dir.thick-client" value="${report.dir}/thick-client" />
 	<property name="report.dir.remote-client" value="${report.dir}/remote-client" />
+	<property name="report.dir.hv-client" value="${report.dir}/hibernate-validator-client" />	
 	<property name="report.dir.ws-client" value="${report.dir}/ws-client" />
 	<property name="report.dir.xsd-client" value="${report.dir}/xsd-client" />
 	<property name="report.dir.xml-mapping-client" value="${report.dir}/xml-mapping-client" />
@@ -201,6 +202,7 @@
 			<exclude name="**/*XSD*.java" />
 			<exclude name="**/*XMLMapping*.java" />
 			<exclude name="**/*HBMMapping*.java" />
+			<exclude name="**/*HibernateValidator*.java" />
 			<exclude name="**/*XMLData*.java" />
 			<exclude name="**/*Security*.java" />
 			<exclude name="**/test/gov/nih/nci/codegen/**/*.java" /> <!-- excluding codegen test classes -->		 	
@@ -302,6 +304,19 @@
 		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java" />
 		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}" />
+	</target>
+	
+
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnits for Hibernate Validator client 	                     -->
+	<!-- ************************************************************************************************-->
+
+	<target name="runHibernateValidatorClientTest" depends="clean-classes,createDir,runHibernateValidatorClientJUnit,stop" description="Run JUnits for Web Services Client" />
+
+	<target name="runHibernateValidatorClientJUnit">
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*HibernateValidator*.java" />
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.hv-client}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.hv-client}" />
 	</target>
 
 	<!-- ************************************************************************************************-->

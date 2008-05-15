@@ -6,6 +6,7 @@ package <%=transformerUtils.getFullPackageName(klass)%>;
 <%=transformerUtils.getImports(klass)%>
 import java.io.Serializable;
 <%=transformerUtils.getJavaDocs(klass)%>
+<%=transformerUtils.getHibernateValidatorConstraints(klass)%>
 public<%=transformerUtils.isAbstract(klass)? " abstract" : "" %> class <%=klass.getName()%> <%=transformerUtils.getSuperClassString(klass)%> implements Serializable<%=transformerUtils.getInterfaceString(klass)%>
 {
 	/**
@@ -15,6 +16,7 @@ public<%=transformerUtils.isAbstract(klass)? " abstract" : "" %> class <%=klass.
 
 	<%for(UMLAttribute attr:klass.getAttributes()){%>
 	<%=transformerUtils.getJavaDocs(attr)%>
+	<%=transformerUtils.getHibernateValidatorConstraints(klass,attr)%>
 	<%=attr.getVisibility().getName()%> <%=transformerUtils.getDataType(attr)%> <%=attr.getName()%>;
 	<%=transformerUtils.getGetterMethodJavaDocs(attr)%>
 	public <%=transformerUtils.getDataType(attr)%> <%=transformerUtils.getGetterMethodName(attr)%>(){

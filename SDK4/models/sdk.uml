@@ -97,10 +97,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon May 05 09:28:00 PDT 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu May 15 13:54:37 PDT 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-05-05 16:35:22 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-05-15 22:42:06 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -13844,6 +13844,300 @@
                     </UML:Operation>
                   </UML:Classifier.feature>
                 </UML:Class>
+                <UML:Class xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E1'
+                  name = 'ALL_VALIDATION_TYPE' visibility = 'public' isSpecification = 'false'
+                  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' isActive = 'false'>
+                  <UML:ModelElement.clientDependency>
+                    <UML:Dependency xmi.idref = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000167D'/>
+                  </UML:ModelElement.clientDependency>
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_ster_0'/>
+                  </UML:ModelElement.stereotype>
+                  <UML:Classifier.feature>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E2'
+                      name = 'ID' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000162A'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.id</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid0'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Operation xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E7'
+                      name = 'PK_ALL_VALIDATION_TYPE' visibility = 'public' isSpecification = 'false'
+                      ownerScope = 'instance' isQuery = 'false' concurrency = 'sequential' isRoot = 'false'
+                      isLeaf = 'false' isAbstract = 'false'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_2_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:BehavioralFeature.parameter>
+                        <UML:Parameter xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E8'
+                          name = 'ID' isSpecification = 'false' kind = 'in'>
+                          <UML:Parameter.type>
+                            <UML:DataType xmi.idref = 'eaxmiid0'/>
+                          </UML:Parameter.type>
+                        </UML:Parameter>
+                      </UML:BehavioralFeature.parameter>
+                    </UML:Operation>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E9'
+                      name = 'EMAIL' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000162B'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.email</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015EE'
+                      name = 'LENGTH' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000162C'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.length</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015F3'
+                      name = 'MAX_NUMERIC' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000162D'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.maxNumeric</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid0'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015F8'
+                      name = 'MAX_STRING' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000162E'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.maxString</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015FD'
+                      name = 'MIN_NUMERIC' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000162F'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.minNumeric</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid0'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001602'
+                      name = 'MIN_STRING' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001630'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.minString</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001607'
+                      name = 'NOT_NULL' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001631'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.notNull</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000160C'
+                      name = 'NOT_EMPTY' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001632'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.notEmpty</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001611'
+                      name = 'PAST' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001633'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.past</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid4'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001616'
+                      name = 'FUTURE' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001634'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.future</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid4'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000161B'
+                      name = 'RANGE_NUMERIC' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001635'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.rangeNumeric</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid0'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001620'
+                      name = 'RANGE_STRING' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001636'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.rangeString</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                    <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001625'
+                      name = 'PATTERN' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+                      changeability = 'changeable' targetScope = 'instance'>
+                      <UML:ModelElement.stereotype>
+                        <UML:Stereotype xmi.idref = 'EAID_05D28ABC_F678_4c6a_AA5C_513217EB2E68_fix_2_fix_0_fix_ster_0'/>
+                      </UML:ModelElement.stereotype>
+                      <UML:ModelElement.taggedValue>
+                        <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001637'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType.pattern</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:1121acba21f:-8000:0000000000003190'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                      </UML:ModelElement.taggedValue>
+                      <UML:StructuralFeature.type>
+                        <UML:DataType xmi.idref = 'eaxmiid2'/>
+                      </UML:StructuralFeature.type>
+                    </UML:Attribute>
+                  </UML:Classifier.feature>
+                </UML:Class>
               </UML:Namespace.ownedElement>
             </UML:Package>
             <UML:Package xmi.id = 'EAPK_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077' name = 'Logical Model'
@@ -19331,6 +19625,128 @@
                                               </UML:Dependency.client>
                                               <UML:Dependency.supplier>
                                                 <UML:Class xmi.idref = '-64--88-1-103-e020c9:119a2e238ef:-8000:000000000000158D'/>
+                                              </UML:Dependency.supplier>
+                                            </UML:Dependency>
+                                          </UML:Namespace.ownedElement>
+                                        </UML:Package>
+                                        <UML:Package xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001639'
+                                          name = 'validationtype' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+                                          isAbstract = 'false'>
+                                          <UML:Namespace.ownedElement>
+                                            <UML:Class xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000163A'
+                                              name = 'AllValidationType' visibility = 'public' isSpecification = 'false'
+                                              isRoot = 'false' isLeaf = 'false' isAbstract = 'false' isActive = 'false'>
+                                              <UML:Classifier.feature>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000163B'
+                                                  name = 'id' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001560'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001640'
+                                                  name = 'email' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001645'
+                                                  name = 'future' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D50C9E68_E240_456a_A166_F1706281B491'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000164A'
+                                                  name = 'length' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000164F'
+                                                  name = 'maxNumeric' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001560'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001654'
+                                                  name = 'maxString' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001659'
+                                                  name = 'minNumeric' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = '-64--88-1-103-888e6c:118f3faa956:-8000:0000000000001560'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000165F'
+                                                  name = 'minString' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001664'
+                                                  name = 'notNull' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001669'
+                                                  name = 'notEmpty' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000166E'
+                                                  name = 'past' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D50C9E68_E240_456a_A166_F1706281B491'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001673'
+                                                  name = 'rangeString' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:0000000000001678'
+                                                  name = 'rangeNumeric' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_61D84993_837B_48c3_9F63_E3020F52FA13'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                                <UML:Attribute xmi.id = '-64--88-1-103-888e6c:119ee5b5ca6:-8000:0000000000001612'
+                                                  name = 'pattern' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
+                                                  changeability = 'changeable' targetScope = 'instance'>
+                                                  <UML:StructuralFeature.type>
+                                                    <UML:Class xmi.idref = 'EAID_D1A51FE0_90DA_4977_B520_F3A871CBA44E'/>
+                                                  </UML:StructuralFeature.type>
+                                                </UML:Attribute>
+                                              </UML:Classifier.feature>
+                                            </UML:Class>
+                                            <UML:Dependency xmi.id = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000167D'
+                                              name = 'ALL_VALIDATION_TYPE -&gt; AllValidationType' isSpecification = 'false'>
+                                              <UML:ModelElement.stereotype>
+                                                <UML:Stereotype xmi.idref = 'eaxmiid6'/>
+                                              </UML:ModelElement.stereotype>
+                                              <UML:Dependency.client>
+                                                <UML:Class xmi.idref = '-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E1'/>
+                                              </UML:Dependency.client>
+                                              <UML:Dependency.supplier>
+                                                <UML:Class xmi.idref = '-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000163A'/>
                                               </UML:Dependency.supplier>
                                             </UML:Dependency>
                                           </UML:Namespace.ownedElement>
@@ -59086,6 +59502,591 @@
               y="472" />
       <lineto x="608"
               y="472" />
+    </path>
+  </group>
+  <group name="Fig13"
+       description="org.argouml.uml.diagram.static_structure.ui.FigClass[56, 640, 258, 267]pathVisible=false;operationsVisible=true;attributesVisible=true"
+       href="-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E1"
+       fill="1"
+       fillcolor="white"
+       stroke="1"
+       strokecolor="black"
+  >
+    <private>
+    </private>
+    
+    <rectangle name="Fig13.0"
+      x="56"
+      y="640"
+      width="258"
+      height="267"
+      fill="1"
+      fillcolor="white"
+      stroke="0"
+      strokecolor="black"
+    />
+    <group name="Fig13.1"
+         description="org.argouml.uml.diagram.ui.FigStereotypesCompartment[56, 640, 258, 16]"
+         href="-64--88-1-103-888e6c:119ee0f3d29:-8000:00000000000015E1"
+         fill="1"
+         fillcolor="white"
+         stroke="1"
+         strokecolor="black"
+    >
+      <private>
+      </private>
+      
+      <rectangle name="Fig13.1.0"
+        x="56"
+        y="640"
+        width="258"
+        height="16"
+        fill="1"
+        fillcolor="white"
+        stroke="1"
+        strokecolor="black"
+      />
+      <text name="Fig13.1.1"
+        x="57"
+        y="641"
+        fill="1"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;table&gt;&gt;</text>
+    </group>
+    <text name="Fig13.2"
+      x="56"
+      y="656"
+      fill="1"
+      fillcolor="white"
+      stroke="0"
+      strokecolor="red"
+      font="Dialog"
+      textsize="10"
+    >ALL_VALIDATION_TYPE</text>
+    <group name="Fig13.3"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[57, 884, 257, 22]"
+         fill="1"
+         fillcolor="white"
+         stroke="0"
+         strokecolor="black"
+    >
+      <private>
+      </private>
+      
+      <rectangle name="Fig13.3.0"
+        x="57"
+        y="884"
+        width="257"
+        height="22"
+        fill="1"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+      />
+      <path name="Fig13.3.1"
+        description="org.argouml.uml.diagram.ui.FigFeaturesCompartment$FigSeperator"
+        fill="1"
+        fillcolor="white"
+        stroke="1"
+        strokecolor="black"
+      >
+        <moveto x="57"
+                y="884" />
+        <lineto x="314"
+                y="884" />
+      </path>
+      <text name="Fig13.3.2"
+        x="57"
+        y="885"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;PK&gt;&gt; PK_ALL_VALIDATION_TYPE(ID : NUMBER)</text>
+    </group>
+    <group name="Fig13.4"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[57, 678, 257, 205]"
+         fill="1"
+         fillcolor="white"
+         stroke="0"
+         strokecolor="black"
+    >
+      <private>
+      </private>
+      
+      <rectangle name="Fig13.4.0"
+        x="57"
+        y="678"
+        width="257"
+        height="205"
+        fill="1"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+      />
+      <path name="Fig13.4.1"
+        description="org.argouml.uml.diagram.ui.FigFeaturesCompartment$FigSeperator"
+        fill="1"
+        fillcolor="white"
+        stroke="1"
+        strokecolor="black"
+      >
+        <moveto x="57"
+                y="678" />
+        <lineto x="314"
+                y="678" />
+      </path>
+      <text name="Fig13.4.2"
+        x="57"
+        y="679"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; ID : NUMBER</text>
+      <text name="Fig13.4.3"
+        x="57"
+        y="693"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; EMAIL : VARCHAR2</text>
+      <text name="Fig13.4.4"
+        x="57"
+        y="707"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; LENGTH : VARCHAR2</text>
+      <text name="Fig13.4.5"
+        x="57"
+        y="721"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; MAX_NUMERIC : NUMBER</text>
+      <text name="Fig13.4.6"
+        x="57"
+        y="735"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; MAX_STRING : VARCHAR2</text>
+      <text name="Fig13.4.7"
+        x="57"
+        y="749"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; MIN_NUMERIC : NUMBER</text>
+      <text name="Fig13.4.8"
+        x="57"
+        y="763"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; MIN_STRING : VARCHAR2</text>
+      <text name="Fig13.4.9"
+        x="57"
+        y="777"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; NOT_NULL : VARCHAR2</text>
+      <text name="Fig13.4.10"
+        x="57"
+        y="791"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; NOT_EMPTY : VARCHAR2</text>
+      <text name="Fig13.4.11"
+        x="57"
+        y="805"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; PAST : DATE</text>
+      <text name="Fig13.4.12"
+        x="57"
+        y="819"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; FUTURE : DATE</text>
+      <text name="Fig13.4.13"
+        x="57"
+        y="833"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; RANGE_NUMERIC : NUMBER</text>
+      <text name="Fig13.4.14"
+        x="57"
+        y="847"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; RANGE_STRING : VARCHAR2</text>
+      <text name="Fig13.4.15"
+        x="57"
+        y="861"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >&lt;&lt;column&gt;&gt; PATTERN : VARCHAR2</text>
+    </group>
+    <rectangle name="Fig13.5"
+      x="56"
+      y="640"
+      width="258"
+      height="267"
+      fill="0"
+      fillcolor="white"
+      stroke="1"
+      strokecolor="black"
+    />
+  </group>
+  <group name="Fig14"
+       description="org.argouml.uml.diagram.static_structure.ui.FigClass[600, 640, 116, 249]pathVisible=false;operationsVisible=true;attributesVisible=true"
+       href="-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000163A"
+       fill="1"
+       fillcolor="white"
+       stroke="1"
+       strokecolor="black"
+  >
+    <private>
+    </private>
+    
+    <rectangle name="Fig14.0"
+      x="600"
+      y="640"
+      width="116"
+      height="249"
+      fill="1"
+      fillcolor="white"
+      stroke="0"
+      strokecolor="black"
+    />
+    <group name="Fig14.1"
+         description="org.argouml.uml.diagram.ui.FigStereotypesCompartment[600, 640, 116, 2]"
+         href="-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000163A"
+         fill="1"
+         fillcolor="white"
+         stroke="1"
+         strokecolor="black"
+    >
+      <private>
+      </private>
+      
+      <rectangle name="Fig14.1.0"
+        x="600"
+        y="640"
+        width="116"
+        height="2"
+        fill="1"
+        fillcolor="white"
+        stroke="1"
+        strokecolor="black"
+      />
+    </group>
+    <text name="Fig14.2"
+      x="600"
+      y="642"
+      fill="1"
+      fillcolor="white"
+      stroke="0"
+      strokecolor="red"
+      font="Dialog"
+      textsize="10"
+    >AllValidationType</text>
+    <group name="Fig14.3"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[601, 869, 115, 20]"
+         fill="1"
+         fillcolor="white"
+         stroke="0"
+         strokecolor="black"
+    >
+      <private>
+      </private>
+      
+      <rectangle name="Fig14.3.0"
+        x="601"
+        y="869"
+        width="115"
+        height="20"
+        fill="1"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+      />
+      <path name="Fig14.3.1"
+        description="org.argouml.uml.diagram.ui.FigFeaturesCompartment$FigSeperator"
+        fill="1"
+        fillcolor="white"
+        stroke="1"
+        strokecolor="black"
+      >
+        <moveto x="601"
+                y="869" />
+        <lineto x="716"
+                y="869" />
+      </path>
+    </group>
+    <group name="Fig14.4"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[601, 664, 115, 204]"
+         fill="1"
+         fillcolor="white"
+         stroke="0"
+         strokecolor="black"
+    >
+      <private>
+      </private>
+      
+      <rectangle name="Fig14.4.0"
+        x="601"
+        y="664"
+        width="115"
+        height="204"
+        fill="1"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+      />
+      <path name="Fig14.4.1"
+        description="org.argouml.uml.diagram.ui.FigFeaturesCompartment$FigSeperator"
+        fill="1"
+        fillcolor="white"
+        stroke="1"
+        strokecolor="black"
+      >
+        <moveto x="601"
+                y="664" />
+        <lineto x="716"
+                y="664" />
+      </path>
+      <text name="Fig14.4.2"
+        x="601"
+        y="665"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >id : Integer</text>
+      <text name="Fig14.4.3"
+        x="601"
+        y="679"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >email : String</text>
+      <text name="Fig14.4.4"
+        x="601"
+        y="693"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >future : Date</text>
+      <text name="Fig14.4.5"
+        x="601"
+        y="707"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >length : String</text>
+      <text name="Fig14.4.6"
+        x="601"
+        y="721"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >maxNumeric : Integer</text>
+      <text name="Fig14.4.7"
+        x="601"
+        y="735"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >maxString : String</text>
+      <text name="Fig14.4.8"
+        x="601"
+        y="749"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >minNumeric : Integer</text>
+      <text name="Fig14.4.9"
+        x="601"
+        y="763"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >minString : String</text>
+      <text name="Fig14.4.10"
+        x="601"
+        y="777"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >notNull : String</text>
+      <text name="Fig14.4.11"
+        x="601"
+        y="791"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >notEmpty : String</text>
+      <text name="Fig14.4.12"
+        x="601"
+        y="805"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >past : Date</text>
+      <text name="Fig14.4.13"
+        x="601"
+        y="819"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >rangeString : String</text>
+      <text name="Fig14.4.14"
+        x="601"
+        y="833"
+        fill="0"
+        fillcolor="white"
+        stroke="1"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >rangeNumeric : Integer</text>
+      <text name="Fig14.4.15"
+        x="601"
+        y="847"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        font="Dialog"
+        textsize="10"
+      >pattern : String</text>
+    </group>
+    <rectangle name="Fig14.5"
+      x="600"
+      y="640"
+      width="116"
+      height="249"
+      fill="0"
+      fillcolor="white"
+      stroke="1"
+      strokecolor="black"
+    />
+  </group>
+  <group name="Fig15"
+       description="org.argouml.uml.diagram.ui.FigDependency"
+       href="-64--88-1-103-888e6c:119ee0f3d29:-8000:000000000000167D"
+       stroke="1"
+       strokecolor="black"
+  >
+    <private>
+      sourcePortFig="Fig13.0"
+      destPortFig="Fig14.0"
+      sourceFigNode="Fig13"
+      destFigNode="Fig14"
+    </private>
+    <path name="Fig15.0"
+      description="org.tigris.gef.presentation.FigPoly"
+      fill="0"
+      fillcolor="white"
+      stroke="1"
+      strokecolor="black"
+    >
+      <moveto x="314"
+              y="768" />
+      <lineto x="600"
+              y="768" />
     </path>
   </group>
 </pgml>
