@@ -38,7 +38,7 @@
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.system.dao.orm.HibernateConfigurationHolder"/>
 	
 	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
-		<property name="configLocation" value="hibernate.cfg.xml"/>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
 		<property name="dataSource" ref="DataSource"/>
 		<property name="configHolder"><ref bean="HibernateConfigHolder"/></property>
 		<property name="filterDefinitions">
