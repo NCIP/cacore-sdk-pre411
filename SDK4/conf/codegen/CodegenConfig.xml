@@ -14,6 +14,7 @@
 				<ref bean="LogicalModelValidator" />
 				<ref bean="ModelMappingValidator" />
 				<ref bean="PKGeneratorValidator" />
+				<ref bean="WritableApiValidator" />				
 			</list>
 		</constructor-arg>
 		<constructor-arg index="2">
@@ -90,6 +91,11 @@
 	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator">
 		<property name="enabled" value="@VALIDATE_MODEL_MAPPING@"/>
 		<property name="name" value="Model Mapping Validator"/>		
+		<property name="transformerUtils" ref="TransformerUtils"></property>
+	</bean>
+	<bean name="WritableApiValidator" class="gov.nih.nci.codegen.validator.WritableApiValidator">
+		<property name="enabled" value="@VALIDATE_WRITABLE_API_EXTENSION@" />
+		<property name="name" value="Writable Api Validator" />
 		<property name="transformerUtils" ref="TransformerUtils"></property>
 	</bean>
 
