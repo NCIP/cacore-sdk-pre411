@@ -45,7 +45,7 @@ public class PKGeneratorValidator implements Validator {
 	}
 
 	public Boolean isEnabled() {
-		return true;
+		return enabled;
 	}
 	
 	public GeneratorErrors validate(UMLModel model) {
