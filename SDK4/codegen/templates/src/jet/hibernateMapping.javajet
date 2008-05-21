@@ -14,11 +14,11 @@ if(level == 0){%>
 <hibernate-mapping package="<%=transformerUtils.getFullPackageName(klass)%>" auto-import="false" default-cascade="none">
 	<class name="<%=klass.getName()%>" table="<%=table.getName()%>" lazy="true" polymorphism="<%=polymorphismAttr%>" abstract="<%=abstractModifier%>">
 		<cache usage="read-write" />
-		<id name="<%=idAttr.getName()%>" type="<%=transformerUtils.getHibernateDataType(klass,idAttr)%>" column="<%=transformerUtils.getMappedColumnName(table,fqcn+"."+idAttr.getName())%>">
-		<%java.util.HashMap<String,String> pkGeneratorTags=transformerUtils.getPKGeneratorTags(table,fqcn,idAttr);
+		<id name="<%=idAttr.getName()%>" type="<%=transformerUtils.getHibernateDataType(klass,idAttr)%>" column="<%=transformerUtils.getMappedColumnName(table,fqcn+"."+idAttr.getName())%>"><%
+		java.util.HashMap<String,String> pkGeneratorTags=transformerUtils.getPKGeneratorTags(table,fqcn,idAttr);
 		  String pkSystemwideGeneratorTag=pkGeneratorTags.get(transformerUtils.PK_GENERATOR_SYSTEMWIDE+transformerUtils.getDatabaseType());
 		  if(pkSystemwideGeneratorTag!=null){%>
-					<%=pkSystemwideGeneratorTag%><%
+			<%=pkSystemwideGeneratorTag%><%
 		  }else{%>
 			<generator class="<%=pkGeneratorTags.get(transformerUtils.TV_PK_GENERATOR+transformerUtils.getDatabaseType())%>"><%
 					java.util.Iterator itr=pkGeneratorTags.keySet().iterator();
@@ -26,11 +26,10 @@ if(level == 0){%>
 						String key=(String)itr.next();
 						if(!key.equals(transformerUtils.TV_PK_GENERATOR+transformerUtils.getDatabaseType())){
 		    			String value=(String)pkGeneratorTags.get(key);%>	
-		 			<param name="<%=key%>"><%=value%></param><%}
+				<param name="<%=key%>"><%=value%></param><%}
 					}%>
-      		</generator>
-			<%}
-			%>			
+			</generator><%
+			}%>			
 		</id><%
 		if(discriminatorColumnName!=null && !discriminatorColumnName.equals("")){%>
 		<%=emptySpace%><discriminator column="<%=discriminatorColumnName%>" type="string"/><%
@@ -165,15 +164,15 @@ if(level == 0){%>
 		<%=emptySpace%></set><%
 							}
 						}else if(transformerUtils.isMany2One(thisEnd,otherEnd)){
+								String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);
 								UMLClass correlationTable = transformerUtils.findCorrelationTable(association, model, assocKlass, false);
 								if (correlationTable == null) //Many to One - No Join Table
-								{
-									String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);	
+								{	
 									String lazyValue = lazy == true ? "proxy" : "false";							
 									String keyColumnName = transformerUtils.findAssociatedColumn(table,currentKlass,otherEnd,assocKlass,thisEnd, false);%>
 			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" lazy="<%=lazyValue%>" not-null="<%=notNullFkAttr%>" cascade="<%=cascadeStyle%>"/><%
 								}else{ // Many to One - Join Table
-									String lazyValue = lazy == true ? "true" : "false";
+									String lazyValue = lazy == true ? "proxy" : "false";
 									String keyColumnName = transformerUtils.findAssociatedColumn(correlationTable,assocKlass,thisEnd, currentKlass, otherEnd, true);
 									String assocColumnName = transformerUtils.findAssociatedColumn(correlationTable,currentKlass,otherEnd,assocKlass,thisEnd, true);
 									String inverseColumnName =  transformerUtils.findInverseColumnValue(correlationTable,assocKlass,thisEnd);
@@ -183,12 +182,12 @@ if(level == 0){%>
 									String joinTableName = correlationTable.getName();%>
 			<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
 				<%=emptySpace%><key column="<%=keyColumnName%>" />
-				<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" class="<%=assocKlassName%>" cascade="<%=cascadeStyle%>"/>
+				<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" class="<%=assocKlassName%>" lazy="<%=lazyValue%>" not-null="<%=notNullFkAttr%>" cascade="<%=cascadeStyle%>"/>
 			<%=emptySpace%></join><%
 								}
 						}else{	//One to One
 							String lazyValue = lazy == true ? "proxy" : "false";
-
+							String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);
 							UMLClass correlationTable = transformerUtils.findCorrelationTable(association, model, assocKlass, false);
 							if (correlationTable == null) //Many to One - No Join Table
 							{
@@ -197,15 +196,13 @@ if(level == 0){%>
 								Boolean keyColumnPresent = (keyColumnName!=null && !"".equals(keyColumnName));
 								if(thisEnd.isNavigable())
 								{
-									if(keyColumnPresent){
-										String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);%>
+									if(keyColumnPresent){%>
 		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" not-null="<%=notNullFkAttr%>" cascade="<%=cascadeStyle%>"/><%
 									}else{%>
 		<%=emptySpace%><one-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" property-ref="<%=thisEnd.getRoleName()%>" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>"/><%
 									}
 								}else{
-									if(keyColumnPresent){
-										String notNullFkAttr=transformerUtils.isFKAttributeNull(otherEnd);%>
+									if(keyColumnPresent){%>
 		<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" class="<%=assocKlassName%>" column="<%=keyColumnName%>" unique="true" lazy="<%=lazyValue%>" not-null="<%=notNullFkAttr%>" cascade="<%=cascadeStyle%>"/><%
 									}else {
 									    throw new GenerationException("One to one unidirectional mapping requires key column to be present in the source class"+transformerUtils.getFQCN(currentKlass));
@@ -221,7 +218,7 @@ if(level == 0){%>
 								String joinTableName = correlationTable.getName();%>
 		<%=emptySpace%><join table="<%=joinTableName%>" inverse="<%=inverseValue%>" optional="true">
 			<%=emptySpace%><key column="<%=keyColumnName%>" />
-			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" class="<%=assocKlassName%>" unique="true" lazy="<%=lazyValue%>" cascade="<%=cascadeStyle%>"/>
+			<%=emptySpace%><many-to-one name="<%=otherEnd.getRoleName()%>" column="<%=assocColumnName%>" class="<%=assocKlassName%>" unique="true" lazy="<%=lazyValue%>" not-null="<%=notNullFkAttr%>" cascade="<%=cascadeStyle%>"/>
 		<%=emptySpace%></join><%
 							}
 						}
