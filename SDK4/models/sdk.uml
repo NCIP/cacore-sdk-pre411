@@ -97,10 +97,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu May 15 13:54:37 PDT 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed May 21 17:58:07 EDT 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-05-15 22:42:06 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-05-21 22:01:37 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -10276,6 +10276,13 @@
                             <UML:TagDefinition xmi.idref = '-64--88-1-107-16925b0:1120c726d7c:-8000:0000000000003170'/>
                           </UML:TaggedValue.type>
                         </UML:TaggedValue>
+                        <UML:TaggedValue xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001667'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue></UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-101-8238f4:1153b2b6790:-8000:000000000000110B'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
                       </UML:ModelElement.taggedValue>
                       <UML:StructuralFeature.type>
                         <UML:DataType xmi.idref = 'eaxmiid0'/>
@@ -10285,9 +10292,9 @@
                       name = 'PASSANGER_ID' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
                       changeability = 'changeable' targetScope = 'instance'>
                       <UML:StructuralFeature.multiplicity>
-                        <UML:Multiplicity xmi.id = '-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012CC'>
+                        <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001671'>
                           <UML:Multiplicity.range>
-                            <UML:MultiplicityRange xmi.id = '-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012CD'
+                            <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001670'
                               lower = '1' upper = '1'/>
                           </UML:Multiplicity.range>
                         </UML:Multiplicity>
@@ -10298,6 +10305,13 @@
                           <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Flight.passangerCollection</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-107-16925b0:1120c726d7c:-8000:0000000000003170'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
+                        <UML:TaggedValue xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001650'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.withjoin.Passanger.flight</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:112105617ae:-8000:000000000000315F'/>
                           </UML:TaggedValue.type>
                         </UML:TaggedValue>
                       </UML:ModelElement.taggedValue>
@@ -11777,6 +11791,13 @@
                             <UML:TagDefinition xmi.idref = '-64--88-1-107-16925b0:1120c726d7c:-8000:0000000000003170'/>
                           </UML:TaggedValue.type>
                         </UML:TaggedValue>
+                        <UML:TaggedValue xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000163B'
+                          isSpecification = 'false'>
+                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Chain.pendant</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.type>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:112105617ae:-8000:000000000000315F'/>
+                          </UML:TaggedValue.type>
+                        </UML:TaggedValue>
                       </UML:ModelElement.taggedValue>
                       <UML:StructuralFeature.type>
                         <UML:DataType xmi.idref = 'eaxmiid0'/>
@@ -11795,9 +11816,9 @@
                         </UML:TaggedValue>
                         <UML:TaggedValue xmi.id = '-64--88-0-1-8238f4:1154ad5fb06:-8000:0000000000001430'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue>gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.withjoin.Pendant.chain</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue></UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
-                            <UML:TagDefinition xmi.idref = '-64--88-1-107-8238f4:112105617ae:-8000:000000000000315F'/>
+                            <UML:TagDefinition xmi.idref = '-64--88-1-101-8238f4:1153b2b6790:-8000:000000000000110B'/>
                           </UML:TaggedValue.type>
                         </UML:TaggedValue>
                       </UML:ModelElement.taggedValue>
@@ -14362,9 +14383,9 @@
                                                       name = 'id' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                       changeability = 'changeable' targetScope = 'instance'>
                                                       <UML:StructuralFeature.multiplicity>
-                                                        <UML:Multiplicity xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:00000000000010FF'>
+                                                        <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001641'>
                                                           <UML:Multiplicity.range>
-                                                            <UML:MultiplicityRange xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:00000000000010FE'
+                                                            <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001640'
                                                               lower = '1' upper = '1'/>
                                                           </UML:Multiplicity.range>
                                                         </UML:Multiplicity>
@@ -14421,9 +14442,9 @@
                                                       name = 'color' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                       changeability = 'changeable' targetScope = 'instance'>
                                                       <UML:StructuralFeature.multiplicity>
-                                                        <UML:Multiplicity xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:0000000000001116'>
+                                                        <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000163F'>
                                                           <UML:Multiplicity.range>
-                                                            <UML:MultiplicityRange xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:0000000000001115'
+                                                            <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000163E'
                                                               lower = '1' upper = '1'/>
                                                           </UML:Multiplicity.range>
                                                         </UML:Multiplicity>
@@ -14492,9 +14513,9 @@
                                                       name = '' visibility = 'public' isSpecification = 'false' isNavigable = 'false'
                                                       ordering = 'unordered' aggregation = 'none' targetScope = 'instance' changeability = 'changeable'>
                                                       <UML:AssociationEnd.multiplicity>
-                                                        <UML:Multiplicity xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:0000000000001164'>
+                                                        <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001643'>
                                                           <UML:Multiplicity.range>
-                                                            <UML:MultiplicityRange xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:0000000000001163'
+                                                            <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001642'
                                                               lower = '0' upper = '-1'/>
                                                           </UML:Multiplicity.range>
                                                         </UML:Multiplicity>
@@ -14507,10 +14528,10 @@
                                                       name = 'designer' visibility = 'public' isSpecification = 'false' isNavigable = 'true'
                                                       ordering = 'unordered' aggregation = 'none' targetScope = 'instance' changeability = 'changeable'>
                                                       <UML:AssociationEnd.multiplicity>
-                                                        <UML:Multiplicity xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:0000000000001162'>
+                                                        <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000163D'>
                                                           <UML:Multiplicity.range>
-                                                            <UML:MultiplicityRange xmi.id = '-64--88-1-101-8238f4:1153e1d530b:-8000:0000000000001161'
-                                                              lower = '1' upper = '1'/>
+                                                            <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000163C'
+                                                              lower = '0' upper = '1'/>
                                                           </UML:Multiplicity.range>
                                                         </UML:Multiplicity>
                                                       </UML:AssociationEnd.multiplicity>
@@ -16213,7 +16234,7 @@
                                               <UML:Association.connection>
                                                 <UML:AssociationEnd xmi.id = '-64--88-1-103-39e5b5:118a4b62dba:-8000:00000000000014B6'
                                                   name = 'fishCollection' visibility = 'public' isSpecification = 'false'
-                                                  isNavigable = 'true' ordering = 'unordered' aggregation = 'none' targetScope = 'instance'
+                                                  isNavigable = 'false' ordering = 'unordered' aggregation = 'none' targetScope = 'instance'
                                                   changeability = 'changeable'>
                                                   <UML:AssociationEnd.multiplicity>
                                                     <UML:Multiplicity xmi.id = '-64--88-1-108-e020c9:118e27ae98b:-8000:000000000000155A'>
@@ -16231,9 +16252,9 @@
                                                   name = 'tank' visibility = 'public' isSpecification = 'false' isNavigable = 'true'
                                                   ordering = 'unordered' aggregation = 'none' targetScope = 'instance' changeability = 'changeable'>
                                                   <UML:AssociationEnd.multiplicity>
-                                                    <UML:Multiplicity xmi.id = '-64--88-1-108-e020c9:118e27ae98b:-8000:000000000000155C'>
+                                                    <UML:Multiplicity xmi.id = '-100-40-18--45-18aaba5:11a0d7674f4:-8000:0000000000001620'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = '-64--88-1-108-e020c9:118e27ae98b:-8000:000000000000155B'
+                                                        <UML:MultiplicityRange xmi.id = '-100-40-18--45-18aaba5:11a0d7674f4:-8000:000000000000161F'
                                                           lower = '1' upper = '1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
@@ -16307,7 +16328,7 @@
                                                 </UML:AssociationEnd>
                                                 <UML:AssociationEnd xmi.id = '-64--88-1-108-888e6c:118c7b39251:-8000:00000000000014FC'
                                                   name = 'tankAccessoryCollection' visibility = 'public' isSpecification = 'false'
-                                                  isNavigable = 'true' ordering = 'unordered' aggregation = 'none' targetScope = 'instance'
+                                                  isNavigable = 'false' ordering = 'unordered' aggregation = 'none' targetScope = 'instance'
                                                   changeability = 'changeable'>
                                                   <UML:AssociationEnd.multiplicity>
                                                     <UML:Multiplicity xmi.id = '-64--88-1-108-888e6c:118c7b39251:-8000:0000000000001504'>
@@ -16725,9 +16746,9 @@
                                                   name = 'name' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                   targetScope = 'instance'>
                                                   <UML:StructuralFeature.multiplicity>
-                                                    <UML:Multiplicity xmi.id = 'EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E_fix_1_fix_1_fix_0_fix_0'>
+                                                    <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001638'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = 'EAID_29924AF0_3BB6_4c6f_8F06_17F1530B416E_fix_1_fix_1_fix_0_fix_0_fix_0_fix_0'
+                                                        <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001637'
                                                           lower = '1' upper = '1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
@@ -16788,7 +16809,7 @@
                                               <UML:ModelElement.taggedValue>
                                                 <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001570'
                                                   isSpecification = 'false'>
-                                                  <UML:TaggedValue.dataValue>persist, merge</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.dataValue>persist,save-update</UML:TaggedValue.dataValue>
                                                   <UML:TaggedValue.type>
                                                     <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001566'/>
                                                   </UML:TaggedValue.type>
@@ -16883,7 +16904,7 @@
                                                     </UML:TaggedValue>
                                                     <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:000000000000157A'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>merge,persist</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>save-update</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001575'/>
                                                       </UML:TaggedValue.type>
@@ -17025,7 +17046,7 @@
                                               <UML:ModelElement.taggedValue>
                                                 <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001582'
                                                   isSpecification = 'false'>
-                                                  <UML:TaggedValue.dataValue>delete</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.dataValue>delete,save-update</UML:TaggedValue.dataValue>
                                                   <UML:TaggedValue.type>
                                                     <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:000000000000157D'/>
                                                   </UML:TaggedValue.type>
@@ -17120,7 +17141,7 @@
                                                     </UML:TaggedValue>
                                                     <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001592'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>evict</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>save-update</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:000000000000158D'/>
                                                       </UML:TaggedValue.type>
@@ -17352,7 +17373,7 @@
                                                     </UML:TaggedValue>
                                                     <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001598'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>replicate</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>save-update,delete</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001593'/>
                                                       </UML:TaggedValue.type>
@@ -17425,7 +17446,7 @@
                                               <UML:ModelElement.taggedValue>
                                                 <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:000000000000158A'
                                                   isSpecification = 'false'>
-                                                  <UML:TaggedValue.dataValue>lock</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.dataValue>all</UML:TaggedValue.dataValue>
                                                   <UML:TaggedValue.type>
                                                     <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001586'/>
                                                   </UML:TaggedValue.type>
@@ -17503,9 +17524,9 @@
                                                   name = 'name' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                   targetScope = 'instance'>
                                                   <UML:StructuralFeature.multiplicity>
-                                                    <UML:Multiplicity xmi.id = 'EAID_2029ED90_8EE0_43bf_B569_3298D506D53D_fix_1_fix_1_fix_0_fix_0'>
+                                                    <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001614'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = 'EAID_2029ED90_8EE0_43bf_B569_3298D506D53D_fix_1_fix_1_fix_0_fix_0_fix_0_fix_0'
+                                                        <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001613'
                                                           lower = '1' upper = '1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
@@ -17545,9 +17566,9 @@
                                                   name = 'name' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                   targetScope = 'instance'>
                                                   <UML:StructuralFeature.multiplicity>
-                                                    <UML:Multiplicity xmi.id = 'EAID_A693FCC2_3A49_46d5_B053_4B7AC895C2F3_fix_1_fix_1_fix_0_fix_0'>
+                                                    <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001636'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = 'EAID_A693FCC2_3A49_46d5_B053_4B7AC895C2F3_fix_1_fix_1_fix_0_fix_0_fix_0_fix_0'
+                                                        <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001635'
                                                           lower = '1' upper = '1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
@@ -17566,9 +17587,23 @@
                                               <UML:ModelElement.taggedValue>
                                                 <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:000000000000159E'
                                                   isSpecification = 'false'>
-                                                  <UML:TaggedValue.dataValue>refresh</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.dataValue>save-update,delete</UML:TaggedValue.dataValue>
                                                   <UML:TaggedValue.type>
                                                     <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:0000000000001599'/>
+                                                  </UML:TaggedValue.type>
+                                                </UML:TaggedValue>
+                                                <UML:TaggedValue xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001618'
+                                                  isSpecification = 'false'>
+                                                  <UML:TaggedValue.dataValue>all</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.type>
+                                                    <UML:TagDefinition xmi.idref = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001630'/>
+                                                  </UML:TaggedValue.type>
+                                                </UML:TaggedValue>
+                                                <UML:TaggedValue xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001624'
+                                                  isSpecification = 'false'>
+                                                  <UML:TaggedValue.dataValue></UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.type>
+                                                    <UML:TagDefinition xmi.idref = '-64--88-1-101-8238f4:1153b2b6790:-8000:000000000000110B'/>
                                                   </UML:TaggedValue.type>
                                                 </UML:TaggedValue>
                                               </UML:ModelElement.taggedValue>
@@ -17779,9 +17814,9 @@
                                                   name = 'id' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                   targetScope = 'instance'>
                                                   <UML:StructuralFeature.multiplicity>
-                                                    <UML:Multiplicity xmi.id = 'EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9_fix_1_fix_0_fix_0_fix_0'>
+                                                    <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000163A'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = 'EAID_F1BCE88D_CB0D_4552_8958_81854FCFABF9_fix_1_fix_0_fix_0_fix_0_fix_0_fix_0'
+                                                        <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001639'
                                                           lower = '1' upper = '1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
@@ -17818,7 +17853,7 @@
                                               <UML:ModelElement.taggedValue>
                                                 <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015B6'
                                                   isSpecification = 'false'>
-                                                  <UML:TaggedValue.dataValue>none</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.dataValue>delete,save-update</UML:TaggedValue.dataValue>
                                                   <UML:TaggedValue.type>
                                                     <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015AB'/>
                                                   </UML:TaggedValue.type>
@@ -17862,7 +17897,7 @@
                                               <UML:ModelElement.taggedValue>
                                                 <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015B7'
                                                   isSpecification = 'false'>
-                                                  <UML:TaggedValue.dataValue>none</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.dataValue>delete,save-update</UML:TaggedValue.dataValue>
                                                   <UML:TaggedValue.type>
                                                     <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015A5'/>
                                                   </UML:TaggedValue.type>
@@ -17966,7 +18001,7 @@
                                                     </UML:TaggedValue>
                                                     <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015B0'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>save-update,evict,replicate</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>save-update,delete</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015BF'/>
                                                       </UML:TaggedValue.type>
@@ -18017,7 +18052,7 @@
                                                     </UML:TaggedValue>
                                                     <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015AA'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>all</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>save-update,delete</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119a2a48fb8:-8000:00000000000015C4'/>
                                                       </UML:TaggedValue.type>
@@ -21225,6 +21260,38 @@
           name = 'NCI_GENERATOR_PROPERTY2.mysql' isSpecification = 'false' tagType = 'String'/>
         <UML:TagDefinition xmi.id = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015F5'
           name = 'NCI_GENERATOR_PROPERTY3.mysql' isSpecification = 'false' tagType = 'String'/>
+        <UML:TagDefinition xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001615'
+          isSpecification = 'false' tagType = 'String'>
+          <UML:TagDefinition.multiplicity>
+            <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000162F'>
+              <UML:Multiplicity.range>
+                <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000162E'
+                  lower = '0' upper = '1'/>
+              </UML:Multiplicity.range>
+            </UML:Multiplicity>
+          </UML:TagDefinition.multiplicity>
+          <UML:ModelElement.taggedValue>
+            <UML:TaggedValue xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:000000000000162A'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue></UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition xmi.idref = '-64--88-1-101-8238f4:1153b2b6790:-8000:000000000000110B'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+          </UML:ModelElement.taggedValue>
+        </UML:TagDefinition>
+        <UML:TagDefinition xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001630'
+          name = 'NCI_CASCADE_ASSOCIATION#gov.nih.nci.cacoresdk.domain.onetoone.bidirectional.Product.line'
+          isSpecification = 'false' tagType = 'String'>
+          <UML:TagDefinition.multiplicity>
+            <UML:Multiplicity xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001634'>
+              <UML:Multiplicity.range>
+                <UML:MultiplicityRange xmi.id = '-100-40--108-42-6e914e65:119fed99012:-8000:0000000000001633'
+                  lower = '0' upper = '1'/>
+              </UML:Multiplicity.range>
+            </UML:Multiplicity>
+          </UML:TagDefinition.multiplicity>
+        </UML:TagDefinition>
       </UML:Namespace.ownedElement>
     </UML:Model>
   </XMI.content>
@@ -32088,9 +32155,9 @@
       strokecolor="black"
     >
       <moveto x="848"
-              y="121" />
+              y="120" />
       <lineto x="1000"
-              y="121" />
+              y="120" />
     </path>
   </group>
   <group name="Fig11"
@@ -44273,7 +44340,7 @@
     />
   </group>
   <group name="Fig9"
-       description="org.argouml.uml.diagram.static_structure.ui.FigClass[136, 1080, 423, 141]pathVisible=false;operationsVisible=true;attributesVisible=true"
+       description="org.argouml.uml.diagram.static_structure.ui.FigClass[144, 1080, 423, 141]pathVisible=false;operationsVisible=true;attributesVisible=true"
        href="-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012C4"
        fill="1"
        fillcolor="white"
@@ -44284,7 +44351,7 @@
     </private>
     
     <rectangle name="Fig9.0"
-      x="136"
+      x="144"
       y="1080"
       width="423"
       height="141"
@@ -44294,7 +44361,7 @@
       strokecolor="black"
     />
     <group name="Fig9.1"
-         description="org.argouml.uml.diagram.ui.FigStereotypesCompartment[136, 1080, 423, 16]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesCompartment[144, 1080, 423, 16]"
          href="-64--88-0-1-8238f4:11548d8191e:-8000:00000000000012C4"
          fill="1"
          fillcolor="white"
@@ -44305,7 +44372,7 @@
       </private>
       
       <rectangle name="Fig9.1.0"
-        x="136"
+        x="144"
         y="1080"
         width="423"
         height="16"
@@ -44315,7 +44382,7 @@
         strokecolor="black"
       />
       <text name="Fig9.1.1"
-        x="137"
+        x="145"
         y="1081"
         fill="1"
         fillcolor="white"
@@ -44326,7 +44393,7 @@
       >&lt;&lt;table&gt;&gt;</text>
     </group>
     <text name="Fig9.2"
-      x="136"
+      x="144"
       y="1096"
       fill="1"
       fillcolor="white"
@@ -44336,7 +44403,7 @@
       textsize="10"
     >FLIGHT_PASSANGER</text>
     <group name="Fig9.3"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[137, 1163, 422, 57]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[145, 1163, 422, 57]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -44346,7 +44413,7 @@
       </private>
       
       <rectangle name="Fig9.3.0"
-        x="137"
+        x="145"
         y="1163"
         width="422"
         height="57"
@@ -44362,13 +44429,13 @@
         stroke="1"
         strokecolor="black"
       >
-        <moveto x="137"
+        <moveto x="145"
                 y="1163" />
-        <lineto x="559"
+        <lineto x="567"
                 y="1163" />
       </path>
       <text name="Fig9.3.2"
-        x="137"
+        x="145"
         y="1164"
         fill="0"
         fillcolor="white"
@@ -44378,7 +44445,7 @@
         textsize="10"
       >&lt;&lt;FK&gt;&gt; FK_FLIGHT_PASSANGER_FLIGHT(FLIGHT_ID : NUMBER)</text>
       <text name="Fig9.3.3"
-        x="137"
+        x="145"
         y="1178"
         fill="0"
         fillcolor="white"
@@ -44388,7 +44455,7 @@
         textsize="10"
       >&lt;&lt;FK&gt;&gt; FK_FLIGHT_PASSANGER_PASSANGER(PASSANGER_ID : NUMBER)</text>
       <text name="Fig9.3.4"
-        x="137"
+        x="145"
         y="1192"
         fill="0"
         fillcolor="white"
@@ -44399,7 +44466,7 @@
       >&lt;&lt;PK&gt;&gt; PK_FLIGHT_PASSANGER(FLIGHT_ID : NUMBER,PASSANGER_ID : NUMBER)</text>
     </group>
     <group name="Fig9.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[137, 1118, 422, 44]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[145, 1118, 422, 44]"
          fill="1"
          fillcolor="white"
          stroke="0"
@@ -44409,7 +44476,7 @@
       </private>
       
       <rectangle name="Fig9.4.0"
-        x="137"
+        x="145"
         y="1118"
         width="422"
         height="44"
@@ -44425,13 +44492,13 @@
         stroke="1"
         strokecolor="black"
       >
-        <moveto x="137"
+        <moveto x="145"
                 y="1118" />
-        <lineto x="559"
+        <lineto x="567"
                 y="1118" />
       </path>
       <text name="Fig9.4.2"
-        x="137"
+        x="145"
         y="1119"
         fill="0"
         fillcolor="white"
@@ -44441,7 +44508,7 @@
         textsize="10"
       >FLIGHT_ID : NUMBER</text>
       <text name="Fig9.4.3"
-        x="137"
+        x="145"
         y="1133"
         fill="0"
         fillcolor="white"
@@ -44452,7 +44519,7 @@
       >PASSANGER_ID : NUMBER</text>
     </group>
     <rectangle name="Fig9.5"
-      x="136"
+      x="144"
       y="1080"
       width="423"
       height="141"
@@ -60037,7 +60104,7 @@
         y="833"
         fill="0"
         fillcolor="white"
-        stroke="1"
+        stroke="0"
         strokecolor="black"
         font="Dialog"
         textsize="10"
