@@ -102,7 +102,11 @@
 
 	<condition property="DAO_IMPL" value="${extension.dao.impl}" else="${sdk.dao.impl}">
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
-	</condition>	
+	</condition>
+	
+	<condition property="VALIDATE_WRITABLE_API_EXTENSION" value="true" else="false">
+		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
 	
 	<!--***********************************************************************
 	*** Prepares the output directory structure
@@ -158,6 +162,7 @@
 			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
 			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${VALIDATE_LOGICAL_MODEL}"/>
 			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${VALIDATE_MODEL_MAPPING}"/>
+			<replacefilter token="@VALIDATE_WRITABLE_API_EXTENSION@" value="${VALIDATE_WRITABLE_API_EXTENSION}" />						
 			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${GENERATE_HIBERNATE_MAPPING}"/>
 			<replacefilter token="@GENERATE_BEANS@" value="${GENERATE_BEANS}"/>
 			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${GENERATE_CASTOR_MAPPING}"/>
@@ -186,7 +191,7 @@
 			<replacefilter token="@SERVICE_INTERFACE@" value="${SERVICE_INTERFACE}" />
 			<replacefilter token="@SERVICE_IMPL@" value="${SERVICE_IMPL}" />
 			<replacefilter token="@DAO_IMPL@" value="${DAO_IMPL}" />
-			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}" />
+			<replacefilter token="@HBM2DDL_TYPE@" value="${HBM2DDL_TYPE}" />
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
