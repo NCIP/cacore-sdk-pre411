@@ -4,7 +4,7 @@
 
 	<bean id="PKGeneratorValidator" class="gov.nih.nci.codegen.validator.PKGeneratorValidator">
 		<property name="enabled">
-			<value>true</value>
+			<value>@VALIDATE_MODEL_MAPPING@</value>
 		</property>
 		<property name="pkGeneratorPropertyMap">
 			<map>
