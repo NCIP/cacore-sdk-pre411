@@ -50,6 +50,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">@HBM2DDL_TYPE@</prop>
 				<prop key="hibernate.dialect">@DB_DIALECT@</prop>
 				<prop key="hibernate.max_fetch_depth">1</prop>
 				<prop key="hibernate.cglib.use_reflection_optimizer">false</prop>
@@ -101,5 +102,4 @@
 	        </props>
 	    </property>
 	</bean>
-
 </beans>
