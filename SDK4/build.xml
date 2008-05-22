@@ -108,6 +108,16 @@
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>
 	
+	<condition property="HBM2DDL_START" value="" else="${xml.comment.start}">
+		<equals arg1="${HBM2DDL_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="HBM2DDL_END" value="" else="${xml.comment.end}">
+		<equals arg1="${HBM2DDL_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="HBM2DDL_TYPE_REVISED" value="${HBM2DDL_TYPE}" else="validate">
+		<equals arg1="${DB_DIALECT}" arg2="org.hibernate.dialect.HSQLDialect" casesensitive="false" trim="true" />
+	</condition>
+	
 	<!--***********************************************************************
 	*** Prepares the output directory structure
 	*********************************************************************** -->
@@ -191,7 +201,9 @@
 			<replacefilter token="@SERVICE_INTERFACE@" value="${SERVICE_INTERFACE}" />
 			<replacefilter token="@SERVICE_IMPL@" value="${SERVICE_IMPL}" />
 			<replacefilter token="@DAO_IMPL@" value="${DAO_IMPL}" />
-			<replacefilter token="@HBM2DDL_TYPE@" value="${HBM2DDL_TYPE}" />
+			<replacefilter token="@HBM2DDL_TYPE@" value="${HBM2DDL_TYPE_REVISED}" />
+			<replacefilter token="${xml.comment.start}@HBM2DDL_START@${xml.comment.end}" value="${HBM2DDL_START}" />	
+			<replacefilter token="${xml.comment.start}@HBM2DDL_END@${xml.comment.end}" value="${HBM2DDL_END}" />	
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
