@@ -46,11 +46,6 @@
 		<property name="entityInterceptor">
 			<bean factory-bean="SecurityInitializationHelper" factory-method="getInterceptor"/>
 		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.hbm2ddl.auto">@HBM2DDL_TYPE@</prop>
-			</props>
-		</property>
 	</bean>
 
 	<bean name="SecurityInitializationHelper" class="gov.nih.nci.system.security.helper.SecurityInitializationHelper">
