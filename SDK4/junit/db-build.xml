@@ -1,8 +1,7 @@
 <project name="caCORE SDK DB Build" default="setup-db" basedir=".">
 
 	<property name="sdk.home" value=".." />
-	<property file="${sdk.home}/local.properties"  />
-	<property file="${sdk.home}/conf/deploy.properties" />
+	<property file="db-junit/dbunit-local.properties"  />
 	<property file="${sdk.home}/build.properties" prefix="sdk" />
 	<property file="build.properties" />
 
