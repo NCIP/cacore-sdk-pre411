@@ -191,6 +191,10 @@
 						<entry key="c3p0.validate" value="false"/>
 						<!--@DB_CONNECTION_POOL_END@-->
 
+						<!--@HBM2DDL_START@-->
+						<entry key="hbm2ddl.auto" value="@HBM2DDL_TYPE@"/>
+						<!--@HBM2DDL_END@-->
+						
 						<entry key="hibernate.show_sql" value="false"/>
 						<entry key="dialect" value="@DB_DIALECT@"/>
 						<entry key="max_fetch_depth" value="1"/>
