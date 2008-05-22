@@ -51,7 +51,8 @@
 	<classpathentry kind="lib" path="junit/lib/easymockclassextension.jar"/>
 	<classpathentry kind="lib" path="junit/lib/jmockit.jar"/>
 	<classpathentry kind="lib" path="junit/lib/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="system/lib/commons-dbcp-1.2.2.jar"/>
-	<classpathentry kind="lib" path="system/lib/commons-pool-1.3.jar"/>
+	<classpathentry kind="lib" path="system/lib/c3p0-0.9.0.jar"/>
+	<classpathentry kind="lib" path="system/lib/hibernate-validator.jar"/>
+	<classpathentry kind="lib" path="system/lib/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

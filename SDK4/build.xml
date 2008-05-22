@@ -374,12 +374,11 @@
 				<include name="acegi*.*"/>
 				<include name="asm*.*"/>
 				<include name="antlr*.*"/>
+				<include name="c3p0*.*"/>
 				<include name="cglib*.*"/>
 				<include name="commons-codec*.*"/>
 				<include name="commons-collection*.*"/>
-				<include name="commons-dbcp*.*"/>
 				<include name="commons-logging*.*"/>
-				<include name="commons-pool*.*"/>
 				<include name="csmapi*.*"/>
 				<include name="clm*.*"/>
 				<include name="dom4j*.*"/>
