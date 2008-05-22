@@ -1219,14 +1219,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		{
 			Tank result = (Tank)i.next();
 			assertNotNull(result);
-
-			for(Iterator j = result.getTankAccessoryCollection().iterator();j.hasNext();)
-			{
-				tankAccessory = (TankAccessory)j.next();
-				assertNotNull(tankAccessory);
-				assertNotNull(tankAccessory.getId());
-				assertNotNull(tankAccessory.getName());
-			}
 		}
 	}	
 
@@ -1243,14 +1235,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		{
 			Tank result = (Tank)i.next();
 			assertNotNull(result);
-
-			for(Iterator j = result.getFishCollection().iterator();j.hasNext();)
-			{
-				fish = (Fish)j.next();
-				assertNotNull(fish);
-				assertNotNull(fish.getId());
-				assertNotNull(fish.getGenera());
-			}
 		}
 	}
 
