@@ -39,7 +39,6 @@
 	
 	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-		<property name="dataSource" ref="DataSource"/>
 		<property name="configHolder"><ref bean="HibernateConfigHolder"/></property>
 		<property name="filterDefinitions">
 			<bean factory-bean="SecurityInitializationHelper" factory-method="getFilters"/>
@@ -49,16 +48,7 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">@HBM2DDL_TYPE@</prop>
-				<prop key="hibernate.dialect">@DB_DIALECT@</prop>
-				<prop key="hibernate.max_fetch_depth">1</prop>
-				<prop key="hibernate.cglib.use_reflection_optimizer">false</prop>
-				<prop key="hibernate.jdbc.batch_versioned_data">true</prop>
-				<prop key="hibernate.jdbc.use_streams_for_binary">true</prop>
-				<prop key="hibernate.cache.use_query_cache">true</prop>
-				<prop key="hibernate.cache.use_second_level_cache">true</prop>
-				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
 			</props>
 		</property>
 	</bean>
@@ -74,21 +64,6 @@
 		<!--@SECURITY_END@-->
 	</bean>		
 
-	<!--@DB_CONNECTION_POOL_START@-->
-	<bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="@DB_DRIVER@"/>
-		<property name="url" value="@DB_CONNECTION_URL@"/>
-		<property name="username" value="@DB_USERNAME@"/>
-		<property name="password" value="@DB_PASSWORD@"/>
-	</bean>
-	<!--@DB_CONNECTION_POOL_END@-->
-
-	<!--@DB_JNDI_URL_START@-->
-	<bean id="DataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="@DB_JNDI_URL@"/>
-    </bean>
-    <!--@DB_JNDI_URL_END@-->
-	
 	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory"><ref bean="SessionFactory"/></property>
 	</bean>
