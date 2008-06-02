@@ -1,7 +1,5 @@
 package gov.nih.nci.system.security.acegi.external;
 
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +10,6 @@ import org.aopalliance.intercept.MethodInvocation;
 
 public class SecurityHelperImpl implements SecurityHelper
 {
-	private Collection<String> readRoleCollection;
 	private Collection<String> allRoleCollection;
 	private Class applicationServiceMethodHelperClass;
 	private Method applicationServiceHelperMethod;
@@ -28,32 +25,27 @@ public class SecurityHelperImpl implements SecurityHelper
 
 	public SecurityHelperImpl()
 	{
-		readRoleCollection = new ArrayList<String>();
-		readRoleCollection.add("READ");
-
 		allRoleCollection = new ArrayList<String>();
 		allRoleCollection.add("*");
 	}
 
 	public Map<String, Collection<String>> getPostMethodInvocationSecurityMap(MethodInvocation invocation) {
-		String domainObject = getDomainObjectName(invocation);
-		
-		Map<String, Collection<String>> requiredPrivilageMap = new HashMap<String, Collection<String>>();
-		requiredPrivilageMap.put(domainObject, readRoleCollection);
+		Map<String, Collection<String>> requiredPrivilageMap  = getDomainObjectName(invocation);
 		return requiredPrivilageMap;
 	}
 
-	private String getDomainObjectName(MethodInvocation invocation) {
-		String domainObjectName="*";
+	@SuppressWarnings("unchecked")
+	private Map<String, Collection<String>> getDomainObjectName(MethodInvocation invocation) {
+		//@TODO String domainObjectName="*";  needs refactoring later ?
+		Map<String, Collection<String>> requiredPrivilageMap = new HashMap<String, Collection<String>>();
 		Method m = getApplicationServiceHelperMethod();
 		try {
-			if(m!=null)
-				domainObjectName = (String)m.invoke(null, invocation);
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
+			if (m != null)
+				requiredPrivilageMap = (Map) m.invoke(applicationServiceMethodHelperClass.newInstance(),invocation);
+		} catch (Exception e) {
+			throw new RuntimeException("error in getDomainObjectName reflection invocation ", e);
 		}
-		return domainObjectName;
+		return requiredPrivilageMap;
 	}
 
 	private Method getApplicationServiceHelperMethod() {
@@ -71,10 +63,7 @@ public class SecurityHelperImpl implements SecurityHelper
 	}
 
 	public Map<String, Collection<String>> getPreMethodInvocationSecurityMap(MethodInvocation invocation) {
-		String domainObject = getDomainObjectName(invocation);
-		
-		Map<String, Collection<String>> requiredPrivilageMap = new HashMap<String, Collection<String>>();
-		requiredPrivilageMap.put(domainObject, readRoleCollection);
+		Map<String, Collection<String>> requiredPrivilageMap  = getDomainObjectName(invocation);
 		return requiredPrivilageMap;
 	}
 
