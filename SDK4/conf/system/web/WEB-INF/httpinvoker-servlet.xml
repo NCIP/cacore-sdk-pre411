@@ -15,7 +15,7 @@
 	<bean name="/remoteAuthenticationManager"	class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
 		<property name="serviceInterface" value="org.acegisecurity.providers.rcp.RemoteAuthenticationManager"/>
 		<property name="service">
-			<bean class="org.acegisecurity.providers.rcp.RemoteAuthenticationManagerImpl">
+			<bean class="gov.nih.nci.system.security.acegi.SDKRemoteAuthenticationManagerImpl">
 				<property name="authenticationManager">
 					<ref bean="authenticationManager"/>
 				</property>
