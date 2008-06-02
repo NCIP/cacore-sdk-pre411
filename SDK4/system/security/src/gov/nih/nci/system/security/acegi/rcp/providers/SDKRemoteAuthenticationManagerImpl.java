@@ -1,6 +1,5 @@
 package gov.nih.nci.system.security.acegi.rcp.providers;
 
-import gov.nih.nci.system.util.SecurityConstants;
 
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.GrantedAuthority;
@@ -29,7 +28,7 @@ public class SDKRemoteAuthenticationManagerImpl extends RemoteAuthenticationMana
     
 	private GrantedAuthority[] getDummyGrantedAuthorities() {
 		GrantedAuthority[] grantedAuthorities = new GrantedAuthority[1];
-		GrantedAuthority dummyGrantedAuthority = new GrantedAuthorityImpl(SecurityConstants.DUMMY_ROLE);
+		GrantedAuthority dummyGrantedAuthority = new GrantedAuthorityImpl("DUMMY_ROLE");
 		grantedAuthorities[0] = dummyGrantedAuthority;
 		return grantedAuthorities;
 	}
