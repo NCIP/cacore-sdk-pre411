@@ -79,7 +79,7 @@
 	<condition property="SECURITY_END" value="" else="${xml.comment.end}">
 		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
-	
+
 	<condition property="server-exclude-list" value="log4j*.jar" else="">
 		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
 	</condition>
@@ -101,6 +101,10 @@
 	</condition>	
 
 	<condition property="DAO_IMPL" value="${extension.dao.impl}" else="${sdk.dao.impl}">
+		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	</condition>
+	
+	<condition property="SERVICE_METHOD_HELPER" value="${writable.security.method.impl}" else="${readable.security.method.impl}">
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>
 	
@@ -149,6 +153,7 @@
 			</fileset>
 		</copy>
 		<replace dir="${output.conf.dir}">
+			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}" />
 			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
 			<replacefilter token="@MODEL_FILE@" value="${MODEL_FILE}" />
 			<replacefilter token="@MODEL_FILE_TYPE@" value="${MODEL_FILE_TYPE}" />
@@ -194,7 +199,6 @@
 			<replacefilter token="${xml.comment.start}@SECURITY_END@${xml.comment.end}" value="${SECURITY_END}" />	
 			<replacefilter token="@INSTANCE_LEVEL_SECURITY@" value="${INSTANCE_LEVEL_SECURITY}" />
 			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY@" value="${ATTRIBUTE_LEVEL_SECURITY}" />
-			<replacefilter token="@INCLUDE_SEARCH_EVENT_LISTENER@" value="${INCLUDE_SEARCH_EVENT_LISTENER}" />			
 			<replacefilter token="@SECURITY_ENABLED@" value="${SECURITY_ENABLED}" />			
 			<replacefilter token="@IDENTITY_GENERATOR_TAG@" value="${IDENTITY_GENERATOR_TAG}" />
 			<replacefilter token="@DATABASE_TYPE@" value="${DATABASE_TYPE}" />
@@ -204,6 +208,8 @@
 			<replacefilter token="@HBM2DDL_TYPE@" value="${HBM2DDL_TYPE_REVISED}" />
 			<replacefilter token="${xml.comment.start}@HBM2DDL_START@${xml.comment.end}" value="${HBM2DDL_START}" />	
 			<replacefilter token="${xml.comment.start}@HBM2DDL_END@${xml.comment.end}" value="${HBM2DDL_END}" />	
+			<replacefilter token="@SERVICE_METHOD_HELPER@" value="${SERVICE_METHOD_HELPER}" />
+			<replacefilter token="@CACHE_PROTECTION_ELEMENTS@" value="${CACHE_PROTECTION_ELEMENTS}" />
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
