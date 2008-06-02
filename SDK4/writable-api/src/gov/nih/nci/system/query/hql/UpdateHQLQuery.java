@@ -2,7 +2,6 @@ package gov.nih.nci.system.query.hql;
 
 import java.util.List;
 
-import gov.nih.nci.system.query.HQLManipulationQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 public class UpdateHQLQuery extends HQLCriteria implements HQLManipulationQuery

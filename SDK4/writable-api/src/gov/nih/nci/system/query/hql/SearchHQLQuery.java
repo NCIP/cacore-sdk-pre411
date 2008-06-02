@@ -1,6 +1,5 @@
 package gov.nih.nci.system.query.hql;
 
-import gov.nih.nci.system.query.HQLSearchQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.List;

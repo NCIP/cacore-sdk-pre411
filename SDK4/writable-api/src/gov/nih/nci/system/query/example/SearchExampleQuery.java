@@ -1,6 +1,5 @@
 package gov.nih.nci.system.query.example;
 
-import gov.nih.nci.system.query.ExampleSearchQuery;
 
 public class SearchExampleQuery extends ExampleQuery implements ExampleSearchQuery
 {
