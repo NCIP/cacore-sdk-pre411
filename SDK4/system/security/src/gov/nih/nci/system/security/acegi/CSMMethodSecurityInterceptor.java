@@ -78,12 +78,13 @@ public class CSMMethodSecurityInterceptor extends AbstractSecurityInterceptor im
         	 *  	to acegi-security.xml cannot be made without incidents.
         	 * 
         	 */
-        	CSMAfterInvocationProviderManager csmAfterInvocationProviderManager = (CSMAfterInvocationProviderManager) this.getAfterInvocationManager();
+        	
+/*        	CSMAfterInvocationProviderManager csmAfterInvocationProviderManager = (CSMAfterInvocationProviderManager) this.getAfterInvocationManager();
         	CSMAfterInvocationProvider cip = (CSMAfterInvocationProvider) csmAfterInvocationProviderManager.getProviders().get(0);
         	cip.setSecurityHelper(securityHelper);
         	cip.setMethodInvocation(mi);
         	        	
-            result = super.afterInvocation(token, result);
+            result = super.afterInvocation(token, result);*/
         }
 
         return result;
