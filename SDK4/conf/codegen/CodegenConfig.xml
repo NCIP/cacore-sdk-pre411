@@ -206,6 +206,7 @@
 
 					</map>
 				</entry>
+				<entry key="includeHibernateValidatorSettings" value="@ENABLE_HIBERNATE_VALIDATOR@"/>
 			</map>
 		</property>		
 		<property name="enabled" value="@GENERATE_HIBERNATE_MAPPING@"/>

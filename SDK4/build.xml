@@ -10,6 +10,7 @@
 	<property file="conf/deploy.properties"  />
 	<property file="build.properties"  />
 	<property file="${codegen.dir}/build.properties" prefix="codegen"  />
+	<property file="${codegen.validator.dir}/build.properties" prefix="validator"  />
 	<property file="${system.dir}/build.properties" prefix="system"  />
 	<property file="${writable-api.dir}/build.properties" prefix="writable-api"  />
 	<property file="${security.dir}/build.properties" prefix="security"  />
@@ -24,6 +25,7 @@
 	<!--***********************************************************************
 	*** CLASSPATH AND UNIX-STYLE BASEDIR PROPERTIES
 	*********************************************************************** -->
+
 	<path id="codegen.runtime">
 		<fileset dir="${codegen.dir}\dist">
 			<include name="**/*.jar"/>
@@ -36,6 +38,16 @@
             <include name="*.jar"/>
         </fileset>
     </path>
+	
+	<path id="codegen.validator.runtime">
+		<fileset dir="${codegen.validator.dir}\dist">
+			<include name="**/*.jar"/>
+		</fileset>
+		<path refid="codegen.runtime"/>
+		<path refid="system.lib.class.path"/>
+		<pathelement path="${output.codegen.config.dir}"/><!-- Needed due to CodegenConfig.xml ref -->
+		<pathelement path="${output.codegen.validator.config.dir}"/>
+	</path>
 
 	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
 	<path id="basedir.path">
@@ -79,7 +91,7 @@
 	<condition property="SECURITY_END" value="" else="${xml.comment.end}">
 		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
-
+	
 	<condition property="server-exclude-list" value="log4j*.jar" else="">
 		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
 	</condition>
@@ -102,7 +114,7 @@
 
 	<condition property="DAO_IMPL" value="${extension.dao.impl}" else="${sdk.dao.impl}">
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
-	</condition>
+	</condition>	
 	
 	<condition property="SERVICE_METHOD_HELPER" value="${writable.security.method.impl}" else="${readable.security.method.impl}">
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
@@ -120,6 +132,13 @@
 	</condition>
 	<condition property="HBM2DDL_TYPE_REVISED" value="${HBM2DDL_TYPE}" else="validate">
 		<equals arg1="${DB_DIALECT}" arg2="org.hibernate.dialect.HSQLDialect" casesensitive="false" trim="true" />
+	</condition>
+	
+	<condition property="ENABLE_HIBERNATE_VALIDATOR" value="true" else="false">
+		<and>
+			<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+			<equals arg1="${GENERATE_HIBERNATE_VALIDATOR}" arg2="true" casesensitive="false" trim="true" />
+		</and>
 	</condition>
 	
 	<!--***********************************************************************
@@ -152,9 +171,11 @@
 				<include name="**/*.*" />
 			</fileset>
 		</copy>
+
 		<replace dir="${output.conf.dir}">
 			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}" />
 			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
+			<replacefilter token="@VALIDATOR_OUTPUTDIR@" value="${output.codegen.config.dir}" />
 			<replacefilter token="@MODEL_FILE@" value="${MODEL_FILE}" />
 			<replacefilter token="@MODEL_FILE_TYPE@" value="${MODEL_FILE_TYPE}" />
 			<replacefilter token="@LOGICAL_MODEL@" value="${LOGICAL_MODEL}" />
@@ -183,6 +204,8 @@
 			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${GENERATE_CASTOR_MAPPING}"/>
 			<replacefilter token="@GENERATE_XSD@" value="${GENERATE_XSD}"/>
 			<replacefilter token="@GENERATE_WSDD@" value="${GENERATE_WSDD}"/>
+			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR@" value="${ENABLE_HIBERNATE_VALIDATOR}"/>
+			<replacefilter token="@CADSR_CONNECTION_URL@" value="${CADSR_CONNECTION_URL}"/>
 			<replacefilter token="@SERVER_URL@" value="${SERVER_URL}"/>
 			<replacefilter token="${xml.comment.start}@CSM_DB_JNDI_URL_START@${xml.comment.end}" value="${CSM_JNDI_START}" />	
 			<replacefilter token="${xml.comment.start}@CSM_DB_JNDI_URL_END@${xml.comment.end}" value="${CSM_JNDI_END}" />	
@@ -232,6 +255,7 @@
 		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
 		<delete dir="${output.dir}"/>
 		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
+		<ant antfile="${codegen.validator.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${system.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${writable-api.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 	</target>
@@ -239,6 +263,20 @@
 	<!--***********************************************************************
 	*** Prepare 
 	*********************************************************************** -->
+	<target name="prepare-condition-hibernate-validator-codegen">
+		<SDKecho message="${ant.project.name}: Checking the condition for codegen validator project build"/>
+		<condition property="prepare-required-hibernate-validator-codegen">
+			<not>
+				<available file="${codegen.validator.dir}/${validator.dist.dir}/${validator.file.output.name}"/>
+			</not>
+		</condition>
+	</target>
+	
+	<target name="prepare-hibernate-validator-codegen" depends="prepare-condition-hibernate-validator-codegen" if="prepare-required-hibernate-validator-codegen">	
+		<SDKecho message="${ant.project.name}: Preparing the codegen validator project"/>
+		<ant antfile="${codegen.validator.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
+	</target>
+	
 	<target name="prepare-condition-codegen">
 		<SDKecho message="${ant.project.name}: Checking the condition for codegen project build"/>
 		<condition property="prepare-required-codegen">
@@ -286,11 +324,24 @@
 	</target>
 	
 	<target name="prepare" depends="prepare-codegen,prepare-system,prepare-writable-api"/>
+
+	<!--***********************************************************************
+	*** Runs the Hibernate Validator Code Generator 
+	*********************************************************************** -->
+	<target name="codegen-validator" depends="prepare-hibernate-validator-codegen,init" description="Runs the Hibernate Validator Code Generator">
+		<SDKecho message="${ant.project.name}: Running the Hibernate Validator code generator"/>
+		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true" >
+			<arg value="${codegen.config.validator.file}" />
+			<jvmarg value="-Xms256M" />
+			<jvmarg value="-Xmx512M" />
+			<classpath refid="codegen.validator.runtime" />
+		</java>
+	</target>	
 	
 	<!--***********************************************************************
 	*** Runs the Code Generator 
 	*********************************************************************** -->
-	<target name="codegen" depends="prepare-codegen,init" description="Runs the Code Generator">
+	<target name="codegen" depends="prepare-codegen,init,codegen-validator" description="Runs the Code Generator">
 		<SDKecho message="${ant.project.name}: Running the code generator"/>
 		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true" >
 			<arg value="${codegen.config.file}" />

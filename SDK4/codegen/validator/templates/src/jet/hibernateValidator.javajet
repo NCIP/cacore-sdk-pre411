@@ -1,0 +1,56 @@
+<%@ jet package="gov.nih.nci.codegen.validator.transformer.jet" 
+        class="HibernateValidatorTransformer"
+        skeleton="HibernateValidatorTransformerBase.skeleton" %>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="false" default-dependency-check="none"
+	default-autowire="no">
+
+	<bean name="HibernateValidatorModel" class="gov.nih.nci.codegen.validator.HibernateValidatorModel">
+		<constructor-arg>
+			<map>
+<%String enumValues;
+for(UMLClass klass:transformerUtils.getAllHibernateClasses(model)){
+	for(UMLAttribute attr: klass.getAttributes()){
+		enumValues = getCaDSREnumPattern(transformerUtils.getFQCN(klass)+":"+attr.getName());
+		if (enumValues != null && enumValues.length() > 0 ){
+%>			
+				<entry key="<%=transformerUtils.getFQCN(klass)%>">
+					<bean class="gov.nih.nci.codegen.validator.HibernateValidatorClass">
+						<constructor-arg value="<%=transformerUtils.getFQCN(klass)%>" />
+						<constructor-arg index="1"> <!-- attribute-level constraints -->
+							<map>
+								<entry key="<%=attr.getName()%>">
+									<bean class="gov.nih.nci.codegen.validator.HibernateValidatorAttribute">
+										<constructor-arg value="<%=attr.getName()%>" />
+										<constructor-arg index="1">
+											<list>
+												<bean class="gov.nih.nci.codegen.validator.HibernateValidatorConstraint">
+													<constructor-arg value="org.hibernate.validator.Pattern" />
+													<constructor-arg index="1">
+														<map>
+															<entry key="regex" value='"(<%=enumValues%>)"' />
+														</map>
+													</constructor-arg>
+												</bean>
+											</list>
+										</constructor-arg>
+									</bean>
+								</entry>																																							
+							</map>
+						</constructor-arg>
+						<constructor-arg index="2"><!-- class-level constraints -->
+							<list/>
+						</constructor-arg>						
+					</bean>
+				</entry>
+<%		}
+	}
+}%>				
+			</map>
+		</constructor-arg>
+	</bean>
+
+</beans>
+
+        
