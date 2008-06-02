@@ -21,9 +21,11 @@
 				<property name="cache">
 					<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
 						<property name="cacheManager">
-							<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+							<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
 						</property>
-						<property name="cacheName" value="userCache"/>
+						<property name="timeToLive" value="100000" />
+						<property name="timeToIdle" value="1800" />
+						<property name="cacheName" value="userCache" />
 					</bean>
 				</property>
 			</bean>
@@ -32,6 +34,7 @@
 
 	<bean name="userDetailsService" class="gov.nih.nci.system.security.acegi.authentication.CSMUserDetailsService">
 		<property name="csmApplicationContext"><value>@CSM_PROJECT_NAME@</value></property>
+		<property name="cacheProtectionElementsFlag"><value>@CACHE_PROTECTION_ELEMENTS@</value></property>
 	</bean>
 
 	<bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
@@ -53,18 +56,22 @@
 		<property name='objectDefinitionSource' ref='csmMethodDefinitionSource'/>
 	</bean>
 
-	<bean id="securityHelper" class="gov.nih.nci.system.security.acegi.external.SecurityHelperImpl">
-		<property name="applicationServiceMethodHelperClass" value="gov.nih.nci.system.util.ApplicationServiceMethodHelper"/>
+	<bean id="securityHelper" class="gov.nih.nci.system.security.acegi.external.SecurityHelperImpl">		
+		<property name="applicationServiceMethodHelperClass"><value>@SERVICE_METHOD_HELPER@</value></property>
 	</bean>
-  
+
 	<bean id='accessDecisionManager' class='org.acegisecurity.vote.AffirmativeBased'>
 		<property name='decisionVoters'>
 			<list>
-				<bean class='gov.nih.nci.system.security.acegi.authorization.CSMRoleVoter'/>			
+				<bean class='gov.nih.nci.system.security.acegi.authorization.CSMRoleVoter'>
+					<property name="userDetailsService">
+						<ref bean="userDetailsService" />
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>
-  
+
 	<bean id='afterInvocationManager' class='gov.nih.nci.system.security.acegi.CSMAfterInvocationProviderManager'>
 		<property name='providers'>
 			<list>
