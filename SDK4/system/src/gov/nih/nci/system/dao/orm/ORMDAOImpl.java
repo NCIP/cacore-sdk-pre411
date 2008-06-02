@@ -95,7 +95,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
     	return allClassNames;
     }
 	
-	private Response query(Request request, Session session, DetachedCriteria obj) throws Exception
+	protected Response query(Request request, Session session, DetachedCriteria obj) throws Exception
 	{
 		Response rsp = new Response();
 		Criteria hCriteria = ((org.hibernate.criterion.DetachedCriteria)request.getRequest()).getExecutableCriteria(session);
@@ -124,7 +124,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	}	
 	
 	//	if (obj instanceof NestedCriteriaPath)
-	private Response query(Request request, Session session, NestedCriteriaPath obj) throws Exception	
+	protected Response query(Request request, Session session, NestedCriteriaPath obj) throws Exception	
 	{
 		NestedCriteria nc = Path2NestedCriteria.createNestedCriteria(obj.getpathString(), obj.getParameters(), request.getClassCache());
 		NestedCriteria2HQL converter = new NestedCriteria2HQL(nc, config, session, caseSensitive);
@@ -137,7 +137,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	}
 	
 	//if (obj instanceof CQLQuery)
-	private Response query(Request request, Session session, CQLQuery obj) throws Exception	
+	protected Response query(Request request, Session session, CQLQuery obj) throws Exception	
 	{
 		CQL2HQL converter = new CQL2HQL(request.getClassCache());
 		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive);
@@ -145,7 +145,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	}
 
 	//if (obj instanceof HQLCriteria)
-	private Response query(Request request, Session session, HQLCriteria hqlCriteria) throws Exception
+	protected Response query(Request request, Session session, HQLCriteria hqlCriteria) throws Exception
 	{
 		Query hqlQuery = null;
 		
@@ -166,7 +166,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	}
 	
 	
-	private Response executeCountQuery(Query hqlQuery)
+	protected Response executeCountQuery(Query hqlQuery)
 	{
 		log.info("HQL Query :"+hqlQuery.getQueryString());
 		Response rsp = new Response();
@@ -177,7 +177,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		return rsp;
 	}
 
-	private Response executeResultQuery(Request request, Query hqlQuery)
+	protected Response executeResultQuery(Request request, Query hqlQuery)
 	{
 		log.info("HQL Query :"+hqlQuery.getQueryString());
 		
