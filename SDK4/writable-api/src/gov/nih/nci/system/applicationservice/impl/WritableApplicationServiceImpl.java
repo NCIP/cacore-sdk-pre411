@@ -8,8 +8,17 @@ import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
 import gov.nih.nci.system.dao.WritableDAO;
 import gov.nih.nci.system.query.SDKQuery;
+import gov.nih.nci.system.query.SDKQueryResult;
 import gov.nih.nci.system.query.example.ExampleQuery;
+import gov.nih.nci.system.query.example.SearchExampleQuery;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.system.query.hql.SearchHQLQuery;
+import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.util.ClassCache;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -21,18 +30,15 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 		super(classCache);
 	}
 
-	public Object executeQuery(SDKQuery query) throws ApplicationException {
-		String classname = null;
-		if(query instanceof ExampleQuery)
-			classname = ((ExampleQuery)query).getExample().getClass().getName();
+	public SDKQueryResult executeQuery(SDKQuery query) throws ApplicationException {
+		String classname = getTargetClassName(query);
 		WritableDAO dao = getWritableDAO(classname);
-		Request request = new Request();
-		request.setIsCount(Boolean.FALSE);
-		request.setClassCache(getClassCache());
-		request.setRequest(query);
+		Request request = prepareRequest(query, classname);
+
 		try {
 			Response resp =  dao.query(request);
-			return resp.getResponse();
+			SDKQueryResult queryResult = prepareResult(request,resp);
+			return queryResult;
 		}  catch(DAOException daoException) {
 			log.error("Error while querying DAO ",daoException);
 			throw daoException;
@@ -42,6 +48,47 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 		}
 	}
 	
+	
+	protected SDKQueryResult prepareResult(Request request, Response resp) {
+		Object result = resp.getResponse();
+		SDKQueryResult queryResult = null;
+		//Pagination of the results if it was a search query
+		if(result!=null && !(result instanceof SDKQueryResult))
+			queryResult = new SDKQueryResult(convertToListProxy((Collection)result,request.getRequest(),request.getDomainObjectName(),0));
+		else
+			queryResult = (SDKQueryResult) result;
+		return queryResult;
+	}
+
+	protected Request prepareRequest(SDKQuery query, String classname) {
+		Request request = new Request();
+		request.setIsCount(Boolean.FALSE);
+		request.setClassCache(getClassCache());
+		request.setDomainObjectName(classname);
+		
+		Object requestObject = query;
+		
+		//Needed to make sure the pagination and the count queries works.
+		if (query instanceof SearchExampleQuery)
+		{
+			Object obj = ((SearchExampleQuery)query).getExample();
+			List<Object> objList = new ArrayList<Object>();
+			objList.add(obj);
+			NestedCriteriaPath ncp = new NestedCriteriaPath(obj.getClass().getName(), objList);
+			requestObject = ncp;
+		}
+		else if(query instanceof SearchHQLQuery)
+		{
+			HQLCriteria oldCriteria = (HQLCriteria)query;
+			HQLCriteria hqlCriteria = new HQLCriteria(oldCriteria.getHqlString(),oldCriteria.getParameters());
+			requestObject = hqlCriteria;
+		}
+		
+		request.setRequest(requestObject);
+		
+		return request;
+	}
+
 	protected WritableDAO getWritableDAO(String classname) throws ApplicationException
 	{
 		DAO dao = getDAO(classname);
@@ -51,4 +98,23 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 		throw new ApplicationException("Can not execute query on non-writable DAO");
 	}
 
+	protected String getTargetClassName(SDKQuery query)
+	{
+		String classname = null;
+		if(query instanceof ExampleQuery)
+		{
+			classname = ((ExampleQuery)query).getExample().getClass().getName();
+		}
+		else if (query instanceof HQLCriteria)
+		{
+			String hql = ((HQLCriteria)query).getHqlString();
+			
+			String upperHQL = hql.toUpperCase();
+			int index = upperHQL.indexOf(" FROM ");
+			
+			hql = hql.substring(index + " FROM ".length()).trim()+" ";
+			classname = hql.substring(0,hql.indexOf(' ')).trim();
+		}
+		return classname;
+	}
 }
