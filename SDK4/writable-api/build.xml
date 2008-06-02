@@ -90,8 +90,10 @@
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 			</manifest>
 			<include name="gov/nih/nci/system/applicationservice/*"/>
+			<include name="gov/nih/nci/system/query/**/*"/>
 			<fileset dir="${src.dir}">
 				<include name="gov/nih/nci/system/applicationservice/*"/>
+				<include name="gov/nih/nci/system/query/**/*"/>
 			</fileset>
 		</jar>
 	
@@ -101,9 +103,11 @@
 			</manifest>
 			<include name="gov/nih/nci/system/dao/**/*"/>
 			<include name="gov/nih/nci/system/applicationservice/impl/**/*"/>
+			<include name="gov/nih/nci/system/util/**/*"/>
 			<fileset dir="${src.dir}">
 				<include name="gov/nih/nci/system/dao/**/*"/>
 				<include name="gov/nih/nci/system/applicationservice/impl/**/*"/>
+				<include name="gov/nih/nci/system/util/**/*"/>
 			</fileset>
 		</jar>
 	</target>
