@@ -8,6 +8,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivile
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.system.util.SecurityConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +32,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 public class CSMUserDetailsService implements UserDetailsService {
 	
 	private String csmApplicationContext;
+	private Boolean cacheProtectionElementsFlag;
 	
 	
 	protected AuthorizationManager authorizationManager;
@@ -74,36 +76,39 @@ public class CSMUserDetailsService implements UserDetailsService {
 
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException, DataAccessException {
-
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = loadCSMUserDetails(username);
 		
-		//	Make sure AuthenticationManager Instance is available.
-		authenticationManagerInstance();
-		
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = 
-			authorizationManagerInstance().getUser(username);
-		
-		if (csmUser == null)
-			throw new UsernameNotFoundException("Unable to find user by the given user name");
-		// Get All GrantedAuthorities from CSM.
-		GrantedAuthority[] grantedAuthorities = getAuthorityCollection(csmUser.getUserId().toString()); 
-				
+		// Get All GrantedAuthorities from CSM.		
+		GrantedAuthority[] grantedAuthorities;
+		if (cacheProtectionElementsFlag) {
+			grantedAuthorities = getGrantedAuthorityCollection(csmUser.getUserId().toString());
+		} else {
+			GrantedAuthority dummyGrantedAuthority = new GrantedAuthorityImpl(SecurityConstants.DUMMY_ROLE);
+			grantedAuthorities = new GrantedAuthority[1];
+			grantedAuthorities[0] = dummyGrantedAuthority;			
+		}		
 		UserDetails userDetails = new User(csmUser.getLoginName(), csmUser.getPassword(),true, true, true, true, grantedAuthorities);
-
 		return userDetails;
 	}
 
-	private GrantedAuthority[] getAuthorityCollection(String csmUserId) {
+	public gov.nih.nci.security.authorization.domainobjects.User loadCSMUserDetails(String username) {
+		//	Make sure AuthenticationManager Instance is available.
+		authenticationManagerInstance();
+		gov.nih.nci.security.authorization.domainobjects.User csmUser = authorizationManagerInstance().getUser(username);
+		if (csmUser == null)
+			throw new UsernameNotFoundException("Unable to find user by the given user name");
+		return csmUser;
+	}
 
+	@SuppressWarnings("unchecked")
+	public GrantedAuthority[] getGrantedAuthorityCollection(String csmUserId) {
 		Set pePrivContextSet = null;
 		try {
 			pePrivContextSet = authorizationManagerInstance().getProtectionElementPrivilegeContextForUser(csmUserId);
 		} catch (CSObjectNotFoundException e) {
-			throw new DataRetrievalFailureException("Could not retrieve Granted Authorities for user.");
-			
+			throw new DataRetrievalFailureException("Could not retrieve Granted Authorities for user.");			
 		}
-		
 		Collection<GrantedAuthority> authorityCollection = new ArrayList<GrantedAuthority>();
-		
 		Iterator iter = pePrivContextSet.iterator();
 		while(iter.hasNext()){
 			ProtectionElementPrivilegeContext pepc = (ProtectionElementPrivilegeContext)iter.next();
@@ -114,23 +119,12 @@ public class CSMUserDetailsService implements UserDetailsService {
 				Privilege priv = (Privilege)ite.next();
 				authorityCollection.add(new GrantedAuthorityImpl(peName+"_"+priv.getName().toUpperCase()));
 			}
-			
 		}
-		
 		GrantedAuthority[] grantedAuthorities = new GrantedAuthorityImpl[authorityCollection.size()];
-		Iterator it = authorityCollection.iterator();
-		for(int i=0;i<authorityCollection.size();i++){
-			grantedAuthorities[i]=(GrantedAuthority) it.next();
-		}
-		 
+		System.arraycopy(authorityCollection.toArray(), 0, grantedAuthorities, 0, authorityCollection.size());
 		return grantedAuthorities;
-		
-		
 	}
-
 	
-	
-
 	public AuthorizationManager getAuthorizationManager() {
 		return authorizationManager;
 	}
@@ -146,5 +140,12 @@ public class CSMUserDetailsService implements UserDetailsService {
 	public void setCsmApplicationContext(String csmApplicationContext) {
 		this.csmApplicationContext = csmApplicationContext;
 	}
+	
+	public void setCacheProtectionElementsFlag(Boolean cacheProtectionElementsFlag) {
+		this.cacheProtectionElementsFlag = cacheProtectionElementsFlag;
+	}
 
+	public Boolean getCacheProtectionElementsFlag() {
+		return cacheProtectionElementsFlag;
+	}
 }
