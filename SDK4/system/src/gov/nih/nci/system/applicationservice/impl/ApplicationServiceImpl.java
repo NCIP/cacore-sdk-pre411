@@ -14,6 +14,7 @@ import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.util.ClassCache;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -236,25 +237,32 @@ public class ApplicationServiceImpl implements ApplicationService {
 		Response response = query(request);
 		List results = (List) response.getResponse();
 
-		ListProxy resultList = new ListProxy();
-		resultList.setAppService(this);
-
-		// Set the value for ListProxy
-		if (results != null) {
-			resultList.addAll(results);
-		}
-		
-		resultList.setOriginalStart(0);
-		resultList.setMaxRecordsPerQuery(getMaxRecordsCount());
-		resultList.setOriginalCriteria(criteria);
-		resultList.setTargetClassName(targetClassName);
-		resultList.calculateRealSize();
+		List resultList = convertToListProxy(results,criteria,targetClassName,0);
 		log.debug("response.getRowCount(): " + response.getRowCount());
 		
 		return resultList;
 
 	}	
 
+	protected <E> List<E> convertToListProxy(Collection originalList, Object query, String classname, Integer start)
+	{
+		ListProxy resultList = new ListProxy();
+		resultList.setAppService(this);
+
+		// Set the value for ListProxy
+		if (originalList != null) {
+			resultList.addAll(originalList);
+		}
+		
+		resultList.setOriginalStart(start);
+		resultList.setMaxRecordsPerQuery(getMaxRecordsCount());
+		resultList.setOriginalCriteria(query);
+		resultList.setTargetClassName(classname);
+		resultList.calculateRealSize();
+		
+		return resultList;
+	}
+	
 	/**
 	 * Sends the request to the DAO. The DAO is determined by the object that the query specifies to be queried. 
 	 * DAO returns the result which is in the form of a {@link #gov.nih.nci.system.dao.Response} object.
