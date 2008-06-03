@@ -90,10 +90,10 @@ public class ApplicationServiceProvider
 		}
 		else
 		{
-			if(url == null) url ="";
-			String serviceName = (String)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+			String projectName = (String)serviceInfoMap.get("PROJECT_NAME");
+			String serviceName = (String)serviceInfoMap.get(projectName+"APPLICATION_SERVICE_BEAN");
 			as = (ApplicationService) context.getBean(serviceName);
-			ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
+			ap = (AuthenticationProvider)serviceInfoMap.get(projectName+"AUTHENTICATION_SERVICE_BEAN");
 		}
 
 		if(secured)
@@ -150,16 +150,17 @@ public class ApplicationServiceProvider
 			throw new Exception("Change the configuration file!!!");
 		
 		//Initialized instances found in the configuration
-		String asName = (String)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+		String projectName = (String)serviceInfoMap.get("PROJECT_NAME");
+		String asName = (String)serviceInfoMap.get(projectName+"APPLICATION_SERVICE_BEAN");
 		ApplicationService as = (ApplicationService)ctx.getBean(asName);
-		AuthenticationProvider ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
+		AuthenticationProvider ap = (AuthenticationProvider)serviceInfoMap.get(projectName+"AUTHENTICATION_SERVICE_BEAN");
 		
 		//Returning initialized instance
 		if((!secured && as!=null && url == null)||(secured && as!=null && ap!=null && url == null)) //Empty URL, return the service. This helps in improving performance
 			return ctx;
 		
-		String serviceInfo = (String)serviceInfoMap.get("APPLICATION_SERVICE_CONFIG");;
-		if(url == null)	url = (String)serviceInfoMap.get("APPLICATION_SERVICE_URL");
+		String serviceInfo = (String)serviceInfoMap.get(projectName+"APPLICATION_SERVICE_CONFIG");;
+		if(url == null)	url = (String)serviceInfoMap.get(projectName+"APPLICATION_SERVICE_URL");
 
 		//URL_KEY must be present if the user is trying to use the url to reach the service
 		if(serviceInfo==null ||(url == null && serviceInfo.indexOf("URL_KEY")>0) || (url!=null && serviceInfo.indexOf("URL_KEY")<0))
