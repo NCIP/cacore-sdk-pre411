@@ -21,9 +21,6 @@
 		<fileset dir="${codegen.core.templates.dir}\${templates.lib.dir}">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${lib.dir}">
-			<include name="*.jar" />
-		</fileset>
 	</path>
 
 	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
