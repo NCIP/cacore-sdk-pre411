@@ -116,7 +116,7 @@
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>	
 	
-	<condition property="SERVICE_METHOD_HELPER" value="${writable.security.method.impl}" else="${readable.security.method.impl}">
+	<condition property="SERVICE_METHOD_HELPER" value="${extension.sdk.security.writable.applicationservice.method.impl}" else="${sdk.security.readable.applicationservice.method.impl}">
 		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
 	</condition>
 	
