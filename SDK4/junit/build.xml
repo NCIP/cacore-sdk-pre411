@@ -198,6 +198,7 @@
 	*********************************************************************** -->
 	<target name="compile">
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="lines,vars,source">
+			<exclude name="**/*Writable*.java" />
 			<exclude name="**/*WS*.java" />
 			<exclude name="**/*XSD*.java" />
 			<exclude name="**/*XMLMapping*.java" />
