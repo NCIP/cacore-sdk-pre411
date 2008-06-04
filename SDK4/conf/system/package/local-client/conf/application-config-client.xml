@@ -8,6 +8,7 @@
 	<bean id="ServiceInfo" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
+				<entry key="PROJECT_NAME" value="" />
 				<entry key="APPLICATION_SERVICE_BEAN" value="applicationService" />
 				<!--@SECURITY_START@-->
 				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationProvider"/>
