@@ -8,8 +8,6 @@
 	
 <%
 	Map hibernatePropertiesMap = (Map)configurationParams.get("HIBERNATE_PROPERTIES");
-	boolean includeHibernateValidatorSettings = Boolean.valueOf((String)configurationParams.get("includeHibernateValidatorSettings"));
-	
 	if(hibernatePropertiesMap != null){%>
 		<!-- Properties for the session factory -->
 <%	
@@ -23,17 +21,6 @@
 <%for(UMLClass klass:transformerUtils.getAllHibernateClasses(model)){%>
 		<mapping resource="<%=transformerUtils.getFQCN(klass).replace('.','/')%>.hbm.xml" />
 <%}%>
-
-<%if (includeHibernateValidatorSettings){%>
-		<!-- Hibernate Validator Event Listener Registration -->
-		<event type="pre-update">
-			<listener class="org.hibernate.validator.event.ValidateEventListener"/>
-		</event>
-		<event type="pre-insert">
-			<listener class="org.hibernate.validator.event.ValidateEventListener"/>
-		</event>
-<%}%>
-		
 	</session-factory>
 </hibernate-configuration>
 
