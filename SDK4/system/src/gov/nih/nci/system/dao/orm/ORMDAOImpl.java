@@ -155,8 +155,9 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 			hqlQuery = session.createQuery(hqlCriteria.getHqlString());
 		
 		int i=0;
-		for(Object param: hqlCriteria.getParameters())
-			hqlQuery.setParameter(i++,param );
+		if (hqlCriteria.getParameters() != null)
+			for(Object param: hqlCriteria.getParameters())
+				hqlQuery.setParameter(i++,param);
 		
 
 		if(request.getIsCount() != null && request.getIsCount())
