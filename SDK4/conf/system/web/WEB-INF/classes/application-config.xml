@@ -33,7 +33,6 @@
 		<property name="sessionFactory"><ref bean="SessionFactory"/></property>
 		<property name="config"><bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration"/></property>
 		<property name="securityHelper"><ref bean="SecurityInitializationHelper"/></property>
-		<property name="registerHibernateValidatorEventListeners" value="@ENABLE_HIBERNATE_VALIDATOR@"/>
 	</bean>
 	
 	<bean name="HibernateConfigHolder" class="gov.nih.nci.system.dao.orm.HibernateConfigurationHolder"/>
@@ -46,6 +45,16 @@
 		</property>
 		<property name="entityInterceptor">
 			<bean factory-bean="SecurityInitializationHelper" factory-method="getInterceptor"/>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="pre-insert">
+						<bean class="org.hibernate.validator.event.ValidateEventListener"/>
+				</entry>
+				<entry key="pre-update">
+						<bean class="org.hibernate.validator.event.ValidateEventListener"/>
+				</entry>
+			</map>
 		</property>
 	</bean>
 
