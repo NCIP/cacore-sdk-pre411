@@ -27,9 +27,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
-import org.hibernate.event.PreInsertEventListener;
-import org.hibernate.event.PreUpdateEventListener;
-import org.hibernate.validator.event.ValidateEventListener;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -47,7 +44,6 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	private boolean caseSensitive;
 	private int resultCountPerQuery;
 
-	private boolean registerHibernateValidatorEventListeners;
 	
 	protected HibernateTemplate createHibernateTemplate(SessionFactory sessionFactory)
 	{
@@ -233,21 +229,5 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 
 	public void setSecurityHelper(SecurityInitializationHelper securityHelper) {
 		this.securityHelper = securityHelper;
-	}
-
-	public boolean isRegisterHibernateValidatorEventListeners() {
-		return registerHibernateValidatorEventListeners;
-	}
-
-	public void setRegisterHibernateValidatorEventListeners(
-			boolean registerHibernateValidatorEventListeners) {
-		this.registerHibernateValidatorEventListeners = registerHibernateValidatorEventListeners;
-		
-		if (this.registerHibernateValidatorEventListeners){
-			this.config.getEventListeners()
-				.setPreInsertEventListeners( new PreInsertEventListener[]{new ValidateEventListener()} );
-			this.config.getEventListeners()
-				.setPreUpdateEventListeners( new PreUpdateEventListener[]{new ValidateEventListener()} );
-		}
 	}
 }
