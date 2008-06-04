@@ -5,7 +5,6 @@
 	<bean id="@PROJECT_NAME@ServiceInfo" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
-				<entry key="PROJECT_NAME" value="@PROJECT_NAME@"/>
 				<entry key="APPLICATION_SERVICE_BEAN" value="@PROJECT_NAME@ApplicationService"/>
 				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="@PROJECT_NAME@AuthenticationProvider"/>
 				<entry key="APPLICATION_SERVICE_URL"  value="@SERVER_URL@"/>
