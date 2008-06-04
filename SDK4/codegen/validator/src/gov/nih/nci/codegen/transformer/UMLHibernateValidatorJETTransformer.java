@@ -204,8 +204,8 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 			
 		}catch(Exception e)
 		{
-			log.error("Error retrieving caDSR Enumerations: " + e.getMessage(),e);
-			throw new GenerationException("Error retrieving caDSR Enumerations: " + e.getMessage(),e);
+			log.error("Error retrieving caDSR Permissible Value Enumerations: " + e.getMessage(),e);
+			throw new GenerationException("Error retrieving caDSR Permissible Value Enumerations: " + e.getMessage(),e);
 		}
 	}
 	
