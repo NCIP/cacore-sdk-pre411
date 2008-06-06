@@ -8,6 +8,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivile
 import gov.nih.nci.security.exceptions.CSConfigurationException;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.system.security.SecurityConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,7 +83,7 @@ public class CSMUserDetailsService implements UserDetailsService {
 		if (cacheProtectionElementsFlag) {
 			grantedAuthorities = getGrantedAuthorityCollection(csmUser.getUserId().toString());
 		} else {
-			GrantedAuthority dummyGrantedAuthority = new GrantedAuthorityImpl("DUMMY_ROLE");
+			GrantedAuthority dummyGrantedAuthority = new GrantedAuthorityImpl(SecurityConstants.DUMMY_ROLE);
 			grantedAuthorities = new GrantedAuthority[1];
 			grantedAuthorities[0] = dummyGrantedAuthority;			
 		}		

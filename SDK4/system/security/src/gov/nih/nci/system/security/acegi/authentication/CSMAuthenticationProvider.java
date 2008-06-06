@@ -24,10 +24,7 @@ import org.springframework.util.Assert;
  * An {@link AuthenticationProvider} implementation that retrieves user details from an {@link UserDetailsService}.
  *
  */
-public class CSMAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
-    //~ Instance fields ================================================================================================
-
-   
+public class CSMAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {   
     
     private CSMUserDetailsService userDetailsService;
     private boolean includeDetailsObject = true;
@@ -65,9 +62,6 @@ public class CSMAuthenticationProvider extends AbstractUserDetailsAuthentication
         Assert.notNull(this.userDetailsService, "A UserDetailsService must be set");
         Assert.notNull(this.userDetailsService.authorizationManagerInstance(),"Unable to initialize Authorization Manager");
     }
-
-   
-
    
     public CSMUserDetailsService getUserDetailsService() {
         return userDetailsService;
@@ -78,8 +72,6 @@ public class CSMAuthenticationProvider extends AbstractUserDetailsAuthentication
         UserDetails loadedUser;
 
         try {
-        	// Check if User is Authenticated. ?? TODO
-        	
             loadedUser = this.getUserDetailsService().loadUserByUsername(username);
         } catch (DataAccessException repositoryProblem) {
             throw new AuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
