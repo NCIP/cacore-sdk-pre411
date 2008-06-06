@@ -19,10 +19,8 @@ public class WritableApiApplicationServiceMethodHelper extends ApplicationServic
 	public Map<String,String> getDomainObjectName(MethodInvocation invocation) {
 		String privilege = null;
 		
-		String domainObjectName = "*";
 		Method method = invocation.getMethod();
 		Object[] arguments = invocation.getArguments();
-		Map domainObjectMap=new HashMap<String, Collection<String>>();
 		Map<String, String> securityMap = new HashMap<String, String>();
 
 		if ("executeQuery".equals(method.getName()) && (arguments[0] instanceof SDKQuery)) {
@@ -31,20 +29,16 @@ public class WritableApiApplicationServiceMethodHelper extends ApplicationServic
 			if (sdkQuery instanceof InsertExampleQuery) {
 				privilege=SecurityConstants.CREATE;
 				InsertExampleQuery insertExampleQuery = (InsertExampleQuery) sdkQuery;
-				domainObjectMap.put(insertExampleQuery.getExample().getClass().getName(), privilege);
-				return domainObjectMap;
+				securityMap.put(insertExampleQuery.getExample().getClass().getName(), privilege);
 			} else if (sdkQuery instanceof DeleteExampleQuery) {
 				privilege=SecurityConstants.DELETE;
 				DeleteExampleQuery deleteExampleQuery = (DeleteExampleQuery) sdkQuery;
-				domainObjectMap.put(deleteExampleQuery.getExample().getClass().getName(), privilege);
-				return domainObjectMap;
+				securityMap.put(deleteExampleQuery.getExample().getClass().getName(), privilege);
 			} else if (sdkQuery instanceof UpdateExampleQuery) {
 				privilege=SecurityConstants.UPDATE;
 				UpdateExampleQuery updateExampleQuery = (UpdateExampleQuery) sdkQuery;
-				domainObjectMap.put(updateExampleQuery.getExample().getClass().getName(), privilege);
-				return domainObjectMap;
+				securityMap.put(updateExampleQuery.getExample().getClass().getName(), privilege);
 			}
-			securityMap.put(domainObjectName, privilege);
 		} else {
 			securityMap = super.getDomainObjectName(invocation);
 		}
