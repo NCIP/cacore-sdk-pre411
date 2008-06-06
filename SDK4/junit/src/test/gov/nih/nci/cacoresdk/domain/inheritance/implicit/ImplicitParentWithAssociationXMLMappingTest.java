@@ -216,36 +216,6 @@ public class ImplicitParentWithAssociationXMLMappingTest extends SDKXMLMappingTe
 		Class associatedClass = Tank.class;
 
 		validateClassAssociationElements(targetClass, associatedClass, "tank",false);
-	}
-	
-	/**
-	 * Verifies that association elements 
-	 * corresponding to the Class are present in the XSD
-	 * Verifies that the Class attributes are present in the XSD
-	 * 
-	 * @throws Exception
-	 */
-	public void testAssociationElements2() throws Exception
-	{
-		Class targetClass = Tank.class;
-		Class associatedClass = Fish.class;
-
-		validateClassAssociationElements(targetClass, associatedClass, "fishCollection",true);
-	}	
-		
-	/**
-	 * Verifies that association elements 
-	 * corresponding to the Class are present in the XSD
-	 * Verifies that the Class attributes are present in the XSD
-	 * 
-	 * @throws Exception
-	 */
-	public void testAssociationElements3() throws Exception
-	{
-		Class targetClass = Tank.class;
-		Class associatedClass = TankAccessory.class;
-
-		validateClassAssociationElements(targetClass, associatedClass, "tankAccessoryCollection",true);
 	}	
 	
 	/**

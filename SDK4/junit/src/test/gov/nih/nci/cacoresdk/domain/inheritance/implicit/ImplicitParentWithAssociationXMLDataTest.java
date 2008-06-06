@@ -545,58 +545,6 @@ public class ImplicitParentWithAssociationXMLDataTest extends SDKXMLDataTestBase
 	 * 
 	 * @throws Exception
 	 */
-	public void testAssociationNestedSearch8() throws Exception
-	{
-		Tank searchObject = new Tank();
-	
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Fish",searchObject );
-
-		assertNotNull(results);
-		assertEquals(4,results.size());
-		
-		Fish result = (Fish)results.iterator().next();
-		toXML(result);
-		Fish result2 = (Fish)fromXML(result);
-
-		assertNotNull(result2);
-		assertNotNull(result2.getId());
-		assertNotNull(result2.getGenera());
-	}
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws Exception
-	 */
-	public void testAssociationNestedSearch9() throws Exception
-	{
-		Tank searchObject = new Tank();
-	
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.TankAccessory",searchObject );
-
-		assertNotNull(results);
-		assertEquals(6,results.size());
-		
-		TankAccessory result = (TankAccessory)results.iterator().next();
-		toXML(result);
-		TankAccessory result2 = (TankAccessory)fromXML(result);
-
-		assertNotNull(result2);
-		assertNotNull(result2.getId());
-		assertNotNull(result2.getName());
-	}	
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws Exception
-	 */
 	public void testAssociationNestedSearch10() throws Exception
 	{
 		SaltwaterFishTank searchObject = new SaltwaterFishTank();

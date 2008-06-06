@@ -199,21 +199,6 @@ public class ImplicitParentWithAssociationXSDTest extends SDKXSDTestBase
 	 * 
 	 * @throws Exception
 	 */
-	public void testAssociationElements1() throws Exception
-	{
-		Class targetClass = Tank.class;
-		Class associatedClass = Fish.class;
-
-		validateClassAssociationElements(targetClass, associatedClass, "fishCollection","0","unbounded");
-	}	
-	
-	/**
-	 * Verifies that association elements 
-	 * corresponding to the Class are present in the XSD
-	 * Verifies that the Class attributes are present in the XSD
-	 * 
-	 * @throws Exception
-	 */
 	public void testAssociationElements2() throws Exception
 	{
 		Class targetClass = Fish.class;
@@ -221,22 +206,7 @@ public class ImplicitParentWithAssociationXSDTest extends SDKXSDTestBase
 
 		validateClassAssociationElements(targetClass, associatedClass, "tank","1","1");
 	}
-	
-	/**
-	 * Verifies that association elements 
-	 * corresponding to the Class are present in the XSD
-	 * Verifies that the Class attributes are present in the XSD
-	 * 
-	 * @throws Exception
-	 */
-	public void testAssociationElements3() throws Exception
-	{
-		Class targetClass = Tank.class;
-		Class associatedClass = TankAccessory.class;
 
-		validateClassAssociationElements(targetClass, associatedClass, "tankAccessoryCollection","0","unbounded");
-	}	
-	
 	/**
 	 * Verifies that association elements 
 	 * corresponding to the Class are present in the XSD
