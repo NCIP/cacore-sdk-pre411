@@ -3,8 +3,10 @@ package gov.nih.nci.system.client;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.proxy.ApplicationServiceProxy;
+import gov.nih.nci.system.security.acegi.GroupNameAuthenticationToken;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collection;
 import java.util.Map;
 
 import org.acegisecurity.AcegiSecurityException;
@@ -72,6 +74,53 @@ public class ApplicationServiceProvider
 		if(username == null || password == null || username.trim().length() == 0 || password.trim().length() == 0)
 			throw new Exception("Cannot authenticate user");
 		return getApplicationService(service,url,username,password);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static ApplicationService getApplicationService(Collection<String> groups) throws Exception {
+		ApplicationService as = getApplicationServiceForGroups(DEFAULT_SERVICE,null, groups);
+		return as;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static ApplicationService getApplicationService(String service,Collection<String> groups) throws Exception {
+		ApplicationService as = getApplicationServiceForGroups(service,null, groups);
+		return as;	
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public static ApplicationService getApplicationServiceFromUrl(String service,String url, Collection<String> groups) throws Exception {
+		ApplicationService as = getApplicationServiceForGroups(service,url, groups);
+		return as;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static ApplicationService getApplicationServiceForGroups(String service, String url, Collection<String> groups) throws Exception {
+		if (url != null) {
+			throw new Exception("Url security feature for groups is not supported");
+		}		
+		if (groups == null || groups.size() == 0) {
+			throw new Exception("User Groups Collection cannot be empty");
+		}		
+		ApplicationContext context = getApplicationContext(service, null,true);
+		ApplicationService as = null;
+		Map<String, Object> serviceInfoMap = (Map<String, Object>) context.getBean(service);
+		if (serviceInfoMap == null) {
+			as = (ApplicationService) context.getBean("ApplicationService");
+		}else {
+			String serviceName = (String) serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+			as = (ApplicationService) context.getBean(serviceName);
+		}
+
+		Authentication auth = new GroupNameAuthenticationToken(groups);
+		try {
+			setApplicationService(as, auth);
+		} catch (Exception e) {
+			String message = "Unknown error in authenticating user:";
+			throw new ApplicationException(message, e);
+		}
+		return as;
 	}
 
 	@SuppressWarnings("unchecked")
