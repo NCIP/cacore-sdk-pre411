@@ -3,13 +3,12 @@ package gov.nih.nci.system.util;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
+import gov.nih.nci.system.security.SecurityConstants;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,10 +19,9 @@ import org.hibernate.impl.CriteriaImpl;
 public class ApplicationServiceMethodHelper {
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Collection<String>> getDomainObjectName(MethodInvocation invocation) {
-		Collection<String> readRoleCollection = new ArrayList<String>();
-		readRoleCollection.add("READ");
-		
+	public Map<String,String> getDomainObjectName(MethodInvocation invocation) {
+
+		String methodRole=SecurityConstants.READ;
 		String domainObjectName = "*";
 		Method method = invocation.getMethod();
 		Object[] arguments = invocation.getArguments();
@@ -78,8 +76,8 @@ public class ApplicationServiceMethodHelper {
 				domainObjectName = tokens[0];
 			}
 		}
-		Map<String, Collection<String>> securityMap=new HashMap<String, Collection<String>>();
-		securityMap.put(domainObjectName, readRoleCollection);
+		Map<String, String> securityMap = new HashMap<String, String>();
+		securityMap.put(domainObjectName, methodRole);
 		return securityMap;	
 	}
 }
