@@ -8,6 +8,7 @@
 	*********************************************************************** -->
 	<property file="build.properties"  />
 	<property file="${system.dir}/build.properties" prefix="system" />
+	<property file="${system.dir}/${system.security.dir}/build.properties" prefix="security" />
 	<!--***********************************************************************
 	*** Import utility script
 	*********************************************************************** -->
@@ -21,6 +22,7 @@
 			<include name="*.jar" />
 		</fileset>
 		<path location="${system.dir}\${system.build.classes.dir}"/>
+		<path location="${system.dir}\${system.security.dir}\${security.build.classes.dir}"/>
 	</path>
 
 	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
