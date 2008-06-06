@@ -744,28 +744,7 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		assertNotNull(result);
 	}	
 	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationNestedSearch8() throws ApplicationException
-	{
-		Tank searchObject = new Tank();
-		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Fish",searchObject );
 
-		assertNotNull(results);
-		assertEquals(4,results.size());
-		
-		Fish result = (Fish)results.iterator().next();
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertNotNull(result.getGenera());
-	}
-	
 	/**
 	 * Uses Nested Search Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
@@ -1038,37 +1017,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		assertEquals(new Integer(1), result.getId());
 	}	
 
-	/**
-	 * Uses CQL Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationCQL7() throws ApplicationException
-	{
-		CQLQuery cqlQuery = new CQLQuery();
-		CQLObject target = new CQLObject();
-
-		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Fish");
-		association.setTargetRoleName("fishCollection");		
-		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"4"));
-		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Tank");
-		target.setAssociation(association);
-		cqlQuery.setTarget(target);
-		
-		Collection results = getApplicationService().query(cqlQuery);
-
-		assertNotNull(results);
-		assertEquals(1,results.size());
-		
-		Tank result = (Tank)results.iterator().next();
-		assertNotNull(result);
-	}
-	
 
 	/**
 	 * Uses CQL Criteria for inheritance as association in search
@@ -1104,39 +1052,6 @@ public class ImplicitParentWithAssociationTest extends SDKTestBase
 		assertEquals(new Integer(4), result.getId());
 	}
 	
-	/**
-	 * Uses CQL Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws ApplicationException
-	 */
-	public void testAssociationCQL9() throws ApplicationException
-	{
-		CQLQuery cqlQuery = new CQLQuery();
-		CQLObject target = new CQLObject();
-
-		CQLAssociation association = new CQLAssociation();
-		association.setName("gov.nih.nci.cacoresdk.domain.inheritance.implicit.TankAccessory");
-		association.setTargetRoleName("tankAccessoryCollection");		
-		association.setAttribute(new CQLAttribute("id", CQLPredicate.EQUAL_TO,"4"));
-		
-		target.setName("gov.nih.nci.cacoresdk.domain.inheritance.implicit.Tank");
-		target.setAssociation(association);
-		cqlQuery.setTarget(target);
-		
-		Collection results;
-		results = getApplicationService().query(cqlQuery);
-
-		assertNotNull(results);
-		assertEquals(2,results.size());
-		
-		Tank result = (Tank)results.iterator().next();
-		assertNotNull(result);
-	}
-	
-
 	/**
 	 * Uses CQL Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
