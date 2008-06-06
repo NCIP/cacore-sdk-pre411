@@ -492,30 +492,6 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 	 * 
 	 * @throws Exception
 	 */
-	public void testAssociationNestedSearch8() throws Exception
-	{
-		Class targetClass = Fish.class;
-		Tank criteria = new Tank();
-
-		Object[] results = getQueryObjectResults(targetClass, criteria);
-
-		assertNotNull(results);
-		assertEquals(4,results.length);
-		
-		Fish result = (Fish)results[0];
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertNotNull(result.getGenera());	
-	}	
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws Exception
-	 */
 	public void testAssociationNestedSearch9() throws Exception
 	{
 		Class targetClass = Tank.class;
@@ -532,30 +508,6 @@ public class ImplicitParentWithAssociationWSTest extends SDKWSTestBase
 
 		assertTrue(flag);
 	
-	}	
-	
-	/**
-	 * Uses Nested Search Criteria for inheritance as association in search
-	 * Verifies that the results are returned 
-	 * Verifies size of the result set
-	 * Verifies that none of the attribute is null
-	 * 
-	 * @throws Exception
-	 */
-	public void testAssociationNestedSearch10() throws Exception
-	{
-		Class targetClass = TankAccessory.class;
-		Tank criteria = new Tank();
-
-		Object[] results = getQueryObjectResults(targetClass, criteria);
-
-		assertNotNull(results);
-		assertEquals(6,results.length);
-		
-		TankAccessory result = (TankAccessory)results[0];
-		assertNotNull(result);
-		assertNotNull(result.getId());
-		assertNotNull(result.getName());		
 	}	
 	
 	/**
