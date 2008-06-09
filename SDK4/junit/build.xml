@@ -250,9 +250,9 @@
 	<!--                                Run JUnits for Security client using the Thick Client            -->
 	<!-- ************************************************************************************************-->
 
-	<target name="runSecurityThickClientTest" depends="clean-classes,createDir,runSecurityThickClientJUnit,stop" description="Run JUnits for XSD Client " />
+	<target name="runSecurityThickClientTest" depends="clean-classes,createDir,runSecurityThickClientQuickJUnit,stop" description="Run JUnits for XSD Client " />
 
-	<target name="runSecurityThickClientJUnit">
+	<target name="runSecurityThickClientQuickJUnit">
 		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*Security*.java" />
 		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.security-thick-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.security-thick-client}" />
@@ -262,9 +262,9 @@
 	<!--                                Run JUnits for Security client using the Remote Client            -->
 	<!-- ************************************************************************************************-->
 
-	<target name="runSecurityRemoteClientTest" depends="clean-classes,createDir,runSecurityRemoteClientJUnit,stop" description="Run JUnits for XSD Client " />
+	<target name="runSecurityRemoteClientTest" depends="clean-classes,createDir,runSecurityRemoteClientQuickJUnit,stop" description="Run JUnits for XSD Client " />
 
-	<target name="runSecurityRemoteClientJUnit">
+	<target name="runSecurityRemoteClientQuickJUnit">
 		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*Security*.java" />
 		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-security-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.remote-security-client}" />
