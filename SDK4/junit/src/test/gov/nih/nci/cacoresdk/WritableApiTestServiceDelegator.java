@@ -1,5 +1,9 @@
 package test.gov.nih.nci.cacoresdk;
 
+import gov.nih.nci.system.query.SDKQuery;
+
+import java.util.List;
+
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class WritableApiTestServiceDelegator {
@@ -9,8 +13,8 @@ public class WritableApiTestServiceDelegator {
 	WritableApiTestDAO appservice;
 
 	public WritableApiTestServiceDelegator() {
-		loadWritableApiTestDAO();
-		//loadWritableApiApplicationService();
+		//loadWritableApiTestDAO();
+		loadWritableApiApplicationService();
 	}
 
 	public void loadWritableApiTestDAO() {
@@ -36,6 +40,10 @@ public class WritableApiTestServiceDelegator {
 		appservice.delete(obj);
 	}
 
+	public void executeBatchQuery(List<SDKQuery> batchOperation) {
+		appservice.executeBatchQuery(batchOperation);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Object getObject(Class klass, int id) {
 		Object obj = appservice.getObject(klass, id);

@@ -1,5 +1,10 @@
 package test.gov.nih.nci.cacoresdk;
 
+import gov.nih.nci.system.query.SDKQuery;
+import gov.nih.nci.system.query.example.DeleteExampleQuery;
+import gov.nih.nci.system.query.example.InsertExampleQuery;
+import gov.nih.nci.system.query.example.UpdateExampleQuery;
+
 import java.util.List;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -18,12 +23,27 @@ public class WritableApiTestDAOImpl extends HibernateDaoSupport implements Writa
 		getHibernateTemplate().delete(obj);
 	}
 	
+	public void executeBatchQuery(List<SDKQuery> batchOperation) {
+		
+		for (SDKQuery query : batchOperation) {
+			if (query instanceof InsertExampleQuery) {
+				InsertExampleQuery insert = (InsertExampleQuery) query;
+				getHibernateTemplate().save(insert.getExample());
+			}else if (query instanceof DeleteExampleQuery) {
+				DeleteExampleQuery delete = (DeleteExampleQuery) query;
+				getHibernateTemplate().delete(delete.getExample());
+			}else if (query instanceof UpdateExampleQuery) {
+				UpdateExampleQuery update = (UpdateExampleQuery) query;
+				getHibernateTemplate().delete(update.getExample());
+			}
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Object getObject(Class klass,int id) {
 		Object obj=getHibernateTemplate().get(klass,id);
 		return obj;
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public Object getObjectAndLazyCollection(Class klass, int id,String lazyCollectionsName) {

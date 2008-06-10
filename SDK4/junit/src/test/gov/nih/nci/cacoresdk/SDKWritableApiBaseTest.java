@@ -1,5 +1,9 @@
 package test.gov.nih.nci.cacoresdk;
 
+import gov.nih.nci.system.query.SDKQuery;
+
+import java.util.List;
+
 import junit.framework.TestCase;
 public class SDKWritableApiBaseTest extends TestCase{
 	
@@ -49,5 +53,9 @@ public class SDKWritableApiBaseTest extends TestCase{
 	@SuppressWarnings("unchecked")
 	public Object getObjectAndMultipleLazyObjects(Class klass,int id,String lazyObjName1,String lazyObjName2) {
 		return serviceDelegator.getObjectAndMultipleLazyObjects(klass, id, lazyObjName1, lazyObjName2);
+	}
+	
+	public void executeBatchQuery(List<SDKQuery> batchOperation) {
+		serviceDelegator.executeBatchQuery(batchOperation);
 	}
 }

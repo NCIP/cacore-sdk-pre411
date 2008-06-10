@@ -3,6 +3,7 @@ package test.gov.nih.nci.cacoresdk;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.applicationservice.WritableApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.SDKQuery;
 import gov.nih.nci.system.query.example.DeleteExampleQuery;
 import gov.nih.nci.system.query.example.InsertExampleQuery;
 import gov.nih.nci.system.query.example.UpdateExampleQuery;
@@ -16,7 +17,7 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 	
 	public WritableApiTestServiceImpl(){
 		try {
-			appService = (WritableApplicationService) ApplicationServiceProvider.getApplicationService();
+			appService = (WritableApplicationService) ApplicationServiceProvider.getApplicationService("user1","password");
 		} catch (Exception e) {
 			throw new RuntimeException("error loading application service", e);
 		}
@@ -61,6 +62,18 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 			@Override
 			public List execute() throws Exception {
 				appService.executeQuery(sdkQuery);
+				return null;
+			}
+		}.executeLogic();
+	}
+	
+	public void executeBatchQuery(final List<SDKQuery> batchOperation) {
+
+		new BaseUtilWrapper() {
+
+			@Override
+			public List execute() throws Exception {
+				appService.executeBatchQuery(batchOperation);
 				return null;
 			}
 		}.executeLogic();

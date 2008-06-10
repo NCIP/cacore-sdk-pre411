@@ -1,5 +1,9 @@
 package test.gov.nih.nci.cacoresdk;
 
+import gov.nih.nci.system.query.SDKQuery;
+
+import java.util.List;
+
 public interface WritableApiTestDAO {
 
 	public void save(Object obj);
@@ -7,6 +11,8 @@ public interface WritableApiTestDAO {
 	public void update(Object obj);
 
 	public void delete(Object obj);
+	
+	public void executeBatchQuery(List<SDKQuery> batchOperation);
 
 	@SuppressWarnings("unchecked")
 	public Object getObject(Class klass, int id);
