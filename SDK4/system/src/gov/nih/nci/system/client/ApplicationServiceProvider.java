@@ -207,6 +207,9 @@ public class ApplicationServiceProvider
 		if((!secured && as!=null && url == null)||(secured && as!=null && ap!=null && url == null)) //Empty URL, return the service. This helps in improving performance
 			return ctx;
 		
+		if(secured && url== null && ap==null)
+			throw new Exception("Change the configuration file!!!");
+		
 		String serviceInfo = (String)serviceInfoMap.get("APPLICATION_SERVICE_CONFIG");;
 		if(url == null)	url = (String)serviceInfoMap.get("APPLICATION_SERVICE_URL");
 
