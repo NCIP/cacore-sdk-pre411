@@ -39,7 +39,7 @@ public class SecurityInitializationHelper
 
 	public void enableAttributeLevelSecurity(String userName, SessionFactory sessionFactory) 
 	{
-		if(attributeLevelSecurityEnabled && authorizationManager != null)
+		if(securityEnabled && attributeLevelSecurityEnabled && authorizationManager != null)
 			UserClassAttributeMapCache.setAttributeMap(userName,sessionFactory, authorizationManager);
 	}
 	
