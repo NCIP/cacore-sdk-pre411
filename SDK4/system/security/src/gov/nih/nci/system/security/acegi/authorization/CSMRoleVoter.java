@@ -14,6 +14,7 @@ import gov.nih.nci.system.security.acegi.GroupNameAuthenticationToken;
 import gov.nih.nci.system.security.acegi.authentication.CSMUserDetailsService;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -62,21 +63,29 @@ public class CSMRoleVoter implements AccessDecisionVoter {
     public int vote(Authentication authentication, Object object, ConfigAttributeDefinition config) {        
 		Boolean isProtectionElementsCached = userDetailsService.getCacheProtectionElementsFlag();
     	final MethodInvocation methodInvocation = (MethodInvocation)object;
-    	Map<String,String> privileges=getDomainObjectNameAndPrivileges(methodInvocation);
+    	Map<String,Collection<String>> privilegeMap=getDomainObjectNameAndPrivileges(methodInvocation);
 
-		Iterator iterator = privileges.keySet().iterator();
+		Iterator<String> iterator = privilegeMap.keySet().iterator();
 		int result = ACCESS_ABSTAIN;
-		while (iterator.hasNext()) {
+		while (iterator.hasNext()) {			
 			String protectionElementName = (String) iterator.next();
-			String privilege = privileges.get(protectionElementName);
-			if (authentication instanceof GroupNameAuthenticationToken) {
-				result = authorizeByGroupName(authentication,protectionElementName, privilege);
-			} else if (isProtectionElementsCached) {
-				result = authorizeCachedProtectionElements(authentication,protectionElementName, privilege);
-			} else {
-				result = authorizeNonCachedProtectionElements(authentication,protectionElementName, privilege);
-			}
-			if(result==ACCESS_DENIED) return result;
+			Collection<String> privileges = privilegeMap.get(protectionElementName);
+			
+			for (String privilege : privileges) {
+				if ("*".equals(protectionElementName)) {
+					result = ACCESS_GRANTED;
+				} else if (authentication instanceof GroupNameAuthenticationToken) {
+					result = authorizeByGroupName(authentication,protectionElementName, privilege);
+					if(result==ACCESS_DENIED) log.info("user dont have permisson to "+privilege+" on protectionElement "+protectionElementName);
+				} else if (isProtectionElementsCached) {
+					result = authorizeCachedProtectionElements(authentication,protectionElementName, privilege);
+					if(result==ACCESS_DENIED) log.info("user dont have permisson to "+privilege+" on protectionElement "+protectionElementName);
+				} else {
+					result = authorizeNonCachedProtectionElements(authentication, protectionElementName, privilege);
+					if(result==ACCESS_DENIED) log.info("user dont have permisson to "+privilege+" on protectionElement "+protectionElementName);
+				}
+				if(result==ACCESS_DENIED) return result;
+			}			
 		}
 		return result;
 	}
@@ -130,8 +139,8 @@ public class CSMRoleVoter implements AccessDecisionVoter {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Map<String, String> getDomainObjectNameAndPrivileges(MethodInvocation invocation) {
-		Map<String, String> requiredPrivilageMap = new HashMap<String, String>();
+	private Map<String, Collection<String>> getDomainObjectNameAndPrivileges(MethodInvocation invocation) {
+		Map<String, Collection<String>> requiredPrivilageMap = new HashMap<String, Collection<String>>();
 		Method m = getApplicationServiceHelperMethod();
 		try {
 			if (m != null)
