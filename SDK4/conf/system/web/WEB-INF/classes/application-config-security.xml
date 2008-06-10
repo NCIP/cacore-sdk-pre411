@@ -59,7 +59,7 @@
 			<list>
 				<bean class='gov.nih.nci.system.security.acegi.authorization.CSMRoleVoter'>
 					<property name="userDetailsService" ref="userDetailsService"/>
-					<property name="applicationServiceMethodHelperClass" value="gov.nih.nci.system.util.ApplicationServiceMethodHelper" />
+					<property name="applicationServiceMethodHelperClass" value="@SERVICE_METHOD_HELPER@" />
 				</bean>
 			</list>
 		</property>
