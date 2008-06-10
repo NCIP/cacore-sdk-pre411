@@ -11,12 +11,12 @@
 		<property name="daoList">
 			<list>
 				<!--  Add any DAO's here -->
-				<ref bean="ORMDAO"/>					
+				<ref bean="ORMDAO" />
 			</list>
-		</property>		
+		</property>
 	</bean>
-	
-	
+
+
 	<bean name="WebSystemProperties" class="java.util.Properties">
 		<constructor-arg>
 			<props>
@@ -28,31 +28,37 @@
 	</bean>
 
 	<bean name="ORMDAOImpl" class="@DAO_IMPL@">
-		<property name="caseSensitive" value="false"/>
-		<property name="resultCountPerQuery" value="1000"/>
-		<property name="sessionFactory"><ref bean="SessionFactory"/></property>
-		<property name="config"><bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration"/></property>
-		<property name="securityHelper"><ref bean="SecurityInitializationHelper"/></property>
+		<property name="caseSensitive" value="false" />
+		<property name="resultCountPerQuery" value="1000" />
+		<property name="sessionFactory" ref="SessionFactory" />
+		<property name="config">
+			<bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration" />
+		</property>
+		<property name="securityHelper">
+			<ref bean="SecurityInitializationHelper" />
+		</property>
 	</bean>
-	
-	<bean name="HibernateConfigHolder" class="gov.nih.nci.system.dao.orm.HibernateConfigurationHolder"/>
-	
+
+	<bean name="HibernateConfigHolder" class="gov.nih.nci.system.dao.orm.HibernateConfigurationHolder" />
+
 	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
-		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-		<property name="configHolder"><ref bean="HibernateConfigHolder"/></property>
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="configHolder">
+			<ref bean="HibernateConfigHolder" />
+		</property>
 		<property name="filterDefinitions">
-			<bean factory-bean="SecurityInitializationHelper" factory-method="getFilters"/>
+			<bean factory-bean="SecurityInitializationHelper" factory-method="getFilters" />
 		</property>
 		<property name="entityInterceptor">
-			<bean factory-bean="SecurityInitializationHelper" factory-method="getInterceptor"/>
+			<bean factory-bean="SecurityInitializationHelper" factory-method="getInterceptor" />
 		</property>
 		<property name="eventListeners">
 			<map>
 				<entry key="pre-insert">
-						<bean class="org.hibernate.validator.event.ValidateEventListener"/>
+					<bean class="org.hibernate.validator.event.ValidateEventListener" />
 				</entry>
 				<entry key="pre-update">
-						<bean class="org.hibernate.validator.event.ValidateEventListener"/>
+					<bean class="org.hibernate.validator.event.ValidateEventListener" />
 				</entry>
 			</map>
 		</property>
@@ -64,22 +70,33 @@
 		<property name="attributeLevelSecurityEnabled" value="@ATTRIBUTE_LEVEL_SECURITY_ENABLED@"/>
 		<!--@SECURITY_START@-->
 		<property name="authorizationManager">
-			<bean factory-bean="userDetailsService" factory-method="authorizationManagerInstance"/>
+			<bean factory-bean="userDetailsService" factory-method="authorizationManagerInstance" />
 		</property>
 		<!--@SECURITY_END@-->
-	</bean>		
+	</bean>
 
 	<bean id="HibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory"><ref bean="SessionFactory"/></property>
+		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 
 	<bean id="ORMDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-	    <property name="transactionManager"><ref bean="HibernateTransactionManager"/></property>
-	    <property name="target"><ref bean="ORMDAOImpl"/></property>
-	    <property name="transactionAttributes">
-	        <props>
-	            <prop key="*">PROPAGATION_REQUIRED</prop>
-	        </props>
-	    </property>
+		<property name="transactionManager" ref="HibernateTransactionManager" />
+		<property name="target" ref="ORMDAOImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED,-gov.nih.nci.system.dao.DAOException</prop>
+			</props>
+		</property>
 	</bean>
+
+	<bean id="ApplicationService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="HibernateTransactionManager" />
+		<property name="target" ref="ApplicationServiceImpl" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException</prop>
+			</props>
+		</property>
+	</bean>
+
 </beans>
