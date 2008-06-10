@@ -60,68 +60,123 @@
 	*** HIDE/SHOW DB CONNECTION PROPERTIES TO BE USED IN HIBERNATE CONFIGURATION
 	*********************************************************************** -->
 	<condition property="JNDI_START" value="" else="${xml.comment.start}">
-		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	<condition property="JNDI_END" value="" else="${xml.comment.end}">
-		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	<condition property="DB_CONNECTION_START" value="${xml.comment.start}" else="">
-		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	<condition property="DB_CONNECTION_END" value="${xml.comment.end}" else="">
-		<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	
 	<condition property="CSM_JNDI_START" value="" else="${xml.comment.start}">
-		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	<condition property="CSM_JNDI_END" value="" else="${xml.comment.end}">
-		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	<condition property="CSM_DB_CONNECTION_START" value="${xml.comment.start}" else="">
-		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	<condition property="CSM_DB_CONNECTION_END" value="${xml.comment.end}" else="">
-		<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		<or>
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${CSM_USE_JNDI_BASED_CONNECTION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
 	</condition>
-
+	
+	<condition property="SECURITY_ENABLED" value="true" else="false">
+		<or>
+			<equals arg1="${ENABLE_SECURITY}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_SECURITY}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
 	<condition property="SECURITY_START" value="" else="${xml.comment.start}">
 		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	<condition property="SECURITY_END" value="" else="${xml.comment.end}">
 		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
+	<condition property="INSTANCE_LEVEL_SECURITY_ENABLED" value="true" else="false">
+		<or>
+			<equals arg1="${ENABLE_INSTANCE_LEVEL_SECURITY}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_INSTANCE_LEVEL_SECURITY}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="ATTRIBUTE_LEVEL_SECURITY_ENABLED" value="true" else="false">
+		<or>
+			<equals arg1="${ENABLE_ATTRIBUTE_LEVEL_SECURITY}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_ATTRIBUTE_LEVEL_SECURITY}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="CACHE_PROTECTION_ELEMENTS_ENABLED" value="true" else="false">
+		<or>
+			<equals arg1="${CACHE_PROTECTION_ELEMENTS}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${CACHE_PROTECTION_ELEMENTS}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>	
 	
 	<condition property="server-exclude-list" value="log4j*.jar" else="">
 		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
 	</condition>
+	
+	<condition property="WRITABLE_API_EXTENSION_ENABLED" value="true" else="false">
+		<or>
+			<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
 
 	<condition property="read-api-exclude-list" value="" else="*.jar">
-		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 
 	<condition property="read-api-exclude-list-remote-client" value="${writable-api.file.output.core.writable.name}" else="*.jar">
-		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	
 	<condition property="SERVICE_INTERFACE" value="${extension.api.interface}" else="${sdk.api.interface}">
-		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>	
 
 	<condition property="SERVICE_IMPL" value="${extension.api.impl}" else="${sdk.api.impl}">
-		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>	
 
 	<condition property="DAO_IMPL" value="${extension.dao.impl}" else="${sdk.dao.impl}">
-		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>	
 	
 	<condition property="SERVICE_METHOD_HELPER" value="${extension.sdk.security.writable.applicationservice.method.impl}" else="${sdk.security.readable.applicationservice.method.impl}">
-		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	
-	<condition property="VALIDATE_WRITABLE_API_EXTENSION" value="true" else="false">
-		<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+	<condition property="ENABLE_WRITABLE_API_EXTENSION_VALIDATOR" value="true" else="false">
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	
 	<condition property="HBM2DDL_START" value="" else="${xml.comment.start}">
@@ -136,10 +191,54 @@
 	
 	<condition property="ENABLE_HIBERNATE_VALIDATOR" value="true" else="false">
 		<and>
-			<equals arg1="${ENABLE_WRITABLE_API_EXTENSION}" arg2="yes" casesensitive="false" trim="true" />
+			<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 			<equals arg1="${GENERATE_HIBERNATE_VALIDATOR}" arg2="true" casesensitive="false" trim="true" />
 		</and>
 	</condition>
+	
+	<condition property="ENABLE_LOGICAL_MODEL_VALIDATOR" value="true" else="false">
+		<or>
+			<equals arg1="${VALIDATE_LOGICAL_MODEL}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${VALIDATE_LOGICAL_MODEL}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="ENABLE_MODEL_MAPPING_VALIDATOR" value="true" else="false">
+		<or>
+			<equals arg1="${VALIDATE_MODEL_MAPPING}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${VALIDATE_MODEL_MAPPING}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="ENABLE_HIBERNATE_MAPPING_GENERATION" value="true" else="false">
+		<or>
+			<equals arg1="${GENERATE_HIBERNATE_MAPPING}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${GENERATE_HIBERNATE_MAPPING}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="ENABLE_BEANS_GENERATION" value="true" else="false">
+		<or>
+			<equals arg1="${GENERATE_BEANS}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${GENERATE_BEANS}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="ENABLE_CASTOR_MAPPING_GENERATION" value="true" else="false">
+		<or>
+			<equals arg1="${GENERATE_CASTOR_MAPPING}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${GENERATE_CASTOR_MAPPING}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="ENABLE_XSD_GENERATION" value="true" else="false">
+		<or>
+			<equals arg1="${GENERATE_XSD}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${GENERATE_XSD}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+	<condition property="ENABLE_WSDD_GENERATION" value="true" else="false">
+		<or>
+			<equals arg1="${GENERATE_WSDD}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${GENERATE_WSDD}" arg2="yes" casesensitive="false" trim="true" />
+		</or>
+	</condition>
+
 	
 	<!--***********************************************************************
 	*** Prepares the output directory structure
@@ -196,14 +295,14 @@
 			<replacefilter token="@DB_PASSWORD@" value="${DB_PASSWORD}" />	
 			<replacefilter token="@DB_DIALECT@" value="${DB_DIALECT}" />
 			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
-			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${VALIDATE_LOGICAL_MODEL}"/>
-			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${VALIDATE_MODEL_MAPPING}"/>
-			<replacefilter token="@VALIDATE_WRITABLE_API_EXTENSION@" value="${VALIDATE_WRITABLE_API_EXTENSION}" />						
-			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${GENERATE_HIBERNATE_MAPPING}"/>
-			<replacefilter token="@GENERATE_BEANS@" value="${GENERATE_BEANS}"/>
-			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${GENERATE_CASTOR_MAPPING}"/>
-			<replacefilter token="@GENERATE_XSD@" value="${GENERATE_XSD}"/>
-			<replacefilter token="@GENERATE_WSDD@" value="${GENERATE_WSDD}"/>
+			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${ENABLE_LOGICAL_MODEL_VALIDATOR}"/>
+			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${ENABLE_MODEL_MAPPING_VALIDATOR}"/>
+			<replacefilter token="@VALIDATE_WRITABLE_API_EXTENSION@" value="${ENABLE_WRITABLE_API_EXTENSION_VALIDATOR}" />						
+			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${ENABLE_HIBERNATE_MAPPING_GENERATION}"/>
+			<replacefilter token="@GENERATE_BEANS@" value="${ENABLE_BEANS_GENERATION}"/>
+			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${ENABLE_CASTOR_MAPPING_GENERATION}"/>
+			<replacefilter token="@GENERATE_XSD@" value="${ENABLE_XSD_GENERATION}"/>
+			<replacefilter token="@GENERATE_WSDD@" value="${ENABLE_WSDD_GENERATION}"/>
 			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR@" value="${ENABLE_HIBERNATE_VALIDATOR}"/>
 			<replacefilter token="@CADSR_CONNECTION_URL@" value="${CADSR_CONNECTION_URL}"/>
 			<replacefilter token="@SERVER_URL@" value="${SERVER_URL}"/>
@@ -220,8 +319,8 @@
 			<replacefilter token="@CSM_PROJECT_NAME@" value="${CSM_PROJECT_NAME}" />
 			<replacefilter token="${xml.comment.start}@SECURITY_START@${xml.comment.end}" value="${SECURITY_START}" />	
 			<replacefilter token="${xml.comment.start}@SECURITY_END@${xml.comment.end}" value="${SECURITY_END}" />	
-			<replacefilter token="@INSTANCE_LEVEL_SECURITY@" value="${INSTANCE_LEVEL_SECURITY}" />
-			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY@" value="${ATTRIBUTE_LEVEL_SECURITY}" />
+			<replacefilter token="@INSTANCE_LEVEL_SECURITY_ENABLED@" value="${INSTANCE_LEVEL_SECURITY_ENABLED}" />
+			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY_ENABLED@" value="${ATTRIBUTE_LEVEL_SECURITY_ENABLED}" />
 			<replacefilter token="@SECURITY_ENABLED@" value="${SECURITY_ENABLED}" />			
 			<replacefilter token="@IDENTITY_GENERATOR_TAG@" value="${IDENTITY_GENERATOR_TAG}" />
 			<replacefilter token="@DATABASE_TYPE@" value="${DATABASE_TYPE}" />
@@ -232,7 +331,7 @@
 			<replacefilter token="${xml.comment.start}@HBM2DDL_START@${xml.comment.end}" value="${HBM2DDL_START}" />	
 			<replacefilter token="${xml.comment.start}@HBM2DDL_END@${xml.comment.end}" value="${HBM2DDL_END}" />	
 			<replacefilter token="@SERVICE_METHOD_HELPER@" value="${SERVICE_METHOD_HELPER}" />
-			<replacefilter token="@CACHE_PROTECTION_ELEMENTS@" value="${CACHE_PROTECTION_ELEMENTS}" />
+			<replacefilter token="@CACHE_PROTECTION_ELEMENTS_ENABLED@" value="${CACHE_PROTECTION_ELEMENTS_ENABLED}" />
 		</replace>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>

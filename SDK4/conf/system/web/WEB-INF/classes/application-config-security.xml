@@ -34,7 +34,7 @@
 
 	<bean name="userDetailsService" class="gov.nih.nci.system.security.acegi.authentication.CSMUserDetailsService">
 		<property name="csmApplicationContext" value="@CSM_PROJECT_NAME@" />
-		<property name="cacheProtectionElementsFlag" value="@CACHE_PROTECTION_ELEMENTS@" />
+		<property name="cacheProtectionElementsFlag" value="@CACHE_PROTECTION_ELEMENTS_ENABLED@" />
 	</bean>
 
 	<bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>

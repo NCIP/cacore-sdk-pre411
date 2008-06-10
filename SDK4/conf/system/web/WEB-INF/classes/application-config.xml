@@ -60,8 +60,8 @@
 
 	<bean name="SecurityInitializationHelper" class="gov.nih.nci.system.security.helper.SecurityInitializationHelper">
 		<property name="securityEnabled" value="@SECURITY_ENABLED@"/>
-		<property name="instanceLevelSecurityEnabled" value="@INSTANCE_LEVEL_SECURITY@"/>
-		<property name="attributeLevelSecurityEnabled" value="@ATTRIBUTE_LEVEL_SECURITY@"/>
+		<property name="instanceLevelSecurityEnabled" value="@INSTANCE_LEVEL_SECURITY_ENABLED@"/>
+		<property name="attributeLevelSecurityEnabled" value="@ATTRIBUTE_LEVEL_SECURITY_ENABLED@"/>
 		<!--@SECURITY_START@-->
 		<property name="authorizationManager">
 			<bean factory-bean="userDetailsService" factory-method="authorizationManagerInstance"/>
