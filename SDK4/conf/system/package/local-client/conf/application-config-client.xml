@@ -21,13 +21,24 @@
 			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="false"/>
 		</property>
 	</bean>
-	
+
 	<bean id="applicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
-		<property name="target">
-			<ref bean="ApplicationServiceImpl"/>
+		<property name="target" ref="ApplicationServiceImpl" />
+		<property name="interfaces" value="@SERVICE_INTERFACE@" />
+		<property name="interceptorNames">
+			<list>
+				<idref local="interceptor" />
+				<idref bean="TxInterceptor" />
+			</list>
+		</property>		
+	</bean>
+
+	<bean id="TxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref bean="HibernateTransactionManager" />
 		</property>
-		<property name="interceptorNames" value="interceptor"/>
-		<property name="interfaces" value="@SERVICE_INTERFACE@"/>
-	</bean>	
-	
+		<property name="transactionAttributeSource">
+			<value>@SERVICE_INTERFACE@.*=PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException</value>
+		</property>
+	</bean>
 </beans>
