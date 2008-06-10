@@ -48,6 +48,15 @@ public class WritableApplicationServiceImpl extends ApplicationServiceImpl imple
 		}
 	}
 	
+	public List<SDKQueryResult> executeBatchQuery(List<SDKQuery> batchQuery) throws ApplicationException{
+		List<SDKQueryResult> sdkQueryResults=new ArrayList<SDKQueryResult>();
+		
+		for (SDKQuery query : batchQuery) {
+			SDKQueryResult queryResult = executeQuery(query);
+			sdkQueryResults.add(queryResult);
+		}
+		return sdkQueryResults;
+	}
 	
 	protected SDKQueryResult prepareResult(Request request, Response resp) {
 		Object result = resp.getResponse();
