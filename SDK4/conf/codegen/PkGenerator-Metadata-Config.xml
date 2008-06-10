@@ -103,6 +103,7 @@
 				<value>ms_sql_server</value>
 				<value>sybase</value>
 				<value>hypersonicsql</value>
+				<value>hsql</value>
 			</list>
 		</constructor-arg>
 	</bean>
