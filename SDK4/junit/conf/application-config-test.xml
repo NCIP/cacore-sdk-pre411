@@ -5,8 +5,6 @@
 	<import resource="application-config-security.xml"/>
 
 	<bean id="WritableApiTestDAO" class="test.gov.nih.nci.cacoresdk.WritableApiTestDAOImpl">
-		<property name="sessionFactory">
-			<ref bean="SessionFactory" />
-		</property>
+		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 </beans>
