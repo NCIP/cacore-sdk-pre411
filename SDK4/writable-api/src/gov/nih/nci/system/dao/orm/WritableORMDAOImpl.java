@@ -21,18 +21,17 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
+public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO 
 {
 	@Override
+	@SuppressWarnings("unchecked")
 	public Response query(Request request) throws DAOException 
 	{
 		if(! (request.getRequest() instanceof SDKQuery))
 			return super.query(request);
 
 		SDKQueryResult result = null;
-		
-		try 
-		{
+
 			SDKQuery q = (SDKQuery) request.getRequest();
 			if (q instanceof InsertExampleQuery)
 			{
@@ -64,28 +63,25 @@ public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 				delete(((UpdateHQLQuery)q).getHqlString(),((UpdateHQLQuery)q).getParameters());
 				result = new SDKQueryResult(true);
 			}
-		} catch (Exception e) {
-			throw new DAOException(e);
-		} 
 
 		Response resp = new Response();
 		resp.setResponse(result);
 		return resp;
 	}
 
-	public Object insert(Object o) throws Exception
+	public Object insert(Object o)
 	{
 		log.info("In the writable DAO. executing the Insert query");
 		return getHibernateTemplate().save(o);
 	}
 
-	public void update(Object o) throws Exception
+	public void update(Object o)
 	{
 		log.info("In the writable DAO. executing the Update query");
 		getHibernateTemplate().update(o);
 	}
 
-	public void delete(Object o) throws Exception
+	public void delete(Object o)
 	{
 		log.info("In the writable DAO. executing the Delete query");
 		getHibernateTemplate().delete(o);
