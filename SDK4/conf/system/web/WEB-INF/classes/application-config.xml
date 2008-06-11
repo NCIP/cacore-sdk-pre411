@@ -27,7 +27,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean name="ORMDAOImpl" class="@DAO_IMPL@">
+	<bean name="ORMDAO" class="@DAO_IMPL@">
 		<property name="caseSensitive" value="false" />
 		<property name="resultCountPerQuery" value="1000" />
 		<property name="sessionFactory" ref="SessionFactory" />
@@ -79,24 +79,26 @@
 		<property name="sessionFactory" ref="SessionFactory" />
 	</bean>
 
-	<bean id="ORMDAO" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="HibernateTransactionManager" />
-		<property name="target" ref="ORMDAOImpl" />
-		<property name="transactionAttributes">
-			<props>
-				<prop key="*">PROPAGATION_REQUIRED,-gov.nih.nci.system.dao.DAOException</prop>
-			</props>
+	<bean id="TxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref bean="HibernateTransactionManager" />
+		</property>
+		<property name="transactionAttributeSource">
+			<value>
+				@SERVICE_INTERFACE@.*=PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
+			</value>
 		</property>
 	</bean>
-
-	<bean id="ApplicationService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="HibernateTransactionManager" />
+	
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
 		<property name="target" ref="ApplicationServiceImpl" />
-		<property name="transactionAttributes">
-			<props>
-				<prop key="*">PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException</prop>
-			</props>
-		</property>
+		<property name="interfaces" value="@SERVICE_INTERFACE@" />
+		<property name="interceptorNames">
+			<list>
+				<idref local="TxInterceptor" />
+				<!-- Add CLM Interceptor -->
+			</list>
+		</property>		
 	</bean>
 
 </beans>

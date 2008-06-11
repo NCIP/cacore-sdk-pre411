@@ -8,7 +8,7 @@
 	<bean id="ServiceInfo" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
-				<entry key="APPLICATION_SERVICE_BEAN" value="applicationService" />
+				<entry key="APPLICATION_SERVICE_BEAN" value="ApplicationService" />
 				<!--@SECURITY_START@-->
 				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationProvider"/>
 				<!--@SECURITY_END@-->
@@ -16,29 +16,22 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="false">
+	<bean id="Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="false">
 		<property name="proxyFactory">
 			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="false"/>
 		</property>
 	</bean>
 
-	<bean id="applicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
 		<property name="target" ref="ApplicationServiceImpl" />
 		<property name="interfaces" value="@SERVICE_INTERFACE@" />
 		<property name="interceptorNames">
 			<list>
-				<idref local="interceptor" />
+				<idref local="Interceptor" />
 				<idref bean="TxInterceptor" />
+				<!-- Add CLM Interceptor -->
 			</list>
 		</property>		
 	</bean>
 
-	<bean id="TxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-		<property name="transactionManager">
-			<ref bean="HibernateTransactionManager" />
-		</property>
-		<property name="transactionAttributeSource">
-			<value>@SERVICE_INTERFACE@.*=PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException</value>
-		</property>
-	</bean>
 </beans>
