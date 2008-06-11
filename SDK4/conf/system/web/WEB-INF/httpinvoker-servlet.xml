@@ -6,9 +6,9 @@
 	<!--                  -->
 	<!-- Exposed services -->
 	<!--                  -->
-	<bean name="/applicationService"	class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-		<property name="serviceInterface" value="@SERVICE_INTERFACE@"/>
-		<property name="service"><ref bean="ApplicationService" /></property>
+	<bean name="/applicationService" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+		<property name="serviceInterface" value="@SERVICE_INTERFACE@" />
+		<property name="service" ref="ApplicationService" />
 	</bean>
 
 	<!--@SECURITY_START@-->
