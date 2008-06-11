@@ -55,6 +55,14 @@ Port: 		3626 (this is not the standard MySQL port as multiple databases will run
 Username: 	cacoresdk
 Password: 	cac#476
 
+MySQL Training Schema
+================
+Server: 	cbiodb580.nci.nih.gov
+Port: 		3626 (this is not the standard MySQL port as multiple databases will run here).
+Username: 	bootcamp
+Password: 	db4CAbig#
+
+
 FTP Server
 ================
 ftp://ncicbftp2.nci.nih.gov/ 
