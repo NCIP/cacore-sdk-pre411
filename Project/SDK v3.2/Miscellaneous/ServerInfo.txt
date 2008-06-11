@@ -17,6 +17,27 @@ URL:  		jdbc:oracle:thin:@cbiodb30.nci.nih.gov:1521:CBTEST
 Driver:		oracle.jdbc.driver.OracleDriver
 Dialect:	org.hibernate.dialect.Oracle9Dialect
 
+Oracle Training Schema
+================
+Server: 	cbiodb30
+Database: 	CAQA
+Port: 		1521
+User: 		cacoresdk_trn
+Password: 	qa!sdk567
+URL:  		jdbc:oracle:thin:@cbiodb30.nci.nih.gov:1521:CBQA
+Driver:		oracle.jdbc.driver.OracleDriver
+Dialect:	org.hibernate.dialect.Oracle9Dialect
+
+Oracle QA Schema
+================
+Server: 	
+Database: 	BIOQA
+Port: 		1521
+User: 		CACORESDK_41_QA
+Password: 	c0r3nt!
+URL:  		jdbc:oracle:thin:@cbiodb30.nci.nih.gov:1521:BIOQA
+Driver:		oracle.jdbc.driver.OracleDriver
+Dialect:	org.hibernate.dialect.Oracle9Dialect
 
 
 Oracle ANT Schema
