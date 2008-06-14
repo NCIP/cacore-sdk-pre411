@@ -74,7 +74,7 @@ public class M2OUnidirectionalWritableApiTest extends SDKWritableApiBaseTest{
 		save(chef);
 		
 		Chef deleteChef=(Chef)getObject(Chef.class, chef.getId());
-		
+		deleteChef.getRestaurant();
 		delete(deleteChef);
 		
 		Chef resultChef=(Chef)getObject(Chef.class, deleteChef.getId());
