@@ -78,7 +78,7 @@ public class O2MBidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 			save(hardDrive);
 			Assert.fail("must through an exception for not null check condition");
 		} catch (Exception e) {
-			Assert.assertEquals("not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive.computer; nested exception is org.hibernate.PropertyValueException: not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive.computer",e.getMessage());
+			Assert.assertEquals("org.springframework.dao.DataIntegrityViolationException: not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive.computer; nested exception is org.hibernate.PropertyValueException: not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.onetomany.bidirectional.HardDrive.computer",e.getMessage());
 		}
 	}
 	
