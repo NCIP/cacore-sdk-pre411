@@ -36,7 +36,7 @@ public class M2OUnidirectionalWritableApiTest extends SDKWritableApiBaseTest{
 			save(chef);
 			fail("must throw not-null property references exception");
 		}catch (Exception e) {
-			Assert.assertEquals("not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef.restaurant; nested exception is org.hibernate.PropertyValueException: not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef.restaurant", e.getMessage());
+			Assert.assertEquals("org.springframework.dao.DataIntegrityViolationException: not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef.restaurant; nested exception is org.hibernate.PropertyValueException: not-null property references a null or transient value: gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef.restaurant", e.getMessage());
 		}
 	}
 	
