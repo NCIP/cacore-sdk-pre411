@@ -94,6 +94,7 @@ public class ChildWithAssociationWritableApiTest extends SDKWritableApiBaseTest 
 		save(credit);
 
 		Credit deleteCredit = (Credit) getObjectAndLazyObject(Credit.class, credit.getId(),"issuingBank");
+		deleteCredit.getIssuingBank();
 		delete(deleteCredit);
 		delete(deleteCredit.getIssuingBank());
 		
