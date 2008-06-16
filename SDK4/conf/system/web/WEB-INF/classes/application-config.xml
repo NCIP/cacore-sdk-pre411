@@ -50,7 +50,15 @@
 			<bean factory-bean="SecurityInitializationHelper" factory-method="getFilters" />
 		</property>
 		<property name="entityInterceptor">
-			<bean factory-bean="SecurityInitializationHelper" factory-method="getInterceptor" />
+			<bean class="gov.nih.nci.security.authorization.attributeLevel.GenericSecurityInterceptor">
+				<constructor-arg>
+					<list>
+						@ENABLE_EMPTY_INTERCEPTOR_START@<bean class="org.hibernate.EmptyInterceptor"/>@ENABLE_EMPTY_INTERCEPTOR_END@
+						@ATTRIBUTE_LEVEL_SECURITY_START@<bean class="gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor"/>@ATTRIBUTE_LEVEL_SECURITY_END@
+						@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<bean class="gov.nih.nci.logging.api.logger.hibernate.ObjectStateInterceptor"/>@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
+					</list>		
+				</constructor-arg>
+			</bean>
 		</property>
 		<property name="eventListeners">
 			<map>
@@ -89,16 +97,16 @@
 			</value>
 		</property>
 	</bean>
-	
+
 	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
 		<property name="target" ref="ApplicationServiceImpl" />
 		<property name="interfaces" value="@SERVICE_INTERFACE@" />
 		<property name="interceptorNames">
 			<list>
 				<idref local="TxInterceptor" />
-				<!-- Add CLM Interceptor -->
+				@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<bean class="gov.nih.nci.system.client.proxy.CLMProxy"/>@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 			</list>
-		</property>		
+		</property>
 	</bean>
 
 </beans>

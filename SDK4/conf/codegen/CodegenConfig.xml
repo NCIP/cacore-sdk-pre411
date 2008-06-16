@@ -27,7 +27,8 @@
 				<ref bean="XmlMappingMarshallerTransformer"/>
 				<ref bean="XmlMappingUnmarshallerTransformer"/>
 				<ref bean="SchemaTransformer"/>	
-				<ref bean="WSDDTransformer"/>							
+				<ref bean="WSDDTransformer"/>
+				<ref bean="CLMLoggerCfgTransformer"/>							
 			</list>
 		</constructor-arg>
 	</bean>
@@ -277,5 +278,22 @@
 		<property name="name" value="Web Services Deployment Descriptor (WSDD) Transformer"/>
 		<property name="transformerUtils" ref="TransformerUtils"></property>		
 	</bean>	
+	
+	<bean name="CLMLoggerCfgTransformer" class="gov.nih.nci.codegen.transformer.jet.CLMLoggerCfgTransformer">
+		<property name="artifactHandler">
+			<bean class="gov.nih.nci.codegen.handler.FileHandler">
+				<property name="useArtifactSource" value="false"/>
+				<property name="outputDir" value="@OUTPUTDIR@"/>
+				<property name="fileName" value="ObjectStateLoggerConfig.xml"/>				
+			</bean>
+		</property>
+		<property name="configurationParams">
+			<map>
+			</map>
+		</property>
+		<property name="enabled" value="@GENERATE_CLM_LOGGER_CFG@"/>
+		<property name="name" value="CLM Logger Config Transformer"/>
+		<property name="transformerUtils" ref="TransformerUtils"></property>
+	</bean>
 	
 </beans>

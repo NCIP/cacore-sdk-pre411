@@ -1,14 +1,13 @@
 package gov.nih.nci.system.security.helper;
 
 import gov.nih.nci.security.AuthorizationManager;
-import gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor;
 import gov.nih.nci.security.authorization.attributeLevel.UserClassAttributeMapCache;
+import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHelper;
+import gov.nih.nci.security.exceptions.CSException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.EmptyInterceptor;
-import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.engine.FilterDefinition;
 
@@ -21,20 +20,16 @@ public class SecurityInitializationHelper
 	
 	public List<FilterDefinition> getFilters()
 	{
-		if(securityEnabled && (!instanceLevelSecurityEnabled || authorizationManager == null))
-			return new ArrayList<FilterDefinition>();
-		
-		//TODO - Connecto to CSM to get the Filter definitions
+		if(securityEnabled && instanceLevelSecurityEnabled && authorizationManager != null){
+			 try {
+				return InstanceLevelSecurityHelper.getFiltersForUser(authorizationManager);
+			} catch (CSException e) {
+				// TODO Add Error Handling
+				e.printStackTrace();
+			}
+		}
 		List<FilterDefinition> fdList = new ArrayList<FilterDefinition>();
 		return fdList;
-	}
-
-	public Interceptor getInterceptor()
-	{
-		if(securityEnabled && attributeLevelSecurityEnabled)
-			return new AttributeSecuritySessionInterceptor(); 
-		else
-			return EmptyInterceptor.INSTANCE;
 	}
 
 	public void enableAttributeLevelSecurity(String userName, SessionFactory sessionFactory) 

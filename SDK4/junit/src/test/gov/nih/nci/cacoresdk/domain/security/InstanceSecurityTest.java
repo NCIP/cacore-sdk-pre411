@@ -1,29 +1,14 @@
 package test.gov.nih.nci.cacoresdk.domain.security;
 
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank;
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash;
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit;
 import gov.nih.nci.cacoresdk.domain.other.levelassociation.Card;
 import gov.nih.nci.cacoresdk.domain.other.levelassociation.Deck;
-import gov.nih.nci.cacoresdk.domain.other.levelassociation.Hand;
 import gov.nih.nci.cacoresdk.domain.other.levelassociation.Suit;
 import gov.nih.nci.system.applicationservice.ApplicationException;
-import gov.nih.nci.system.query.cql.CQLObject;
-import gov.nih.nci.system.query.cql.CQLQuery;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.codec.binary.Base64;
-import org.hibernate.criterion.DetachedCriteria;
 
 import test.gov.nih.nci.cacoresdk.SDKSecurityTestBase;
 
@@ -59,7 +44,7 @@ public class InstanceSecurityTest extends SDKSecurityTestBase
 			Card result = (Card)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNull(result.getImage());
+			assertNotNull(result.getImage());
 			assertNotNull(result.getName());			
 		}
 	}	

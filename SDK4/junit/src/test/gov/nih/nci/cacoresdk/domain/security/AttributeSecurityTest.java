@@ -1,9 +1,7 @@
 package test.gov.nih.nci.cacoresdk.domain.security;
 
 import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank;
-import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Cash;
 import gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit;
-import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.query.cql.CQLObject;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
