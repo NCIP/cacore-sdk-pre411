@@ -122,16 +122,29 @@
 		<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	<condition property="INSTANCE_LEVEL_SECURITY_ENABLED" value="true" else="false">
-		<or>
-			<equals arg1="${ENABLE_INSTANCE_LEVEL_SECURITY}" arg2="true" casesensitive="false" trim="true" />
-			<equals arg1="${ENABLE_INSTANCE_LEVEL_SECURITY}" arg2="yes" casesensitive="false" trim="true" />
-		</or>
+		<and>
+			<or>
+				<equals arg1="${ENABLE_INSTANCE_LEVEL_SECURITY}" arg2="true" casesensitive="false" trim="true" />
+				<equals arg1="${ENABLE_INSTANCE_LEVEL_SECURITY}" arg2="yes" casesensitive="false" trim="true" />
+			</or>
+			<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+		</and>
 	</condition>
+
 	<condition property="ATTRIBUTE_LEVEL_SECURITY_ENABLED" value="true" else="false">
-		<or>
-			<equals arg1="${ENABLE_ATTRIBUTE_LEVEL_SECURITY}" arg2="true" casesensitive="false" trim="true" />
-			<equals arg1="${ENABLE_ATTRIBUTE_LEVEL_SECURITY}" arg2="yes" casesensitive="false" trim="true" />
-		</or>
+		<and>
+			<or>
+				<equals arg1="${ENABLE_ATTRIBUTE_LEVEL_SECURITY}" arg2="true" casesensitive="false" trim="true" />
+				<equals arg1="${ENABLE_ATTRIBUTE_LEVEL_SECURITY}" arg2="yes" casesensitive="false" trim="true" />
+			</or>
+			<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+		</and>
+	</condition>
+	<condition property="ATTRIBUTE_LEVEL_SECURITY_START" value="" else="${xml.comment.start}">
+		<equals arg1="${ATTRIBUTE_LEVEL_SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="ATTRIBUTE_LEVEL_SECURITY_END" value="" else="${xml.comment.end}">
+		<equals arg1="${ATTRIBUTE_LEVEL_SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 	</condition>
 	<condition property="CACHE_PROTECTION_ELEMENTS_ENABLED" value="true" else="false">
 		<or>
@@ -238,7 +251,35 @@
 			<equals arg1="${GENERATE_WSDD}" arg2="yes" casesensitive="false" trim="true" />
 		</or>
 	</condition>
+	<condition property="ENABLE_CLM_LOGGER_CFG_GENERATION" value="true" else="false">
+		<and>
+			<or>
+				<equals arg1="${ENABLE_COMMON_LOGGING_MODULE}" arg2="true" casesensitive="false" trim="true" />
+				<equals arg1="${ENABLE_COMMON_LOGGING_MODULE}" arg2="yes" casesensitive="false" trim="true" />
+			</or>
+			<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+		</and>
 
+	</condition>
+	<condition property="ENABLE_CLM_LOGGER_CFG_GENERATION_START" value="" else="${xml.comment.start}">
+		<equals arg1="${ENABLE_CLM_LOGGER_CFG_GENERATION}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="ENABLE_CLM_LOGGER_CFG_GENERATION_END" value="" else="${xml.comment.end}">
+		<equals arg1="${ENABLE_CLM_LOGGER_CFG_GENERATION}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	
+	<condition property="ENABLE_EMPTY_INTERCEPTOR_START" value="" else="${xml.comment.start}">
+		<and>
+			<equals arg1="${ATTRIBUTE_LEVEL_SECURITY_ENABLED}" arg2="false" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_CLM_LOGGER_CFG_GENERATION}" arg2="false" casesensitive="false" trim="true" />
+		</and>
+	</condition>
+	<condition property="ENABLE_EMPTY_INTERCEPTOR_END" value="" else="${xml.comment.end}">
+		<and>
+			<equals arg1="${ATTRIBUTE_LEVEL_SECURITY_ENABLED}" arg2="false" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_CLM_LOGGER_CFG_GENERATION}" arg2="false" casesensitive="false" trim="true" />
+		</and>
+	</condition>
 	
 	<!--***********************************************************************
 	*** Prepares the output directory structure
@@ -332,7 +373,17 @@
 			<replacefilter token="${xml.comment.start}@HBM2DDL_END@${xml.comment.end}" value="${HBM2DDL_END}" />	
 			<replacefilter token="@SERVICE_METHOD_HELPER@" value="${SERVICE_METHOD_HELPER}" />
 			<replacefilter token="@CACHE_PROTECTION_ELEMENTS_ENABLED@" value="${CACHE_PROTECTION_ELEMENTS_ENABLED}" />
+			<replacefilter token="@GENERATE_CLM_LOGGER_CFG@" value="${ENABLE_CLM_LOGGER_CFG_GENERATION}" />
+			
+			<replacefilter token="@ENABLE_EMPTY_INTERCEPTOR_START@" value="${ENABLE_EMPTY_INTERCEPTOR_START}" />
+			<replacefilter token="@ENABLE_EMPTY_INTERCEPTOR_END@" value="${ENABLE_EMPTY_INTERCEPTOR_END}" />
+			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY_START@" value="${ATTRIBUTE_LEVEL_SECURITY_START}" />
+			<replacefilter token="@ATTRIBUTE_LEVEL_SECURITY_END@" value="${ATTRIBUTE_LEVEL_SECURITY_END}" />
+			<replacefilter token="@ENABLE_CLM_LOGGER_CFG_GENERATION_START@" value="${ENABLE_CLM_LOGGER_CFG_GENERATION_START}" />
+			<replacefilter token="@ENABLE_CLM_LOGGER_CFG_GENERATION_END@" value="${ENABLE_CLM_LOGGER_CFG_GENERATION_END}" />
+
 		</replace>
+		<copy todir="${output.src.dir}" file="${system.config.security.dir}/${csm.ehcache.file}"/>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
 	</target>
 
@@ -572,6 +623,8 @@
 			</fileset>
 			<fileset dir="${output.src.dir}">
 				<include name="${csm.security.config.file}"/>
+				<include name="${csm.ehcache.file}"/>
+				<include name="${clm.object.state.logger.config}"/>
 			</fileset>
 		</copy>
 	</target>	
@@ -606,6 +659,8 @@
 			</fileset>
 			<classes dir="${output.src.dir}">
 				<include name="${csm.security.config.file}"/>
+				<include name="${csm.ehcache.file}"/>
+				<include name="${clm.object.state.logger.config}"/>
 			</classes>
 			<webinf dir="${output.src.dir}">
 				<include name="server-config.wsdd"/>
@@ -649,7 +704,7 @@
 	<!--***********************************************************************
 	*** Generates the system using properties set within /conf/deploy.properties
 	*********************************************************************** -->
-	<target name="build-system" depends="clean,package-codegen-artifacts, doc, package-system" description="Generates complete system">
+	<target name="build-system" depends="clean,package-codegen-artifacts,doc,package-system" description="Generates complete system">
 		<SDKecho message="${ant.project.name}: Completed the system build"/>
 	</target>
 
