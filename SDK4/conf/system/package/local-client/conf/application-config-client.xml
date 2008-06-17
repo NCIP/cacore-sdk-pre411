@@ -29,7 +29,7 @@
 			<list>
 				<idref local="Interceptor" />
 				<idref bean="TxInterceptor" />
-				@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<bean class="gov.nih.nci.system.client.proxy.CLMProxy"/>@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
+				@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<idref bean="CLMInterceptor" />@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 			</list>
 		</property>		
 	</bean>

@@ -104,9 +104,10 @@
 		<property name="interceptorNames">
 			<list>
 				<idref local="TxInterceptor" />
-				@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<bean class="gov.nih.nci.system.client.proxy.CLMProxy"/>@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
+				@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<idref local="CLMInterceptor" />@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 			</list>
 		</property>
 	</bean>
 
+	@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<bean id="CLMInterceptor" class="gov.nih.nci.system.client.proxy.CLMProxy"/>@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 </beans>
