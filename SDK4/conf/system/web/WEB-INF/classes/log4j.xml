@@ -5,12 +5,12 @@
 
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
     <appender name="CLM_APPENDER" class="gov.nih.nci.logging.api.appender.jdbc.JDBCAppender">
-      <param name="application" value="sdk" />
+      <param name="application" value="@PROJECT_NAME@" />
       <param name="maxBufferSize" value="1" />
-      <param name="dbDriverClass" value="org.gjt.mm.mysql.Driver" />
-      <param name="dbUrl" value="jdbc:mysql://localhost:3306/clm" />
-      <param name="dbUser" value="root" />
-      <param name="dbPwd" value="" />
+      <param name="dbDriverClass" value="@CLM_DB_DRIVER@" />
+      <param name="dbUrl" value="@CLM_DB_CONNECTION_URL@" />
+      <param name="dbUser" value="@CLM_DB_USERNAME@" />
+      <param name="dbPwd" value="@CLM_DB_PASSWORD@" />
 	  <param name="useFilter" value="true" />
       <layout class="org.apache.log4j.PatternLayout">
            <param name="ConversionPattern"
