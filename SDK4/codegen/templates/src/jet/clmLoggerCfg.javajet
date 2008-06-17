@@ -1,6 +1,6 @@
 <%@ jet package="gov.nih.nci.codegen.transformer.jet" 
         class="CLMLoggerCfgTransformer"
-        skeleton="ModelTransformerBase.skeleton" %>  
+        skeleton="ModelTransformerBase.skeleton" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ObjectStateLoggerConfig [
 <!-- 
