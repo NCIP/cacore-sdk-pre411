@@ -1,5 +1,5 @@
 <ehcache>
-      <diskStore path="user.home"/>
+      <diskStore path="@CACHE_PATH@"/>
  
       <defaultCache
             maxElementsInMemory="500"
