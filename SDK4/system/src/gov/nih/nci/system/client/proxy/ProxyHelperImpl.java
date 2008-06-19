@@ -8,11 +8,18 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import net.sf.cglib.proxy.Enhancer;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
+import org.hibernate.collection.PersistentSet;
+import org.springframework.aop.framework.Advised;
 
 public class ProxyHelperImpl implements ProxyHelper 
 {
@@ -31,7 +38,83 @@ public class ProxyHelperImpl implements ProxyHelper
 		else
 		   	return convertObjectToProxy(as,obj);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Object convertToObject(Object proxyObject) throws Throwable {
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		
+		if (proxyObject instanceof Collection) {
+			Collection<Object> unwrapedProxyObjects = new ArrayList<Object>();
+			Collection<Object> batchQueries = (Collection) proxyObject;
+			for (Object tempProxyObject : batchQueries) {
+				Object unwrapedProxyObject = convertToObject(map,tempProxyObject);
+				unwrapedProxyObjects.add(unwrapedProxyObject);
+			}
+			return unwrapedProxyObjects;
+		} else {
+			Object unwrapedProxyObject = convertToObject(map, proxyObject);
+			return unwrapedProxyObject;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Object convertToObject(Map<Object,Object> map,Object proxyObject)throws Exception {
+		if (isPrimitiveObject(proxyObject) || proxyObject instanceof Class) {
+			return proxyObject;
+		}
 
+		Object plainObject = convertProxyToObject(proxyObject);
+		Object mapPlainObject = map.get(plainObject);
+		if (mapPlainObject != null) return mapPlainObject;
+
+		map.put(plainObject, plainObject);
+		Method[] methods = plainObject.getClass().getMethods(); 
+		for (Method method : methods) {
+			if (method.getName().startsWith("get")) {
+				Object childObject = method.invoke(plainObject);
+				if ((!(childObject == null || isPrimitiveObject(childObject) || childObject instanceof Class))) {
+
+					if ((!Hibernate.isInitialized(childObject) || !Enhancer.isEnhanced(childObject.getClass()))&& !(childObject instanceof ListProxy)) {
+						log.debug("Hibernate Proxy PersistenctObject or CGLIb Enhanced Object");
+						return plainObject;
+					}						
+					if (childObject instanceof ListProxy) {
+						ListProxy objectProxy = (ListProxy) childObject;
+						int associationSize = objectProxy.size();
+						if (associationSize != objectProxy.getListChunk().size()) {
+							String associationName=null;
+							if (objectProxy.getListChunk().size() > 0) {
+								String cglibClassName = objectProxy.getListChunk().get(0).getClass().getName();
+								int startindex = cglibClassName.indexOf("$$EnhancerByCGLIB");
+								associationName = cglibClassName.substring(0,startindex);
+							}
+							String className = objectProxy.getTargetClassName();
+							throw new Exception("update or delete elements for the association "+associationName+" is not allowed.association "+associationName+" for Class "+className+" is not fully initialized. Total size of assocation in database "+associationSize+" retrieved size is "+objectProxy.getListChunk().size()+".");
+						}
+					}					
+				    log.debug("invoking " + method.getName() + " on class "+ plainObject.getClass());
+					String setterMethodName = "set"+ method.getName().substring(3);					
+					if (childObject instanceof Collection) {
+						Object plainObjectCollection = convertProxyToObject(childObject);
+						Collection<Object> objects = (Collection<Object>) plainObjectCollection;
+						Collection<Object> tempObjects = new HashSet<Object>();
+						for (Object object : objects) {
+							Object child = convertToObject(map, object);
+							tempObjects.add(child);
+						}
+						Method setterMethod = plainObject.getClass().getMethod(setterMethodName,new Class[] { method.getReturnType() });
+						setterMethod.invoke(plainObject, tempObjects);
+					} else if (childObject instanceof Object) {
+						Object child = convertToObject(map, childObject);
+						Method setterMethod = plainObject.getClass().getMethod(setterMethodName,new Class[] { method.getReturnType() });
+						setterMethod.invoke(plainObject, child);
+					}
+				}
+			}
+		}
+		return plainObject;
+	}
+	
 	protected Object convertListProxyToProxy(ApplicationService as, ListProxy proxy) {
 		proxy.setAppService(as);
 		List chunk = proxy.getListChunk();
@@ -223,4 +306,41 @@ public class ProxyHelperImpl implements ProxyHelper
 		}	
 	}
 	
+	private Object convertProxyToObject(Object obj) {
+		if (obj == null)
+			return null;
+		if (obj instanceof Advised) {
+			Advised proxy = (org.springframework.aop.framework.Advised) obj;
+			try {
+				obj = proxy.getTargetSource().getTarget();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return obj;
+	}
+
+	private boolean isPrimitiveObject(Object obj) {
+		if (obj == null || obj instanceof Integer || obj instanceof Float
+				|| obj instanceof Double || obj instanceof Character
+				|| obj instanceof Long || obj instanceof Boolean
+				|| obj instanceof Byte || obj instanceof Short
+				|| obj instanceof String || obj instanceof Date) {
+			return true;
+		} else
+			return false;
+	}
+
+	private Method[] getMethods(Class c)
+	{
+		List<Method> methods = new ArrayList<Method>();
+		Class temp=c;
+		while(!"java.lang.Object".equals(temp.getName()))
+		{
+			for(Method method: temp.getMethods())
+				methods.add(method);
+			temp = temp.getSuperclass();
+		}
+		return (Method[])methods.toArray();
+	}
 }
