@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
@@ -119,6 +120,7 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 	protected void initCaDSREnumMap() throws GenerationException {
 		try
 		{
+
 			//Application Service retrieval for secured system
 			//ApplicationService appService = ApplicationServiceProvider.getApplicationService("userId","password");
 			ApplicationService appService;
@@ -128,8 +130,14 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 				appService = ApplicationServiceProvider.getApplicationServiceFromUrl(serviceURL);
 			}
 			
-			Project proj = new Project();  
-			proj.setShortName("caTISSUE Core");//TODO :: Externalize 
+			String projectShortName = null;
+			String version = null;
+			
+			validateNamespace(projectShortName, version);
+			
+			Project proj = new Project();
+			proj.setShortName(projectShortName);
+			proj.setVersion(version);
 			log.debug("Searching for " + Project.class.getName());
 
 			Collection<Object> results = appService.search("gov.nih.nci.cadsr.umlproject.domain.Project", proj);
@@ -157,14 +165,19 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 				
 				//Get associated attributes
 				attrResults = project.getUMLAttributeMetadataCollection();
+				String umlClassName = null;
 				for(Object attr : attrResults)
 				{
 					log.debug("*******\n ");
 					UMLAttributeMetadata attribute = (UMLAttributeMetadata)attr;
 					
+					umlClassName = attribute.getUMLClassMetadata().getFullyQualifiedName();
+					
 					log.debug("Printing gov.nih.nci.cadsr.umlproject.domain.UMLAttributeMetadata");
 					log.debug("\tId: "+attribute.getId());
 					log.debug("\tName: "+attribute.getName());
+					log.debug("\tFullyQualifiedName: "+attribute.getFullyQualifiedName());
+					log.debug("\tUML Class FullyQualifiedName: "+umlClassName);
 					
 					//Perform NestedCriteria query for PermissibleValue
 					log.debug("=======\n ");
@@ -196,8 +209,10 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 							
 							sb.append("|").append(value.getValue());
 						}
-						log.debug("Adding caDSREnumMap entry for attribute " + attribute.getFullyQualifiedName() + ".  Enum value string is: " + sb.toString());
-						caDSREnumMap.put(attribute.getFullyQualifiedName(), sb.toString());
+						
+						String key = umlClassName + ":" + attribute.getName();
+						log.debug("Adding caDSREnumMap entry for attribute " + key + ".  Enum value string is: " + sb.toString());
+						caDSREnumMap.put(key, sb.toString());
 					}
 				}
 			}
@@ -211,6 +226,36 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 	
 	protected String getCaDSREnumPattern(String fqcnAttributeName){
 		return caDSREnumMap.get(fqcnAttributeName);
+	}
+	
+	private void validateNamespace(String projectShortName, String version) throws GenerationException {
+		
+		//Check that the namespacePrefix property has been set
+		if (namespacePrefix == null){
+			log.error("NAMESPACE_PREFIX property has not been set in deploy.properties.  Use format:  gme://<<Classification Scheme (UML Project ShortName)>>.<<Context>>/<<Classification Scheme Version>>/<<<Classification Scheme Item> (Optional)>>");
+			throw new GenerationException("NAMESPACE_PREFIX property has not been set in deploy.properties.  Use format:  gme://<<Classification Scheme (UML Project ShortName)>>.<<Context>>/<<Classification Scheme Version>>/<<<Classification Scheme Item> (Optional)>>");				
+		}
+
+		//Check that the NAMESPACE_PREFIX property format is correct
+		StringTokenizer tokens = new StringTokenizer(namespacePrefix, "/");
+		log.debug("Namespace prefix ('/') tokenizer count: " + tokens.countTokens());
+		
+		if (!tokens.hasMoreTokens() || tokens.countTokens() < 3){
+			log.error("Format of NAMESPACE_PREFIX property in deploy.properties is invalid.  Use format:  gme://<<Classification Scheme (UML Project ShortName)>>.<<Context>>/<<Classification Scheme Version>>/<<<Classification Scheme Item> (Optional)>>");
+			throw new GenerationException("Format of NAMESPACE_PREFIX property in deploy.properties is invalid.  Use format:  gme://<<Classification Scheme (UML Project ShortName)>>.<<Context>>/<<Classification Scheme Version>>/<<<Classification Scheme Item> (Optional)>>");				
+		}
+		
+		String gmePrefix = tokens.nextToken().trim();
+		log.debug("gmePrefix: " + gmePrefix);
+		
+		String classificationSchemeAndContext = tokens.nextToken().trim();
+		log.debug("classificationSchemeAndContext: " + classificationSchemeAndContext);
+		
+		version = tokens.nextToken().trim();
+		log.debug("version: " + version);
+		
+		projectShortName = classificationSchemeAndContext.substring(0, classificationSchemeAndContext.indexOf('.'));
+		log.debug("projectShortName: " + projectShortName);
 	}
 
 }
