@@ -51,7 +51,12 @@
 	<bean id='securityInterceptor' class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">		
 		<property name='authenticationManager' ref='authenticationManager'/>
 		<property name='accessDecisionManager' ref='accessDecisionManager'/>
-		<property name='objectDefinitionSource' value="@SERVICE_INTERFACE@.*=READ" />
+		<property name='objectDefinitionSource'>
+			<value>
+				@READLE_APPLICATION_SERVICE_INTERFACE@.*=DUMMYVALUE
+				@WRITABLE_APPLICATION_SERVICE_INTERFACE@
+			</value>
+		</property>
 	</bean>
 
 	<bean id='accessDecisionManager' class='org.acegisecurity.vote.AffirmativeBased'>
