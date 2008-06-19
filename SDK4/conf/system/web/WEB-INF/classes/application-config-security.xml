@@ -53,7 +53,7 @@
 		<property name='accessDecisionManager' ref='accessDecisionManager'/>
 		<property name='objectDefinitionSource'>
 			<value>
-				@READLE_APPLICATION_SERVICE_INTERFACE@.*=DUMMYVALUE
+				@READABLE_APPLICATION_SERVICE_INTERFACE@.*=DUMMYVALUE
 				@WRITABLE_APPLICATION_SERVICE_INTERFACE@
 			</value>
 		</property>
