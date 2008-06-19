@@ -18,7 +18,6 @@
 				value=":: [%d{ISO8601}] %-5p %c{1}.%M() %x - %m%n" />
 		</layout>
 	</appender>
-@ENABLE_CLM_LOGGER_CFG_GENERATION_END@	
 
 	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
 		<!--      <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>-->
@@ -31,11 +30,11 @@
 		</layout>
 	</appender>
 
-	<appender name="hibernateLog"
+	<appender name="clientLog"
 		class="org.apache.log4j.FileAppender">
 		<param name="Append" value="false" />
 		<param name="File"
-			value="${jboss_home}/server/default/log/hibernate.log" />
+			value="./log/client.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
 				value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" />
@@ -43,7 +42,7 @@
 	</appender>
 
 	<root>
-		<priority value="debug" />
+		<priority value="error" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 
@@ -60,7 +59,6 @@
 		<level value="INFO" />
 		<appender-ref ref="CONSOLE" />
 	</category>
-@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 
 	<category name="org.apache.dbcp">
 		<level value="INFO" />
@@ -72,50 +70,47 @@
 		<appender-ref ref="CONSOLE" />
 	</category>
 
+
 	<logger name="org.hibernate">
-		<!-- Print only messages of level warn or above in the package org.hibernate -->
 		<level value="info" />
 	</logger>
 
 	<logger name="org.apache">
-		<!-- Print only messages of level warn or above in the package org.apache -->
 		<level value="warn" />
 	</logger>
 
+<!-- 
 	<logger name="org.hibernate.SQL">
-		<!-- Print only messages of level warn or above in the package org.hibernate.SQL -->
 		<level value="debug" />
 	</logger>
 
 	<logger name="org.hibernate.type">
-		<!-- Print only messages of level warn or above in the package org.hibernate.type -->
 		<level value="info" />
 	</logger>
 
 	<logger name="org.hibernate.tool.hbm2ddl">
-		<!-- Print only messages of level warn or above in the package org.hibernate.tool.hbm2ddl -->
 		<level value="info" />
 	</logger>
 
 	<logger name="org.hibernate.cache">
-		<!-- Print only messages of level warn or above in the package org.hibernate.cache -->
 		<level value="debug" />
 	</logger>
 
 	<logger name="org.hibernate.jdbc">
-		<!-- Print only messages of level warn or above in the package org.hibernate.jdbc -->
 		<level value="debug" />
 	</logger>
 
 	<logger
 		name="org.hibernate.connection.DriverManagerConnectionProvider">
-		<!-- Print only messages of level warn or above in the package org.hibernate.connection.DriverManagerConnectionProvider -->
 		<level value="trace" />
 	</logger>
-
+-->
 	<logger name="gov.nih.nci">
-		<!-- Print only messages of level warn or above in the package gov.nih.nci -->
-		<level value="info" />
+		<level value="error" />
+	</logger>
+	
+	<logger name="org.springframework">
+		<level value="error" />
 	</logger>
 
 </log4j:configuration>

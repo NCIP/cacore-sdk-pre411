@@ -262,6 +262,7 @@
 				<equals arg1="${ENABLE_COMMON_LOGGING_MODULE}" arg2="yes" casesensitive="false" trim="true" />
 			</or>
 			<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${SECURITY_ENABLED}" arg2="true" casesensitive="false" trim="true" />
 		</and>
 
 	</condition>
