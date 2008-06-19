@@ -29,17 +29,22 @@ public class ApplicationServiceProxy implements MethodInterceptor
 		this.auth=auth;
 	}
 	
-	public Object invoke(MethodInvocation invocation) throws Throwable {
-		
+	public Object invoke(MethodInvocation invocation) throws Throwable {		
 		if (as == null)
 			return invocation.proceed();
 		
 		SecurityContextHolder.clearContext();
 		SecurityContextHolder.getContext().setAuthentication(auth);
+
+		Object[] proxyobjects = invocation.getArguments();
+		int i = 0;
+		for (Object proxyObject : proxyobjects) {
+			invocation.getArguments()[i] = proxyHelper.convertToObject(proxyObject);
+			i++;
+		}
 		Object value = invocation.proceed();
 		SecurityContextHolder.clearContext();
-		value = proxyHelper.convertToProxy(as,value);
+		value = proxyHelper.convertToProxy(as, value);
 		return value;
-		
 	}
 }
