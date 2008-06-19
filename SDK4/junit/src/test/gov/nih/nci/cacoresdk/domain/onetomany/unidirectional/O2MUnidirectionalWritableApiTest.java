@@ -71,13 +71,14 @@ public class O2MUnidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 		latchKey2.setType("latchkey2");
 		keyChain.getKeyCollection().add(latchKey2);
 		
-		delete(deleteLatch1Object);
 		update(keyChain);
+		delete(deleteLatch1Object);
 		
 		KeyChain result = (KeyChain) getObjectAndLazyCollection(KeyChain.class, keyChain.getId(),"keyCollection");
 		Assert.assertEquals(1, result.getKeyCollection().size());
 		deleteLatch1Object = (LatchKey) getObject(LatchKey.class, deleteLatch1Object.getId());
-		Assert.assertEquals("updatedKeyChainName", keyChain.getName());
+		Assert.assertEquals("updatedKeyChainName", result.getName());
+		Assert.assertEquals(1, result.getKeyCollection().size());
 		Assert.assertNull("latchkey object not deleted from database",deleteLatch1Object);
 	}
 

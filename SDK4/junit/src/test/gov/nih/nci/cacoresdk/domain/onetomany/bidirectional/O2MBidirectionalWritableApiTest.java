@@ -42,7 +42,9 @@ public class O2MBidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 				
 		Computer updateComputer=(Computer)getObjectAndLazyCollection(Computer.class, computer.getId(),"hardDriveCollection");
 		updateComputer.setType("updatelaptop");
-		updateComputer.getHardDriveCollection().iterator().next().setSize(300);
+		Collection<HardDrive> hardDriveCollection=updateComputer.getHardDriveCollection();
+		HardDrive updateHardDrive=hardDriveCollection.iterator().next();
+		updateHardDrive.setSize(100);
 		
 		update(updateComputer);
 

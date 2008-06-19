@@ -17,7 +17,7 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 	
 	public WritableApiTestServiceImpl(){
 		try {
-			appService = (WritableApplicationService) ApplicationServiceProvider.getApplicationService("user1","password");
+			appService = (WritableApplicationService) ApplicationServiceProvider.getApplicationService();
 		} catch (Exception e) {
 			throw new RuntimeException("error loading application service", e);
 		}
@@ -88,7 +88,7 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 
 			@Override
 			public List execute() throws Exception {
-				List list=appService.search(klass, instance);
+				final List list=appService.search(klass, instance);
 				resultList.addAll(list);
 				return resultList;
 			}
@@ -143,7 +143,13 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 				Class classDefinition = Class.forName(klass.getName());
 				Object instance = classDefinition.newInstance();
 				Class[] parameterTypes = new Class[] { Integer.class };
-				Method method = klass.getMethod("setId", parameterTypes);
+				Method method =null;
+				//NoIdKey dont have generic primary key as setId
+				if (klass.getName().equals("gov.nih.nci.cacoresdk.domain.other.primarykey.NoIdKey")) {
+					method = klass.getMethod("setMykey", parameterTypes);
+				} else {
+					method = klass.getMethod("setId", parameterTypes);
+				}
 				method.invoke(instance, id);
 
 				list.add(instance);
