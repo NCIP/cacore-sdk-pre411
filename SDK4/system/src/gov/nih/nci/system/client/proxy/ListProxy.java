@@ -170,7 +170,9 @@ public class ListProxy extends ArrayList implements Set {
 	 */
 	public boolean add(Object o) {
 		if (hasAllRecords_) {
-			return listChunk_.add(o);
+			boolean result=listChunk_.add(o);
+			calculateRealSize();
+			return result;
 		} else {
 			try {
 				throw new Exception(
@@ -187,7 +189,9 @@ public class ListProxy extends ArrayList implements Set {
 	 */
 	public boolean remove(Object obj) {
 		if (hasAllRecords_) {
-			return listChunk_.remove(obj);
+			boolean result = listChunk_.remove(obj);
+			calculateRealSize();
+			return result;
 		} else {
 			try {
 				throw new Exception(
@@ -247,11 +251,14 @@ public class ListProxy extends ArrayList implements Set {
 	 */
 	public boolean addAll(Collection c) {
 		if (hasAllRecords_) {
-			return listChunk_.addAll(c);
+			boolean result = listChunk_.addAll(c);
+			calculateRealSize();
+			return result;
 		} else {
-			if (listChunk_.size() == 0)
-				return listChunk_.addAll(c);
-			else {
+			if (listChunk_.size() == 0){
+				boolean result = listChunk_.addAll(c);
+				calculateRealSize();
+			}else {
 				try {
 					throw new Exception(
 							"boolean addAll(Collection c): This feature is not yet implemented in this version.");
@@ -268,7 +275,9 @@ public class ListProxy extends ArrayList implements Set {
 	 */
 	public boolean addAll(int index, Collection c) {
 		if (hasAllRecords_) {
-			return listChunk_.addAll(index, c);
+			boolean result = listChunk_.addAll(c);
+			calculateRealSize();
+			return result;
 		} else {
 			try {
 				throw new Exception(
@@ -287,7 +296,9 @@ public class ListProxy extends ArrayList implements Set {
 	 */
 	public boolean removeAll(Collection c) {
 		if (hasAllRecords_) {
-			return listChunk_.removeAll(c);
+			boolean result = listChunk_.removeAll(c);
+			calculateRealSize();
+			return result;
 		} else {
 			try {
 				throw new Exception(
@@ -401,6 +412,7 @@ public class ListProxy extends ArrayList implements Set {
 	public void add(int index, Object element) {
 		if (hasAllRecords_) {
 			listChunk_.add(index, element);
+			calculateRealSize();
 		} else {
 			try {
 				throw new Exception(
@@ -417,7 +429,9 @@ public class ListProxy extends ArrayList implements Set {
 	 */
 	public Object remove(int index) {
 		if (hasAllRecords_) {
-			return listChunk_.remove(index);
+			Object result = listChunk_.remove(index);
+			calculateRealSize();
+			return result;
 		} else {
 			try {
 				throw new Exception(
