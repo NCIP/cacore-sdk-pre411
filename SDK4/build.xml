@@ -206,6 +206,10 @@
 		<equals arg1="${DB_DIALECT}" arg2="org.hibernate.dialect.HSQLDialect" casesensitive="false" trim="true" />
 	</condition>
 	
+	<condition property="WRITABLE_APPLICATION_SERVICE_INTERFACE" value="${extension.api.security}" else="">
+		<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	
 	<condition property="ENABLE_HIBERNATE_VALIDATOR" value="true" else="false">
 		<and>
 			<equals arg1="${WRITABLE_API_EXTENSION_ENABLED}" arg2="true" casesensitive="false" trim="true" />
@@ -379,6 +383,8 @@
 			<replacefilter token="@SERVICE_METHOD_HELPER@" value="${SERVICE_METHOD_HELPER}" />
 			<replacefilter token="@CACHE_PROTECTION_ELEMENTS_ENABLED@" value="${CACHE_PROTECTION_ELEMENTS_ENABLED}" />
 			<replacefilter token="@GENERATE_CLM_LOGGER_CFG@" value="${ENABLE_CLM_LOGGER_CFG_GENERATION}" />
+			<replacefilter token="@READLE_APPLICATION_SERVICE_INTERFACE@" value="${sdk.api.interface}" />
+			<replacefilter token="@WRITABLE_APPLICATION_SERVICE_INTERFACE@" value="${WRITABLE_APPLICATION_SERVICE_INTERFACE}" />
 			
 			<replacefilter token="@ENABLE_EMPTY_INTERCEPTOR_START@" value="${ENABLE_EMPTY_INTERCEPTOR_START}" />
 			<replacefilter token="@ENABLE_EMPTY_INTERCEPTOR_END@" value="${ENABLE_EMPTY_INTERCEPTOR_END}" />
