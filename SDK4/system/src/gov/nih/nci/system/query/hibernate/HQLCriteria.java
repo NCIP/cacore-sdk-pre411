@@ -36,4 +36,13 @@ public class HQLCriteria implements Serializable{
 		return parameters;
 	}
 
+	public void setHqlString(String hqlString)
+	{
+		this.hqlString = hqlString;
+	}
+
+	public void setParameters(List parameters) {
+		this.parameters = parameters;
+	}
+	
 }
