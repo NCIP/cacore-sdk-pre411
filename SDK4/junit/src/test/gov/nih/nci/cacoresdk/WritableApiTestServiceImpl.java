@@ -1,16 +1,25 @@
 package test.gov.nih.nci.cacoresdk;
 
+import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.applicationservice.WritableApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.client.proxy.ListProxy;
 import gov.nih.nci.system.query.SDKQuery;
+import gov.nih.nci.system.query.SDKQueryResult;
 import gov.nih.nci.system.query.example.DeleteExampleQuery;
 import gov.nih.nci.system.query.example.InsertExampleQuery;
 import gov.nih.nci.system.query.example.UpdateExampleQuery;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.BeanUtils;
 
 public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 	private WritableApplicationService appService ;
@@ -31,18 +40,21 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 		return "SDK Base Test Case";
 	}
 	
-	public void save(Object obj) {
+	@SuppressWarnings("unchecked")
+	public void save(final Object obj) {
 		final InsertExampleQuery sdkQuery = new InsertExampleQuery(obj);
 		new BaseUtilWrapper() {
 
 			@Override
 			public List execute() throws Exception {
-				appService.executeQuery(sdkQuery);
-				return null;
+			  SDKQueryResult queryResult = appService.executeQuery(sdkQuery);
+			 Object result=queryResult.getObjectResult();
+			 BeanUtils.copyProperties(result, obj);			 
+			 return null;
 			}
 		}.executeLogic();
 	}
-
+	
 	public void update(Object obj) {
 		final UpdateExampleQuery sdkQuery = new UpdateExampleQuery(obj);
 		new BaseUtilWrapper() {
@@ -56,7 +68,7 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 	}
 
 	public void delete(Object obj) {
-		final DeleteExampleQuery sdkQuery = new DeleteExampleQuery(obj);
+		final DeleteExampleQuery sdkQuery = new DeleteExampleQuery(obj);		
 		new BaseUtilWrapper() {
 
 			@Override
@@ -140,8 +152,7 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 
 			@Override
 			public List execute() throws Exception {
-				Class classDefinition = Class.forName(klass.getName());
-				Object instance = classDefinition.newInstance();
+				Object instance = BeanUtils.instantiateClass(klass);
 				Class[] parameterTypes = new Class[] { Integer.class };
 				Method method =null;
 				//NoIdKey dont have generic primary key as setId

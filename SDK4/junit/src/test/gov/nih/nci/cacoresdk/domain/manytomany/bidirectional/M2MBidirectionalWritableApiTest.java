@@ -64,7 +64,7 @@ public class M2MBidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 		
 		updateEmployee.getProjectCollection().remove(updateProject);
 		
-		update(updateProject);
+//		/update(updateProject);
 		update(updateEmployee);
 
 		Employee resultEmployee = (Employee) getObjectAndLazyCollection(Employee.class,updateEmployee.getId(),"projectCollection");

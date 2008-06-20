@@ -78,6 +78,7 @@ public class O2MUnidirectionalWJoinWritableApiTest extends SDKWritableApiBaseTes
 		shirt.setButtonCollection(buttons);
 		
 		save(shirt);
+		button=shirt.getButtonCollection().iterator().next();
 		delete(shirt);
 		
 		Shirt shirtResult=(Shirt)getObjectAndLazyCollection(Shirt.class, shirt.getId(),"buttonCollection");

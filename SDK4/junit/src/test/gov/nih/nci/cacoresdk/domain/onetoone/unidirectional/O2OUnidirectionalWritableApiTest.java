@@ -69,11 +69,12 @@ public class O2OUnidirectionalWritableApiTest extends SDKWritableApiBaseTest{
 		
 		save(bag);
 		
-		Bag deleteBag=(Bag)getObjectAndLazyObject(Bag.class, bag.getId(),"handle");
+		Bag deleteBag = (Bag) getObjectAndLazyObject(Bag.class, bag.getId(),"handle");
+		Handle deleteHandle = deleteBag.getHandle();
 		delete(deleteBag);
-		
-		Bag resultBag=(Bag)getObject(Bag.class, deleteBag.getId());
-		Handle resultHandle=(Handle)getObject(Handle.class, deleteBag.getHandle().getId());
+
+		Bag resultBag = (Bag) getObject(Bag.class, deleteBag.getId());
+		Handle resultHandle = (Handle) getObject(Handle.class, deleteHandle.getId());
 
 		Assert.assertNull(resultBag);
 		Assert.assertNull(resultHandle);

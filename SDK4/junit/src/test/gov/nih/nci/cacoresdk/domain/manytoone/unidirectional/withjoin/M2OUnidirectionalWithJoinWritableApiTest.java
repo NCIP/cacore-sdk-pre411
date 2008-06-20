@@ -71,6 +71,7 @@ public class M2OUnidirectionalWithJoinWritableApiTest extends SDKWritableApiBase
 		song.setAlbum(album);
 
 		save(song);
+		album=song.getAlbum();
 
 		delete(song);
 

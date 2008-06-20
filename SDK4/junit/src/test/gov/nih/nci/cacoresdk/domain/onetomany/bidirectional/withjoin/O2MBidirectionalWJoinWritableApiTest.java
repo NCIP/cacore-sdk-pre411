@@ -101,7 +101,7 @@ public class O2MBidirectionalWJoinWritableApiTest extends SDKWritableApiBaseTest
         flight.setPassangerCollection(passengers);
         
 		save(flight);
-		
+		passanger=flight.getPassangerCollection().iterator().next();
 		Flight deleteFlight=(Flight)getObject(Flight.class, flight.getId());
 		
 		delete(deleteFlight);
@@ -125,7 +125,7 @@ public class O2MBidirectionalWJoinWritableApiTest extends SDKWritableApiBaseTest
         flight.setPassangerCollection(passengers);
         
 		save(flight);
-		
+		passanger=flight.getPassangerCollection().iterator().next();
 		Flight deleteFlight=(Flight)getObject(Flight.class, flight.getId());
 		
 		delete(deleteFlight);
