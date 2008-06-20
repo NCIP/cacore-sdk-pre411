@@ -30,12 +30,12 @@
 	<bean name="ORMDAO" class="@DAO_IMPL@">
 		<property name="caseSensitive" value="false" />
 		<property name="resultCountPerQuery" value="1000" />
+		<property name="securityHelper">
+			<ref bean="SecurityInitializationHelper" />
+		</property>
 		<property name="sessionFactory" ref="SessionFactory" />
 		<property name="config">
 			<bean factory-bean="HibernateConfigHolder" factory-method="getConfiguration" />
-		</property>
-		<property name="securityHelper">
-			<ref bean="SecurityInitializationHelper" />
 		</property>
 	</bean>
 
