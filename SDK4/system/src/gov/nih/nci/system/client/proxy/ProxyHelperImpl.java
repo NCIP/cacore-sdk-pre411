@@ -18,7 +18,6 @@ import net.sf.cglib.proxy.Enhancer;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
-import org.hibernate.collection.PersistentSet;
 import org.springframework.aop.framework.Advised;
 
 public class ProxyHelperImpl implements ProxyHelper 
@@ -72,12 +71,9 @@ public class ProxyHelperImpl implements ProxyHelper
 		for (Method method : methods) {
 			if (method.getName().startsWith("get")) {
 				Object childObject = method.invoke(plainObject);
-				if ((!(childObject == null || isPrimitiveObject(childObject) || childObject instanceof Class))) {
-
-					if ((!Hibernate.isInitialized(childObject) || !Enhancer.isEnhanced(childObject.getClass()))&& !(childObject instanceof ListProxy)) {
-						log.debug("Hibernate Proxy PersistenctObject or CGLIb Enhanced Object");
-						return plainObject;
-					}						
+				if (!(childObject == null || isPrimitiveObject(childObject) || childObject instanceof Class)
+						&& Hibernate.isInitialized(childObject)) {
+					
 					if (childObject instanceof ListProxy) {
 						ListProxy objectProxy = (ListProxy) childObject;
 						int associationSize = objectProxy.size();
@@ -91,7 +87,7 @@ public class ProxyHelperImpl implements ProxyHelper
 							String className = objectProxy.getTargetClassName();
 							throw new Exception("update or delete elements for the association "+associationName+" is not allowed.association "+associationName+" for Class "+className+" is not fully initialized. Total size of assocation in database "+associationSize+" retrieved size is "+objectProxy.getListChunk().size()+".");
 						}
-					}					
+					}				
 				    log.debug("invoking " + method.getName() + " on class "+ plainObject.getClass());
 					String setterMethodName = "set"+ method.getName().substring(3);					
 					if (childObject instanceof Collection) {
