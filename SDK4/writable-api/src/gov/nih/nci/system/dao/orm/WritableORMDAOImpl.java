@@ -35,8 +35,9 @@ public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 			SDKQuery q = (SDKQuery) request.getRequest();
 			if (q instanceof InsertExampleQuery)
 			{
-				Object retObj = insert(((InsertExampleQuery) q).getExample());
-				result = new SDKQueryResult(retObj);
+				Object obj = ((InsertExampleQuery) q).getExample();
+				insert(obj);
+				result = new SDKQueryResult(obj);
 			}
 			else if (q instanceof DeleteExampleQuery)
 			{
@@ -69,10 +70,10 @@ public class WritableORMDAOImpl extends ORMDAOImpl implements WritableDAO
 		return resp;
 	}
 
-	public Object insert(Object o)
+	public void insert(Object o)
 	{
 		log.info("In the writable DAO. executing the Insert query");
-		return getHibernateTemplate().save(o);
+		getHibernateTemplate().save(o);	
 	}
 
 	public void update(Object o)
