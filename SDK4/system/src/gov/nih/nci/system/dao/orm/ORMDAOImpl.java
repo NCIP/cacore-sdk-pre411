@@ -13,6 +13,7 @@ import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
 import gov.nih.nci.system.security.helper.SecurityInitializationHelper;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,6 +29,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -133,7 +136,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		if(request.getIsCount() != null && request.getIsCount())
 			return executeCountQuery(converter.getCountQuery());
 		else
-			return executeResultQuery(request, query);
+			return executeResultQuery(request, query, null);
 	}
 	
 	//if (obj instanceof CQLQuery)
@@ -163,7 +166,7 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		if(request.getIsCount() != null && request.getIsCount())
 			return executeCountQuery(hqlQuery);
 		else 
-			return executeResultQuery(request, hqlQuery);
+			return executeResultQuery(request, hqlQuery,hqlCriteria.getParameters());
 	}
 	
 	
@@ -178,8 +181,9 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 		return rsp;
 	}
 
-	protected Response executeResultQuery(Request request, Query hqlQuery)
+	protected Response executeResultQuery(Request request, Query hqlQuery, List params)
 	{
+		
 		log.info("HQL Query :"+hqlQuery.getQueryString());
 		
 		Response rsp = new Response();
@@ -188,12 +192,29 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
     	
     	hqlQuery.setMaxResults(resultCountPerQuery);
     	
-    	List rs = hqlQuery.list();
+    	HibernateCallback callBack = getExecuteQueryHibernateCallback(hqlQuery,params);
+    	List rs = (List)getHibernateTemplate().execute(callBack);//hqlQuery.list();
     	rsp.setRowCount(rs.size());
     	rsp.setResponse(rs);
 		return rsp;
 	}
 	
+	protected HibernateCallback getExecuteQueryHibernateCallback(final Query query, final List params)
+	{
+		HibernateCallback callBack = new HibernateCallback(){
+
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query newQ = session.createQuery(query.getQueryString());
+				int count = 0;
+				if(params!=null)
+					for(Object param:params)
+						newQ.setParameter(count++, param);
+				return newQ.list();
+			}
+		};
+		return callBack;
+	}
+
 	
 	private String getCountQuery(String hql)
 	{
