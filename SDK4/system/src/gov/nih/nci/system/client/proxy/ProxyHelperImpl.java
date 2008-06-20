@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sf.cglib.proxy.Enhancer;
 
@@ -89,8 +90,18 @@ public class ProxyHelperImpl implements ProxyHelper
 						}
 					}				
 				    log.debug("invoking " + method.getName() + " on class "+ plainObject.getClass());
-					String setterMethodName = "set"+ method.getName().substring(3);					
-					if (childObject instanceof Collection) {
+					String setterMethodName = "set"+ method.getName().substring(3);	
+					if (childObject instanceof List && !(childObject instanceof Set)) {
+						Object plainObjectCollection = convertProxyToObject(childObject);
+						Collection<Object> objects = (Collection<Object>) plainObjectCollection;
+						Collection<Object> tempObjects = new ArrayList<Object>();
+						for (Object object : objects) {
+							Object child = convertToObject(map, object);
+							tempObjects.add(child);
+						}
+						Method setterMethod = plainObject.getClass().getMethod(setterMethodName,new Class[] { method.getReturnType() });
+						setterMethod.invoke(plainObject, tempObjects);
+					}else if (childObject instanceof Collection) {
 						Object plainObjectCollection = convertProxyToObject(childObject);
 						Collection<Object> objects = (Collection<Object>) plainObjectCollection;
 						Collection<Object> tempObjects = new HashSet<Object>();
@@ -305,7 +316,7 @@ public class ProxyHelperImpl implements ProxyHelper
 	private Object convertProxyToObject(Object obj) {
 		if (obj == null)
 			return null;
-		if (obj instanceof Advised) {
+		while (obj!=null && obj instanceof Advised) {
 			Advised proxy = (org.springframework.aop.framework.Advised) obj;
 			try {
 				obj = proxy.getTargetSource().getTarget();
