@@ -43,12 +43,8 @@
 
 	<bean name="SessionFactory" class="gov.nih.nci.system.dao.orm.SessionFactoryBean">
 		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
-		<property name="configHolder">
-			<ref bean="HibernateConfigHolder" />
-		</property>
-		<property name="filterDefinitions">
-			<bean factory-bean="SecurityInitializationHelper" factory-method="getFilters" />
-		</property>
+		<property name="configHolder" ref="HibernateConfigHolder" />
+		<property name="securityHelper" ref="SecurityInitializationHelper"/>
 		<property name="entityInterceptor">
 			<bean class="gov.nih.nci.security.authorization.attributeLevel.GenericSecurityInterceptor">
 				<constructor-arg>

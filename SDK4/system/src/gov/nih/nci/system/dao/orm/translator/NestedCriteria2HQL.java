@@ -1,5 +1,6 @@
 package gov.nih.nci.system.dao.orm.translator;
 import gov.nih.nci.system.client.proxy.BeanProxy;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.util.SystemConstant;
 
@@ -24,32 +25,29 @@ public class NestedCriteria2HQL
 
 	private NestedCriteria criteria;
 	private Configuration cfg;
-	private Session session;
-	private Query query;
-	private Query countQuery;
 	private boolean caseSensitive;	
+	private HQLCriteria hqlCriteria;
 
 	private static Logger log = Logger.getLogger(NestedCriteria2HQL.class);
 
 	private List paramList = new ArrayList();
 
-	public NestedCriteria2HQL(NestedCriteria crit, Configuration cfg, Session session, boolean caseSensitive)
+	public NestedCriteria2HQL(NestedCriteria crit, Configuration cfg,boolean caseSensitive)
 	{
 		this.criteria = crit;
 		this.cfg = cfg;
-		this.session = session;
 		this.caseSensitive = caseSensitive;
 	}
 	
-	public Query translate() throws Exception
+	public HQLCriteria translate() throws Exception
 	{
 		StringBuffer hql = new StringBuffer();
 
 		processNestedCriteria( hql, criteria);
 		
-		query = prepareQuery(hql);
-		log.debug("HQL Query :"+query.getQueryString());
-		return query;
+		hqlCriteria = prepareQuery(hql);
+		log.debug("HQL Query :"+hqlCriteria.getHqlString());
+		return hqlCriteria;
 	}
 
 	private void processNestedCriteria(StringBuffer hql, NestedCriteria criteria) throws Exception {
@@ -465,7 +463,7 @@ public class NestedCriteria2HQL
 		return condition1 || condition2 || condition3;
 	}
 	
-	private Query prepareQuery(StringBuffer hql)
+	private HQLCriteria prepareQuery(StringBuffer hql)
 	{
 		//Check if the target contains any CLOB. If yes then do a subselect with distinct else do plain distinct
 		String destalias = getAlias(criteria.getTargetObjectName(), 1);
@@ -498,58 +496,8 @@ public class NestedCriteria2HQL
 		log.debug("****** NormalQ: " + normalQ);
 		log.debug("****** CountQ: " + countQ);
 		
-		query = session.createQuery(normalQ);
-		countQuery = session.createQuery(countQ);
-		
-		
-		// ORIGINAL
-		//countQuery = session.createQuery("select count(*) " + hql.toString());
-		log.debug("Setting "+paramList.size()+" parameters in the query");
-		for (int i=0;i<paramList.size();i++)
-		{
-			Object valueObj = paramList.get(i);
-			if (valueObj instanceof String)
-			{
-				query.setString(i, (String)valueObj);
-				countQuery.setString(i, (String)valueObj);
-			}
-			else if (valueObj instanceof Long)
-			{
-				query.setLong(i, ((Long)valueObj).longValue());
-				countQuery.setLong(i, ((Long)valueObj).longValue());
-			}
-			else if (valueObj instanceof Date)
-			{
-				query.setDate(i,(Date)valueObj);
-				countQuery.setDate(i,(Date)valueObj);
-			}
-			else if (valueObj instanceof Boolean)
-			{
-				query.setBoolean(i, ((Boolean)valueObj).booleanValue());
-				countQuery.setBoolean(i, ((Boolean)valueObj).booleanValue());				
-			}
-			else if (valueObj instanceof Double)
-			{
-				query.setDouble(i, ((Double)valueObj).doubleValue());
-				countQuery.setDouble(i, ((Double)valueObj).doubleValue());
-			}
-			else if (valueObj instanceof Float)
-			{
-				query.setFloat(i, ((Float)valueObj).floatValue());
-				countQuery.setFloat(i, ((Float)valueObj).floatValue());
-			}
-			else if (valueObj instanceof Integer)
-			{
-				query.setInteger(i, ((Integer)valueObj).intValue());
-				countQuery.setInteger(i, ((Integer)valueObj).intValue());
-			}
-			else
-			{
-				query.setString(i, valueObj.toString());
-				countQuery.setString(i, valueObj.toString());
-			}
-		}
-		return query;
+		HQLCriteria hCriteria = new HQLCriteria(normalQ, countQ, paramList);
+		return hCriteria;
 	}
 
 	private boolean checkClobAttribute(String objClassName)
@@ -804,11 +752,6 @@ public class NestedCriteria2HQL
 			}
 		}
 		return "=";
-	}
-
-	public Query getCountQuery()
-	{
-		return countQuery;
 	}
 
 	public boolean isCaseSensitive() {

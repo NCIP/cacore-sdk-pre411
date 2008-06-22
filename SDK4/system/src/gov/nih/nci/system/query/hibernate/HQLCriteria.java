@@ -14,6 +14,7 @@ public class HQLCriteria implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String hqlString;
+	private String countHqlString;
 	private List parameters;	
 	
 	public HQLCriteria(String hqlString)
@@ -25,6 +26,13 @@ public class HQLCriteria implements Serializable{
 	{
 		this.hqlString = hqlString;
 		this.parameters = parameters;
+	}	
+
+	public HQLCriteria(String hqlString, String countHqlString, List parameters)
+	{
+		this.hqlString = hqlString;
+		this.parameters = parameters;
+		this.countHqlString = countHqlString;
 	}	
 
 	public String getHqlString()
@@ -43,6 +51,14 @@ public class HQLCriteria implements Serializable{
 
 	public void setParameters(List parameters) {
 		this.parameters = parameters;
+	}
+
+	public String getCountHqlString() {
+		return countHqlString;
+	}
+
+	public void setCountHqlString(String countHqlString) {
+		this.countHqlString = countHqlString;
 	}
 	
 }

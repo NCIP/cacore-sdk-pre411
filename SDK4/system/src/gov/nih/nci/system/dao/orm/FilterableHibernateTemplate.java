@@ -1,44 +1,29 @@
 package gov.nih.nci.system.dao.orm;
 
 
-import java.util.Collection;
+import gov.nih.nci.system.security.helper.SecurityInitializationHelper;
 
-import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class FilterableHibernateTemplate extends HibernateTemplate {
 
-	private FilterParameterSetter filterParameterSetter;
+	private SecurityInitializationHelper securityHelper;
 
-	public FilterableHibernateTemplate(SessionFactory sessionFactory,FilterParameterSetter filterParameterSetter) {
+	public FilterableHibernateTemplate(SessionFactory sessionFactory, SecurityInitializationHelper securityHelper) {
 		super(sessionFactory);
-		this.filterParameterSetter = filterParameterSetter;
+		this.securityHelper = securityHelper;
 	}
 
 	protected void enableFilters(Session session) {
-		if (filterParameterSetter == null) {
+		if (securityHelper == null) {
 			super.enableFilters(session);
 			return;
 		}
 		
-		filterParameterSetter.performPreProcessing(getSessionFactory(), session);
-		
-		if(filterParameterSetter.getApplyFilters())
-		{
-			Collection<String> filterNames = getSessionFactory().getDefinedFilterNames();
-			if (filterNames != null) {
-				for (String name: filterNames) {
-					Filter filter = session.enableFilter(name);
-					if (filter == null)
-						continue;
-					filterParameterSetter.setParameters(filter);
-				}
-			}
-		}
-		
-		filterParameterSetter.performPostProcessing(getSessionFactory(), session);
+		securityHelper.enableAttributeLevelSecurity(getSessionFactory());
+		securityHelper.initializeFilters(session);
 	}
 	
 }

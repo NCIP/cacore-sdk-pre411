@@ -50,28 +50,27 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
 	
 	protected HibernateTemplate createHibernateTemplate(SessionFactory sessionFactory)
 	{
-		if(securityHelper!=null && securityHelper.isSecurityEnabled() && securityHelper.getAuthorizationManager()!=null && securityHelper.isInstanceLevelSecurityEnabled())
-			return new FilterableHibernateTemplate(sessionFactory, new CSMFilterParameterSetter(securityHelper));
+		if(securityHelper!=null && securityHelper.isSecurityEnabled() && securityHelper.getAuthorizationManager()!=null && (securityHelper.isInstanceLevelSecurityEnabled() || securityHelper.isAttributeLevelSecurityEnabled()))
+			return new FilterableHibernateTemplate(sessionFactory,securityHelper);
 		else
 			return super.createHibernateTemplate(sessionFactory);
 	}
 
 	public Response query(Request request) throws DAOException 
 	{
-		Session session = getSession();
 		Object obj = request.getRequest();
 
 		try
 		{
 			log.debug("****** obj: " + obj.getClass());
 			if (obj instanceof DetachedCriteria) 				
-				return query(request, session, (DetachedCriteria) obj); 	
+				return query(request, (DetachedCriteria) obj); 	
 			else if (obj instanceof NestedCriteriaPath)
-				return query(request, session, (NestedCriteriaPath) obj); 	
+				return query(request, (NestedCriteriaPath) obj); 	
 			else if (obj instanceof HQLCriteria)
-				return query(request, session, (HQLCriteria) obj);
+				return query(request, (HQLCriteria) obj);
 			else if (obj instanceof CQLQuery)
-				return query(request, session, (CQLQuery) obj);
+				return query(request, (CQLQuery) obj);
 			else
 				throw new DAOException("Can not determine type of the query");
 		} catch (JDBCException ex){
@@ -98,123 +97,121 @@ public class ORMDAOImpl extends HibernateDaoSupport implements DAO
     	return allClassNames;
     }
 	
-	protected Response query(Request request, Session session, DetachedCriteria obj) throws Exception
+	protected Response query(Request request, DetachedCriteria obj) throws Exception
 	{
 		Response rsp = new Response();
-		Criteria hCriteria = ((org.hibernate.criterion.DetachedCriteria)request.getRequest()).getExecutableCriteria(session);
-		log.info("Detached Criteria Query :"+hCriteria.toString());
-
-		if (hCriteria != null)
-		{
-		    if(request.getIsCount() != null && request.getIsCount())
-		    {
-		        Integer rowCount = (Integer)hCriteria.setProjection(Projections.rowCount()).uniqueResult();
-				log.debug("DetachedCriteria ORMDAOImpl ===== count = " + rowCount);
-				rsp.setRowCount(rowCount);
-		    }
-		    else 
-		    {
-				if(request.getFirstRow() != null)
-		            hCriteria.setFirstResult(request.getFirstRow());
-            	hCriteria.setMaxResults(resultCountPerQuery);
-		        List rs = hCriteria.list();
-		    	rsp.setRowCount(rs.size());
-		        rsp.setResponse(rs);
-		    }
-		}	
-			
+		log.info("Detached Criteria Query :"+obj.toString());
+		
+	    if(request.getIsCount() != null && request.getIsCount())
+	    {
+	    	HibernateCallback callBack = getExecuteCountCriteriaHibernateCallback(obj);
+	        Integer rowCount = (Integer)getHibernateTemplate().execute(callBack);
+			log.debug("DetachedCriteria ORMDAOImpl ===== count = " + rowCount);
+			rsp.setRowCount(rowCount);
+	    }
+	    else 
+	    {
+	    	List rs = getHibernateTemplate().findByCriteria(obj, request.getFirstRow() == null?-1:request.getFirstRow(), resultCountPerQuery);
+	    	rsp.setRowCount(rs.size());
+	        rsp.setResponse(rs);
+	    }
+	    
 		return rsp;
 	}	
 	
 	//	if (obj instanceof NestedCriteriaPath)
-	protected Response query(Request request, Session session, NestedCriteriaPath obj) throws Exception	
+	protected Response query(Request request, NestedCriteriaPath obj) throws Exception	
 	{
 		NestedCriteria nc = Path2NestedCriteria.createNestedCriteria(obj.getpathString(), obj.getParameters(), request.getClassCache());
-		NestedCriteria2HQL converter = new NestedCriteria2HQL(nc, config, session, caseSensitive);
-		Query query = converter.translate();
-
-		if(request.getIsCount() != null && request.getIsCount())
-			return executeCountQuery(converter.getCountQuery());
-		else
-			return executeResultQuery(request, query, null);
+		NestedCriteria2HQL converter = new NestedCriteria2HQL(nc, config, caseSensitive);
+		HQLCriteria hqlCriteria = converter.translate();
+		return query(request, hqlCriteria);
 	}
 	
 	//if (obj instanceof CQLQuery)
-	protected Response query(Request request, Session session, CQLQuery obj) throws Exception	
+	protected Response query(Request request, CQLQuery obj) throws Exception	
 	{
 		CQL2HQL converter = new CQL2HQL(request.getClassCache());
 		HQLCriteria hqlCriteria = converter.translate((CQLQuery)obj, false, caseSensitive);
-		return query(request, session, hqlCriteria);		
+		return query(request, hqlCriteria);		
 	}
 
 	//if (obj instanceof HQLCriteria)
-	protected Response query(Request request, Session session, HQLCriteria hqlCriteria) throws Exception
+	protected Response query(Request request, HQLCriteria hqlCriteria) throws Exception
 	{
-		Query hqlQuery = null;
-		
 		if(request.getIsCount() != null && request.getIsCount())
-			hqlQuery = session.createQuery(getCountQuery(hqlCriteria.getHqlString()));
-		else
-			hqlQuery = session.createQuery(hqlCriteria.getHqlString());
-		
-		int i=0;
-		if (hqlCriteria.getParameters() != null)
-			for(Object param: hqlCriteria.getParameters())
-				hqlQuery.setParameter(i++,param);
-		
-
-		if(request.getIsCount() != null && request.getIsCount())
-			return executeCountQuery(hqlQuery);
+		{
+			String countQ = hqlCriteria.getCountHqlString();
+			if(countQ == null)
+				countQ = getCountQuery(hqlCriteria.getHqlString());
+			log.info("HQL Query :"+countQ);
+			Response rsp = new Response();
+	    	HibernateCallback callBack = getExecuteCountQueryHibernateCallback(countQ,hqlCriteria.getParameters());
+			Integer rowCount = Integer.parseInt(getHibernateTemplate().execute(callBack)+"");
+			log.debug("HQL Query : count = " + rowCount);		
+			rsp.setRowCount(rowCount);
+			return rsp;
+		}
 		else 
-			return executeResultQuery(request, hqlQuery,hqlCriteria.getParameters());
+		{
+			log.info("HQL Query :"+hqlCriteria.getHqlString());
+			Response rsp = new Response();
+	    	HibernateCallback callBack = getExecuteFindQueryHibernateCallback(hqlCriteria.getHqlString(),hqlCriteria.getParameters(), request.getFirstRow() == null?-1:request.getFirstRow(),resultCountPerQuery);
+	    	List rs = (List)getHibernateTemplate().execute(callBack);
+	    	rsp.setRowCount(rs.size());
+	    	rsp.setResponse(rs);
+			return rsp;
+		}
 	}
 	
-	
-	protected Response executeCountQuery(Query hqlQuery)
-	{
-		log.info("HQL Query :"+hqlQuery.getQueryString());
-		Response rsp = new Response();
-		hqlQuery.setMaxResults(1);
-		Integer rowCount = Integer.parseInt(hqlQuery.uniqueResult()+"");
-		log.debug("HQL Query : count = " + rowCount);		
-		rsp.setRowCount(rowCount);
-		return rsp;
-	}
-
-	protected Response executeResultQuery(Request request, Query hqlQuery, List params)
-	{
-		
-		log.info("HQL Query :"+hqlQuery.getQueryString());
-		
-		Response rsp = new Response();
-    	if(request.getFirstRow() != null)
-    		hqlQuery.setFirstResult(request.getFirstRow().intValue());				    		
-    	
-    	hqlQuery.setMaxResults(resultCountPerQuery);
-    	
-    	HibernateCallback callBack = getExecuteQueryHibernateCallback(hqlQuery,params);
-    	List rs = (List)getHibernateTemplate().execute(callBack);//hqlQuery.list();
-    	rsp.setRowCount(rs.size());
-    	rsp.setResponse(rs);
-		return rsp;
-	}
-	
-	protected HibernateCallback getExecuteQueryHibernateCallback(final Query query, final List params)
+	protected HibernateCallback getExecuteFindQueryHibernateCallback(final String hql, final List params, final int firstResult, final int maxResult)
 	{
 		HibernateCallback callBack = new HibernateCallback(){
 
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
-				Query newQ = session.createQuery(query.getQueryString());
+				Query query = session.createQuery(hql);
+				query.setFirstResult(firstResult);				    		
+				query.setMaxResults(maxResult);
+				
 				int count = 0;
 				if(params!=null)
 					for(Object param:params)
-						newQ.setParameter(count++, param);
-				return newQ.list();
+						query.setParameter(count++, param);
+				return query.list();
 			}
 		};
 		return callBack;
 	}
 
+	protected HibernateCallback getExecuteCountQueryHibernateCallback(final String hql, final List params)
+	{
+		HibernateCallback callBack = new HibernateCallback(){
+
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query query = session.createQuery(hql);
+				query.setMaxResults(1);
+				
+				int count = 0;
+				if(params!=null)
+					for(Object param:params)
+						query.setParameter(count++, param);
+				return query.uniqueResult();
+			}
+		};
+		return callBack;
+	}	
+
+	protected HibernateCallback getExecuteCountCriteriaHibernateCallback(final DetachedCriteria criteria)
+	{
+		HibernateCallback callBack = new HibernateCallback(){
+
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Criteria exeCriteria = criteria.getExecutableCriteria(session);
+				return exeCriteria.setProjection(Projections.rowCount()).uniqueResult();
+			}
+		};
+		return callBack;
+	}	
 	
 	private String getCountQuery(String hql)
 	{
