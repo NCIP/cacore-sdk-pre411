@@ -16,7 +16,7 @@ public class M2MBidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 		return "Many to Many Bidirectional WritableApi Test Case";
 	}
 	
-	public void xtestSaveObjectEmployee(){
+	public void testSaveObjectEmployee(){
 		log.debug("\n------saveObjectEmployee() --------\n\n");
 		Employee employee=new Employee();
 		employee.setName("Employee");
@@ -26,7 +26,7 @@ public class M2MBidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 		Assert.assertEquals(employee.getName(), result.getName());
 	}
 	
-	public void xtestSaveObjectEmployeeWithM2MColl() {
+	public void testSaveObjectEmployeeWithM2MColl() {
 		log.debug("\n------testSaveObjectEmployeeWithM2MColl() --------\n\n");
 		Employee employee = new Employee();
 		employee.setName("Employee");
@@ -64,7 +64,7 @@ public class M2MBidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 		
 		updateEmployee.getProjectCollection().remove(updateProject);
 		
-//		/update(updateProject);
+		update(updateProject);
 		update(updateEmployee);
 
 		Employee resultEmployee = (Employee) getObjectAndLazyCollection(Employee.class,updateEmployee.getId(),"projectCollection");
@@ -75,7 +75,7 @@ public class M2MBidirectionalWritableApiTest extends SDKWritableApiBaseTest {
 		Assert.assertEquals(updateProject.getName(), resultProject.getName());
 	}
 
-	public void xtestDeleteObjectEmployeeWithM2MColl() {
+	public void testDeleteObjectEmployeeWithM2MColl() {
 		log.debug("\n------testDeleteObjectEmployeeWithM2MColl() --------\n\n");
 		Employee employee = new Employee();
 		employee.setName("Employee");
