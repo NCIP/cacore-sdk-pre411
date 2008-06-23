@@ -31,9 +31,17 @@ public class NestedCriteriaPath implements Serializable{
 	{
 		return this.pathString;
 	}
-
+	
+	public void setPathString(String pathString) {
+		this.pathString = pathString;
+	}
+	
 	public List getParameters() {
 		return parameters;
+	}
+	
+	public void setParameters(List parameters) {
+		this.parameters = parameters;
 	}
 
 }
