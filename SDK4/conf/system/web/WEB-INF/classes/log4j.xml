@@ -73,48 +73,39 @@
 	</category>
 
 	<logger name="org.hibernate">
-		<!-- Print only messages of level warn or above in the package org.hibernate -->
 		<level value="info" />
 	</logger>
 
 	<logger name="org.apache">
-		<!-- Print only messages of level warn or above in the package org.apache -->
 		<level value="warn" />
 	</logger>
 
 	<logger name="org.hibernate.SQL">
-		<!-- Print only messages of level warn or above in the package org.hibernate.SQL -->
 		<level value="debug" />
 	</logger>
 
 	<logger name="org.hibernate.type">
-		<!-- Print only messages of level warn or above in the package org.hibernate.type -->
 		<level value="info" />
 	</logger>
 
 	<logger name="org.hibernate.tool.hbm2ddl">
-		<!-- Print only messages of level warn or above in the package org.hibernate.tool.hbm2ddl -->
 		<level value="info" />
 	</logger>
 
 	<logger name="org.hibernate.cache">
-		<!-- Print only messages of level warn or above in the package org.hibernate.cache -->
 		<level value="debug" />
 	</logger>
 
 	<logger name="org.hibernate.jdbc">
-		<!-- Print only messages of level warn or above in the package org.hibernate.jdbc -->
 		<level value="debug" />
 	</logger>
 
 	<logger
 		name="org.hibernate.connection.DriverManagerConnectionProvider">
-		<!-- Print only messages of level warn or above in the package org.hibernate.connection.DriverManagerConnectionProvider -->
 		<level value="trace" />
 	</logger>
 
 	<logger name="gov.nih.nci">
-		<!-- Print only messages of level warn or above in the package gov.nih.nci -->
 		<level value="info" />
 	</logger>
 

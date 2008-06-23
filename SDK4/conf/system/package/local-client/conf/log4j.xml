@@ -18,6 +18,7 @@
 				value=":: [%d{ISO8601}] %-5p %c{1}.%M() %x - %m%n" />
 		</layout>
 	</appender>
+@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 
 	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
 		<!--      <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>-->
