@@ -19,6 +19,7 @@ import net.sf.cglib.proxy.Enhancer;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.aop.framework.Advised;
 
 public class ProxyHelperImpl implements ProxyHelper 
@@ -59,7 +60,7 @@ public class ProxyHelperImpl implements ProxyHelper
 	
 	@SuppressWarnings("unchecked")
 	private Object convertToObject(Map<Object,Object> map,Object proxyObject)throws Exception {
-		if (isPrimitiveObject(proxyObject) || proxyObject instanceof Class) {
+		if (isPrimitiveObject(proxyObject) || proxyObject instanceof Class || proxyObject instanceof DetachedCriteria) {
 			return proxyObject;
 		}
 
