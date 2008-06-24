@@ -214,7 +214,11 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 //		assertEquals(1, elts.size());
 		Element klassElt = doc.getRootElement();
 		
-		assertEquals(klassElt.getAttributeValue(attributeName),attributeValue.toString());
+		String compareValue = null;
+		if (attributeValue != null)
+			compareValue = attributeValue.toString();
+		
+		assertEquals(klassElt.getAttributeValue(attributeName),compareValue);
 	}
 	
 	/**

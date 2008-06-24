@@ -83,7 +83,8 @@ public class LevelAssociationXMLDataTest extends SDKXMLDataTestBase
 			
 			assertNotNull(result2);
 			assertNotNull(result2.getId());
-			assertNotNull(result2.getImage());
+			if (result2.getId() == 1)
+				assertNotNull(result2.getImage());// Only row with id=1 has an image
 			assertNotNull(result2.getName());		
 		}
 	}
