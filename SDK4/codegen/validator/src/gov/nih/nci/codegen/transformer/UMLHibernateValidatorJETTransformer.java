@@ -45,6 +45,9 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 	protected TransformerUtils transformerUtils;
 	
 	private Map<String,String> caDSREnumMap = new HashMap<String,String>();
+	
+	private static final String PROJECT_SHORT_NAME = "projectShortName";
+	private static final String PROJECT_VERSION = "version";
 
 	public void setTransformerUtils(TransformerUtils transformerUtils) {
 		this.transformerUtils = transformerUtils;
@@ -125,20 +128,27 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 			//ApplicationService appService = ApplicationServiceProvider.getApplicationService("userId","password");
 			ApplicationService appService;
 			if (serviceURL == null || serviceURL.length() == 0){
+				log.warn("Service URL is unexpectedly null. Retrieving Application service from ApplicationServiceProvider instead.");
 				appService = ApplicationServiceProvider.getApplicationService();
 			} else {
+				log.debug("Retrieving Application service from URL: " + serviceURL);
 				appService = ApplicationServiceProvider.getApplicationServiceFromUrl(serviceURL);
 			}
 			
-			String projectShortName = null;
-			String version = null;
+			Map<String,String>criteriaProps = validateNamespace();
 			
-			validateNamespace(projectShortName, version);
+			String projectShortName = criteriaProps.get(PROJECT_SHORT_NAME);
+			String version = criteriaProps.get(PROJECT_VERSION);
+			
+			if (projectShortName == null || !(projectShortName.length()>0) || version == null || !(version.length()>0))
+				throw new GenerationException("Error parsing NAMESPACE_PREFIX property set in deploy.properties file. Parsed Classification Scheme (UML Project shortname) is: [" + projectShortName +"]; parsed Classification Scheme Version is: [" + version + "].");
 			
 			Project proj = new Project();
 			proj.setShortName(projectShortName);
 			proj.setVersion(version);
-			log.debug("Searching for " + Project.class.getName());
+			log.debug("Searching for " + Project.class.getName() + " using the following search criteria:");
+			log.debug("\tProject short name: " + proj.getShortName());
+			log.debug("\tProject version " + proj.getVersion());
 
 			Collection<Object> results = appService.search("gov.nih.nci.cadsr.umlproject.domain.Project", proj);
 			Collection<UMLAttributeMetadata> attrResults;
@@ -212,6 +222,10 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 						
 						String key = umlClassName + ":" + attribute.getName();
 						log.debug("Adding caDSREnumMap entry for attribute " + key + ".  Enum value string is: " + sb.toString());
+						
+						if (caDSREnumMap.containsKey(key)){
+							throw new GenerationException("Duplicate caDSR UMLAttribute found: " + key);
+						}
 						caDSREnumMap.put(key, sb.toString());
 					}
 				}
@@ -228,7 +242,7 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 		return caDSREnumMap.get(fqcnAttributeName);
 	}
 	
-	private void validateNamespace(String projectShortName, String version) throws GenerationException {
+	private Map<String,String> validateNamespace() throws GenerationException {
 		
 		//Check that the namespacePrefix property has been set
 		if (namespacePrefix == null){
@@ -251,11 +265,18 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 		String classificationSchemeAndContext = tokens.nextToken().trim();
 		log.debug("classificationSchemeAndContext: " + classificationSchemeAndContext);
 		
-		version = tokens.nextToken().trim();
+		String version = tokens.nextToken().trim();
 		log.debug("version: " + version);
 		
-		projectShortName = classificationSchemeAndContext.substring(0, classificationSchemeAndContext.indexOf('.'));
+		String projectShortName = classificationSchemeAndContext.substring(0, classificationSchemeAndContext.indexOf('.'));
 		log.debug("projectShortName: " + projectShortName);
+		
+		Map<String,String> criteriaProps = new HashMap<String,String>();
+		criteriaProps.put(PROJECT_SHORT_NAME, projectShortName);
+		criteriaProps.put(PROJECT_VERSION, version);
+		
+		return criteriaProps;
+		
 	}
 
 }
