@@ -42,11 +42,6 @@
 		</layout>
 	</appender>
 
-	<root>
-		<priority value="error" />
-		<appender-ref ref="CONSOLE" />
-	</root>
-
 @ENABLE_CLM_LOGGER_CFG_GENERATION_START@
 	<category name="CSM.Audit.Logging.Event.Authentication">
 		<level value="info" />
@@ -102,8 +97,7 @@
 		<level value="debug" />
 	</logger>
 
-	<logger
-		name="org.hibernate.connection.DriverManagerConnectionProvider">
+	<logger	name="org.hibernate.connection.DriverManagerConnectionProvider">
 		<level value="trace" />
 	</logger>
 -->
@@ -115,4 +109,9 @@
 		<level value="error" />
 	</logger>
 
+	<root>
+		<priority value="error" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+	
 </log4j:configuration>

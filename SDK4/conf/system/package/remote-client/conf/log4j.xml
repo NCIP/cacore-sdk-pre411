@@ -25,11 +25,6 @@
 		</layout>
 	</appender>
 
-	<root>
-		<priority value="error" />
-		<appender-ref ref="CONSOLE" />
-	</root>
-
 	<category name="org.apache.dbcp">
 		<level value="INFO" />
 		<appender-ref ref="CONSOLE" />
@@ -70,8 +65,7 @@
 		<level value="debug" />
 	</logger>
 
-	<logger
-		name="org.hibernate.connection.DriverManagerConnectionProvider">
+	<logger	name="org.hibernate.connection.DriverManagerConnectionProvider">
 		<level value="trace" />
 	</logger>
 -->
@@ -83,4 +77,8 @@
 		<level value="error" />
 	</logger>
 
+	<root>
+		<priority value="error" />
+		<appender-ref ref="CONSOLE" />
+	</root>
 </log4j:configuration>
