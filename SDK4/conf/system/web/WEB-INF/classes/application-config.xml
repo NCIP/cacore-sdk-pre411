@@ -58,12 +58,14 @@
 		</property>
 		<property name="eventListeners">
 			<map>
+				@ENABLE_HIBERNATE_VALIDATOR_START@
 				<entry key="pre-insert">
 					<bean class="org.hibernate.validator.event.ValidateEventListener" />
 				</entry>
 				<entry key="pre-update">
 					<bean class="org.hibernate.validator.event.ValidateEventListener" />
 				</entry>
+				@ENABLE_HIBERNATE_VALIDATOR_END@
 			</map>
 		</property>
 	</bean>

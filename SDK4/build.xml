@@ -216,6 +216,12 @@
 			<equals arg1="${GENERATE_HIBERNATE_VALIDATOR}" arg2="true" casesensitive="false" trim="true" />
 		</and>
 	</condition>
+	<condition property="ENABLE_HIBERNATE_VALIDATOR_START" value="" else="${xml.comment.start}">
+		<equals arg1="${ENABLE_HIBERNATE_VALIDATOR}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="ENABLE_HIBERNATE_VALIDATOR_END" value="" else="${xml.comment.end}">
+		<equals arg1="${ENABLE_HIBERNATE_VALIDATOR}" arg2="true" casesensitive="false" trim="true" />
+	</condition>
 	
 	<condition property="ENABLE_LOGICAL_MODEL_VALIDATOR" value="true" else="false">
 		<or>
@@ -354,6 +360,8 @@
 			<replacefilter token="@GENERATE_XSD@" value="${ENABLE_XSD_GENERATION}"/>
 			<replacefilter token="@GENERATE_WSDD@" value="${ENABLE_WSDD_GENERATION}"/>
 			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR@" value="${ENABLE_HIBERNATE_VALIDATOR}"/>
+			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR_START@" value="${ENABLE_HIBERNATE_VALIDATOR_START}"/>
+			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR_END@" value="${ENABLE_HIBERNATE_VALIDATOR_END}"/>
 			<replacefilter token="@CADSR_CONNECTION_URL@" value="${CADSR_CONNECTION_URL}"/>
 			<replacefilter token="@SERVER_URL@" value="${SERVER_URL}"/>
 			<replacefilter token="${xml.comment.start}@CSM_DB_JNDI_URL_START@${xml.comment.end}" value="${CSM_JNDI_START}" />	
