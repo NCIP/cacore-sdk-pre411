@@ -3,21 +3,23 @@
 
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
+@ENABLE_CLM_LOGGER_CFG_GENERATION_START@
 	<appender name="CLM_APPENDER"
 		class="gov.nih.nci.logging.api.appender.jdbc.JDBCAppender">
-		<param name="application" value="example" />
+		<param name="application" value="@PROJECT_NAME@" />
 		<param name="maxBufferSize" value="1" />
-		<param name="dbDriverClass" value="org.gjt.mm.mysql.Driver" />
-		<param name="dbUrl" value="jdbc:mysql://localhost:3306/cacoresdk" />
-		<param name="dbUser" value="root" />
-		<param name="dbPwd" value="admin123" />
+		<param name="dbDriverClass" value="@CLM_DB_DRIVER@" />
+		<param name="dbUrl" value="@CLM_DB_CONNECTION_URL@" />
+		<param name="dbUser" value="@CLM_DB_USERNAME@" />
+		<param name="dbPwd" value="@CLM_DB_PASSWORD@" />
 		<param name="useFilter" value="true" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
 				value=":: [%d{ISO8601}] %-5p %c{1}.%M() %x - %m%n" />
 		</layout>
 	</appender>
-	
+@ENABLE_CLM_LOGGER_CFG_GENERATION_END@	
+
 	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
 		<!--      <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>-->
 		<param name="Target" value="System.out" />
@@ -40,6 +42,12 @@
 		</layout>
 	</appender>
 
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+@ENABLE_CLM_LOGGER_CFG_GENERATION_START@
 	<category name="CSM.Audit.Logging.Event.Authentication">
 		<level value="info" />
 		<appender-ref ref="CLM_APPENDER" />
@@ -52,6 +60,7 @@
 		<level value="INFO" />
 		<appender-ref ref="CONSOLE" />
 	</category>
+@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 
 	<category name="org.apache.dbcp">
 		<level value="INFO" />
@@ -62,7 +71,7 @@
 		<level value="INFO" />
 		<appender-ref ref="CONSOLE" />
 	</category>
-	
+
 	<logger name="org.hibernate">
 		<level value="info" />
 	</logger>
@@ -91,7 +100,7 @@
 		<level value="debug" />
 	</logger>
 
-	<logger name="org.hibernate.connection.DriverManagerConnectionProvider">
+	<logger	name="org.hibernate.connection.DriverManagerConnectionProvider">
 		<level value="trace" />
 	</logger>
 
@@ -99,9 +108,4 @@
 		<level value="info" />
 	</logger>
 
-	<root>
-		<priority value="debug" />
-		<appender-ref ref="CONSOLE" />
-	</root>
-	
 </log4j:configuration>
