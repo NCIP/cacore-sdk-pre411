@@ -44,7 +44,8 @@ public class InstanceSecurityTest extends SDKSecurityTestBase
 			Card result = (Card)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			assertNotNull(result.getImage());
+			if (result.getId() == 1)
+				assertNotNull(result.getImage());// Only row with id=1 has an image
 			assertNotNull(result.getName());			
 		}
 	}	
