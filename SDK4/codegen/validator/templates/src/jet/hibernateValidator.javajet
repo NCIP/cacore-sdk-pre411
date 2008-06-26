@@ -16,7 +16,7 @@ for(UMLClass klass:transformerUtils.getAllHibernateClasses(model)){
 
 	addClassConfigBegin = true;
 	for(UMLAttribute attr: klass.getAttributes()){
-		enumValues = getCaDSREnumPattern(transformerUtils.getFQCN(klass)+":"+attr.getName());
+		enumValues = getCaDSREnumPattern(transformerUtils.getFQCN(klass)+"."+attr.getName());
 		if (enumValues != null && enumValues.length() > 0 ){
 			addClassConfigEnd = true;
 			if (addClassConfigBegin) { %>			

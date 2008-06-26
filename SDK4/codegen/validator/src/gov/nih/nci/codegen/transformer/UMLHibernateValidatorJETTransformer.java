@@ -175,19 +175,19 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 				
 				//Get associated attributes
 				attrResults = project.getUMLAttributeMetadataCollection();
-				String umlClassName = null;
+				//String umlClassName = null;
 				for(Object attr : attrResults)
 				{
 					log.debug("*******\n ");
 					UMLAttributeMetadata attribute = (UMLAttributeMetadata)attr;
 					
-					umlClassName = attribute.getUMLClassMetadata().getFullyQualifiedName();
+					//umlClassName = attribute.getUMLClassMetadata().getFullyQualifiedName();
 					
 					log.debug("Printing gov.nih.nci.cadsr.umlproject.domain.UMLAttributeMetadata");
 					log.debug("\tId: "+attribute.getId());
 					log.debug("\tName: "+attribute.getName());
 					log.debug("\tFullyQualifiedName: "+attribute.getFullyQualifiedName());
-					log.debug("\tUML Class FullyQualifiedName: "+umlClassName);
+					//log.debug("\tUML Class FullyQualifiedName: "+umlClassName);
 					
 					//Perform NestedCriteria query for PermissibleValue
 					log.debug("=======\n ");
@@ -220,7 +220,8 @@ public abstract class UMLHibernateValidatorJETTransformer implements Transformer
 							sb.append("|").append(value.getValue());
 						}
 						
-						String key = umlClassName + ":" + attribute.getName();
+						//String key = umlClassName + ":" + attribute.getName();
+						String key = attribute.getFullyQualifiedName();
 						log.debug("Adding caDSREnumMap entry for attribute " + key + ".  Enum value string is: " + sb.toString());
 						
 						if (caDSREnumMap.containsKey(key)){
