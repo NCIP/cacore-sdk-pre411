@@ -22,8 +22,13 @@ public class ChildWithAssociationWritableApiTest extends SDKWritableApiBaseTest 
 
 		save(payment);
 
+		Assert.assertTrue(payment.getId() > 0);
+		
 		Payment result = (Payment) getObject(Payment.class, payment.getId());
 		Assert.assertEquals(payment.getAmount(), result.getAmount());
+		
+		//Clean up
+		delete(result);
 	}
 	
 	public void testSaveObjectCash() {
@@ -35,6 +40,9 @@ public class ChildWithAssociationWritableApiTest extends SDKWritableApiBaseTest 
 
 		Cash result = (Cash) getObject(Cash.class, cash.getId());
 		Assert.assertEquals(cash.getAmount(), result.getAmount());
+		
+		//Clean up
+		delete(result);
 	}
 
 	public void testSaveObjectCreditWithAssociation() {
@@ -52,6 +60,9 @@ public class ChildWithAssociationWritableApiTest extends SDKWritableApiBaseTest 
 		Credit result = (Credit) getObjectAndLazyObject(Credit.class, credit.getId(),"issuingBank");
 		Assert.assertEquals(credit.getAmount(), result.getAmount());
 		Assert.assertEquals(credit.getIssuingBank().getName(), result.getIssuingBank().getName());
+		
+		//Clean up
+		delete(result);
 	}
 	
 	public void testUpdateObjectCreditWithAssociation() {
@@ -79,6 +90,9 @@ public class ChildWithAssociationWritableApiTest extends SDKWritableApiBaseTest 
 		Assert.assertEquals(updateCredit.getAmount(), result.getAmount());
 		Assert.assertEquals(updateCredit.getCardNumber(), result.getCardNumber());
 		Assert.assertEquals(updateCredit.getIssuingBank().getName(), result.getIssuingBank().getName());
+		
+		//Clean up
+		delete(result);
 	}
 	
 	public void testDeleteObjectCreditWithAssociation() {
