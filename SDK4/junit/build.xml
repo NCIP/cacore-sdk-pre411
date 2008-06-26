@@ -25,7 +25,8 @@
 	<property name="report.dir.security-thick-client" value="${report.dir}/security-client/thick-client" />
 	<property name="report.dir.remote-security-client" value="${report.dir}/security-client/remote-client" />
 	<property name="report.dir.hbm-mapping-client" value="${report.dir}/hbm-mapping-client" />
-	<property name="report.dir.thickclient-writableapi" value="${report.dir}/writable-api" />
+	<property name="report.dir.thickclient-writableapi" value="${report.dir}/writable-api-thick-client" />
+	<property name="report.dir.remoteclient-writableapi" value="${report.dir}/writable-api-remote-client" />	
 	<property name="report.dir.codegen" value="${report.dir}/codegen" />
 
 	<!--***********************************************************************
@@ -417,12 +418,49 @@
 	</target>
 
 	<!-- ************************************************************************************************-->
-	<!--                                Run JUnit for WritableApi             -->
+	<!--                                Run JUnits for remote-client Writable API             	         -->
 	<!-- ************************************************************************************************-->
 
-	<target name="runWritableApiClientQuickTest" depends="clean-classes,createDir,runWritableApiClientQuickJUnit,stop" description="Run JUnit for Writable Api Mapping Client (Quick Mode)" />
+	<target name="runWritableApiRemoteClientTest" depends="clean-classes,createDir,runWritableApiRemoteClientJUnit,stop" description="Run JUnit for Writable Api Mapping Remote Client" />
 
-	<target name="runWritableApiClientQuickJUnit">
+	<target name="runWritableApiRemoteClientJUnit">
+		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*WritableApi*.java" />
+		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remoteclient-writableapi}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.remoteclient-writableapi}" />
+	</target>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnit for remote-client Writable Api (Quick Mode)             -->
+	<!-- ************************************************************************************************-->
+
+	<target name="runWritableApiRemoteClientQuickTest" depends="clean-classes,createDir,runWritableApiRemoteClientQuickJUnit,stop" description="Run JUnit for Writable Api Mapping Remote Client (Quick Mode)" />
+
+	<target name="runWritableApiRemoteClientQuickJUnit">
+
+		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*WritableApi*.java" />
+		<SDKRunJUnitSuite junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remoteclient-writableapi}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWritableApiTestSuite" />
+		<SDKGenerateReport junitOutputDir="${report.dir.remoteclient-writableapi}" />
+	</target>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnits for thick-client Writable API             	         -->
+	<!-- ************************************************************************************************-->
+
+	<target name="runWritableApiThickClientTest" depends="clean-classes,createDir,runWritableApiThickClientJUnit,stop" description="Run JUnit for Writable Api Mapping Thick Client" />
+
+	<target name="runWritableApiThickClientJUnit">
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*WritableApi*.java" />
+		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thickclient-writableapi}" junitsuffix="Test" />
+		<SDKGenerateReport junitOutputDir="${report.dir.thickclient-writableapi}" />
+	</target>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnit for thick-client Writable Api (Quick Mode)             -->
+	<!-- ************************************************************************************************-->
+
+	<target name="runWritableApiThickClientQuickTest" depends="clean-classes,createDir,runWritableApiThickClientQuickJUnit,stop" description="Run JUnit for Writable Api Mapping Thick Client (Quick Mode)" />
+
+	<target name="runWritableApiThickClientQuickJUnit">
 
 		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*WritableApi*.java" />
 		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thickclient-writableapi}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWritableApiTestSuite" />
