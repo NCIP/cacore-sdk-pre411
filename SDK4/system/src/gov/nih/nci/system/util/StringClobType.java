@@ -97,6 +97,7 @@ public class StringClobType implements UserType{
 	   public void nullSafeSet(PreparedStatement st, Object value, int index)
        throws HibernateException, SQLException
 	   {	             
+		   
 	        st.setClob(index, Hibernate.createClob((String) value));     
 	   }
 	   /**

@@ -470,7 +470,7 @@ public class TransformerUtils
 			name = name.substring("java.lang.".length());
 
 		if(isClob && "string".equalsIgnoreCase(name))
-			return "gov.nih.nci.system.util.StringClobType";
+			return "text";
 		if(isClob && !"string".equalsIgnoreCase(name))
 			throw new GenerationException("Can not map CLOB to anything other than String");
 		if("int".equalsIgnoreCase(name) || "integer".equalsIgnoreCase(name))

@@ -509,7 +509,7 @@ public class NestedCriteria2HQL
 		{
 			Property prop = (Property) properties.next();
 			if (!prop.getType().isAssociationType())
-				if (prop.getType().getName().equals("gov.nih.nci.system.util.StringClobType"))
+				if (prop.getType().getName().equals("text"))
 					return true;
 		}
 		
@@ -599,7 +599,7 @@ public class NestedCriteria2HQL
 				try {
 					if (field.get(obj) != null)
 					{
-						if (prop.getType().getName().equals("gov.nih.nci.system.util.StringClobType"))
+						if (prop.getType().getName().equals("text"))
 							criterions.put(fieldName, field.get(obj) + "*");
 						else
 							criterions.put(fieldName, field.get(obj));
