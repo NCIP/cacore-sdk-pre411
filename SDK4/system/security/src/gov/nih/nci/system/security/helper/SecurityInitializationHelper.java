@@ -7,14 +7,15 @@ import gov.nih.nci.system.security.acegi.GroupNameAuthenticationToken;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class SecurityInitializationHelper 
 {
+	static final Logger log = Logger.getLogger(SecurityInitializationHelper.class.getName());
 	private AuthorizationManager authorizationManager ;
-	private boolean groupLevelSecurityEnabled;
 	private boolean instanceLevelSecurityEnabled;
 	private boolean attributeLevelSecurityEnabled;
 	private boolean securityEnabled;
@@ -22,9 +23,7 @@ public class SecurityInitializationHelper
 	public void addFilters(Configuration cfg) {
 		if(securityEnabled && instanceLevelSecurityEnabled && authorizationManager!=null)
 		{
-			if(groupLevelSecurityEnabled)
 				InstanceLevelSecurityHelper.addFiltersForGroups(authorizationManager, cfg);
-			else
 				InstanceLevelSecurityHelper.addFilters(authorizationManager, cfg);
 		}
 	}
@@ -38,7 +37,18 @@ public class SecurityInitializationHelper
 				if(auth !=null && auth instanceof GroupNameAuthenticationToken)
 				{
 					GroupNameAuthenticationToken groupAuth = (GroupNameAuthenticationToken)auth;
-					InstanceLevelSecurityHelper.initializeFiltersForGroups((String[])(groupAuth.getGroups().toArray()),session,authorizationManager);					
+					
+					String[] groups = new String[groupAuth.getGroups().size()];
+					int i = 0;
+					for (String group: groupAuth.getGroups()){
+						log.debug("groupAuth group: " + group);
+						groups[i++] = group;
+					}
+					
+					log.debug("groups.length(): " + groups.length);
+					
+
+					InstanceLevelSecurityHelper.initializeFiltersForGroups(groups,session,authorizationManager);					
 				}
 				else if (auth!=null)
 				{
@@ -97,12 +107,4 @@ public class SecurityInitializationHelper
 		this.securityEnabled = securityEnabled;
 	}
 
-	public boolean isGroupLevelSecurityEnabled() {
-		return groupLevelSecurityEnabled;
-	}
-
-	public void setGroupLevelSecurityEnabled(boolean groupLevelSecurityEnabled) {
-		this.groupLevelSecurityEnabled = groupLevelSecurityEnabled;
-	}
-	
 }
