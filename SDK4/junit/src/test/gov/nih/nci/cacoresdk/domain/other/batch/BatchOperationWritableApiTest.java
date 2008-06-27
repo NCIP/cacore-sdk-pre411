@@ -1,16 +1,13 @@
 package test.gov.nih.nci.cacoresdk.domain.other.batch;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
+
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
 
-import gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Chef;
-import gov.nih.nci.cacoresdk.domain.manytoone.unidirectional.Restaurant;
 import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.KeyChain;
 import gov.nih.nci.cacoresdk.domain.onetomany.unidirectional.LatchKey;
 import gov.nih.nci.system.query.SDKQuery;
@@ -59,8 +56,8 @@ public class BatchOperationWritableApiTest extends SDKWritableApiBaseTest {
 		
 		//save(insertKeyChain);
 		
-		KeyChain resultKeyChain=(KeyChain)getObject(KeyChain.class,1114112);
-		resultKeyChain.setName("Updated_Keychain_Name632");
+		KeyChain resultKeyChain=(KeyChain)getObject(KeyChain.class,1);
+		resultKeyChain.setName("Keychain_Name1");
 /*		LatchKey latchKey2=new LatchKey();
 		latchKey2.setType("hello122");
 		resultKeyChain.getKeyCollection().add(latchKey2);
