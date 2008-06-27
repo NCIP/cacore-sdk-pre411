@@ -1,5 +1,7 @@
 package test.gov.nih.nci.cacoresdk;
 
+import java.util.Collection;
+
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import junit.framework.TestCase;
@@ -22,6 +24,10 @@ public abstract class SDKSecurityTestBase extends TestCase {
 			String password) throws Exception {
 		return ApplicationServiceProvider.getApplicationService(userid,
 				password);
+	}
+	
+	protected ApplicationService getApplicationService(Collection<String> groups) throws Exception {
+		return ApplicationServiceProvider.getApplicationService(groups);
 	}
 
 	public static String getTestCaseName() {

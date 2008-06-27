@@ -24,11 +24,11 @@ import org.hibernate.criterion.DetachedCriteria;
 
 import test.gov.nih.nci.cacoresdk.SDKSecurityTestBase;
 
-public class ClassGroupSecurityTest extends SDKSecurityTestBase
+public class ClassSecurityGroupTest extends SDKSecurityTestBase
 {
 	public static String getTestCaseName()
 	{
-		return "Class Security Test Case";
+		return "Class Security Group Test Case";
 	}
 	
 	Collection<String> groups = new ArrayList<String>();
@@ -622,96 +622,6 @@ public class ClassGroupSecurityTest extends SDKSecurityTestBase
 		assertTrue(flag);
 	}
 	
-//	/**
-//	 * Uses Get XML query API, which takes a Detached  
-//	 * Criteria object parameter.
-//	 * Verifies that the results are returned 
-//	 * Verifies size of the result set
-//	 * Verifies that none of the attributes are null 
-//	 * since user1 has access to all target class attributes
-//	 * 
-//	 * @throws Exception
-//	 */		
-//	public void testBasicAuthenticationGetXML() throws Exception
-//	{
-//		String serverUrl = "http://localhost:8080/example";
-//		
-//		Class bankKlass = Bank.class;
-//
-//		try
-//		{
-//			String searchUrl = serverUrl+"/GetXML?query="+bankKlass.getName()+"&"+bankKlass.getName();
-//			URL url = new URL(searchUrl);
-//			URLConnection conn = url.openConnection();
-//
-////			String base64 = "userId" + ":" + "password";
-//			String base64 = "user1" + ":" + "password";
-//			conn.setRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64(base64.getBytes())));
-//
-//			File myFile = new File("./output/" + bankKlass.getName() + "_test-getxml.xml");						
-//
-//			FileWriter myWriter = new FileWriter(myFile);
-//			DataInputStream dis = new DataInputStream(conn.getInputStream());
-//
-//			String s, buffer = null;
-//			while ((s = dis.readLine()) != null){
-//				myWriter.write(s);
-//				buffer = buffer + s;
-//			}
-//	
-//			myWriter.close();
-//			
-//			assertTrue(buffer.indexOf("<recordCounter>4</recordCounter>") > 0);
-//			
-//			for (int i=1; i<=4; i++ ){
-//				assertTrue(buffer.indexOf("name=\"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank\" recordNumber=\"" + i + "\"") > 0);
-//				assertTrue(buffer.indexOf("<field name=\"id\">" + i +"</field>") > 0);
-//				assertTrue(buffer.indexOf("<field name=\"name\">Bank" + i +"</field>") > 0);
-//			}
-//		} catch(Exception e)
-//		{
-////			System.out.println("Exception caught: " + e.getMessage());
-////			e.printStackTrace();
-//			fail("Exception caught: " + e.getMessage());
-//		}
-//	}
-//	
-//	public void testAccessDeniedBasicAuthenticationGetXML() throws Exception
-//	{
-//		String serverUrl = "http://localhost:8080/example";
-//		
-//		Class cashKlass = Cash.class;
-//		
-//		try
-//		{
-//			String searchUrl = serverUrl+"/GetXML?query="+cashKlass.getName()+"&"+cashKlass.getName();
-//			URL url = new URL(searchUrl);
-//			URLConnection conn = url.openConnection();
-//
-//			String base64 = "user2" + ":" + "password"; //user2 does not have access to the Cash class
-//			conn.setRequestProperty("Authorization", "Basic " + new String(Base64.encodeBase64(base64.getBytes())));
-//
-//			File myFile = new File("./output/" + cashKlass.getName() + "_test-getxml.xml");						
-//
-//			FileWriter myWriter = new FileWriter(myFile);
-//			DataInputStream dis = new DataInputStream(conn.getInputStream());
-//
-//			String s, buffer = "";
-//			while ((s = (dis.readLine())) != null){
-//				myWriter.write(s);
-//				buffer = buffer + s;
-//			}
-//
-//			myWriter.close();
-//			
-//			assertTrue(buffer.indexOf("Access is denied") > 0);
-//
-//		} catch(Exception e) {
-//			fail("Exception caught: " + e.getMessage());
-//		}
-//	}
-	
-	
 	public void testBadCredentials() throws Exception
 	{	
 		Cash cash1 = new Cash();
@@ -731,8 +641,8 @@ public class ClassGroupSecurityTest extends SDKSecurityTestBase
 		try {
 			groups.clear();
 			groups.add("badGroup");
-			getApplicationService(groups);
-		} catch(ApplicationException e){
+			getApplicationService(groups).search(Cash.class.getName(), new Cash());
+		} catch(AccessDeniedException e){
 			flag = true;
 		}
 		assertTrue(flag);
