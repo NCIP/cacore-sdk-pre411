@@ -6,7 +6,7 @@
 @ENABLE_CLM_LOGGER_CFG_GENERATION_START@
 	<appender name="CLM_APPENDER"
 		class="gov.nih.nci.logging.api.appender.jdbc.JDBCAppender">
-		<param name="application" value="@PROJECT_NAME@" />
+		<param name="application" value="@CLM_PROJECT_NAME@" />
 		<param name="maxBufferSize" value="1" />
 		<param name="dbDriverClass" value="@CLM_DB_DRIVER@" />
 		<param name="dbUrl" value="@CLM_DB_CONNECTION_URL@" />

@@ -404,6 +404,7 @@
 			<replacefilter token="@CLM_DB_CONNECTION_URL@" value="${CLM_DB_CONNECTION_URL}" />	
 			<replacefilter token="@CLM_DB_USERNAME@" value="${CLM_DB_USERNAME}" />	
 			<replacefilter token="@CLM_DB_PASSWORD@" value="${CLM_DB_PASSWORD}" />	
+			<replacefilter token="@CLM_PROJECT_NAME@" value="${CLM_PROJECT_NAME}" />
 		</replace>
 		<copy todir="${output.src.dir}" file="${system.config.security.dir}/${csm.ehcache.file}"/>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
