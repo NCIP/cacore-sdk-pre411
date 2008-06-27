@@ -1512,7 +1512,7 @@ public class TransformerUtils
 	public String getSetterMethodJavaDocs(UMLAttribute attr) {
 		StringBuilder doc = new StringBuilder();
 		doc.append("/**");
-		doc.append("\n	* Sets the value of "+attr.getName()+" attribue");
+		doc.append("\n	* Sets the value of "+attr.getName()+" attribute");
 		doc.append("\n	**/\n");
 		return doc.toString();
 	}
@@ -1521,7 +1521,7 @@ public class TransformerUtils
 		UMLAssociationEnd otherEnd = getOtherEnd(klass, assoc.getAssociationEnds());
 		StringBuilder doc = new StringBuilder();
 		doc.append("/**");
-		doc.append("\n	* Retrieves the value of the "+otherEnd.getRoleName()+" attribue");
+		doc.append("\n	* Retrieves the value of the "+otherEnd.getRoleName()+" attribute");
 		doc.append("\n	* @return ").append(otherEnd.getRoleName());
 		doc.append("\n	**/\n");
 		return doc.toString();
@@ -1531,7 +1531,7 @@ public class TransformerUtils
 		UMLAssociationEnd otherEnd = getOtherEnd(klass, assoc.getAssociationEnds());
 		StringBuilder doc = new StringBuilder();
 		doc.append("/**");
-		doc.append("\n	* Sets the value of "+otherEnd.getRoleName()+" attribue");
+		doc.append("\n	* Sets the value of "+otherEnd.getRoleName()+" attribute");
 		doc.append("\n	**/\n");
 		return doc.toString();
 	}	
