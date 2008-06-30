@@ -13,6 +13,8 @@ public interface WritableApiTestDAO {
 	public void delete(Object obj);
 	
 	public void executeBatchQuery(List<SDKQuery> batchOperation);
+	
+	public void executeQuery(SDKQuery sdkQuery);
 
 	@SuppressWarnings("unchecked")
 	public Object getObject(Class klass, int id);

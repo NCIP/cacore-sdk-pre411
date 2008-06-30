@@ -163,4 +163,15 @@ public class WritableApiTestServiceImpl implements WritableApiTestDAO {
 		}.executeLogic();
 		return list.get(0);
 	}
+	
+	public void executeQuery(final SDKQuery sdkQuery) {
+		new BaseUtilWrapper() {
+
+			@Override
+			public List execute() throws Exception {
+				appService.executeQuery(sdkQuery);
+				return null;
+			}
+		}.executeLogic();
+	}
 }

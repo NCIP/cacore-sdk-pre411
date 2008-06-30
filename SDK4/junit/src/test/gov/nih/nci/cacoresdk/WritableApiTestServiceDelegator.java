@@ -44,6 +44,10 @@ public class WritableApiTestServiceDelegator {
 		appservice.executeBatchQuery(batchOperation);
 	}
 	
+	public void executeQuery(SDKQuery sdkQuery) {
+		appservice.executeQuery(sdkQuery);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Object getObject(Class klass, int id) {
 		Object obj = appservice.getObject(klass, id);

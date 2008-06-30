@@ -58,4 +58,8 @@ public class SDKWritableApiBaseTest extends TestCase{
 	protected void executeBatchQuery(List<SDKQuery> batchOperation) {
 		serviceDelegator.executeBatchQuery(batchOperation);
 	}
+	
+	protected void executeQuery(SDKQuery sdkQuery) {
+		serviceDelegator.executeQuery(sdkQuery);
+	}
 }

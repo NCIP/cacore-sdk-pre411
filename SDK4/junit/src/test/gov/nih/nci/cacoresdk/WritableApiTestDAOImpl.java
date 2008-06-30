@@ -71,4 +71,17 @@ public class WritableApiTestDAOImpl extends HibernateDaoSupport implements Writa
 		if(list!=null && list.size()>0) return list.get(0);
 		return null;
 	}
+
+	public void executeQuery(SDKQuery query) {
+		if (query instanceof InsertExampleQuery) {
+			InsertExampleQuery insert = (InsertExampleQuery) query;
+			getHibernateTemplate().save(insert.getExample());
+		} else if (query instanceof DeleteExampleQuery) {
+			DeleteExampleQuery delete = (DeleteExampleQuery) query;
+			getHibernateTemplate().delete(delete.getExample());
+		} else if (query instanceof UpdateExampleQuery) {
+			UpdateExampleQuery update = (UpdateExampleQuery) query;
+			getHibernateTemplate().update(update.getExample());
+		}
+	}
 }
