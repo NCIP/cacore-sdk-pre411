@@ -507,12 +507,6 @@ public class ClassCache {
 			return null;
 		}
 
-		String packageNameFromCache = getPkgNameForClass(beanName);
-		log.debug("packageNameFromCache: " + packageNameFromCache + " for bean name: " + beanName);
-		if (!packageName.equalsIgnoreCase(packageNameFromCache)){
-			return null;
-		} 
-
 		if(className.indexOf(".") < 1){
 			return packageName + "." + className;
 		}
