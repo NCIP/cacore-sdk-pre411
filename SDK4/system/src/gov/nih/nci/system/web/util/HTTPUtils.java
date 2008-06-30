@@ -332,30 +332,72 @@ public class HTTPUtils implements Serializable{
 	 * @param criteria - specifies the criteria string
 	 * @return
 	 */
+	public List<String> getSearchCriteriaList(String criteria) {
 
-	public List<String> getSearchCriteriaList(String criteria){
 		List<String> criteriaList = new ArrayList<String>();
-		criteriaList.add(criteria);
-		// Fix for [#8951] GetHTML query syntax does not support slashes in the criteria
-//		String delimiter = null;
-//		
-//		if(criteria.indexOf(SystemConstant.FORWARD_SLASH)>0){
-//			delimiter = SystemConstant.FORWARD_SLASH_STR;
-//		}
-//		else {
-//			delimiter = SystemConstant.BACK_SLASH;
-//		}
-//		for(StringTokenizer st = new StringTokenizer(criteria, delimiter); st.hasMoreElements();){
-//			String crit = st.nextToken().trim();
-//			criteriaList.add(crit);
-//		}
+		String delimiter = null;
+
+		if (criteria.indexOf(SystemConstant.FORWARD_SLASH) > 0) {
+			delimiter = SystemConstant.FORWARD_SLASH_STR;
+		} else {
+			delimiter = SystemConstant.BACK_SLASH;
+		}
+
+		StringBuffer critString = new StringBuffer();
+		for (StringTokenizer st = new StringTokenizer(criteria, delimiter); st.hasMoreElements();) {
+
+			String crit = st.nextToken().trim();
+			critString.append(crit);
+
+			boolean valid = validateSyntax(critString.toString());
+			if (valid) {
+				criteriaList.add(critString.toString());
+				critString = new StringBuffer();
+			} else {
+				int len = critString.length();
+				if (criteria.length() > critString.length()) {
+					for (int i = len; i < criteria.length(); i++) {
+						if (criteria.charAt(i) == delimiter.charAt(0))
+							critString.append(delimiter);
+						else
+							break;
+					}
+				}
+			}
+		}
 		return criteriaList;
+
+	}
+
+	private boolean validateSyntax(String query) {
+
+		boolean valid = false;
+		int startCounter = 0;
+		int endCounter = 0;
+
+		for (int i = 0; i < query.length(); i++) {
+			if (query.charAt(i) == '[') {
+				startCounter++;
+			} else if (query.charAt(i) == ']') {
+				endCounter++;
+			}
+
+		}
+
+		if (startCounter == endCounter) {
+			valid = true;
+		}
+
+		return valid;
 	}
 
 	/**
 	 * Generates an org.jdom.Document based on a resultSet
-	 * @param resultSet - specifies a list of populated domain objects
-	 * @param pageNumber - specifies the page number
+	 * 
+	 * @param resultSet -
+	 *            specifies a list of populated domain objects
+	 * @param pageNumber -
+	 *            specifies the page number
 	 * @return
 	 * @throws Exception
 	 */
