@@ -451,6 +451,7 @@
 	</target>
 	
 	<target name="prepare-condition-codegen">
+		<fail unless="IDENTITY_GENERATOR_TAG">IDENTITY_GENERATOR property must be set in deploy.properties</fail>
 		<SDKecho message="${ant.project.name}: Checking the condition for codegen project build"/>
 		<condition property="prepare-required-codegen">
 			<not>
