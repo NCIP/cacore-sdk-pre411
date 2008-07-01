@@ -196,10 +196,10 @@
 						<entry key="hbm2ddl.auto" value="@HBM2DDL_TYPE@"/>
 						<!--@HBM2DDL_END@-->
 						
-						<entry key="show_sql" value="true"/>
+						<entry key="show_sql" value="@HIBERNATE_SHOW_SQL@"/>
 						<entry key="dialect" value="@DB_DIALECT@"/>
 						<entry key="max_fetch_depth" value="1"/>
-						<entry key="cglib.use_reflection_optimizer" value="false"/>
+						<entry key="bytecode.use_reflection_optimizer" value="false"/>
 						<entry key="jdbc.batch_versioned_data" value="true"/>
 						<entry key="jdbc.use_streams_for_binary" value="true"/>
 						<entry key="cache.use_query_cache" value="false"/>
