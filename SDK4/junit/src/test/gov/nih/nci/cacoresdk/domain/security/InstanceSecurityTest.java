@@ -37,7 +37,7 @@ public class InstanceSecurityTest extends SDKSecurityTestBase
 		Collection results = getApplicationService("user2","password").search(Card.class,objList);
 
 		assertNotNull(results);
-		assertEquals(53,results.size()); //Make sure that all cards are returned if not traversed via Deck -> Suit -> Card path
+		assertEquals(52,results.size()); //Make sure that all cards are returned if not traversed via Deck -> Suit -> Card path
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
