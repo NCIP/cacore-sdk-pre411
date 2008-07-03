@@ -480,6 +480,16 @@
 		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thickclient-writableapi}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWritableApiTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.thickclient-writableapi}" />
 	</target>
+	
+	<!-- ************************************************************************************************-->
+	<!--                                Run JUnits for Database clean-up for Writable API             	         -->
+	<!-- ************************************************************************************************-->
+	<target name="runWritableApiDatabaseCleanUpTest" depends="clean-classes,createDir,runWritableApiDatabaseCleanUp,stop" description="Run JUnit for CleanUp Database for Writable Api" />
+
+	<target name="runWritableApiDatabaseCleanUp">
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*SDKWritableApiCleanUpTest.java" excludePattern=""/>
+		<SDKRunJUnitSuite junitClasspath="thick-client-cp"  junitOutputDir="${report.dir.thickclient-writableapi}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWritableApiCleanUpTest" />
+	</target>
 
 	<!-- ************************************************************************************************-->
 	<!--                                Run JUnit for CodeGen package classes                       -->
