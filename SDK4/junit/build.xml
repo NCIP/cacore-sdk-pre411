@@ -179,9 +179,11 @@
 	<macrodef name="SDKCompileJUnit">
 		<attribute name="compileClasspath" />
 		<attribute name="includePattern" />
+		<attribute name="excludePattern" />
 		<sequential>
 			<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" debuglevel="lines,vars,source">
 				<include name="@{includePattern}" />
+				<exclude name="@{excludePattern}" />
 				<classpath refid="@{compileClasspath}" />
 			</javac>
 		</sequential>
@@ -255,7 +257,7 @@
 	<target name="runSecurityThickClientTest" depends="clean-classes,createDir,runSecurityThickClientQuickJUnit,stop" description="Run JUnits for Security Thick Client " />
 
 	<target name="runSecurityThickClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*SecurityTest*.java" />
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*SecurityTest*.java" excludePattern="**/*Writable*.java"/>
 		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.security-thick-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.security-thick-client}" />
 	</target>
@@ -268,7 +270,7 @@
 	<target name="runSecurityGroupThickClientTest" depends="clean-classes,createDir,runSecurityGroupThickClientQuickJUnit,stop" description="Run JUnits for Security Group Thick Client " />
 
 	<target name="runSecurityGroupThickClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*SecurityGroupTest*.java" />
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*SecurityGroupTest*.java" excludePattern="**/*Writable*.java" />
 		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.security-thick-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.security-thick-client}" />
 	</target>
@@ -280,7 +282,7 @@
 	<target name="runSecurityRemoteClientTest" depends="clean-classes,createDir,runSecurityRemoteClientQuickJUnit,stop" description="Run JUnits for XSD Client " />
 
 	<target name="runSecurityRemoteClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*SecurityTest*.java" />
+		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*SecurityTest*.java" excludePattern="**/*Writable*.java" />
 		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.security-remote-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.security-remote-client}" />
 	</target>
@@ -292,7 +294,7 @@
 	<target name="runXSDClientTest" depends="clean-classes,createDir,runXSDClientJUnit,stop" description="Run JUnits for XSD Client " />
 
 	<target name="runXSDClientJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java" />
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java" excludePattern="" />
 		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}" />
 	</target>
@@ -304,7 +306,7 @@
 	<target name="runXMLMappingClientTest" depends="clean-classes,createDir,runXMLMappingClientJUnit,stop" description="Run JUnits for XML Mapping Client " />
 
 	<target name="runXMLMappingClientJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java" />
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java" excludePattern="" />
 		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}" />
 	</target>
@@ -317,7 +319,7 @@
 	<target name="runXMLDataClientTest" depends="clean-classes,createDir,runXMLDataClientJUnit,stop" description="Run JUnits for XML Mapping Client " />
 
 	<target name="runXMLDataClientJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java" />
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java" excludePattern="" />
 		<SDKRunJUnit junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}" />
 	</target>
@@ -330,7 +332,7 @@
 	<target name="runHibernateValidatorClientTest" depends="clean-classes,createDir,runHibernateValidatorClientJUnit,stop" description="Run JUnits for Web Services Client" />
 
 	<target name="runHibernateValidatorClientJUnit">
-		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*HibernateValidator*.java" />
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*HibernateValidator*.java" excludePattern="" />
 		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.hv-client}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.hv-client}" />
 	</target>
@@ -342,8 +344,8 @@
 	<target name="runWSClientTest" depends="clean-classes,createDir,runWSClientJUnit,stop" description="Run JUnits for Web Services Client" />
 
 	<target name="runWSClientJUnit">
-		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java" />
-		<SDKRunJUnit junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitsuffix="Test" />
+		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java" excludePattern="" />
+		<SDKRunJUnit junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitsuffix="*Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}" />
 	</target>
 
@@ -365,7 +367,7 @@
 	<target name="runWSClientQuickTest" depends="clean-classes,createDir,runWSClientQuickJUnit,stop" description="Run JUnit for WS Client (Quick Mode)" />
 
 	<target name="runWSClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java" />
+		<SDKCompileJUnit compileClasspath="ws-client-cp" includePattern="**/*WS*.java" excludePattern="" />
 		<SDKRunJUnitSuite junitClasspath="ws-client-cp" junitOutputDir="${report.dir.ws-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWSTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.ws-client}" />
 	</target>
@@ -377,7 +379,7 @@
 	<target name="runXMLDataClientQuickTest" depends="clean-classes,createDir,runXMLDataClientQuickJUnit,stop" description="Run JUnit for XML Data Client (Quick Mode)" />
 
 	<target name="runXMLDataClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java" />
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLData*.java" excludePattern=""/>
 		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-data-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLDataTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.xml-data-client}" />
 	</target>
@@ -390,7 +392,7 @@
 	<target name="runXMLMappingClientQuickTest" depends="clean-classes,createDir,runXMLMappingClientQuickJUnit,stop" description="Run JUnit for XML Mapping Client (Quick Mode)" />
 
 	<target name="runXMLMappingClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java" />
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XMLMapping*.java" excludePattern="" />
 		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xml-mapping-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXMLMappingTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.xml-mapping-client}" />
 	</target>
@@ -402,7 +404,7 @@
 	<target name="runXSDClientQuickTest" depends="clean-classes,createDir,runXSDClientQuickJUnit,stop" description="Run JUnit for Schema (XSD) Client (Quick Mode)" />
 
 	<target name="runXSDClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java" />
+		<SDKCompileJUnit compileClasspath="xsd-client-cp" includePattern="**/*XSD*.java" excludePattern="" />
 		<SDKRunJUnitSuite junitClasspath="xsd-client-cp" junitOutputDir="${report.dir.xsd-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKXSDTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.xsd-client}" />
 	</target>
@@ -413,18 +415,18 @@
 	<target name="runRemoteClientTest" depends="clean-classes,createDir,compile,runRemoteClientJUnit,stop" description="Run JUnit for Remote Client" />
 
 	<target name="runRemoteClientJUnit">
-		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-client}" junitsuffix="Test" />
+		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remote-client}" junitsuffix="*Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.remote-client}" />
 	</target>
 
 	<!-- ************************************************************************************************-->
-	<!--                                Run JUnit for HBM Mapping Client (Quick Mode)                       -->
+	<!--                                Run JUnit for HBM Mapping Client (Quick Mode)                    -->
 	<!-- ************************************************************************************************-->
 
 	<target name="runHBMMappingClientQuickTest" depends="clean-classes,createDir,runHBMMappingClientQuickJUnit,stop" description="Run JUnit for HBM Mapping Client (Quick Mode)" />
 
 	<target name="runHBMMappingClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="hbm-client-cp" includePattern="**/*HBM*.java" />
+		<SDKCompileJUnit compileClasspath="hbm-client-cp" includePattern="**/*HBM*.java" excludePattern="" />
 		<SDKRunJUnitSuite junitClasspath="hbm-client-cp" junitOutputDir="${report.dir.hbm-mapping-client}" junitSuite="test.gov.nih.nci.cacoresdk.SDKHBMMappingTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.hbm-mapping-client}" />
 	</target>
@@ -436,7 +438,7 @@
 	<target name="runWritableApiRemoteClientTest" depends="clean-classes,createDir,runWritableApiRemoteClientJUnit,stop" description="Run JUnit for Writable Api Mapping Remote Client" />
 
 	<target name="runWritableApiRemoteClientJUnit">
-		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*WritableApi*.java" />
+		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*WritableApi*.java" excludePattern="" />
 		<SDKRunJUnit junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remoteclient-writableapi}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.remoteclient-writableapi}" />
 	</target>
@@ -449,7 +451,7 @@
 
 	<target name="runWritableApiRemoteClientQuickJUnit">
 
-		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*WritableApi*.java" />
+		<SDKCompileJUnit compileClasspath="remote-client-cp" includePattern="**/*WritableApi*.java" excludePattern="" />
 		<SDKRunJUnitSuite junitClasspath="remote-client-cp" junitOutputDir="${report.dir.remoteclient-writableapi}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWritableApiTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.remoteclient-writableapi}" />
 	</target>
@@ -461,7 +463,7 @@
 	<target name="runWritableApiThickClientTest" depends="clean-classes,createDir,runWritableApiThickClientJUnit,stop" description="Run JUnit for Writable Api Mapping Thick Client" />
 
 	<target name="runWritableApiThickClientJUnit">
-		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*WritableApi*.java" />
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*WritableApi*.java" excludePattern=""/>
 		<SDKRunJUnit junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thickclient-writableapi}" junitsuffix="Test" />
 		<SDKGenerateReport junitOutputDir="${report.dir.thickclient-writableapi}" />
 	</target>
@@ -474,7 +476,7 @@
 
 	<target name="runWritableApiThickClientQuickJUnit">
 
-		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*WritableApi*.java" />
+		<SDKCompileJUnit compileClasspath="thick-client-cp" includePattern="**/*WritableApi*.java" excludePattern=""/>
 		<SDKRunJUnitSuite junitClasspath="thick-client-cp" junitOutputDir="${report.dir.thickclient-writableapi}" junitSuite="test.gov.nih.nci.cacoresdk.SDKWritableApiTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.thickclient-writableapi}" />
 	</target>
@@ -486,7 +488,7 @@
 	<target name="runCodeGeneratorClientQuickTest" depends="clean-classes,createDir,runCodeGeneratorClientQuickJUnit,stop" description="Run JUnit for CodeGen Test classes (Quick Mode)" />
 
 	<target name="runCodeGeneratorClientQuickJUnit">
-		<SDKCompileJUnit compileClasspath="codegen-cp" includePattern="test/gov/nih/nci/codegen/*.java" />
+		<SDKCompileJUnit compileClasspath="codegen-cp" includePattern="test/gov/nih/nci/codegen/*.java" excludePattern=""/>
 		<SDKRunJUnitSuite junitClasspath="codegen-cp" junitOutputDir="${report.dir.codegen}" junitSuite="test.gov.nih.nci.codegen.SDKCodeGeneratorTestSuite" />
 		<SDKGenerateReport junitOutputDir="${report.dir.codegen}" />
 	</target>
