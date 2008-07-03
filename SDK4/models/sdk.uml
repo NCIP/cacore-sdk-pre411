@@ -97,10 +97,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed May 21 17:58:07 EDT 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu Jul 03 14:56:07 EDT 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-05-21 22:01:37 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-07-03 20:19:24 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -8401,14 +8401,14 @@
                         </UML:TaggedValue>
                         <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015FB'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue>column:hi_value2</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue>column:next_value</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015DC'/>
                           </UML:TaggedValue.type>
                         </UML:TaggedValue>
                         <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015FC'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue>max_lo:100</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue>max_lo:10000</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015E1'/>
                           </UML:TaggedValue.type>
@@ -8429,14 +8429,14 @@
                         </UML:TaggedValue>
                         <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015FF'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue>column:hi_value2</UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue>column:next_value</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015F0'/>
                           </UML:TaggedValue.type>
                         </UML:TaggedValue>
                         <UML:TaggedValue xmi.id = '-64--88-1-103-888e6c:119b9de73d5:-8000:0000000000001600'
                           isSpecification = 'false'>
-                          <UML:TaggedValue.dataValue></UML:TaggedValue.dataValue>
+                          <UML:TaggedValue.dataValue>max_lo:10000</UML:TaggedValue.dataValue>
                           <UML:TaggedValue.type>
                             <UML:TagDefinition xmi.idref = '-64--88-1-103-888e6c:119b9de73d5:-8000:00000000000015F5'/>
                           </UML:TaggedValue.type>
