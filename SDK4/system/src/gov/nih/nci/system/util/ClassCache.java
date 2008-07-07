@@ -221,7 +221,7 @@ public class ClassCache {
 	 * @return
 	 * @throws ClassNotFoundException 
 	 */
-	public String getReturnType(String className, String fieldName) throws ClassNotFoundException
+	public String getReturnType(String className, String fieldName) throws ClassNotFoundException, Exception
 	{
 		Field[] classFields;
 		classFields = getFields(getClassFromCache(className));
@@ -230,7 +230,8 @@ public class ClassCache {
 			if(classFields[i].getName().equals(fieldName))
 				return getReturnType(classFields[i].getGenericType().toString());
 		}
-		return "";
+		
+		throw new Exception("Class " + className + " does not have an association with roleName: "+fieldName);
 	}
 	
 	
