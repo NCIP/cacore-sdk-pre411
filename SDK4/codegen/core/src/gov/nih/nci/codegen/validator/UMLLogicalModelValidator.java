@@ -101,22 +101,25 @@ public class UMLLogicalModelValidator implements Validator
 		if (classes != null){
 			for(UMLClass klass1:classes)
 			{
+				
 				String class1Name = transformerUtils.getFQCN(klass1);
 				if(class1Name ==null || class1Name.trim().length()==0)
 					class1Name = "";
 				else
 					class1Name = class1Name.trim();
-
+				
 				if(class1Name.length()==0)
-					errors.addError(new GeneratorError(getName() + ": Class name empty "+class1Name));
+					errors.addError(new GeneratorError(getName() + ": Class name is empty: "+class1Name));
 				if(class1Name.indexOf(' ')>0)
-					errors.addError(new GeneratorError(getName() + ": Class name contains empty spaces "+class1Name));
+					errors.addError(new GeneratorError(getName() + ": Class/package name contains empty spaces: "+class1Name));
 				if(class1Name.indexOf("..")>0)
-					errors.addError(new GeneratorError(getName() + ": Class name contains empty package name "+class1Name));
+					errors.addError(new GeneratorError(getName() + ": Class name contains an empty package name: "+class1Name));
 				if(class1Name.indexOf("..")>0)
-					errors.addError(new GeneratorError(getName() + ": Class name contains empty package name "+class1Name));
+					errors.addError(new GeneratorError(getName() + ": Class name contains an empty package name: "+class1Name));
+				if(class1Name.indexOf('-')>0)
+					errors.addError(new GeneratorError(getName() + ": Class/package name contains an invalid hyphen ('-'): "+class1Name));				
 				if(class1Name.length() >0 && !Character.isLetter(class1Name.charAt(0)))
-					errors.addError(new GeneratorError(getName() + ": Class name starts with non-character value "+class1Name));
+					errors.addError(new GeneratorError(getName() + ": Class name starts with a non-character value: "+class1Name));
 				for(UMLClass klass2:classes)
 				{
 					String class2Name = transformerUtils.getFQCN(klass2);
@@ -149,11 +152,13 @@ public class UMLLogicalModelValidator implements Validator
 				if(interface1Name.length()==0)
 					errors.addError(new GeneratorError(getName() + ": Interface name empty "+interface1Name));
 				if(interface1Name.indexOf(' ')>0)
-					errors.addError(new GeneratorError(getName() + ": Interface name contains empty spaces "+interface1Name));
+					errors.addError(new GeneratorError(getName() + ": Interface/package name contains empty spaces "+interface1Name));
 				if(interface1Name.indexOf("..")>0)
 					errors.addError(new GeneratorError(getName() + ": Interface name contains empty package name "+interface1Name));
 				if(interface1Name.indexOf("..")>0)
 					errors.addError(new GeneratorError(getName() + ": Interface name contains empty package name "+interface1Name));
+				if(interface1Name.indexOf('-')>0)
+					errors.addError(new GeneratorError(getName() + ": Interface/package name contains an invalid hyphen ('-'): "+interface1Name));					
 				if(interface1Name.length() >0 && !Character.isLetter(interface1Name.charAt(0)))
 					errors.addError(new GeneratorError(getName() + ": Interface name starts with non-character value "+interface1Name));
 				for(UMLInterface interface2:interfaces)
@@ -310,6 +315,8 @@ public class UMLLogicalModelValidator implements Validator
 				errors.addError(new GeneratorError(getName() + ": Attribute type empty in "+thisClassName+": "+attribute.getName()));
 			if(name.indexOf(' ')>0)
 				errors.addError(new GeneratorError(getName() + ": Attribute type contains empty spaces in "+thisClassName+": "+attribute.getName()));
+			if(name.indexOf('-')>0)
+				errors.addError(new GeneratorError(getName() + ": Attribute type contains an invalid hyphen ('-') in : "+thisClassName+": "+attribute.getName()));
 			
 			if(name.startsWith("java.lang."))
 				name = name.substring("java.lang.".length());
