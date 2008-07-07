@@ -504,5 +504,36 @@ public class AllDataTypeWSTest extends SDKWSTestBase
 		assertNotNull(results);
 		assertEquals(5,results);
 	}
+	
+	/**
+	 * Uses Class for search
+	 * Searches by the String data type
+	 * Verifies size of the result set
+	 * 
+	 * @throws Exception
+	 */
+	public void testInvalidAssociationName() throws Exception
+	{
+		Class targetClass = AllDataType.class;
+		AllDataType criteria = new AllDataType();
+		criteria.setId(1);
+
+		Object[] results = getQueryObjectResults(targetClass, criteria);
+		
+		assertNotNull(results);
+		assertEquals(1,results.length);
+		
+		boolean flag = false;
+		//validate that an exception is thrown when an invalid association name is used
+		try {
+			getAssociationResults(results[0], "invalidAssociationName", 0);
+		}
+		catch(Exception ae)
+		{
+			flag = true;
+		}
+		assertTrue(flag);
+
+	}
 
 }
