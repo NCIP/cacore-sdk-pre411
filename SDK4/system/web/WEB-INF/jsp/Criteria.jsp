@@ -100,7 +100,7 @@ if(className != null)
 			   	
 		<tr align="left" valign="top">
 			<td class="formRequiredNotice" width="5px">&nbsp;</td>
-			<td class="formLabel" width="40px" align="right"><%=attrName%>:</td>
+			<td class="formLabel" align="right"><%=attrName%>:</td>
 		<% if ( attrType.equalsIgnoreCase("java.Lang.Boolean") ) {%>
 			<td class="formField" width="90%"><SELECT <%=focusAttributes%> class="formFieldSized" NAME=<%=attrName%> > 
 			   		<OPTION SELECTED></OPTION>
@@ -114,7 +114,7 @@ if(className != null)
 		  <%}%>
 		<tr align="left" valign="top">
 			<td class="formRequiredNotice" width="5px">&nbsp;</td>
-			<td class="formLabel" width="40px" align="right">Search Object: </td>
+			<td class="formLabel" align="right">Search Object: </td>
 			<td class="formField" width="90%"><SELECT tabIndex="100" class="formFieldSized" size="1" NAME=searchObj STYLE="width:90%">
 			<% if(domainNames != null)
 			   { if(!((String)domainNames.get(0)).equals("Please choose")) domainNames.add(0, "Please choose");
