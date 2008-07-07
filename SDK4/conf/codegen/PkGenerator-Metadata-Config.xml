@@ -156,7 +156,7 @@
 		<constructor-arg value="identity" />
 		<constructor-arg ref="IntPKDataTypes" />
 		<constructor-arg ref="IdentityPKDatabases" />
-		<constructor-arg value="IdentityPKDatabases" />
+		<constructor-arg value="EmptyGeneratorParams" />
 	</bean>
 
 	<bean id="SequencePKProperty" class="gov.nih.nci.codegen.validator.PKGeneratorProperty">
