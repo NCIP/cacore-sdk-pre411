@@ -49,7 +49,7 @@ public class JSPUtils {
 			if (jspUtils == null)
 				jspUtils = new JSPUtils(context);
 		} catch (Exception e) {
-			log.error("Exception caught: " + e);
+			log.error("Exception caught getting a handle to JSPUtils: ", e);
 		}
 
 		return jspUtils;
@@ -120,11 +120,11 @@ public class JSPUtils {
 		} catch (ClassNotFoundException e) {
 			// Do nothing.  Abstract class names have been purposely modified 
 			// with a " (abstract)" suffix on the UI, and thus are no longer found in the cache
-			// This is intentional; abtract classes cannot be used as a target or 
+			// This is intentional; abstract classes cannot be used as a target or 
 			// search criteria object since they cannot be instantiated via Class.forName().newInstance();
-			log.debug("Searchable fields not found for class: " + className + ".  This warning can be safely ignored if the class is abstract.");
+			log.debug("Searchable fields not found for class: " + className + ".  This warning can be safely ignored if the class is abstract or an interface.");
 		} catch (Exception e) {
-			log.error("Exception caught: ", e);
+			log.error("Exception caught generating a list of searchable fields for class " + className, e);
 		}
 		return searchableFields;
 	}
