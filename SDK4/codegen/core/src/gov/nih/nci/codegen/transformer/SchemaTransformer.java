@@ -126,43 +126,35 @@ public class SchemaTransformer implements Transformer {
 		}
 	}
 
-	private List<Namespace> getRelatedNamespaces(Collection<UMLClass> classColl, String fQPkgName) {
+	private List<Namespace> getAssociatedNamespaces(List<String> associatedPackageNames) {
 		List<Namespace> namespaces = new ArrayList<Namespace>();
 
-		for (UMLClass klass:classColl) {
-			String relatedPackageName = transformerUtils.getFullPackageName(klass);
-			log.debug("related package name: " + relatedPackageName + "; current package name: " + fQPkgName);
-			if(!relatedPackageName.equals(fQPkgName)) {
-				
-				String relatedURI = namespaceUriPrefix + relatedPackageName;
-				log.debug("relatedURI: " + relatedURI);
-				log.debug("relatedPackageName: " + relatedPackageName);
-				log.debug("encoded relatedURI: " + encode(relatedURI));
-				log.debug("encoded relatedPackageName: " + encode(relatedPackageName));				
-				Namespace relatedNamespace = Namespace.getNamespace(encode(relatedPackageName),encode(relatedURI));
-				namespaces.add(relatedNamespace);
-			}
+		for (String associatedPackageName:associatedPackageNames) {
+		
+				String associatedURI = namespaceUriPrefix + associatedPackageName;
+				log.debug("associatedURI: " + associatedURI);
+				log.debug("associatedPackageName: " + associatedPackageName);
+				log.debug("encoded associatedURI: " + encode(associatedURI));
+				log.debug("encoded associatedPackageName: " + encode(associatedPackageName));				
+				Namespace associatedNamespace = Namespace.getNamespace(encode(associatedPackageName),encode(associatedURI));
+				namespaces.add(associatedNamespace);
 		}
 		return namespaces;
 	}
 
-	private List getRelatedNamespacesImports(Collection<UMLClass> classColl, String fQPkgName, Namespace w3cNS) {
+	private List<Element> getAssociatedNamespaceImports(List<String> associatedPackageNames, Namespace w3cNS) {
 		HashSet<Element> elements = new HashSet<Element>();
 		Vector<String> tmpList = new Vector<String>();
 		
-		for (Iterator i = classColl.iterator(); i.hasNext();) {
-			UMLClass klass = (UMLClass)i.next();
-			String relatedPackageName = transformerUtils.getFullPackageName(klass);
-			if(!relatedPackageName.equals(fQPkgName)) {
-				if (!tmpList.contains(relatedPackageName)) {
-					String relatedURI = namespaceUriPrefix + relatedPackageName;
-					log.debug("Import relatedURI: " + relatedURI);
-					Element importElement = new Element("import", w3cNS);
-					importElement.setAttribute("namespace",relatedURI);
-					importElement.setAttribute("schemaLocation", relatedPackageName+".xsd");
-					elements.add(importElement);
-					tmpList.add(relatedPackageName);
-				}
+		for (String associatedPackageName : associatedPackageNames){
+			if (!tmpList.contains(associatedPackageName)) {
+				String relatedURI = namespaceUriPrefix + associatedPackageName;
+				log.debug("Import relatedURI: " + relatedURI);
+				Element importElement = new Element("import", w3cNS);
+				importElement.setAttribute("namespace",relatedURI);
+				importElement.setAttribute("schemaLocation", associatedPackageName+".xsd");
+				elements.add(importElement);
+				tmpList.add(associatedPackageName);
 			}
 		}
 
@@ -178,21 +170,11 @@ public class SchemaTransformer implements Transformer {
 		schemaElem.addNamespaceDeclaration(caBIGNS);
 		schemaElem.addNamespaceDeclaration(w3cNS);
 
-		List<Namespace> relatedNamespaces = getRelatedNamespaces(classColl, fQPkgName);
-		for(Namespace rNamespace:relatedNamespaces){
-			schemaElem.addNamespaceDeclaration(rNamespace);
-		}        
-
 		Attribute targetNSAttr = new Attribute("targetNamespace", caBIGNS_URI);
 		schemaElem.setAttribute(targetNSAttr);
-		List relatedNamespacesImports = getRelatedNamespacesImports(classColl, fQPkgName, w3cNS);
+		
 		Attribute formDefault = new Attribute("elementFormDefault","qualified");
-		schemaElem.setAttribute(formDefault);
-
-		for (Iterator j = relatedNamespacesImports.iterator(); j.hasNext();) {
-			Element namespaceImport = (Element) j.next();
-			schemaElem.addContent(namespaceImport);
-		}
+		schemaElem.setAttribute(formDefault);	
 
 		for (Iterator i = pkgClassCollection.iterator(); i.hasNext();) {
 			UMLClass klass = (UMLClass) i.next();
@@ -204,7 +186,7 @@ public class SchemaTransformer implements Transformer {
 		return doc;
 	}
 
-	private void doMapping(UMLClass klass, Element mappingEl, Namespace w3cNS) {
+	private void doMapping(UMLClass klass, Element schemaElem, Namespace w3cNS) {
 
 		String superClassName = null;
 
@@ -234,15 +216,16 @@ public class SchemaTransformer implements Transformer {
 			classEl.setAttribute("abstract", "true");
 		}
 		
-		mappingEl.addContent(classEl);
+		schemaElem.addContent(classEl);
+		
 		Element classE2 = new Element("complexType", w3cNS);
-
 		classE2.setAttribute("name", klass.getName());
-		mappingEl.addContent(classE2);
+		schemaElem.addContent(classE2);
 		
 		addCaDSRAnnotation(klass, classE2, w3cNS);
 
-
+		List<String> associatedPackageNames = new ArrayList<String>();
+		
 		if (superClassName!=null) {
 			log.debug("superClassName: " + superClassName);
 
@@ -287,7 +270,8 @@ public class SchemaTransformer implements Transformer {
 			for (Iterator i = transformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
 				UMLAssociationEnd otherEnd = transformerUtils.getOtherAssociationEnd(thisEnd);
-				addSequenceAssociationElement(sequence, klass,thisEnd, otherEnd,w3cNS);
+				collectAssociatedPackages(thisEnd, otherEnd, associatedPackageNames);
+				addSequenceAssociationElement(sequence,klass,thisEnd,otherEnd,w3cNS);
 			}
 
 		} else { // superClassname == null
@@ -334,8 +318,19 @@ public class SchemaTransformer implements Transformer {
 			for (Iterator i = transformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
 				UMLAssociationEnd otherEnd = transformerUtils.getOtherAssociationEnd(thisEnd);
-				addSequenceAssociationElement(sequence, klass,thisEnd, otherEnd,w3cNS);
+				collectAssociatedPackages(thisEnd, otherEnd, associatedPackageNames);
+				addSequenceAssociationElement(sequence,klass,thisEnd,otherEnd,w3cNS);
 			}
+		}
+		
+		//Add namespace declarations
+		for(Namespace rNamespace: getAssociatedNamespaces(associatedPackageNames)){
+			schemaElem.addNamespaceDeclaration(rNamespace);
+		}        
+
+		//add namespace import elements
+		for (Element namespaceImportElement : getAssociatedNamespaceImports(associatedPackageNames, w3cNS)){
+			schemaElem.addContent(0,namespaceImportElement);
 		}
 	}
 	
@@ -391,6 +386,21 @@ public class SchemaTransformer implements Transformer {
 			innerSequence.addContent(associatedObjElement);
 			complexType.addContent(innerSequence);
 			associationElement.addContent(complexType);
+			
+		}
+	}
+	
+	private void collectAssociatedPackages(UMLAssociationEnd thisEnd, UMLAssociationEnd otherEnd, List<String> associatedPackageNames) {
+		if (otherEnd.isNavigable()) {
+
+			String associationPackage = transformerUtils.getFullPackageName(((UMLClass)(otherEnd.getUMLElement())));
+			String thisPackage = transformerUtils.getFullPackageName(((UMLClass)(thisEnd.getUMLElement())));
+			
+			log.debug("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
+			
+			if (!associationPackage.equalsIgnoreCase(thisPackage)){
+				associatedPackageNames.add(associationPackage);
+			}
 			
 		}
 	}
@@ -458,7 +468,7 @@ public class SchemaTransformer implements Transformer {
 	 * has problem with forward references.
 	 * @return The Sorted list of classes with Generalizations listed first.
 	 */
-	private List sortImportStatements(HashSet<Element> elementColl) 
+	private List<Element> sortImportStatements(HashSet<Element> elementColl) 
 	{
 		class caCOREComparator implements Comparator {
 			public int compare(Object obj1, Object obj2)
