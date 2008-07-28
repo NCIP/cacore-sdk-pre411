@@ -51,11 +51,16 @@ public class ChildWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	public void testClassElement1() throws Exception
 	{
 		Class targetClass = Payment.class;
-
-		validateClassElements(targetClass, "id");
-
-		validateFieldElement(targetClass, "id", "Integer");
-		validateFieldElement(targetClass, "amount", "Integer");	
+	
+		if (useGMETags){
+			validateClassElements(targetClass,"PaymentGMEAlias","id");
+			validateFieldElement(targetClass, "id","idGMEAlias","Integer");
+			validateFieldElement(targetClass, "amount","amountGMEAlias", "Integer");
+		} else{
+			validateClassElements(targetClass, "id");
+			validateFieldElement(targetClass, "id", "Integer");
+			validateFieldElement(targetClass, "amount", "Integer");
+		}
 	}	
 	
 	/**
@@ -69,7 +74,11 @@ public class ChildWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	{
 		Class targetClass = Cash.class;
 
-		validateSubclassElements(targetClass,"id");
+		if (useGMETags){
+			validateSubclassElements(targetClass,"CashGMEAlias","id");
+		} else{
+			validateSubclassElements(targetClass,"id");
+		}
 
 	}	
 	
@@ -84,8 +93,14 @@ public class ChildWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	{
 		Class targetClass = Credit.class;
 
-		validateSubclassElements(targetClass,"id");
-		validateFieldElement(targetClass, "cardNumber","String");
+		if (useGMETags){
+			validateSubclassElements(targetClass,"CreditGMEAlias","id");
+			validateFieldElement(targetClass, "cardNumber","cardNumberGMEAlias","String");
+		} else{
+			validateSubclassElements(targetClass,"id");
+			validateFieldElement(targetClass, "cardNumber","String");
+		}
+		
 	}
 	
 	/**
@@ -99,10 +114,17 @@ public class ChildWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	{
 		Class targetClass = Bank.class;
 
-		validateClassElements(targetClass,"id");
-
-		validateFieldElement(targetClass, "id", "Integer");
-		validateFieldElement(targetClass, "name", "String");	
+;
+		
+		if (useGMETags){
+			validateClassElements(targetClass,"BankGMEAlias","id");
+			validateFieldElement(targetClass, "id","idGMEAlias","Integer");
+			validateFieldElement(targetClass, "name","nameGMEAlias","String");
+		} else{
+			validateClassElements(targetClass,"id");
+			validateFieldElement(targetClass, "id", "Integer");
+			validateFieldElement(targetClass, "name", "String");
+		}
 	}	
 	
 	/**
@@ -116,7 +138,11 @@ public class ChildWithAssociationXMLMappingTest extends SDKXMLMappingTestBase
 	{
 		Class targetClass = Credit.class;
 		Class associatedClass = Bank.class;
-
-		validateClassAssociationElements(targetClass, associatedClass, "issuingBank", false);
+		
+		if (useGMETags){
+			validateClassAssociationElements(targetClass,"CreditGMEAlias", associatedClass,"BankGMEAlias","issuingBank","bankAliasRolename", false);
+		} else{
+			validateClassAssociationElements(targetClass, associatedClass,"issuingBank", false);
+		}
 	}	
 }

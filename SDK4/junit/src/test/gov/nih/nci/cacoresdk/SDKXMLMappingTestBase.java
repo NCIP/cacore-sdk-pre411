@@ -17,9 +17,13 @@ import org.springframework.core.io.ClassPathResource;
 public abstract class SDKXMLMappingTestBase extends TestCase {
 
 	private String uriPrefix = "gme://caCORE.caCORE/3.2/";
+	
+	protected boolean useGMETags;
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		
+		useGMETags=Boolean.parseBoolean(System.getProperty("useGMETags"));
 	}
 
 	protected void tearDown() throws Exception {
@@ -112,18 +116,20 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 	 */
 	protected void validateClassElements(Class klass, String identity)
 	throws Exception {
-
-		validateClassElements(klass, identity, true);
+		validateClassElements(klass,klass.getSimpleName(),identity, true);
 	}
 	
-	/**
-	 * Uses xpath to query the generated XSD Verifies that common elements
-	 * attributes(name, type) are present Verifies that the element 'name'
-	 * attribute matches the class name
-	 * 
-	 * @throws Exception
-	 */
-	protected void validateClassElements(Class klass, String identity, boolean validateIdentity)
+	protected void validateClassElements(Class klass, String klassAlias, String identity)
+	throws Exception {
+		validateClassElements(klass,klassAlias,identity, true);
+	}
+	
+	protected void validateClassElements(Class klass,String identity, boolean validateIdentity)
+	throws Exception {
+		validateClassElements(klass,klass.getSimpleName(),identity, validateIdentity);
+	}
+
+	protected void validateClassElements(Class klass, String klassAlias, String identity, boolean validateIdentity)
 	throws Exception {
 
 		Document doc = getDoc();
@@ -149,7 +155,7 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 			assertTrue(klassElt.getAttributeValue("identity").equals(identity));
 
 		xpath = "/mapping/class[@name='" + klass.getName() + "']"
-			+ "/map-to[@xml='" + klass.getSimpleName() + "']";		
+			+ "/map-to[@xml='" + klassAlias + "']";		
 
 		elts = queryXMLMapping(doc, xpath);
 		assertEquals(1, elts.size());
@@ -163,8 +169,10 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 //		}	
 		
 		assertEquals(3, mapToElt.getAttributes().size());//xml,ns-uri,element-definition
-		assertTrue(mapToElt.getAttributeValue("xml").equals(klass.getSimpleName()));
-		assertTrue(mapToElt.getAttributeValue("ns-uri").equals(uriPrefix + klass.getPackage().getName()));
+		assertTrue(mapToElt.getAttributeValue("xml").equals(klassAlias));
+		
+		if (!useGMETags)
+			assertTrue(mapToElt.getAttributeValue("ns-uri").equals(uriPrefix + klass.getPackage().getName()));
 	}
 
 	/**
@@ -174,12 +182,17 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 	 * 
 	 * @throws Exception
 	 */
-	protected void validateSubclassElements(Class klass, String identity)
+	protected void validateSubclassElements(Class klass,String identity)
+	throws Exception {
+		validateSubclassElements(klass,klass.getSimpleName(),identity);
+	}
+	
+	protected void validateSubclassElements(Class klass,String klassAlias,String identity)
 	throws Exception {
 
 		Document doc = getDoc();
 
-		validateClassElements(klass,identity);
+		validateClassElements(klass,klassAlias,identity);
 
 		String superklassName = klass.getSuperclass().getName();
 //		System.out.println("Superclass for class " + klass.getSimpleName()
@@ -203,6 +216,11 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 	 * @throws Exception
 	 */
 	public void validateClassAssociationElements(Class klass, Class associatedKlass, String rolename, boolean isCollection)
+	throws Exception {
+		validateClassAssociationElements(klass,klass.getSimpleName(), associatedKlass,associatedKlass.getSimpleName(), rolename,rolename, isCollection);
+	}
+	
+	public void validateClassAssociationElements(Class klass,String klassAlias, Class associatedKlass,String associatedKlassName, String rolename,String rolenameAlias, boolean isCollection)
 	throws Exception {
 
 		Document doc = getDoc();
@@ -235,11 +253,11 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 			assertEquals(bindElt.getAttributeValue("name"),"string");
 			assertEquals(bindElt.getAttributeValue("type"),"string");
 		} else {
-			assertEquals(bindElt.getAttributeValue("name"),associatedKlass.getSimpleName());
+			assertEquals(bindElt.getAttributeValue("name"),associatedKlassName);
 			assertEquals(bindElt.getAttributeValue("type"),associatedKlass.getName());
 		}
 		
-		assertEquals(bindElt.getAttributeValue("location"),rolename);
+		assertEquals(bindElt.getAttributeValue("location"),rolenameAlias);
 		assertEquals(bindElt.getAttributeValue("node"),"element");
 
 	}	
@@ -285,11 +303,13 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 
 	protected void validateFieldElement(Class klass,
 			String attributeName, String attributeType) throws Exception {
+		validateFieldElement(klass,attributeName,attributeName, attributeType);
+	}
+	protected void validateFieldElement(Class klass,
+			String attributeName, String bindAttributeName, String attributeType) throws Exception {
 
 		Document doc = getDoc();
 
-//		String superklassName = klass.getSuperclass().getSimpleName();	
-//		System.out.println("klass.getName():  " + klass.getName());
 		
 		String xpath = "/mapping/class[@name='" + klass.getName() + "']"
 				+ "/field[@name='" + attributeName + "']";
@@ -302,7 +322,7 @@ public abstract class SDKXMLMappingTestBase extends TestCase {
 		assertEquals(fieldElt.getAttributeValue("type").toLowerCase(),attributeType.toLowerCase());
 		
 		Element bindElt = fieldElt.getChild("bind-xml");
-		assertEquals(bindElt.getAttributeValue("name"),attributeName);		
+		assertEquals(bindElt.getAttributeValue("name"),bindAttributeName);		
 		assertEquals(bindElt.getAttributeValue("node"),"attribute");
 		
 	}

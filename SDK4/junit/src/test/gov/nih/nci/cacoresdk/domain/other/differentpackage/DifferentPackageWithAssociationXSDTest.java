@@ -22,7 +22,12 @@ public class DifferentPackageWithAssociationXSDTest extends SDKXSDTestBase
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		String schemaFileName = "gov.nih.nci.cacoresdk.domain.other.differentpackage.xsd";
+		String schemaFileName=null;
+		if (useGMETags){
+			schemaFileName="differentpackage.xsd";
+		} else{
+			schemaFileName="gov.nih.nci.cacoresdk.domain.other.differentpackage.xsd";
+		}
 		doc = getDocument(schemaFileName);
 	}
 
@@ -51,10 +56,14 @@ public class DifferentPackageWithAssociationXSDTest extends SDKXSDTestBase
 	public void testClassElement1() throws Exception
 	{
 		Class targetClass = Dessert.class;
-
-		validateClassElements(targetClass);
-
-		validateAttributeElement(targetClass, "id", "Integer");
+		
+		if (useGMETags){
+			validateClassElements(targetClass,"DessertAlias");
+			validateAttributeElement(targetClass,"DessertAlias", "idAlias", "Integer");
+		} else {
+			validateClassElements(targetClass);
+			validateAttributeElement(targetClass, "id", "Integer");
+		}
 	}	
 	
 	/**
@@ -66,14 +75,23 @@ public class DifferentPackageWithAssociationXSDTest extends SDKXSDTestBase
 	 */
 	public void testClassElement2() throws Exception
 	{
-		String schemaFileName = "gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		String schemaFileName = null;
+		if (useGMETags){
+			schemaFileName="differentpackage.associations.xsd";
+		} else{
+			schemaFileName="gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		}
 		doc = getDocument(schemaFileName);
 		
 		Class targetClass = Pie.class;
 
-		validateSubclassElements(targetClass);
-		validateSubclassAttributeElement(targetClass, "filling","String");
-
+		if (useGMETags){
+			validateSubclassElements(targetClass,"PieAlias","differentpackage:DessertAlias");
+			validateSubclassAttributeElement(targetClass,"PieAlias","differentpackage:DessertAlias", "fillingAlias","String");			
+		} else {
+			validateSubclassElements(targetClass);
+			validateSubclassAttributeElement(targetClass, "filling","String");
+		}
 	}
 	
 	/**
@@ -85,13 +103,23 @@ public class DifferentPackageWithAssociationXSDTest extends SDKXSDTestBase
 	 */
 	public void testClassElement3() throws Exception
 	{
-		String schemaFileName = "gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		String schemaFileName = null;
+		if (useGMETags){
+			schemaFileName="differentpackage.associations.xsd";
+		} else{
+			schemaFileName="gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		}
 		doc = getDocument(schemaFileName);
 		
 		Class targetClass = IceCream.class;
 
-		validateSubclassElements(targetClass);
-		validateSubclassAttributeElement(targetClass, "topping","String");
+		if (useGMETags){
+			validateSubclassElements(targetClass,"IceCreamAlias","differentpackage:DessertAlias");
+			validateSubclassAttributeElement(targetClass,"IceCreamAlias","differentpackage:DessertAlias","toppingAlias","String");			
+		} else {
+			validateSubclassElements(targetClass);
+			validateSubclassAttributeElement(targetClass, "topping","String");
+		}
 
 	}
 	
@@ -104,15 +132,25 @@ public class DifferentPackageWithAssociationXSDTest extends SDKXSDTestBase
 	 */
 	public void testClassElement4() throws Exception
 	{
-		String schemaFileName = "gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		String schemaFileName = null;
+		if (useGMETags){
+			schemaFileName="differentpackage.associations.xsd";
+		} else{
+			schemaFileName="gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		}
 		doc = getDocument(schemaFileName);
 		
 		Class targetClass = Utensil.class;
-
-		validateClassElements(targetClass);
-
-		validateAttributeElement(targetClass, "id", "Integer");
-		validateAttributeElement(targetClass, "name", "String");	
+		
+		if (useGMETags){
+			validateClassElements(targetClass,"UtensilAlias");
+			validateAttributeElement(targetClass,"UtensilAlias", "idAlias", "Integer");
+			validateAttributeElement(targetClass,"UtensilAlias", "nameAlias", "String");
+		} else {
+			validateClassElements(targetClass);
+			validateAttributeElement(targetClass, "id", "Integer");
+			validateAttributeElement(targetClass, "name", "String");
+		}
 	}	
 	
 	/**
@@ -124,13 +162,23 @@ public class DifferentPackageWithAssociationXSDTest extends SDKXSDTestBase
 	 */
 	public void testAssociationElements1() throws Exception
 	{
-		String schemaFileName = "gov.nih.nci.cacoresdk.domain.other.differentpackage.xsd";
+		String schemaFileName = null;
+		if (useGMETags){
+			schemaFileName="differentpackage.xsd";
+		} else{
+			schemaFileName="gov.nih.nci.cacoresdk.domain.other.differentpackage.xsd";
+		}		
 		doc = getDocument(schemaFileName);
 		
 		Class targetClass = Dessert.class;
 		Class associatedClass = Utensil.class;
+		
+		if (useGMETags){
+			validateClassAssociationElements(targetClass,"DessertAlias", associatedClass,"differentpackage.associations:UtensilAlias","utensilAliasRoleName","0","unbounded");
+		} else {
+			validateClassAssociationElements(targetClass, associatedClass, "utensilCollection","0","unbounded");
+		}
 
-		validateClassAssociationElements(targetClass, associatedClass, "utensilCollection","0","unbounded");
 	}	
 	
 	/**
@@ -142,12 +190,21 @@ public class DifferentPackageWithAssociationXSDTest extends SDKXSDTestBase
 	 */
 	public void testAssociationElements2() throws Exception
 	{
-		String schemaFileName = "gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		String schemaFileName = null;
+		if (useGMETags){
+			schemaFileName="differentpackage.associations.xsd";
+		} else{
+			schemaFileName="gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.xsd";
+		}
 		doc = getDocument(schemaFileName);
 		
 		Class targetClass = Utensil.class;
 		Class associatedClass = Dessert.class;
-
-		validateClassAssociationElements(targetClass, associatedClass, "dessertCollection","0","unbounded");
+		
+		if (useGMETags){
+			validateClassAssociationElements(targetClass,"UtensilAlias", associatedClass,"differentpackage:DessertAlias","dessertAliasRoleName","0","unbounded");
+		} else {
+			validateClassAssociationElements(targetClass, associatedClass, "dessertCollection","0","unbounded");
+		}
 	}	
 }

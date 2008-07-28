@@ -14,7 +14,8 @@
 				<ref bean="LogicalModelValidator" />
 				<ref bean="ModelMappingValidator" />
 				<ref bean="PKGeneratorValidator" />
-				<ref bean="WritableApiValidator" />				
+				<ref bean="WritableApiValidator" />
+				<ref bean="GMETagValidator" />			
 			</list>
 		</constructor-arg>
 		<constructor-arg index="2">
@@ -50,6 +51,7 @@
 				<prop key="Include Package">@INCLUDE_PACKAGE@</prop>
 				<prop key="Exclude Package">@EXCLUDE_PACKAGE@</prop>
 				<prop key="Exclude Name">@EXCLUDE_NAME@</prop>
+				<prop key="Exclude Namespace">@EXCLUDE_NAMESPACE@</prop>
 				<prop key="Identity Generator Tag"><![CDATA[@IDENTITY_GENERATOR_TAG@]]></prop>
 				<prop key="Database Type">@DATABASE_TYPE@</prop>
 			</props>
@@ -97,6 +99,12 @@
 	<bean name="WritableApiValidator" class="gov.nih.nci.codegen.validator.WritableApiValidator">
 		<property name="enabled" value="@VALIDATE_WRITABLE_API_EXTENSION@" />
 		<property name="name" value="Writable Api Validator" />
+		<property name="transformerUtils" ref="TransformerUtils"></property>
+	</bean>
+	<bean name="GMETagValidator" class="gov.nih.nci.codegen.validator.UMLGMETagValidator">
+		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />
+		<property name="enabled" value="@VALIDATE_GME_TAGS@" />
+		<property name="name" value="Global Model Exchange (GME) Tag Validator" />
 		<property name="transformerUtils" ref="TransformerUtils"></property>
 	</bean>
 
@@ -216,6 +224,7 @@
 	</bean>
 
 	<bean name="XmlMappingMarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
+		<property name="useGMETags" value="@GENERATE_XSD_WITH_GME_TAGS@" />
 		<property name="includeAssociations" value="true"/>
 		<property name="includeFieldHandler" value="true"/>
 		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />		
@@ -232,6 +241,7 @@
 	</bean>
 
 	<bean name="XmlMappingUnmarshallerTransformer" class="gov.nih.nci.codegen.transformer.XmlMappingTransformer" singleton="false">
+		<property name="useGMETags" value="@GENERATE_XSD_WITH_GME_TAGS@" />
 		<property name="includeAssociations" value="true"/>
 		<property name="includeFieldHandler" value="false"/>
 		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />
@@ -248,6 +258,7 @@
 	</bean>
 	
 	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
+		<property name="useGMETags" value="@GENERATE_XSD_WITH_GME_TAGS@" />
 		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">

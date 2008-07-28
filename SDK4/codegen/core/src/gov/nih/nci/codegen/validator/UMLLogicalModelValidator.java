@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
  * Validation rules are as follows
  * 
  * <UL>
- * <LI>Package name should not contain spaces</LI>
+ * <LI>Package name should not contain spaces or hyphens</LI>
  * <LI>Model should not contain duplicate classes</LI>
  * <LI>Class name should be present</LI>
  * <LI>Class name should not contain empty spaces</LI>
@@ -112,8 +112,6 @@ public class UMLLogicalModelValidator implements Validator
 					errors.addError(new GeneratorError(getName() + ": Class name is empty: "+class1Name));
 				if(class1Name.indexOf(' ')>0)
 					errors.addError(new GeneratorError(getName() + ": Class/package name contains empty spaces: "+class1Name));
-				if(class1Name.indexOf("..")>0)
-					errors.addError(new GeneratorError(getName() + ": Class name contains an empty package name: "+class1Name));
 				if(class1Name.indexOf("..")>0)
 					errors.addError(new GeneratorError(getName() + ": Class name contains an empty package name: "+class1Name));
 				if(class1Name.indexOf('-')>0)
@@ -304,6 +302,8 @@ public class UMLLogicalModelValidator implements Validator
 				errors.addError(new GeneratorError(getName() + ": Attribute name contains empty spaces in "+thisClassName+": "+attribute.getName()));
 			if(attribute.getName().length()>1 && Character.isLowerCase(attribute.getName().charAt(0)) && Character.isUpperCase(attribute.getName().charAt(1)))
 				errors.addError(new GeneratorError(getName() + ": Attribute name contains first character lower case and second character as upper case in "+thisClassName+": "+attribute.getName()+". This combination is currently not supported."));
+			if(attribute.getName().length() >0 && !Character.isLetter(attribute.getName().charAt(0)))
+				errors.addError(new GeneratorError(getName() + ": Attribute name starts with a non-character value in "+thisClassName+": "+attribute.getName()));
 
 			UMLDatatype dataType = attribute.getDatatype();
 			String name = dataType.getName();

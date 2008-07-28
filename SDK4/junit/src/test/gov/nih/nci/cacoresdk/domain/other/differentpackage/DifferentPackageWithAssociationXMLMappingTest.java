@@ -52,9 +52,13 @@ public class DifferentPackageWithAssociationXMLMappingTest extends SDKXMLMapping
 	{
 		Class targetClass = Dessert.class;
 
-		validateClassElements(targetClass,"id");
-
-		validateFieldElement(targetClass, "id", "Integer");
+		if (useGMETags){
+			validateClassElements(targetClass,"DessertAlias","id");
+			validateFieldElement(targetClass, "id","idAlias", "Integer");
+		} else{
+			validateClassElements(targetClass,"id");
+			validateFieldElement(targetClass, "id", "Integer");
+		}
 	}	
 	
 	/**
@@ -68,9 +72,13 @@ public class DifferentPackageWithAssociationXMLMappingTest extends SDKXMLMapping
 	{
 		Class targetClass = Pie.class;
 
-		validateSubclassElements(targetClass,"id");
-		validateFieldElement(targetClass, "filling","String");
-
+		if (useGMETags){
+			validateSubclassElements(targetClass,"PieAlias","id");
+			validateFieldElement(targetClass, "filling","fillingAlias","String");
+		} else{
+			validateSubclassElements(targetClass,"id");
+			validateFieldElement(targetClass, "filling","String");
+		}
 	}
 	
 	
@@ -85,9 +93,13 @@ public class DifferentPackageWithAssociationXMLMappingTest extends SDKXMLMapping
 	{
 		Class targetClass = IceCream.class;
 
-		validateSubclassElements(targetClass,"id");
-		validateFieldElement(targetClass, "topping","String");
-
+		if (useGMETags){
+			validateSubclassElements(targetClass,"IceCreamAlias","id");
+			validateFieldElement(targetClass, "topping","toppingAlias","String");
+		} else{
+			validateSubclassElements(targetClass,"id");
+			validateFieldElement(targetClass, "topping","String");
+		}
 	}	
 	
 	/**
@@ -100,11 +112,16 @@ public class DifferentPackageWithAssociationXMLMappingTest extends SDKXMLMapping
 	public void testClassElement4() throws Exception
 	{
 		Class targetClass = Utensil.class;
-
-		validateClassElements(targetClass,"id");
-
-		validateFieldElement(targetClass, "id", "Integer");
-		validateFieldElement(targetClass, "name", "String");	
+		
+		if (useGMETags){
+			validateClassElements(targetClass,"UtensilAlias","id");
+			validateFieldElement(targetClass, "id","idAlias","Integer");
+			validateFieldElement(targetClass, "name","nameAlias","String");
+		} else{
+			validateClassElements(targetClass,"id");
+			validateFieldElement(targetClass, "id", "Integer");
+			validateFieldElement(targetClass, "name", "String");
+		}
 	}	
 	
 	/**
@@ -118,8 +135,12 @@ public class DifferentPackageWithAssociationXMLMappingTest extends SDKXMLMapping
 	{
 		Class targetClass = Dessert.class;
 		Class associatedClass = Utensil.class;
-
-		validateClassAssociationElements(targetClass, associatedClass, "utensilCollection",true);
+		
+		if (useGMETags){
+			validateClassAssociationElements(targetClass,"DessertAlias", associatedClass,"UtensilAlias","utensilCollection","utensilAliasRoleName",true);
+		} else{
+			validateClassAssociationElements(targetClass, associatedClass,"utensilCollection",true);
+		}
 	}	
 	
 	
@@ -134,7 +155,11 @@ public class DifferentPackageWithAssociationXMLMappingTest extends SDKXMLMapping
 	{
 		Class targetClass = Utensil.class;
 		Class associatedClass = Dessert.class;
-
-		validateClassAssociationElements(targetClass, associatedClass, "dessertCollection",true);
+		
+		if (useGMETags){
+			validateClassAssociationElements(targetClass,"UtensilAlias", associatedClass, "DessertAlias","dessertCollection","dessertAliasRoleName",true);
+		} else{
+			validateClassAssociationElements(targetClass, associatedClass, "dessertCollection",true);
+		}
 	}		
 }

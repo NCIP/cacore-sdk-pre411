@@ -1,6 +1,7 @@
 package gov.nih.nci.codegen.util;
 
 import gov.nih.nci.codegen.GenerationException;
+import gov.nih.nci.codegen.GeneratorError;
 import gov.nih.nci.codegen.validator.HibernateValidatorAttribute;
 import gov.nih.nci.codegen.validator.HibernateValidatorClass;
 import gov.nih.nci.codegen.validator.HibernateValidatorModel;
@@ -41,10 +42,12 @@ public class TransformerUtils
 	private String INCLUDE_PACKAGE;
 	private String EXCLUDE_PACKAGE;
 	private String EXCLUDE_NAME;
+	private String EXCLUDE_NAMESPACE;
 	private String IDENTITY_GENERATOR_TAG;
 	private Set<String> INCLUDE_PACKAGE_NAMES = new HashSet<String>();
 	private Set<String> EXCLUDE_PACKAGE_NAMES = new HashSet<String>();
 	private Set<String> EXCLUDE_NAMES = new HashSet<String>();
+	private Set<String> EXCLUDE_NAMESPACES = new HashSet<String>();
 	private String DATABASE_TYPE;
 	private Map<String,String> CASCADE_STYLES = new HashMap<String,String>();
 	private HibernateValidatorModel hvModel;
@@ -68,6 +71,13 @@ public class TransformerUtils
 	public static final String  TV_PK_GENERATOR = "NCI_GENERATOR.";
 	public static final String  TV_PK_GENERATOR_PROPERTY = "NCI_GENERATOR_PROPERTY";
 	
+	//Global Model Exchange (GME) Project Tag Value Constants; see: https://wiki.nci.nih.gov/display/caCORE/GME+Namespace
+	public static final String  TV_NCI_GME_XML_NAMESPACE = "NCI_GME_XML_NAMESPACE"; //Used for projects, Packages, Classes
+	public static final String  TV_NCI_GME_XML_ELEMENT = "NCI_GME_XML_ELEMENT"; //Used for Classes
+	public static final String  TV_NCI_GME_XML_LOC_REF = "NCI_GME_XML_LOC_REF"; //Used for Attributes
+	public static final String  TV_NCI_GME_SOURCE_XML_LOC_REF = "NCI_GME_SOURCE_XML_LOC_REF"; //Used for Associations
+	public static final String  TV_NCI_GME_TARGET_XML_LOC_REF = "NCI_GME_TARGET_XML_LOC_REF"; //Used for Associations
+	
 	private static final String STEREO_TYPE_TABLE = "table";
 	private static final String STEREO_TYPE_DATASOURCE_DEPENDENCY = "DataSource";
 	
@@ -81,6 +91,7 @@ public class TransformerUtils
 			EXCLUDE_PACKAGE = umlModelFileProperties.getProperty("Exclude Package")==null ? "" : umlModelFileProperties.getProperty("Exclude Package").trim();
 			INCLUDE_PACKAGE = umlModelFileProperties.getProperty("Include Package")==null ? "" : umlModelFileProperties.getProperty("Include Package").trim();
 			EXCLUDE_NAME = umlModelFileProperties.getProperty("Exclude Name")==null ? "" : umlModelFileProperties.getProperty("Exclude Name").trim();
+			EXCLUDE_NAMESPACE = umlModelFileProperties.getProperty("Exclude Namespace")==null ? "" : umlModelFileProperties.getProperty("Exclude Namespace").trim();
 			
 			for(String excludeToken:EXCLUDE_PACKAGE.split(","))
 				EXCLUDE_PACKAGE_NAMES.add(excludeToken.trim());
@@ -88,6 +99,8 @@ public class TransformerUtils
 				INCLUDE_PACKAGE_NAMES.add(includeToken.trim());
 			for(String excludeToken:EXCLUDE_NAME.split(","))
 				EXCLUDE_NAMES.add(excludeToken.trim());
+			for(String excludeToken:EXCLUDE_NAMESPACE.split(","))
+				EXCLUDE_NAMESPACES.add(excludeToken.trim());
 			
 			IDENTITY_GENERATOR_TAG = umlModelFileProperties.getProperty("Identity Generator Tag") == null ? "": umlModelFileProperties.getProperty("Identity Generator Tag").trim();
 			DATABASE_TYPE = umlModelFileProperties.getProperty("Database Type") == null ? "": umlModelFileProperties.getProperty("Database Type").trim();
@@ -168,6 +181,35 @@ public class TransformerUtils
 		return included;
 	}
 	
+	public boolean isNamespaceIncluded(UMLPackage pkg, String defaultNamespacePrefix) throws GenerationException
+	{
+		String pkgNamespace=null;
+		
+		try {
+			pkgNamespace = getNamespace(pkg);
+		} catch (GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME Namespace tag value for package: " + pkg.getName(), ge);
+		}
+		
+		if (pkgNamespace==null) //use default namespace
+			pkgNamespace = defaultNamespacePrefix+getFullPackageName(pkg);
+		
+		log.debug("* * * * * pkgNamespace:"+pkgNamespace);
+		
+		Set<String> PACKAGE_NAMESPACES = new HashSet<String>();	
+		PACKAGE_NAMESPACES.add(pkgNamespace.trim());
+		
+		boolean included = true;
+		if(pkgNamespace.length()>0)
+			for(String excludePkgNamespace: EXCLUDE_NAMESPACES)
+				if(excludePkgNamespace!=null && excludePkgNamespace.length()>0){
+					included &= !(PACKAGE_NAMESPACES.contains(excludePkgNamespace));
+				}
+
+		return included;
+	}
+	
 	public String getEmptySpace(Integer count)
 	{
 		String spaces = "";
@@ -176,6 +218,15 @@ public class TransformerUtils
 			spaces +="\t";
 		
 		return spaces;
+	}
+	
+	public String getFQEN(UMLTaggableElement elt) throws GenerationException {
+		if (elt instanceof UMLClass)
+			return getFQCN((UMLClass)elt);
+		if (elt instanceof UMLPackage)
+			return getFullPackageName((UMLPackage)elt);
+		
+		throw new GenerationException("Error getting fully qualified element name.  Supported taggable element types include UMLClass and UMLPackage; element is neither");
 	}
 	public String getFQCN(UMLClass klass)
 	{
@@ -778,7 +829,6 @@ public class TransformerUtils
 				}
 			}
 			if (includeInherited) {
-
 				// TODO :: Implement includeInherited
 //				Collection gens = superClass.getGeneralization();
 //				if (gens.size() > 0) {
@@ -797,27 +847,27 @@ public class TransformerUtils
 		return assocEndsList;
 	}
 	
-	public void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<UMLPackage, Collection<UMLClass>> pkgColl, Collection<UMLClass> classColl)
+	public void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<String, Collection<UMLClass>> pkgColl, Collection<UMLClass> classColl)
 	{
 		for(UMLPackage pkg:nextLevelPackages){
 
 			if (isIncluded(pkg)){
-				log.debug("including package: " + pkg.getName());
+				String pkgName=getFullPackageName(pkg);
+				log.debug("including package: " + pkgName);
 			
 				Collection<UMLClass> pkgClasses = pkg.getClasses();
 
 				if (pkgClasses != null && pkgClasses.size() > 0){
 					for (UMLClass klass:pkgClasses){
-						String pkgName = getFullPackageName(klass);
 						if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass)) { 
 							classColl.add(klass);
 
-							if(!pkgColl.containsKey(pkg)) {
+							if(!pkgColl.containsKey(pkgName)) {
 								List<UMLClass> classes = new ArrayList<UMLClass>();
 								classes.add(klass);
-								pkgColl.put(pkg, classes);
+								pkgColl.put(pkgName, classes);
 							} else {
-								Collection<UMLClass> existingCollection = pkgColl.get(pkg);
+								Collection<UMLClass> existingCollection = pkgColl.get(pkgName);
 								existingCollection.add(klass);
 							}					
 						}
@@ -828,7 +878,79 @@ public class TransformerUtils
 			}
 			collectPackages(pkg.getPackages(), pkgColl, classColl);	
 		}
-	}	
+	}
+	
+	public void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<String, Collection<UMLClass>> pkgColl, Collection<UMLClass> classColl,String defaultNamespacePrefix)
+	throws GenerationException {
+		String pkgName=null;
+		for(UMLPackage pkg:nextLevelPackages){
+
+			if (isNamespaceIncluded(pkg,defaultNamespacePrefix)){
+				pkgName = getPackageName(pkg);
+				log.debug("including package: " + pkgName);
+			
+				Collection<UMLClass> pkgClasses = pkg.getClasses(); // TODO :: need to get ALL classes using Model?
+
+				if (pkgClasses != null && pkgClasses.size() > 0){
+					for (UMLClass klass:pkgClasses){
+						if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(pkgName+"."+getClassName(klass),pkgName)) { 
+							classColl.add(klass);//TODO :: what if class belongs to different namespace package due to diff namespace?
+							if(!pkgColl.containsKey(pkgName)) {
+								List<UMLClass> classes = new ArrayList<UMLClass>();
+								classes.add(klass);
+								pkgColl.put(pkgName, classes);
+							} else {
+								Collection<UMLClass> existingCollection = pkgColl.get(pkgName);
+								existingCollection.add(klass);
+							}					
+						}
+					}
+				}
+			} else{
+				log.debug("excluding package: " + pkg.getName());
+			}
+			collectPackages(pkg.getPackages(), pkgColl, classColl,defaultNamespacePrefix);	
+		}
+	}
+	
+//	public void collectPackageNames(Collection<UMLPackage> nextLevelPackages, Collection<UMLPackage> pkgColl, String defaultNamespacePrefix)
+//	throws GenerationException {
+//		String pkgName=null;
+//		for(UMLPackage pkg:nextLevelPackages){
+//			if (isNamespaceIncluded(pkg,defaultNamespacePrefix)){
+//				log.debug("including package: " + pkgName);
+//				pkgColl.add(pkg);
+//			} else{
+//				log.debug("excluding package: " + pkg.getName());
+//			}
+//			collectPackageNames(pkg.getPackages(), pkgColl,defaultNamespacePrefix);	
+//		}
+//	}
+	
+	private String getPackageName(UMLPackage pkg) throws GenerationException{
+		String namespacePkgName = null;
+		try {
+			namespacePkgName = getNamespacePackageName(pkg);
+			if (namespacePkgName!=null)
+				return namespacePkgName;
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME package name for package: " + getFullPackageName(pkg), ge);
+		}
+		return getFullPackageName(pkg);
+	}
+	
+	private String getClassName(UMLClass klass)throws GenerationException{
+		try {
+			String klassName = getXMLClassName(klass);
+			if (klassName!=null)
+				return klassName;
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME Class (XML Element) name for klass: " + getFQCN(klass));
+		}
+		return klass.getName();
+	}
 	
 	/**
 	 * Returns all the classes (not the tables) in the XMI file which do not belong to java.lang or java.util package 
@@ -1241,11 +1363,11 @@ public class TransformerUtils
 		return true;
 	}
 	
-	private String getTagValue(UMLClass klass, String key, String value, int minOccurrence, int maxOccurrence) throws GenerationException
+	private String getTagValue(UMLTaggableElement elt, String key, String value, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
 		String result = null;
 		int count = 0;
-		for(UMLTaggedValue tv: klass.getTaggedValues())
+		for(UMLTaggedValue tv: elt.getTaggedValues())
 		{
 			if (key.equals(tv.getName()))
 			{
@@ -1267,8 +1389,8 @@ public class TransformerUtils
 			}
 		}
 		
-		if(count < minOccurrence || (minOccurrence>0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No value found for "+key+" tag in class : "+getFQCN(klass));
-		if(count > maxOccurrence) throw new GenerationException("More than one value found for "+key+" tag in class : "+getFQCN(klass));
+		if(count < minOccurrence || (minOccurrence>0 && (result == null || result.trim().length() == 0))) throw new GenerationException("No value found for "+key+" tag in : "+getFQEN(elt));
+		if(count > maxOccurrence) throw new GenerationException("More than one value found for "+key+" tag in : "+getFQEN(elt));
 		
 		return result;
 	}
@@ -1349,7 +1471,6 @@ public class TransformerUtils
 		
 		return result;
 	}
-	
 	
 	private String getTagValue(UMLClass klass, UMLAttribute attribute, String key, String value, Boolean isValuePrefix, int minOccurrence, int maxOccurrence) throws GenerationException
 	{
@@ -1582,7 +1703,7 @@ public class TransformerUtils
 		if(collectionTable == null) throw new GenerationException("No collection table found named : \""+tableName+"\"");
 		
 		return collectionTable;
-}	
+	}	
 	
 	
 	public String getCollectionKeyColumnName(UMLClass table,UMLClass klass, UMLAttribute attr) throws GenerationException
@@ -1683,7 +1804,6 @@ public class TransformerUtils
 		}
 		return "true";
 	}
-	
 
 	/**
 	 * Scans the tag values of the association to determine the cascade-style 
@@ -1776,5 +1896,146 @@ public class TransformerUtils
 		
 		return hvClass.getConstraintImports();
 	}
+	
+	
+	public String getNamespace(UMLTaggableElement te) throws GenerationException {
+		String gmeNamespacePrefix = null;
+		try {
+			gmeNamespacePrefix = getTagValue(te,TV_NCI_GME_XML_NAMESPACE,null,0,1);
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_XML_NAMESPACE' tag value for element", ge);
+		}
+		
+		return gmeNamespacePrefix;
+	}
+	
+	public boolean hasGMEXMLNamespaceTag(UMLTaggableElement te){
+		try {
+			getTagValue(te,TV_NCI_GME_XML_NAMESPACE,null,0,0);
+		} catch (GenerationException e) {
+			return true;
+		}
+		return false;
+	}
+	
+	public String getNamespacePackageName(UMLPackage pkg) throws GenerationException {
+		String gmeNamespace = null;
+		try {
+			gmeNamespace = getTagValue(pkg,TV_NCI_GME_XML_NAMESPACE,null,0,1);
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_XML_NAMESPACE' tag value for UML package: " + getFullPackageName(pkg), ge);
+		}
 
+		if (gmeNamespace != null && gmeNamespace.lastIndexOf('/')<0)
+			throw new GenerationException("Invalid GME Namespace found for UML package " + getFullPackageName(pkg)+": "+gmeNamespace);
+
+		if (gmeNamespace!=null){
+			return gmeNamespace.substring(gmeNamespace.lastIndexOf('/')+1, gmeNamespace.length());
+		}
+		
+		return null;
+	}
+	
+	public String getNamespacePrefix(UMLPackage pkg) throws GenerationException {
+		String gmeNamespace = null;
+		try {
+			gmeNamespace = getTagValue(pkg,TV_NCI_GME_XML_NAMESPACE,null,0,1);
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_XML_NAMESPACE' tag value for UML package: " + getFullPackageName(pkg), ge);
+		}
+
+		if (gmeNamespace != null && gmeNamespace.lastIndexOf('/')<0)
+			throw new GenerationException("Invalid GME Namespace found for UML package " + getFullPackageName(pkg)+": "+gmeNamespace);
+
+		if (gmeNamespace!=null){
+			return gmeNamespace.substring(0,gmeNamespace.lastIndexOf('/'));
+		}
+		
+		return null;
+	}
+	
+	public String getXMLClassName(UMLClass klass) throws GenerationException {
+		try {
+			return getTagValue(klass,TV_NCI_GME_XML_ELEMENT,null,0,1);
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_XML_ELEMENT' tag value for klass: " + klass.getName(), ge);
+		}
+	}
+	
+	public boolean hasGMEXMLClassTag(UMLTaggableElement te){
+		try {
+			getTagValue(te,TV_NCI_GME_XML_ELEMENT,null,0,0);
+		} catch (GenerationException e) {
+			return true;
+		}
+		return false;
+	}
+	
+	public String getXMLAttributeName(UMLAttribute attr)throws GenerationException{
+		try {
+			 return getTagValue(attr,TV_NCI_GME_XML_LOC_REF,null,0,1);
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_XML_LOC_REF' tag value for attribute: " + attr.getName(), ge);
+		}
+	}
+	
+	public boolean hasGMEXMLAttributeTag(UMLTaggableElement te){
+		try {
+			getTagValue(te,TV_NCI_GME_XML_LOC_REF,null,0,0);
+		} catch (GenerationException e) {
+			return true;
+		}
+		return false;
+	}
+	
+	public String getXMLLocRef(UMLAssociationEnd assocEnd)throws GenerationException
+	{
+		try {
+			String klassName = ((UMLClass)(assocEnd.getUMLElement())).getName();
+			return getGmeLocRef(assocEnd.getOwningAssociation(),klassName);
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_SOURCE_XML_LOC_REF' or 'NCI_GME_TARGET_XML_LOC_REF' tag value for association roleName: " + assocEnd.getRoleName(), ge);
+		}
+	}
+	
+	private String getGmeLocRef(UMLAssociation assoc,String klassName) throws GenerationException
+	{
+		String tv = getTagValue(assoc,TV_NCI_GME_SOURCE_XML_LOC_REF,null,0,1);
+		if (tv !=null && tv.endsWith("/"+klassName)){
+			return tv.substring(0, tv.lastIndexOf('/'));
+		}
+		
+		tv = getTagValue(assoc,TV_NCI_GME_TARGET_XML_LOC_REF,null,0,1);
+		if (tv !=null && tv.endsWith("/"+klassName)){
+			return tv.substring(0, tv.lastIndexOf('/'));
+		}
+		
+		return null;
+	}
+	
+	public String getGmeSourceLocRef(UMLAssociation assoc) throws GenerationException
+	{
+		return getTagValue(assoc,TV_NCI_GME_SOURCE_XML_LOC_REF,null,0,1);
+	}
+	
+	public String getGmeTargetLocRef(UMLAssociation assoc) throws GenerationException
+	{
+		return getTagValue(assoc,TV_NCI_GME_TARGET_XML_LOC_REF,null,0,1);
+	}
+	
+	public boolean hasGMELocRefTag(UMLTaggableElement te){
+		try {
+			getTagValue(te,TV_NCI_GME_SOURCE_XML_LOC_REF,null,0,0);
+			getTagValue(te,TV_NCI_GME_TARGET_XML_LOC_REF,null,0,0);
+		} catch (GenerationException e) {
+			return true;
+		}
+		return false;
+	}
 }

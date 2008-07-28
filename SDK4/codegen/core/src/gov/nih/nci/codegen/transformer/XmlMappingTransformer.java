@@ -12,6 +12,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,6 +47,8 @@ public class XmlMappingTransformer implements Transformer {
 	private Encode xmlEncoder = new Encode("ESCAPE_XML");	
 	
 	private String namespaceUriPrefix;
+	
+	private boolean useGMETags = false;
 
 	private boolean includeAssociations = false;    
 	private boolean includeFieldHandler = false;    
@@ -70,6 +73,8 @@ public class XmlMappingTransformer implements Transformer {
 
 		GeneratorErrors errors = new GeneratorErrors();
 		Collection<UMLClass> classes = null;
+		
+		setModelNamespace(model);
 
 		try {
 			classes = transformerUtils.getAllClasses(model);
@@ -183,8 +188,7 @@ public class XmlMappingTransformer implements Transformer {
 		String packageName = transformerUtils.getFullPackageName(klass);
 		
 		StringBuffer nsURI = new StringBuffer();
-		nsURI.append(namespaceUriPrefix);
-		nsURI.append(packageName);
+		nsURI.append(getNamespace(klass.getPackage()));
 		return nsURI.toString();
 	}
 
@@ -232,7 +236,7 @@ public class XmlMappingTransformer implements Transformer {
 			classEl.setAttribute("extends", superClassName);
 		}
 		Element maptoelement = new Element("map-to");
-		maptoelement.setAttribute("xml", klass.getName());
+		maptoelement.setAttribute("xml", getClassName(klass));
 		String nsURI = getNamespaceURI(klass);
 		maptoelement.setAttribute("ns-uri",nsURI);
 		classEl.addContent(maptoelement);
@@ -241,12 +245,12 @@ public class XmlMappingTransformer implements Transformer {
 
 		//process fields
 		for (Iterator i = klass.getAttributes().iterator(); i.hasNext();) {
-			UMLAttribute att = (UMLAttribute) i.next();
+			UMLAttribute attr = (UMLAttribute) i.next();
 			Element field = new Element("field");
-			field.setAttribute("name", att.getName());
-			log.debug("Field name: " + att.getName());
+			field.setAttribute("name", attr.getName());
+			log.debug("Field name: " + attr.getName());
 
-			String type = transformerUtils.getDataType(att);
+			String type = transformerUtils.getDataType(attr);
 			String qName = getQualifiedTypeName(type);
 			if (qName.equalsIgnoreCase("collection")) {
 				log.debug("Handling type 'collection' - qName: " + qName);            	 
@@ -255,20 +259,20 @@ public class XmlMappingTransformer implements Transformer {
 				Namespace namespace = Namespace.getNamespace(qName,nsURI);
 
 				Element bind = new Element("bind-xml");
-				bind.setAttribute("name", qName + ":" + att.getName());
+				bind.setAttribute("name", qName + ":" + attr.getName()); 
 				bind.setAttribute("QName-prefix",qName,namespace);
 				bind.setAttribute("node", "attribute");
 				field.addContent(bind);
 			} else if (qName.startsWith("collection")) { // handle primitive collections; e.g., collection<string>
 				log.debug("Handling primitive collection type Name: " + qName);    
-				primitiveCollectionAtts.add(att);
+				primitiveCollectionAtts.add(attr);
 				continue;
 			} else {
-				field.setAttribute("type", getQualifiedTypeName(transformerUtils.getDataType(att)));
+				field.setAttribute("type", getQualifiedTypeName(transformerUtils.getDataType(attr)));
 				Element bind = new Element("bind-xml");
-				bind.setAttribute("name", att.getName());
+				bind.setAttribute("name", getAttributeName(attr));
 				bind.setAttribute("node", "attribute");
-				field.addContent(bind);         	 
+				field.addContent(bind);      	 
 			}
 			
 			classEl.addContent(field);
@@ -345,16 +349,16 @@ public class XmlMappingTransformer implements Transformer {
 				log.debug("upperBound: " + transformerUtils.getUpperBound(otherEnd));
 
 				Element field = new Element("field");
-				field.setAttribute("name", otherEnd.getRoleName() ); //otherEnd.getName());
+				field.setAttribute("name", otherEnd.getRoleName() ); 
 				String associationPackage = transformerUtils.getFullPackageName((UMLClass)otherEnd.getUMLElement());
 				field.setAttribute("type", associationPackage + Constant.DOT + ( (UMLClass)otherEnd.getUMLElement() ).getName() );
 				if (includeFieldHandler) {
 					field.setAttribute("handler", "gov.nih.nci.system.client.util.xml.CastorDomainObjectFieldHandler" );
 				}
 				Element bind = new Element("bind-xml");
-				bind.setAttribute("name", otherEndTypeName );
+				bind.setAttribute("name", getClassName((UMLClass)(otherEnd.getUMLElement())) );
 				bind.setAttribute("type", associationPackage + Constant.DOT + otherEndTypeName );
-				bind.setAttribute("location",(otherEndTypeName.equals(otherEnd.getRoleName())) ? otherEndTypeName.toLowerCase(): otherEnd.getRoleName() ); //otherEnd.getName());	                 
+				bind.setAttribute("location",(otherEndTypeName.equals(getRoleName(otherEnd))) ? otherEndTypeName.toLowerCase(): getRoleName(otherEnd) );                  
 				bind.setAttribute("node", "element");
 				field.addContent(bind);
 
@@ -378,14 +382,13 @@ public class XmlMappingTransformer implements Transformer {
 
 				Element bind = new Element("bind-xml");
 
-				bind.setAttribute("name", otherEndTypeName );
+				bind.setAttribute("name", getClassName((UMLClass)(otherEnd.getUMLElement())) );
 				bind.setAttribute("type", associationPackage+Constant.DOT + otherEndTypeName);
-				bind.setAttribute("location", (otherEndTypeName.equals(otherEnd.getRoleName())) ? otherEndTypeName.toLowerCase(): otherEnd.getRoleName()  ); //otherEnd.getName());
+				bind.setAttribute("location", (otherEndTypeName.equals(getRoleName(otherEnd))) ? otherEndTypeName.toLowerCase(): getRoleName(otherEnd) );
 				bind.setAttribute("node", "element");
 
 				field.addContent(bind);
 				mappingEl.addContent(field);
-
 			}
 		}
 	}
@@ -416,7 +419,78 @@ public class XmlMappingTransformer implements Transformer {
 		log.debug("*** type: " + type);
 		return type.toLowerCase();
 	}
+	
+	private void setModelNamespace(UMLModel model){
+		//override deploy.properties NAMESPACE_PREFIX property with GME namespace tag value, if it exists
+		try {
+			String modelNamespacePrefix = transformerUtils.getNamespace(model);
+			if (modelNamespacePrefix != null) {
+				if (!modelNamespacePrefix.endsWith("/"))
+					modelNamespacePrefix=modelNamespacePrefix+"/";
+				this.namespaceUriPrefix = modelNamespacePrefix.replace(" ", "_");
+			}
+		} catch (GenerationException ge) {
+			log.error("ERROR: ", ge);
+			generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for model: " + model.getName(), ge));
+		}
+	}
+	
+	private String getNamespace(UMLPackage pkg){
+		if (useGMETags){
+			try {
+				String gmeNamespace = transformerUtils.getNamespace(pkg);
+				if (gmeNamespace != null) return gmeNamespace;
+			} catch (GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for package: " + transformerUtils.getFullPackageName(pkg), ge));
+			}
+		}
+		
+		return namespaceUriPrefix + transformerUtils.getFullPackageName(pkg);
+	}
+	
+	private String getClassName(UMLClass klass){
+		if (useGMETags){
+			try {
+				String klassName = transformerUtils.getXMLClassName(klass);
+				if (klassName!=null)
+					return klassName;
+			} catch(GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Class (XML Element) name for klass: " + transformerUtils.getFQCN(klass), ge));
+			}
+		}
+		return klass.getName();
+	}
+	
+	private String getAttributeName(UMLAttribute attr){
+		if (useGMETags){
+			try {
+				String attrName = transformerUtils.getXMLAttributeName(attr);
+				if (attrName!=null)
+					return attrName;
+			} catch(GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Attribute (XML Loc Ref) name for attribute: " + attr.getName(), ge));
+			}
+		}
+		return attr.getName();
+	}
 
+	private String getRoleName(UMLAssociationEnd assocEnd){
+		if (useGMETags){
+			try {
+				String rolename = transformerUtils.getXMLLocRef(assocEnd);
+				if (rolename!=null)
+					return rolename;
+			} catch(GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME rolename (XML Source or Target Location Reference) name for association roleName: " + assocEnd.getRoleName(), ge));
+			}
+		}
+		return assocEnd.getRoleName();
+	}
+	
 	/**
 	 * @param includeAssociations set the flag to indicate whether or not 
 	 * associations should be processed during the Mapping generation
@@ -466,5 +540,9 @@ public class XmlMappingTransformer implements Transformer {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setUseGMETags(boolean useGMETags) {
+		this.useGMETags = useGMETags;
 	}
 }

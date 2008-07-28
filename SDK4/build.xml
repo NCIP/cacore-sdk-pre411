@@ -259,6 +259,25 @@
 			<equals arg1="${GENERATE_XSD}" arg2="yes" casesensitive="false" trim="true" />
 		</or>
 	</condition>
+	<condition property="ENABLE_GENERATE_XSD_WITH_GME_TAGS" value="true" else="false">
+		<and>
+			<or>
+				<equals arg1="${GENERATE_XSD_WITH_GME_TAGS}" arg2="true" casesensitive="false" trim="true" />
+				<equals arg1="${GENERATE_XSD_WITH_GME_TAGS}" arg2="yes" casesensitive="false" trim="true" />
+			</or>
+			<equals arg1="${ENABLE_XSD_GENERATION}" arg2="true" casesensitive="false" trim="true" />
+		</and>
+	</condition>
+	<condition property="ENABLE_GME_TAGS_VALIDATOR" value="true" else="false">
+		<and>
+			<or>
+				<equals arg1="${VALIDATE_GME_TAGS}" arg2="true" casesensitive="false" trim="true" />
+				<equals arg1="${VALIDATE_GME_TAGS}" arg2="yes" casesensitive="false" trim="true" />
+			</or>
+			<equals arg1="${ENABLE_XSD_GENERATION}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_GENERATE_XSD_WITH_GME_TAGS}" arg2="true" casesensitive="false" trim="true" />
+		</and>
+	</condition>
 	<condition property="ENABLE_WSDD_GENERATION" value="true" else="false">
 		<or>
 			<equals arg1="${GENERATE_WSDD}" arg2="true" casesensitive="false" trim="true" />
@@ -338,6 +357,7 @@
 			<replacefilter token="@INCLUDE_PACKAGE@" value="${INCLUDE_PACKAGE}" />
 			<replacefilter token="@EXCLUDE_PACKAGE@" value="${EXCLUDE_PACKAGE}" />
 			<replacefilter token="@EXCLUDE_NAME@" value="${EXCLUDE_NAME}" />
+			<replacefilter token="@EXCLUDE_NAMESPACE@" value="${EXCLUDE_NAMESPACE}" />
 			<replacefilter token="@NAMESPACE_PREFIX@" value="${NAMESPACE_PREFIX}" />	
 			<replacefilter token="@CACHE_PATH@" value="${CACHE_PATH}" />	
 			<replacefilter token="${xml.comment.start}@DB_JNDI_URL_START@${xml.comment.end}" value="${JNDI_START}" />	
@@ -353,11 +373,13 @@
 			<replacefilter token="@WEBSERVICE_NAME@" value="${WEBSERVICE_NAME}"/>
 			<replacefilter token="@VALIDATE_LOGICAL_MODEL@" value="${ENABLE_LOGICAL_MODEL_VALIDATOR}"/>
 			<replacefilter token="@VALIDATE_MODEL_MAPPING@" value="${ENABLE_MODEL_MAPPING_VALIDATOR}"/>
+			<replacefilter token="@VALIDATE_GME_TAGS@" value="${ENABLE_GME_TAGS_VALIDATOR}"/>
 			<replacefilter token="@VALIDATE_WRITABLE_API_EXTENSION@" value="${ENABLE_WRITABLE_API_EXTENSION_VALIDATOR}" />						
 			<replacefilter token="@GENERATE_HIBERNATE_MAPPING@" value="${ENABLE_HIBERNATE_MAPPING_GENERATION}"/>
 			<replacefilter token="@GENERATE_BEANS@" value="${ENABLE_BEANS_GENERATION}"/>
 			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${ENABLE_CASTOR_MAPPING_GENERATION}"/>
 			<replacefilter token="@GENERATE_XSD@" value="${ENABLE_XSD_GENERATION}"/>
+			<replacefilter token="@GENERATE_XSD_WITH_GME_TAGS@" value="${ENABLE_GENERATE_XSD_WITH_GME_TAGS}"/>
 			<replacefilter token="@GENERATE_WSDD@" value="${ENABLE_WSDD_GENERATION}"/>
 			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR@" value="${ENABLE_HIBERNATE_VALIDATOR}"/>
 			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR_START@" value="${ENABLE_HIBERNATE_VALIDATOR_START}"/>

@@ -42,9 +42,15 @@ public class ChildWithAssociationXMLDataTest extends SDKXMLDataTestBase
 			
 			toXML(result);
 			
-			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
-			validateAttribute(result,"amount",result.getAmount());
+			if (useGMETags){
+				validateClassElements(result,Class.forName(getClassName(result)).getSimpleName()+"GMEAlias");
+				validateAttribute(result,"idGMEAlias",result.getId());
+				validateAttribute(result,"amountGMEAlias",result.getAmount());
+			} else{
+				validateClassElements(result);
+				validateAttribute(result,"id",result.getId());
+				validateAttribute(result,"amount",result.getAmount());
+			}
 			
 			assertTrue(validateXMLData(result, searchObject.getClass()));
 
@@ -81,9 +87,15 @@ public class ChildWithAssociationXMLDataTest extends SDKXMLDataTestBase
 			
 			toXML(result);
 			
-			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
-			validateAttribute(result,"amount",result.getAmount());
+			if (useGMETags){
+				validateClassElements(result,"CashGMEAlias");
+				validateAttribute(result,"idGMEAlias",result.getId());
+				validateAttribute(result,"amountGMEAlias",result.getAmount());
+			} else{
+				validateClassElements(result);
+				validateAttribute(result,"id",result.getId());
+				validateAttribute(result,"amount",result.getAmount());
+			}
 			
 			assertTrue(validateXMLData(result, searchObject.getClass()));
 			
@@ -121,10 +133,17 @@ public class ChildWithAssociationXMLDataTest extends SDKXMLDataTestBase
 			
 			toXML(result);
 			
-			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
-			validateAttribute(result,"amount",result.getAmount());
-			validateAttribute(result,"cardNumber",result.getCardNumber());
+			if (useGMETags){
+				validateClassElements(result,"CreditGMEAlias");
+				validateAttribute(result,"idGMEAlias",result.getId());
+				validateAttribute(result,"amountGMEAlias",result.getAmount());
+				validateAttribute(result,"cardNumberGMEAlias",result.getCardNumber());
+			} else{
+				validateClassElements(result);
+				validateAttribute(result,"id",result.getId());
+				validateAttribute(result,"amount",result.getAmount());
+				validateAttribute(result,"cardNumber",result.getCardNumber());
+			}
 			
 			assertTrue(validateXMLData(result, searchObject.getClass()));
 
@@ -162,9 +181,15 @@ public class ChildWithAssociationXMLDataTest extends SDKXMLDataTestBase
 			
 			toXML(result);
 			
-			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
-			validateAttribute(result,"name",result.getName());
+			if (useGMETags){
+				validateClassElements(result,"BankGMEAlias");
+				validateAttribute(result,"idGMEAlias",result.getId());
+				validateAttribute(result,"nameGMEAlias",result.getName());
+			} else{
+				validateClassElements(result);
+				validateAttribute(result,"id",result.getId());
+				validateAttribute(result,"name",result.getName());
+			}
 			
 			assertTrue(validateXMLData(result, searchObject.getClass()));
 
@@ -297,7 +322,11 @@ public class ChildWithAssociationXMLDataTest extends SDKXMLDataTestBase
 			Credit result = (Credit)i.next();
 			toXML(result);
 			
-			validateAssociation(result,"Bank","issuingBank");
+			if (useGMETags){
+				validateAssociation(result,"BankGMEAlias","bankAliasRolename");
+			} else{
+				validateAssociation(result,"Bank","issuingBank");
+			}
 
 			Credit result2 = (Credit)fromXML(result);
 			bank = result2.getIssuingBank();

@@ -1,8 +1,8 @@
 package test.gov.nih.nci.cacoresdk.domain.other.differentpackage;
 
+import gov.nih.nci.cacoresdk.domain.other.differentpackage.Dessert;
 import gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.Pie;
 import gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.Utensil;
-import gov.nih.nci.cacoresdk.domain.other.differentpackage.Dessert;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -37,8 +37,13 @@ public class DifferentPackageWithAssociationXMLDataTest extends SDKXMLDataTestBa
 			Dessert result = (Dessert)i.next();
 			toXML(result);
 			
-			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
+			if (useGMETags){
+				validateClassElements(result,Class.forName(getClassName(result)).getSimpleName()+"Alias");
+				validateAttribute(result,"idAlias",result.getId());
+			} else{
+				validateClassElements(result);
+				validateAttribute(result,"id",result.getId());
+			}
 			
 			//assertTrue(validateXMLData(result, searchObject.getClass()));
 
@@ -70,9 +75,15 @@ public class DifferentPackageWithAssociationXMLDataTest extends SDKXMLDataTestBa
 			Pie result = (Pie)i.next();
 			toXML(result);
 			
-			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
-			validateAttribute(result,"filling",result.getFilling());
+			if (useGMETags){
+				validateClassElements(result,"PieAlias");
+				validateAttribute(result,"idAlias",result.getId());
+				validateAttribute(result,"fillingAlias",result.getFilling());
+			} else{
+				validateClassElements(result);
+				validateAttribute(result,"id",result.getId());
+				validateAttribute(result,"filling",result.getFilling());
+			}
 			
 			//assertTrue(validateXMLData(result, searchObject.getClass()));
 
@@ -105,10 +116,16 @@ public class DifferentPackageWithAssociationXMLDataTest extends SDKXMLDataTestBa
 			Utensil result = (Utensil)i.next();
 			toXML(result);
 			
-			validateClassElements(result);
-			validateAttribute(result,"id",result.getId());
-			validateAttribute(result,"name",result.getName());
-			
+			if (useGMETags){
+				validateClassElements(result,"UtensilAlias");
+				validateAttribute(result,"idAlias",result.getId());
+				validateAttribute(result,"nameAlias",result.getName());
+			} else{
+				validateClassElements(result,"Utensil");
+				validateAttribute(result,"id",result.getId());
+				validateAttribute(result,"name",result.getName());
+			}
+
 			//assertTrue(validateXMLData(result, searchObject.getClass()));
 
 			Utensil result2 = (Utensil)fromXML(result);
@@ -170,6 +187,73 @@ public class DifferentPackageWithAssociationXMLDataTest extends SDKXMLDataTestBa
 		assertNotNull(result2);
 		assertNotNull(result2.getId());
 		assertEquals(new Integer(3), result2.getId());
+	}
+	
+	public void testGetAssociation1() throws Exception
+	{
+		Dessert searchObject = new Dessert();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.other.differentpackage.Dessert",searchObject );
+
+		assertNotNull(results);
+		assertEquals(4,results.size());
+		
+		Collection<Utensil> utensilColl;
+		Utensil utensil;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Dessert result = (Dessert)i.next();
+			toXML(result);
+			
+			if (useGMETags){
+				validateAssociation(result,"UtensilAlias","utensilAliasRoleName");
+			} else{
+				validateAssociation(result,"Utensil","utensilCollection");
+			}
+
+			Dessert result2 = (Dessert)fromXML(result);
+			utensilColl = result2.getUtensilCollection();
+			
+			for (Iterator j = utensilColl.iterator();j.hasNext();){
+				utensil = (Utensil)j.next();
+				assertNotNull(utensil);
+				assertNotNull(utensil.getId());
+				assertNotNull(utensil.getName());
+			}
+
+		}
+	}
+	
+	public void testGetAssociation2() throws Exception
+	{
+		Utensil searchObject = new Utensil();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.other.differentpackage.associations.Utensil",searchObject );
+
+		assertNotNull(results);
+		assertEquals(3,results.size());
+		
+		Collection<Dessert> dessertColl;
+		Dessert dessert;
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			Utensil result = (Utensil)i.next();
+			toXML(result);
+			
+			if (useGMETags){
+				validateAssociation(result,"DessertAlias","dessertAliasRoleName");
+			} else{
+				validateAssociation(result,"Dessert","dessertCollection");
+			}
+
+			Utensil result2 = (Utensil)fromXML(result);
+			dessertColl = result2.getDessertCollection();
+			
+			for (Iterator j = dessertColl.iterator();j.hasNext();){
+				dessert = (Dessert)j.next();
+				assertNotNull(dessert);
+				assertNotNull(dessert.getId());
+			}
+
+		}
 	}
 
 }

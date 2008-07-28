@@ -108,7 +108,7 @@ public class AllDataTypeXMLDataTest extends SDKXMLDataTestBase
 			AllDataType result = (AllDataType)i.next();
 			toXML(result);
 
-			validateClassElements(result);
+			//validateClassElements(result);
 			validateAttributes(result);
 			assertTrue(validateXMLData(result, searchObject.getClass()));
 						

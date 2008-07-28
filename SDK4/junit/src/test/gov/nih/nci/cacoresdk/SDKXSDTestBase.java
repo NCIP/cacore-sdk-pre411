@@ -18,9 +18,12 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 	private   String namespace = "http://www.w3.org/2001/XMLSchema";
 	String prefix = "xs";
+	
+	protected boolean useGMETags;
 
 	protected void setUp() throws Exception {
 		super.setUp();
+		useGMETags=Boolean.parseBoolean(System.getProperty("useGMETags"));
 	}
 
 	protected void tearDown() throws Exception {
@@ -112,12 +115,15 @@ public abstract class SDKXSDTestBase extends TestCase {
 	 * 
 	 * @throws Exception
 	 */
-	public void validateClassElements(Class klass)
+	public void validateClassElements(Class klass) throws Exception{
+		validateClassElements(klass, klass.getSimpleName());
+	}
+	public void validateClassElements(Class klass, String klassAlias)
 	throws Exception {
 
 		Document doc = getDoc();
 
-		String klassName = klass.getSimpleName();
+		String klassName = klassAlias;
 		String xpath = "/xs:schema/xs:element[@name='" + klassName + "']";
 
 		List<Element> elts = queryXSD(doc, xpath);
@@ -174,17 +180,20 @@ public abstract class SDKXSDTestBase extends TestCase {
 	 */
 	public void validateSubclassElements(Class klass)
 	throws Exception {
+		validateSubclassElements(klass,klass.getSimpleName(),getSuperklassName(klass));
+	}
+	
+	public void validateSubclassElements(Class klass, String klassAlias, String superklassName)
+	throws Exception {
 
 		Document doc = getDoc();
 
-		validateClassElements(klass);
-
-		String superklassName = getSuperklassName(klass);
+		validateClassElements(klass, klassAlias);
 			
 //		System.out.println("Superclass for class " + klass.getSimpleName()
 //				+ ": " + superklassName);
 		String xpath = "/xs:schema/xs:complexType[@name='"
-			+ klass.getSimpleName()
+			+ klassAlias
 			+ "']/xs:complexContent/xs:extension[@base='" + superklassName
 			+ "']";
 
@@ -206,32 +215,32 @@ public abstract class SDKXSDTestBase extends TestCase {
 	 */
 	public void validateClassAssociationElements(Class klass, Class associatedKlass, String rolename, String minOccurs, String maxOccurs)
 	throws Exception {
+		validateClassAssociationElements(klass,klass.getSimpleName(), associatedKlass,associatedKlass.getSimpleName(), rolename, minOccurs,maxOccurs);
+	}
+	public void validateClassAssociationElements(Class klass,String klassAlias,Class associatedKlass,String associatedKlassAlias, String rolename, String minOccurs, String maxOccurs)
+	throws Exception {
 
 		Document doc = getDoc();
 
-		validateClassElements(klass);
-		
-		String associatedKlassName = null;
-		if (klass.getPackage().getName().equals(associatedKlass.getPackage().getName()))
-			associatedKlassName = associatedKlass.getSimpleName();
-		else
-			associatedKlassName = associatedKlass.getPackage().getName() + ":" + associatedKlass.getSimpleName();
+		validateClassElements(klass,klassAlias);
 
-		
-		String xpath = "/xs:schema/xs:complexType[@name='" + klass.getSimpleName() + "']" 
+		if (!klass.getPackage().getName().equals(associatedKlass.getPackage().getName()) && (associatedKlassAlias.indexOf(':')<0))
+			associatedKlassAlias = associatedKlass.getPackage().getName() + ":" + associatedKlassAlias;
+
+		String xpath = "/xs:schema/xs:complexType[@name='" + klassAlias + "']" 
 			+ "/xs:sequence/xs:element[@name='" + rolename + "']"
-			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlassName + "']";
+			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlassAlias + "']";
 
-//		System.out.println("xpath: " + xpath);
+//		log.debug("xpath: " + xpath);
 		
 		List<Element> elts = queryXSD(doc, xpath);
 		assertEquals(1, elts.size());
 		
 		Element klassElt = elts.get(0);
 		assertEquals(3, klassElt.getAttributes().size()); // ref, minOccurs, maxOccurs
-		assertEquals(klassElt.getAttributeValue("ref"),associatedKlassName);
+		assertEquals(klassElt.getAttributeValue("ref"),associatedKlassAlias);
 		
-		// TODO :: change eventually to honor minOccurs value passed in
+		// TODO :: change to honor minOccurs value passed in
 		// ignore 'minOccurs' value for now, as the Code Generator always sets it to zero
 		assertEquals(klassElt.getAttributeValue("minOccurs"),"0");
 		assertEquals(klassElt.getAttributeValue("maxOccurs"),maxOccurs);
@@ -247,19 +256,22 @@ public abstract class SDKXSDTestBase extends TestCase {
 	 */
 	public void validateSubclassAssociationElements(Class klass, Class associatedKlass, String rolename, String minOccurs, String maxOccurs)
 	throws Exception {
+		validateSubclassAssociationElements(klass,klass.getSimpleName(), associatedKlass,associatedKlass.getSimpleName(),klass.getSuperclass().getSimpleName(),rolename,minOccurs,maxOccurs);
+	}
+	public void validateSubclassAssociationElements(Class klass,String klassAlias,Class associatedKlass,String associatedKlassAlias,String superklassName,String rolename,String minOccurs,String maxOccurs)
+	throws Exception {
 
 		Document doc = getDoc();
 
-		validateClassElements(klass);
+		validateClassElements(klass,klassAlias);
 
-		String superklassName = klass.getSuperclass().getSimpleName();
 //		System.out.println("Superclass for class " + klass.getSimpleName()
 //				+ ": " + superklassName);
 		
-		String xpath = "/xs:schema/xs:complexType[@name='" + klass.getSimpleName() + "']" 
+		String xpath = "/xs:schema/xs:complexType[@name='" + klassAlias + "']" 
 			+ "/xs:complexContent/xs:extension[@base='" + superklassName + "']"
 			+ "/xs:sequence/xs:element[@name='" + rolename + "']"
-			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlass.getSimpleName() + "']";
+			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlassAlias + "']";
 
 //		System.out.println("xpath: " + xpath);
 		
@@ -268,7 +280,7 @@ public abstract class SDKXSDTestBase extends TestCase {
 		
 		Element klassElt = elts.get(0);
 		assertEquals(3, klassElt.getAttributes().size()); // ref, minOccurs, maxOccurs
-		assertEquals(klassElt.getAttributeValue("ref"),associatedKlass.getSimpleName());
+		assertEquals(klassElt.getAttributeValue("ref"),associatedKlassAlias);
 		
 		// TODO :: change eventually to honor minOccurs value passed in
 		// ignore 'minOccurs' value for now, as the Code Generator always sets it to zero
@@ -277,13 +289,17 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 	}		
 
-	protected void validateAttributeElement(Class klass,
+	protected void validateAttributeElement(Class klass,String attributeName, String attributeType) throws Exception {
+		validateAttributeElement(klass,klass.getSimpleName(),attributeName, attributeType);
+	}
+	
+	protected void validateAttributeElement(Class klass, String klassAlias,
 			String attributeName, String attributeType) throws Exception {
 
 		Document doc = getDoc();
 
 		String xpath = "/xs:schema/xs:complexType[@name='"
-			+ klass.getSimpleName() + "']/xs:attribute[@name='"
+			+ klassAlias + "']/xs:attribute[@name='"
 			+ attributeName + "']";
 
 //		System.out.println("xpath: " + xpath);
@@ -298,13 +314,16 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 	protected void validateSubclassAttributeElement(Class klass,
 			String attributeName, String attributeType) throws Exception {
+		validateSubclassAttributeElement(klass, klass.getSimpleName(),getSuperklassName(klass),
+				attributeName, attributeType);
+	}
+	protected void validateSubclassAttributeElement(Class klass, String klassAlias, String superklassName,
+			String attributeName, String attributeType) throws Exception {
 
 		Document doc = getDoc();
-
-		String superklassName = getSuperklassName(klass);
 		
 		String xpath = "/xs:schema/xs:complexType[@name='"
-			+ klass.getSimpleName()
+			+ klassAlias
 			+ "']/xs:complexContent/xs:extension[@base='" + superklassName
 			+ "']/xs:attribute[@name='" + attributeName + "']";
 

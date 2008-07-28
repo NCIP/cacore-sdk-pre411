@@ -25,6 +25,7 @@ import javax.xml.validation.Validator;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.w3c.dom.Document;
@@ -34,7 +35,11 @@ import org.w3c.dom.Document;
  * 
  */
 public abstract class SDKXMLDataTestBase extends TestCase {
-
+	
+	private static Logger log = Logger.getLogger(SDKXMLDataTestBase.class);
+	
+	protected boolean useGMETags;
+	
 	private String uriPrefix = "gme://caCORE.caCORE/3.2/";
 	private String filepathPrefix  = "./output/";
 	private String filepathSuffix  = "_test.xml";
@@ -52,6 +57,8 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 		marshaller = new caCOREMarshaller("xml-mapping.xml", false);
 		unmarshaller = new caCOREUnmarshaller("unmarshaller-xml-mapping.xml", false);		
 		myUtil = new XMLUtility(marshaller, unmarshaller);
+		
+		useGMETags=Boolean.parseBoolean(System.getProperty("useGMETags"));
 	}
 
 
@@ -108,16 +115,16 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		try {
-//			System.out.println("Validating " + klass.getName() + " against the schema......\n\n");						
+			log.debug("Validating " + klass.getName() + " against the schema......\n\n");						
 			Source schemaFile = new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(klass.getPackage().getName() + ".xsd"));
 			Schema schema = factory.newSchema(schemaFile);
 			Validator validator = schema.newValidator();
 
 			validator.validate(new DOMSource(document));
-//			System.out.println(klass.getName() + " has been validated!!!\n\n");
+			log.debug(klass.getName() + " has been validated!!!\n\n");
 		} catch (Exception e) {
-//			System.out.println(klass.getName() + " has failed validation!!!  Error reason is: \n\n" + e.getMessage());
-			return false;
+			log.error(klass.getName() + " has failed validation!!!  Error reason is: \n\n" + e.getMessage(),e);
+			throw e;
 		}
 		
 		return true;
@@ -130,10 +137,10 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 //		// e.g.: xpath = "/*[local-name()='schema']";
 //		JDOMXPath path = new JDOMXPath(xpath);
 //		path.addNamespace("", "gme://caCORE.caCORE/3.2/gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation");
-////		System.out.println("path: " + path.toString());
+////		log.debug("path: " + path.toString());
 //		List<Element> elts = path.selectNodes(obj);
 //
-//		// System.out.println("Elements Found: " + elts.size());
+//		// log.debug("Elements Found: " + elts.size());
 //		return elts;
 //
 //	}
@@ -145,52 +152,25 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 	 * 
 	 * @throws Exception
 	 */
-	protected void validateClassElements(Object resultObj)
+	
+	protected void validateClassElements(Object resultObj) throws Exception{
+		validateClassElements(resultObj,Class.forName(getClassName(resultObj)).getSimpleName());
+	}
+	
+	protected void validateClassElements(Object resultObj, String gmeClassName)
 	throws Exception {
 		
-//		System.out.println("Validating Class Elements from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
-		
-		String proxyClassName = resultObj.getClass().getName();
-		String klassName;
-		if (proxyClassName.indexOf('$') > 0) {
-			klassName = proxyClassName.substring(0, proxyClassName.indexOf('$'));
-		} else {
-			klassName = proxyClassName;
-		}
+		String klassName = getClassName(resultObj);
 		
 		org.jdom.Document doc = getDocument(filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
-		
-//		System.out.println(doc.toString());
-//		System.out.println("doc.getBaseURI(): " + doc.getBaseURI());
-//		System.out.println("doc.getName():" + doc.getRootElement().getName());
-//		System.out.println("doc.getNamespace():" + doc.getRootElement().getNamespace());		
-//		System.out.println("doc.getNamespacePrefix():" + doc.getRootElement().getNamespacePrefix());
-//		System.out.println("doc.getNamespaceURI():" + doc.getRootElement().getNamespaceURI());
-//
-//		String xpath = "" + Class.forName(klassName).getSimpleName();
-//		System.out.println("xpath: " + xpath);
-
-//		List<Element> elts = queryXMLData(doc, xpath);
-//		assertEquals(1, elts.size());
 		Element klassElt = doc.getRootElement();
 		
-		assertEquals(Class.forName(klassName).getSimpleName(), klassElt.getName());
-		assertEquals(klassElt.getNamespaceURI(),uriPrefix + Class.forName(klassName).getPackage().getName());
-		
-//		System.out.println("klassElt.getAttributeValue('id'):" + klassElt.getAttributeValue("id"));
-//		System.out.println("klassElt.getAttributeValue('amount'):" + klassElt.getAttributeValue("amount"));
-
-//		TODO :: figure out how to get xpath to work when the XML Data file does not contain a Namespace prefix
-//		xpath = "/mapping/class[@name='" + klass.getName() + "']"
-//			+ "/map-to[@xml='" + klass.getSimpleName() + "']";		
-//
-//		elts = queryXMLData(doc, xpath);
-//		assertEquals(1, elts.size());
-//		Element mapToElt = elts.get(0);
-//
-//		
-//		assertEquals(3, mapToElt.getAttributes().size());//
-//		assertTrue(mapToElt.getAttributeValue("xmlns").equals(uriPrefix + klass.getPackage().getName()));
+		if (useGMETags){
+			assertEquals(gmeClassName, klassElt.getName());
+		} else{
+			assertEquals(Class.forName(klassName).getSimpleName(), klassElt.getName());
+			assertEquals(klassElt.getNamespaceURI(),uriPrefix + Class.forName(klassName).getPackage().getName());			
+		}
 	}
 	
 	/**
@@ -203,12 +183,12 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 	protected void validateAttribute(Object resultObj, String attributeName, Object attributeValue)
 	throws Exception {
 		
-//		System.out.println("Validating Class attributes from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
+//		log.debug("Validating Class attributes from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 
 		org.jdom.Document doc = getDocument(filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 //		TODO :: figure out how to get xpath to work when the XML Data file does not contain a Namespace prefix
 //		String xpath = "" + Class.forName(klassName).getSimpleName();
-//		System.out.println("xpath: " + xpath);
+//		log.debug("xpath: " + xpath);
 
 //		List<Element> elts = queryXMLData(doc, xpath);
 //		assertEquals(1, elts.size());
@@ -231,12 +211,12 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 	protected void validateDateAttribute(Object resultObj, String attributeName, Date attributeValue)
 	throws Exception {
 		
-//		System.out.println("Validating Class attributes from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
+//		log.debug("Validating Class attributes from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 
 		org.jdom.Document doc = getDocument(filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 //		TODO :: figure out how to get xpath to work when the XML Data file does not contain a Namespace prefix
 //		String xpath = "" + Class.forName(klassName).getSimpleName();
-//		System.out.println("xpath: " + xpath);
+//		log.debug("xpath: " + xpath);
 
 //		List<Element> elts = queryXMLData(doc, xpath);
 //		assertEquals(1, elts.size());
@@ -260,12 +240,12 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 	protected void validateAssociation(Object resultObj, String associatedKlassName, String roleName)
 	throws Exception {
 		
-//		System.out.println("Validating Class association from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
+//		log.debug("Validating Class association from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 
 		org.jdom.Document doc = getDocument(filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 
 //		String xpath = "" + Class.forName(klassName).getSimpleName();
-//		System.out.println("xpath: " + xpath);
+//		log.debug("xpath: " + xpath);
 
 //		List<Element> elts = queryXMLData(doc, xpath);
 //		assertEquals(1, elts.size());
@@ -273,6 +253,7 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 		
 		List<Element> children = klassElt.getChildren();
 		assertNotNull(children);
+		//assertEquals(1,children.size());
 		assertEquals(1,countChildren(children,roleName));
 		Element roleNameElt = locateChild(children,roleName);
 		assertNotNull(roleNameElt);
@@ -303,6 +284,15 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 		}
 		
 		return counter;
+	}
+	
+	protected String getClassName(Object resultObj){
+		String klassName = resultObj.getClass().getName();
+		if (klassName.indexOf('$') > 0) {
+			return klassName.substring(0, klassName.indexOf('$'));
+		}
+			
+		return klassName;
 	}
 
 }
