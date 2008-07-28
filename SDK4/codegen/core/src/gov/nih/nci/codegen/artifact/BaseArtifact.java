@@ -66,8 +66,8 @@ public class BaseArtifact implements Artifact
 	 *
 	 * @param pkg
 	 */
-	public void createSourceName(UMLPackage pkg) {
-		sourceName = transformerUtils.getFullPackageName(pkg);
+	public void createSourceName(String sourceName) {
+		this.sourceName = sourceName;
 	}		
 		
 }
