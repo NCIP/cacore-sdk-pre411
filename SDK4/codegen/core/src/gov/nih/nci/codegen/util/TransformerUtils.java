@@ -118,7 +118,7 @@ public class TransformerUtils
 		return DATABASE_TYPE;
 	}
 	
-	public boolean isIncluded(UMLClass klass)
+	public boolean isIncluded(UMLClass klass) throws GenerationException
 	{
 		String fqcn = getFQCN(klass);
 		String pkgName = getFullPackageName(klass);
@@ -126,7 +126,7 @@ public class TransformerUtils
 		return isIncluded(fqcn, pkgName);
 	}
 	
-	public boolean isIncluded(UMLInterface interfaze)
+	public boolean isIncluded(UMLInterface interfaze) throws GenerationException
 	{
 		String fqcn = getFQCN(interfaze);
 		String pkgName = getFullPackageName(interfaze);
@@ -162,7 +162,7 @@ public class TransformerUtils
 		return included;
 	}
 	
-	public boolean isIncluded(UMLPackage pkg)
+	public boolean isIncluded(UMLPackage pkg) throws GenerationException
 	{
 		String pkgName = getFullPackageName(pkg);
 		
@@ -181,19 +181,19 @@ public class TransformerUtils
 		return included;
 	}
 	
-	public boolean isNamespaceIncluded(UMLPackage pkg, String defaultNamespacePrefix) throws GenerationException
+	public boolean isNamespaceIncluded(UMLClass klass, String defaultNamespacePrefix) throws GenerationException
 	{
 		String pkgNamespace=null;
 		
 		try {
-			pkgNamespace = getNamespace(pkg);
+			pkgNamespace = getGMENamespace(klass);
 		} catch (GenerationException ge) {
 			log.error("ERROR: ", ge);
-			throw new GenerationException("Error getting the GME Namespace tag value for package: " + pkg.getName(), ge);
+			throw new GenerationException("Error getting the GME Namespace tag value for: " + getFullPackageName(klass.getPackage()), ge);
 		}
 		
 		if (pkgNamespace==null) //use default namespace
-			pkgNamespace = defaultNamespacePrefix+getFullPackageName(pkg);
+			pkgNamespace = defaultNamespacePrefix+getFullPackageName(klass);
 		
 		log.debug("* * * * * pkgNamespace:"+pkgNamespace);
 		
@@ -238,21 +238,17 @@ public class TransformerUtils
 		return removeBasePackage(ModelUtil.getFullName(interfaze));
 	}
 
-	public String getFullPackageName(UMLClass klass)
+	public String getFullPackageName(UMLTaggableElement te)
 	{
-		return removeBasePackage(ModelUtil.getFullPackageName(klass));
+		if (te instanceof UMLClass)
+			return removeBasePackage(ModelUtil.getFullPackageName((UMLClass)te));
+		if (te instanceof UMLInterface)
+			return removeBasePackage(ModelUtil.getFullPackageName((UMLInterface)te));
+		if (te instanceof UMLPackage)
+			return removeBasePackage(ModelUtil.getFullPackageName((UMLPackage)te));
+		
+		return "";
 	}
-
-	public String getFullPackageName(UMLInterface interfaze)
-	{
-		return removeBasePackage(ModelUtil.getFullPackageName(interfaze));
-	}
-	
-	public String getFullPackageName(UMLPackage pkg)
-	{
-		return removeBasePackage(ModelUtil.getFullPackageName(pkg));
-	}
-
 
 	private String removeBasePackage(String path)
 	{
@@ -847,7 +843,7 @@ public class TransformerUtils
 		return assocEndsList;
 	}
 	
-	public void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<String, Collection<UMLClass>> pkgColl, Collection<UMLClass> classColl)
+	public void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<String, Collection<UMLClass>> pkgColl) throws GenerationException
 	{
 		for(UMLPackage pkg:nextLevelPackages){
 
@@ -860,8 +856,6 @@ public class TransformerUtils
 				if (pkgClasses != null && pkgClasses.size() > 0){
 					for (UMLClass klass:pkgClasses){
 						if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass)) { 
-							classColl.add(klass);
-
 							if(!pkgColl.containsKey(pkgName)) {
 								List<UMLClass> classes = new ArrayList<UMLClass>();
 								classes.add(klass);
@@ -876,68 +870,74 @@ public class TransformerUtils
 			} else{
 				log.debug("excluding package: " + pkg.getName());
 			}
-			collectPackages(pkg.getPackages(), pkgColl, classColl);	
+			collectPackages(pkg.getPackages(), pkgColl);	
 		}
 	}
 	
-	public void collectPackages(Collection<UMLPackage> nextLevelPackages, Hashtable<String, Collection<UMLClass>> pkgColl, Collection<UMLClass> classColl,String defaultNamespacePrefix)
+	public void collectPackages(Collection<UMLClass> allClasses, Hashtable<String, Collection<UMLClass>> pkgColl,String defaultNamespacePrefix)
 	throws GenerationException {
+
 		String pkgName=null;
-		for(UMLPackage pkg:nextLevelPackages){
-
-			if (isNamespaceIncluded(pkg,defaultNamespacePrefix)){
-				pkgName = getPackageName(pkg);
+		String pkgNamespace=null;
+		for(UMLClass klass:allClasses){
+			pkgName = getGMEPackageName(klass);
+			if (pkgName == null)
+				pkgName=getFullPackageName(klass);
+			log.debug("processing klass: " + klass.getName() + " of package " + pkgName);
+			if (isNamespaceIncluded(klass,defaultNamespacePrefix)){
 				log.debug("including package: " + pkgName);
-			
-				Collection<UMLClass> pkgClasses = pkg.getClasses(); // TODO :: need to get ALL classes using Model?
 
-				if (pkgClasses != null && pkgClasses.size() > 0){
-					for (UMLClass klass:pkgClasses){
-						if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(pkgName+"."+getClassName(klass),pkgName)) { 
-							classColl.add(klass);//TODO :: what if class belongs to different namespace package due to diff namespace?
-							if(!pkgColl.containsKey(pkgName)) {
-								List<UMLClass> classes = new ArrayList<UMLClass>();
-								classes.add(klass);
-								pkgColl.put(pkgName, classes);
-							} else {
-								Collection<UMLClass> existingCollection = pkgColl.get(pkgName);
-								existingCollection.add(klass);
-							}					
-						}
-					}
+				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(pkgName+"."+getClassName(klass),pkgName)) { 
+					pkgNamespace=getGMENamespace(klass);
+					
+					if (pkgNamespace !=null && (pkgNamespace.endsWith("/") || !pkgNamespace.endsWith(pkgName)))
+						pkgNamespace=pkgNamespace+pkgName;
+					log.debug("pkgNamespace: " + pkgNamespace);
+					if(!pkgColl.containsKey(pkgNamespace)) {
+						List<UMLClass> classes = new ArrayList<UMLClass>();
+						classes.add(klass);
+						pkgColl.put(pkgNamespace, classes);
+					} else {
+						Collection<UMLClass> existingCollection = pkgColl.get(pkgNamespace);
+						existingCollection.add(klass);
+					}					
 				}
 			} else{
-				log.debug("excluding package: " + pkg.getName());
+				log.debug("excluding class: " +klass.getName()+" with package: " + pkgName);
 			}
-			collectPackages(pkg.getPackages(), pkgColl, classColl,defaultNamespacePrefix);	
 		}
+
 	}
 	
-//	public void collectPackageNames(Collection<UMLPackage> nextLevelPackages, Collection<UMLPackage> pkgColl, String defaultNamespacePrefix)
-//	throws GenerationException {
-//		String pkgName=null;
-//		for(UMLPackage pkg:nextLevelPackages){
-//			if (isNamespaceIncluded(pkg,defaultNamespacePrefix)){
-//				log.debug("including package: " + pkgName);
-//				pkgColl.add(pkg);
-//			} else{
-//				log.debug("excluding package: " + pkg.getName());
-//			}
-//			collectPackageNames(pkg.getPackages(), pkgColl,defaultNamespacePrefix);	
-//		}
-//	}
-	
-	private String getPackageName(UMLPackage pkg) throws GenerationException{
+	public String getGMEPackageName(UMLClass klass) throws GenerationException{
 		String namespacePkgName = null;
 		try {
-			namespacePkgName = getNamespacePackageName(pkg);
-			if (namespacePkgName!=null)
+			namespacePkgName = getNamespacePackageName(klass);
+			if (namespacePkgName!=null && namespacePkgName.length()>0)
 				return namespacePkgName;
 		} catch(GenerationException ge) {
 			log.error("ERROR: ", ge);
-			throw new GenerationException("Error getting the GME package name for package: " + getFullPackageName(pkg), ge);
+			throw new GenerationException("Error getting the GME package name for: " + getFQEN(klass), ge);
 		}
-		return getFullPackageName(pkg);
+		
+		namespacePkgName=getGMEPackageName(klass.getPackage());
+		if (namespacePkgName!=null && namespacePkgName.length()>0)
+			return namespacePkgName;
+		
+		log.debug("GME Package name not found for: "+getFullPackageName(klass)+". Returning null");
+		return null;
+	}
+	
+	public String getGMEPackageName(UMLPackage pkg) throws GenerationException{
+		if (pkg==null)
+			return null;
+		
+		log.debug("Getting Package Name for: " +pkg.getName());
+		String namespacePkgName = getNamespacePackageName(pkg);
+		if (namespacePkgName!=null && namespacePkgName.length()>0)
+			return namespacePkgName;
+
+		return getGMEPackageName(pkg.getParent());
 	}
 	
 	private String getClassName(UMLClass klass)throws GenerationException{
@@ -970,13 +970,13 @@ public class TransformerUtils
 		return classes;
 	}
 	
-	private void getAllClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes)
+	private void getAllClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes)throws GenerationException
 	{
 		for(UMLPackage pkg:pkgCollection)
 			getAllClasses(pkg,classes);
 	}
 	
-	private void getAllClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
+	private void getAllClasses(UMLPackage rootPkg,Collection<UMLClass> classes) throws GenerationException
 	{
 		if(isIncluded(rootPkg))
 		{
@@ -1007,13 +1007,13 @@ public class TransformerUtils
 		return interfaces;
 	}
 	
-	private void getAllInterfaces(Collection<UMLPackage> pkgCollection,Collection<UMLInterface> interfaces)
+	private void getAllInterfaces(Collection<UMLPackage> pkgCollection,Collection<UMLInterface> interfaces)throws GenerationException
 	{
 		for(UMLPackage pkg:pkgCollection)
 			getAllInterfaces(pkg,interfaces);
 	}
 
-	private void getAllInterfaces(UMLPackage rootPkg,Collection<UMLInterface> interfaces)
+	private void getAllInterfaces(UMLPackage rootPkg,Collection<UMLInterface> interfaces) throws GenerationException
 	{
 		if(isIncluded(rootPkg))
 		{
@@ -1026,7 +1026,7 @@ public class TransformerUtils
 		getAllInterfaces(rootPkg.getPackages(),interfaces);
 	}	
 	
-	public Collection<UMLClass> getAllHibernateClasses(UMLModel model)
+	public Collection<UMLClass> getAllHibernateClasses(UMLModel model) throws GenerationException
 	{
 		Collection<UMLClass> allHibernateClasses = getAllParentClasses(model);
 		allHibernateClasses.addAll(getAllImplicitParentLeafClasses(model));
@@ -1040,21 +1040,21 @@ public class TransformerUtils
 	 * @param model
 	 * @return
 	 */
-	public Collection<UMLClass> getAllParentClasses(UMLModel model)
+	public Collection<UMLClass> getAllParentClasses(UMLModel model) throws GenerationException
 	{
 		Collection<UMLClass> classes = new ArrayList<UMLClass>();
 		getAllParentClasses(model.getPackages(),classes);
 		return classes;
 	}
 	
-	private void getAllParentClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes)
+	private void getAllParentClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes) throws GenerationException
 	{
 		for(UMLPackage pkg:pkgCollection)
 			getAllParentClasses(pkg,classes);
 	}
 
 	
-	private void getAllParentClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
+	private void getAllParentClasses(UMLPackage rootPkg,Collection<UMLClass> classes)throws GenerationException
 	{
 		if(isIncluded(rootPkg))
 		{
@@ -1069,24 +1069,24 @@ public class TransformerUtils
 	
 	/**
 	 * Returns all the classes (not the tables) in the XMI file which do not belong to java.lang or java.util package.
-	 * The class also has to be an implicit parent (parent class with no table mapping) in the inheritnace hierarchy to be included in the final list 
+	 * The class also has to be an implicit parent (parent class with no table mapping) in the inheritance hierarchy to be included in the final list 
 	 * @param model
 	 * @return
 	 */
-	public Collection<UMLClass> getAllImplicitParentLeafClasses(UMLModel model)
+	public Collection<UMLClass> getAllImplicitParentLeafClasses(UMLModel model) throws GenerationException
 	{
 		Collection<UMLClass> classes = new ArrayList<UMLClass>();
 		getAllImplicitParentLeafClasses(model.getPackages(),classes);
 		return classes;
 	}
 	
-	private void getAllImplicitParentLeafClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes)
+	private void getAllImplicitParentLeafClasses(Collection<UMLPackage> pkgCollection,Collection<UMLClass> classes) throws GenerationException
 	{
 		for(UMLPackage pkg:pkgCollection)
 			getAllImplicitParentLeafClasses(pkg,classes);
 	}
 	
-	private void getAllImplicitParentLeafClasses(UMLPackage rootPkg,Collection<UMLClass> classes)
+	private void getAllImplicitParentLeafClasses(UMLPackage rootPkg,Collection<UMLClass> classes) throws GenerationException
 	{
 		if(isIncluded(rootPkg))
 		{
@@ -1679,7 +1679,7 @@ public class TransformerUtils
 	
 	
 	
-	public String getWSDDServiceValue(Collection<UMLClass> classColl){
+	public String getWSDDServiceValue(Collection<UMLClass> classColl)throws GenerationException{
         StringBuilder nn1 = new StringBuilder();
         for(UMLClass klass:classColl){
 			String pkgName = getFullPackageName(klass);
@@ -1910,6 +1910,37 @@ public class TransformerUtils
 		return gmeNamespacePrefix;
 	}
 	
+	public String getGMENamespace(UMLClass klass) throws GenerationException{
+		String gmeNamespace = null;
+		try {
+			gmeNamespace = getNamespace(klass);
+			if (gmeNamespace!=null && gmeNamespace.length()>0)
+				return gmeNamespace;
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME namespace for: " + getFQEN(klass), ge);
+		}
+		
+		gmeNamespace=getGMENamespace(klass.getPackage());
+		if (gmeNamespace!=null && gmeNamespace.length()>0)
+			return gmeNamespace;
+		
+		log.error("GME Namespace name not found for: "+getFullPackageName(klass)+". Returning null");
+		return null;
+	}
+	
+	public String getGMENamespace(UMLPackage pkg) throws GenerationException{
+		if (pkg==null)
+			return null;
+		
+		log.debug("Getting Package Namespace for: " +pkg.getName());
+		String gmeNamespace = getNamespace(pkg);
+		if (gmeNamespace!=null && gmeNamespace.length()>0)
+			return gmeNamespace;
+
+		return getGMENamespace(pkg.getParent());
+	}
+	
 	public boolean hasGMEXMLNamespaceTag(UMLTaggableElement te){
 		try {
 			getTagValue(te,TV_NCI_GME_XML_NAMESPACE,null,0,0);
@@ -1919,17 +1950,17 @@ public class TransformerUtils
 		return false;
 	}
 	
-	public String getNamespacePackageName(UMLPackage pkg) throws GenerationException {
+	private String getNamespacePackageName(UMLTaggableElement te) throws GenerationException {
 		String gmeNamespace = null;
 		try {
-			gmeNamespace = getTagValue(pkg,TV_NCI_GME_XML_NAMESPACE,null,0,1);
+			gmeNamespace = getTagValue(te,TV_NCI_GME_XML_NAMESPACE,null,0,1);
 		} catch(GenerationException ge) {
 			log.error("ERROR: ", ge);
-			throw new GenerationException("Error getting the GME 'NCI_GME_XML_NAMESPACE' tag value for UML package: " + getFullPackageName(pkg), ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_XML_NAMESPACE' tag value for: " + getFQEN(te), ge);
 		}
-
+		
 		if (gmeNamespace != null && gmeNamespace.lastIndexOf('/')<0)
-			throw new GenerationException("Invalid GME Namespace found for UML package " + getFullPackageName(pkg)+": "+gmeNamespace);
+			throw new GenerationException("Invalid GME Namespace found for:" + getFQEN(te)+": "+gmeNamespace);
 
 		if (gmeNamespace!=null){
 			return gmeNamespace.substring(gmeNamespace.lastIndexOf('/')+1, gmeNamespace.length());

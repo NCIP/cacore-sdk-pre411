@@ -185,10 +185,8 @@ public class XmlMappingTransformer implements Transformer {
 	 * @return The Namespace URI generated for the UML Class 
 	 */
 	private String getNamespaceURI(UMLClass klass) {
-		String packageName = transformerUtils.getFullPackageName(klass);
-		
 		StringBuffer nsURI = new StringBuffer();
-		nsURI.append(getNamespace(klass.getPackage()));
+		nsURI.append(getNamespace(klass));
 		return nsURI.toString();
 	}
 
@@ -434,19 +432,24 @@ public class XmlMappingTransformer implements Transformer {
 			generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for model: " + model.getName(), ge));
 		}
 	}
-	
-	private String getNamespace(UMLPackage pkg){
+			
+	private String getNamespace(UMLClass klass){
 		if (useGMETags){
 			try {
-				String gmeNamespace = transformerUtils.getNamespace(pkg);
+				String gmeNamespace = transformerUtils.getGMENamespace(klass);
+				String pkgName = transformerUtils.getGMEPackageName(klass);
+				if (pkgName == null)
+					pkgName=transformerUtils.getFullPackageName(klass);
+				if (gmeNamespace !=null && (gmeNamespace.endsWith("/") || !gmeNamespace.endsWith(pkgName)))
+					gmeNamespace=gmeNamespace+pkgName;
 				if (gmeNamespace != null) return gmeNamespace;
 			} catch (GenerationException ge) {
 				log.error("ERROR: ", ge);
-				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for package: " + transformerUtils.getFullPackageName(pkg), ge));
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for package: " + transformerUtils.getFullPackageName(klass), ge));
 			}
 		}
 		
-		return namespaceUriPrefix + transformerUtils.getFullPackageName(pkg);
+		return namespaceUriPrefix + transformerUtils.getFullPackageName(klass);
 	}
 	
 	private String getClassName(UMLClass klass){

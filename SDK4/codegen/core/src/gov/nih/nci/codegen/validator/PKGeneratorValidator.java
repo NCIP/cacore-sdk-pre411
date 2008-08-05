@@ -1,5 +1,6 @@
 package gov.nih.nci.codegen.validator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -55,7 +56,12 @@ public class PKGeneratorValidator implements Validator {
 			errors.addError(new GeneratorError(getName()+ ": no model element found within XMI file"));
 			return errors;
 		}	
-		Collection<UMLClass> classes = transformerUtils.getAllParentClasses(model);
+		Collection<UMLClass> classes=new ArrayList<UMLClass>();
+		try {
+			classes = transformerUtils.getAllParentClasses(model);
+		} catch (GenerationException ge) {
+			errors.addError(new GeneratorError("Error getting all the parent classes",ge));
+		}
 		for (UMLClass klass : classes) {
 			try {
 				validatePKGeneratorTag(klass, errors);

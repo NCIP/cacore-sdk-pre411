@@ -39,10 +39,12 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 	private static Logger log = Logger.getLogger(SDKXMLDataTestBase.class);
 	
 	protected boolean useGMETags;
+	private String namespaceUriPrefix=null;
 	
 	private String uriPrefix = "gme://caCORE.caCORE/3.2/";
 	private String filepathPrefix  = "./output/";
 	private String filepathSuffix  = "_test.xml";
+
 	private ApplicationService appService;
 	private Marshaller marshaller;
 	private Unmarshaller unmarshaller;
@@ -59,6 +61,7 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 		myUtil = new XMLUtility(marshaller, unmarshaller);
 		
 		useGMETags=Boolean.parseBoolean(System.getProperty("useGMETags"));
+		namespaceUriPrefix=System.getProperty("namespaceUriPrefix");
 	}
 
 
@@ -106,8 +109,20 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 
 		return doc;
 	}
-	
+
 	protected boolean validateXMLData(Object resultObj, Class klass) throws Exception {
+		String schemaFilename=klass.getPackage().getName() + ".xsd";	
+			
+		if (useGMETags){
+			schemaFilename=namespaceUriPrefix+schemaFilename;
+			schemaFilename=schemaFilename.replace("://", "_");
+			schemaFilename=schemaFilename.replace("/", "_");
+		}
+		log.debug("* * * schemaFilename: "+schemaFilename);
+		return validateXMLData(resultObj, klass, schemaFilename);
+	}
+	
+	protected boolean validateXMLData(Object resultObj, Class klass, String schemaFilename) throws Exception {
 		File myFile = new File(filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 
 		DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -115,8 +130,9 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		try {
-			log.debug("Validating " + klass.getName() + " against the schema......\n\n");						
-			Source schemaFile = new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(klass.getPackage().getName() + ".xsd"));
+			log.debug("Validating " + klass.getName() + " against the schema......\n\n");
+			log.debug("Schema filename is: "+schemaFilename+"\n\n");
+			Source schemaFile = new StreamSource(Thread.currentThread().getContextClassLoader().getResourceAsStream(schemaFilename));
 			Schema schema = factory.newSchema(schemaFile);
 			Validator validator = schema.newValidator();
 

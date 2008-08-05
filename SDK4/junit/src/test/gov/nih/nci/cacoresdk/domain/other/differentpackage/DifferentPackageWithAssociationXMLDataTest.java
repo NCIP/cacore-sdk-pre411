@@ -40,12 +40,13 @@ public class DifferentPackageWithAssociationXMLDataTest extends SDKXMLDataTestBa
 			if (useGMETags){
 				validateClassElements(result,Class.forName(getClassName(result)).getSimpleName()+"Alias");
 				validateAttribute(result,"idAlias",result.getId());
+				assertTrue(validateXMLData(result, searchObject.getClass(),"gme_test.test_1.5_domain.differentpackage.associations.xsd"));
 			} else{
 				validateClassElements(result);
 				validateAttribute(result,"id",result.getId());
+				//assertTrue(validateXMLData(result, searchObject.getClass()));// fails validation if associated class is in different package
 			}
 			
-			//assertTrue(validateXMLData(result, searchObject.getClass()));
 
 			Dessert result2 = (Dessert)fromXML(result);
 			
@@ -79,13 +80,15 @@ public class DifferentPackageWithAssociationXMLDataTest extends SDKXMLDataTestBa
 				validateClassElements(result,"PieAlias");
 				validateAttribute(result,"idAlias",result.getId());
 				validateAttribute(result,"fillingAlias",result.getFilling());
+				assertTrue(validateXMLData(result, searchObject.getClass(),"gme_test.test_1.5_domain.differentpackage.associations.xsd"));
 			} else{
 				validateClassElements(result);
 				validateAttribute(result,"id",result.getId());
 				validateAttribute(result,"filling",result.getFilling());
+				//assertTrue(validateXMLData(result, searchObject.getClass())); // fails validation if associated class is in different package
 			}
 			
-			//assertTrue(validateXMLData(result, searchObject.getClass()));
+
 
 			Pie result2 = (Pie)fromXML(result);
 			
@@ -120,13 +123,13 @@ public class DifferentPackageWithAssociationXMLDataTest extends SDKXMLDataTestBa
 				validateClassElements(result,"UtensilAlias");
 				validateAttribute(result,"idAlias",result.getId());
 				validateAttribute(result,"nameAlias",result.getName());
+				assertTrue(validateXMLData(result, searchObject.getClass(),"gme_test.test_1.5_domain.differentpackage.associations.xsd"));
 			} else{
 				validateClassElements(result,"Utensil");
 				validateAttribute(result,"id",result.getId());
 				validateAttribute(result,"name",result.getName());
+				//assertTrue(validateXMLData(result, searchObject.getClass()));// fails validation if associated class is in different package
 			}
-
-			//assertTrue(validateXMLData(result, searchObject.getClass()));
 
 			Utensil result2 = (Utensil)fromXML(result);
 			

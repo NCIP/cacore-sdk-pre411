@@ -4,6 +4,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.jaxen.JaxenException;
 import org.jaxen.jdom.JDOMXPath;
 import org.jdom.Document;
@@ -15,15 +16,20 @@ import org.springframework.core.io.ClassPathResource;
  * @author Dan Dumitru
  */
 public abstract class SDKXSDTestBase extends TestCase {
+	
+	private static Logger log = Logger.getLogger(SDKXSDTestBase.class);
 
-	private   String namespace = "http://www.w3.org/2001/XMLSchema";
-	String prefix = "xs";
+	private String namespace = "http://www.w3.org/2001/XMLSchema";
+	private String prefix = "xs";
 	
 	protected boolean useGMETags;
+	private String namespaceUriPrefix=null;
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		useGMETags=Boolean.parseBoolean(System.getProperty("useGMETags"));
+		log.error("useGMETags: " + useGMETags);
+		namespaceUriPrefix=System.getProperty("namespaceUriPrefix");
 	}
 
 	protected void tearDown() throws Exception {
@@ -50,10 +56,22 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 		return rootElement;
 	}
-
+	
 	protected Document getDocument(String filename) {
+		if (useGMETags){
+			return getDocument(namespaceUriPrefix,filename);
+		}
+		return getDocument("",filename);
+	}
+
+	protected Document getDocument(String namespacePrefix,String filename) {
 		Document doc;
 		try {
+			if (useGMETags){
+				filename=namespacePrefix+filename;
+				filename=filename.replace("://", "_");
+				filename=filename.replace("/", "_");
+			}
 			SAXBuilder builder = new SAXBuilder();
 			ClassPathResource  classPathResource=new ClassPathResource(filename);
 			doc = builder.build(classPathResource.getInputStream());
@@ -190,8 +208,6 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 		validateClassElements(klass, klassAlias);
 			
-//		System.out.println("Superclass for class " + klass.getSimpleName()
-//				+ ": " + superklassName);
 		String xpath = "/xs:schema/xs:complexType[@name='"
 			+ klassAlias
 			+ "']/xs:complexContent/xs:extension[@base='" + superklassName
@@ -224,14 +240,11 @@ public abstract class SDKXSDTestBase extends TestCase {
 
 		validateClassElements(klass,klassAlias);
 
-		if (!klass.getPackage().getName().equals(associatedKlass.getPackage().getName()) && (associatedKlassAlias.indexOf(':')<0))
-			associatedKlassAlias = associatedKlass.getPackage().getName() + ":" + associatedKlassAlias;
-
 		String xpath = "/xs:schema/xs:complexType[@name='" + klassAlias + "']" 
 			+ "/xs:sequence/xs:element[@name='" + rolename + "']"
 			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlassAlias + "']";
 
-//		log.debug("xpath: " + xpath);
+		log.debug("* * * xpath: " + xpath);
 		
 		List<Element> elts = queryXSD(doc, xpath);
 		assertEquals(1, elts.size());

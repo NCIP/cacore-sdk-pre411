@@ -94,11 +94,9 @@ public class UMLGMETagValidator implements Validator
 	
 	private void validatePackages(UMLModel model, GeneratorErrors errors) {
 		Hashtable<String, Collection<UMLClass>> packages = new Hashtable<String, Collection<UMLClass>>();
-		List<UMLClass> classColl = new ArrayList<UMLClass>();
 		try {
 			setModelNamespace(model,errors);//if set, override default Namespace prefix
-//			transformerUtils.collectPackageNames(model.getPackages(), packages, namespaceUriPrefix);
-			transformerUtils.collectPackages(model.getPackages(), packages, classColl,namespaceUriPrefix);
+			transformerUtils.collectPackages(transformerUtils.getAllClasses(model), packages,namespaceUriPrefix);
 
 			if (packages == null || packages.isEmpty()){
 				errors.addError(new GeneratorError(getName() + ": No qualifying packages found within the model to process"));
@@ -265,7 +263,7 @@ public class UMLGMETagValidator implements Validator
 	private String getPackageName(UMLPackage pkg, GeneratorErrors errors){
 		String namespacePkgName = null;
 		try {
-			namespacePkgName = transformerUtils.getNamespacePackageName(pkg);
+			namespacePkgName = transformerUtils.getGMEPackageName(pkg);
 			if (namespacePkgName!=null)
 				return namespacePkgName;
 		} catch(GenerationException ge) {

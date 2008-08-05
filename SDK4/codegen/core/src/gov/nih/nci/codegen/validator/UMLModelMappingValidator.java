@@ -143,7 +143,12 @@ public class UMLModelMappingValidator implements Validator
 			return errors;
 		}		
 		
-		Collection<UMLClass> classes = transformerUtils.getAllParentClasses(model);
+		Collection<UMLClass> classes=new ArrayList<UMLClass>();
+		try {
+			classes = transformerUtils.getAllParentClasses(model);
+		} catch (GenerationException ge) {
+			errors.addError(new GeneratorError("Error getting all the parent classes",ge));
+		}
 		for(UMLClass klass:classes)
 			validateClass(model, klass, errors);
 		return errors;

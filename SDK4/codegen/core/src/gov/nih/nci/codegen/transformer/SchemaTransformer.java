@@ -7,7 +7,6 @@ import gov.nih.nci.codegen.GeneratorErrors;
 import gov.nih.nci.codegen.Transformer;
 import gov.nih.nci.codegen.artifact.BaseArtifact;
 import gov.nih.nci.codegen.util.TransformerUtils;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
@@ -74,18 +73,16 @@ public class SchemaTransformer implements Transformer {
 	public GeneratorErrors execute(UMLModel model)
 	{
 		Hashtable<String, Collection<UMLClass>> pkgColl = new Hashtable<String, Collection<UMLClass>>();
-		List<UMLClass> classColl = new ArrayList<UMLClass>();
-		log.debug("Model name: " + model.getName());
-		
+	
 		try {
 			if (useGMETags){
 				setModelNamespace(model);//if set, override default Namespace prefix
-				transformerUtils.collectPackages(model.getPackages(), pkgColl, classColl,namespaceUriPrefix);
+				transformerUtils.collectPackages(transformerUtils.getAllClasses(model), pkgColl,namespaceUriPrefix);
 			} else {
-				transformerUtils.collectPackages(model.getPackages(), pkgColl, classColl);
+				transformerUtils.collectPackages(model.getPackages(), pkgColl);
 			}
 
-			processPackages(pkgColl, classColl);
+			processPackages(pkgColl);
 		} catch (GenerationException ge) {
 			log.error("ERROR: ", ge);
 			generatorErrors.addError(new GeneratorError(getName() + ": " + ge.getMessage(), ge));
@@ -108,21 +105,28 @@ public class SchemaTransformer implements Transformer {
 	 * @param classColl The collection of classes for which
 	 * a Castor Mapping file will be generated
 	 */
-	private void processPackages(Hashtable<String, Collection<UMLClass>> pkgColl, List<UMLClass> classColl)
+	private void processPackages(Hashtable<String, Collection<UMLClass>> pkgColl)
 	{
 		BaseArtifact artifact;
 		Document doc = null;
 
-		for (Enumeration e = pkgColl.keys(); e.hasMoreElements() ;) {
+		for (Enumeration<String> e = pkgColl.keys(); e.hasMoreElements() ;) {
 			try {
 				String pkgName = (String)e.nextElement();
-				Collection klasses = (Collection)pkgColl.get(pkgName);
+				Collection<UMLClass> klasses = (Collection<UMLClass>)pkgColl.get(pkgName);
 				log.debug("pkg.getName: " + pkgName + " has " + klasses.size() + " classes");
 
 				artifact = new BaseArtifact(transformerUtils);
+				
+				if (useGMETags){
+					pkgName=pkgName.replace("://", "_");
+					pkgName=pkgName.replace("/", "_");
+					log.debug("creating XSD artifact: " + pkgName);
+				}
+				
 				artifact.createSourceName(pkgName);
 
-				doc = generateRepository(classColl, klasses);
+				doc = generateRepository(klasses);
 
 				XMLOutputter p = new XMLOutputter();
 				p.setFormat(Format.getPrettyFormat());
@@ -173,17 +177,16 @@ public class SchemaTransformer implements Transformer {
 		return sortImportStatements(elements);
 	}
 
-	private Document generateRepository(Collection<UMLClass> classColl, Collection<UMLClass> pkgClassCollection) {
+	private Document generateRepository(Collection<UMLClass> pkgClassCollection) {
 
 		String caBIGNS_URI = null;
-
-		UMLPackage pkg=null;
-		for (Iterator i = pkgClassCollection.iterator(); i.hasNext();) {
-			UMLClass klass = (UMLClass) i.next();
-			pkg=klass.getPackage();
+		
+		UMLClass klass=null;
+		for (Iterator<UMLClass> i = pkgClassCollection.iterator(); i.hasNext();) {
+			klass = (UMLClass) i.next();
+			caBIGNS_URI = getNamespace(klass);
 			break;
 		}
-		caBIGNS_URI = getNamespace(pkg);
 		
 		Namespace w3cNS = Namespace.getNamespace("xs","http://www.w3.org/2001/XMLSchema");
 		Element schemaElem = new Element("schema", w3cNS);
@@ -197,8 +200,8 @@ public class SchemaTransformer implements Transformer {
 		Attribute formDefault = new Attribute("elementFormDefault","qualified");
 		schemaElem.setAttribute(formDefault);	
 
-		for (Iterator i = pkgClassCollection.iterator(); i.hasNext();) {
-			UMLClass klass = (UMLClass) i.next();
+		for (Iterator<UMLClass> i = pkgClassCollection.iterator(); i.hasNext();) {
+			klass = (UMLClass) i.next();
 			doMapping(klass, schemaElem, w3cNS);
 		}
 
@@ -210,7 +213,6 @@ public class SchemaTransformer implements Transformer {
 	private void doMapping(UMLClass klass, Element schemaElem, Namespace w3cNS) {
 
 		String superClassName = null;
-
 		UMLClass superClass = null;
 		try {
 			superClass = transformerUtils.getSuperClass(klass);
@@ -220,8 +222,8 @@ public class SchemaTransformer implements Transformer {
 		}
 
 		if (superClass != null) {
-			String klassPackageName = getPackageName(klass.getPackage());
-			String superClassPackageName = getPackageName(superClass.getPackage());
+			String klassPackageName = getPackageName(klass);
+			String superClassPackageName = getPackageName(superClass);
 
 			if (klassPackageName.equals(superClassPackageName)){
 				superClassName = getClassName(superClass);
@@ -398,8 +400,8 @@ public class SchemaTransformer implements Transformer {
 			String associationPackage=null;
 			String thisPackage=null;
 
-			thisPackage = getPackageName(((UMLClass)(thisEnd.getUMLElement())).getPackage());
-			associationPackage = getPackageName(((UMLClass)(otherEnd.getUMLElement())).getPackage());
+			thisPackage = getPackageName((UMLClass)(thisEnd.getUMLElement()));
+			associationPackage = getPackageName((UMLClass)(otherEnd.getUMLElement()));
 
 			log.debug("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
 
@@ -417,16 +419,14 @@ public class SchemaTransformer implements Transformer {
 	
 	private void collectAssociatedPackages(UMLAssociationEnd thisEnd, UMLAssociationEnd otherEnd, List<UMLPackage> associatedPackageNames) {
 		if (otherEnd.isNavigable()) {
-
-			String associationPackage = transformerUtils.getFullPackageName(((UMLClass)(otherEnd.getUMLElement())));
-			String thisPackage = transformerUtils.getFullPackageName(((UMLClass)(thisEnd.getUMLElement())));
+			String associationPackage = getPackageName(((UMLClass)(otherEnd.getUMLElement())));
+			String thisPackage = getPackageName(((UMLClass)(thisEnd.getUMLElement())));
 			
 			log.debug("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
 			
 			if (!associationPackage.equalsIgnoreCase(thisPackage)){
 				associatedPackageNames.add( ((UMLClass)(otherEnd.getUMLElement())).getPackage());
 			}
-			
 		}
 	}
 	
@@ -525,7 +525,7 @@ public class SchemaTransformer implements Transformer {
 	private String getNamespace(UMLPackage pkg){
 		if (useGMETags){
 			try {
-				String gmeNamespace = transformerUtils.getNamespace(pkg);
+				String gmeNamespace = transformerUtils.getGMENamespace(pkg);
 				if (gmeNamespace != null) return gmeNamespace;
 			} catch (GenerationException ge) {
 				log.error("ERROR: ", ge);
@@ -536,11 +536,45 @@ public class SchemaTransformer implements Transformer {
 		return namespaceUriPrefix + transformerUtils.getFullPackageName(pkg);
 	}
 	
+	private String getNamespace(UMLClass klass){
+		if (useGMETags){
+			try {
+				String gmeNamespace = transformerUtils.getGMENamespace(klass);
+				String pkgName = transformerUtils.getGMEPackageName(klass);
+				if (pkgName == null)
+					pkgName=transformerUtils.getFullPackageName(klass);
+				if (gmeNamespace !=null && (gmeNamespace.endsWith("/") || !gmeNamespace.endsWith(pkgName)))
+					gmeNamespace=gmeNamespace+pkgName;
+				if (gmeNamespace != null) return gmeNamespace;
+			} catch (GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for package: " + transformerUtils.getFullPackageName(klass), ge));
+			}
+		}
+		
+		return namespaceUriPrefix + transformerUtils.getFullPackageName(klass);
+	}
+	
+	private String getPackageName(UMLClass klass){
+		String namespacePkgName = null;
+		if (useGMETags){
+			try {
+				namespacePkgName = transformerUtils.getGMEPackageName(klass);
+				if (namespacePkgName!=null)
+					return namespacePkgName;
+			} catch(GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME package name for package: " + transformerUtils.getFullPackageName(klass), ge));
+			}
+		}
+		return transformerUtils.getFullPackageName(klass);
+	}
+	
 	private String getPackageName(UMLPackage pkg){
 		String namespacePkgName = null;
 		if (useGMETags){
 			try {
-				namespacePkgName = transformerUtils.getNamespacePackageName(pkg);
+				namespacePkgName = transformerUtils.getGMEPackageName(pkg);
 				if (namespacePkgName!=null)
 					return namespacePkgName;
 			} catch(GenerationException ge) {
