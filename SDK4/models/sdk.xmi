@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-07-27 21:49:27">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-08-05 08:07:50">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -35140,6 +35140,7 @@
 				<UML:DataType xmi.id="eaxmiid5" name="DATE" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 			</UML:Namespace.ownedElement>
 		</UML:Model>
+		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_05041AC8_5091_47b6_83C5_980009553CB8" value="gme://caCORE.caCORE/3.2/" modelElement="MX_EAID_6318152E_A62D_4c4d_BE2E_1F237D6F09C1"/>
 		<UML:Diagram name="Many to Many" xmi.id="EAID_E8DE056F_3A0F_4ac7_8A32_8DE289851104" diagramType="ClassDiagram" owner="EAPK_13C2A393_A2C6_4d7c_9441_319ED9A21FBA" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
@@ -35702,16 +35703,17 @@
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_E557F490_7B68_40d3_B594_C0E96DF22757" value="financial" modelElement="EAID_4DC883C2_1380_46a9_B8DA_DD9BF0F5B7DE"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_8C41DE57_EBF0_478f_8EE5_CD8967A8C580" value="graphics" modelElement="EAID_8C521550_2832_4fa4_A000_42738EFC3AAB"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_628AE4A5_1D45_4d02_B607_CA49A7838E9F" value="scientific" modelElement="EAID_EA92F07A_21F0_4e5d_AF19_78393AE49A36"/>
-		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_DB96EF80_19EB_4724_9CE7_314E47B8998F" value="gme://test.test/1.5/differentpackage" modelElement="EAID_07222F4E_4551_42c6_901C_A026032747A0"/>
+		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_DB96EF80_19EB_4724_9CE7_314E47B8998F" value="gme://test.test/1.5/domain.differentpackage" modelElement="EAID_07222F4E_4551_42c6_901C_A026032747A0"/>
 		<UML:TaggedValue tag="description" xmi.id="EAID_C6049802_3CCF_49e4_9F51_26F9F5AD187D" value="Test package for Hibernate Validation" modelElement="EAID_4101C8C6_71FA_4471_AA3A_B50E0C815A4F"/>
-		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_3A221716_9AE3_4707_BBB0_A4210B04B421" value="gme://Apply+To+All.caBIG/1.5/" modelElement="EAID_F4B312E1_517A_4490_B652_7010C4FFE3DC"/>
-		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_47F925DB_D2A0_4f38_A32F_92B87277360F" value="gme://test.test/1.5/differentpackage.associations" modelElement="EAID_66EE634B_3015_4439_B802_C3FF1F9E3C50"/>
+		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_47F925DB_D2A0_4f38_A32F_92B87277360F" value="gme://test.test/1.5/domain.differentpackage.associations" modelElement="EAID_66EE634B_3015_4439_B802_C3FF1F9E3C50"/>
 		<UML:TaggedValue tag="NCI_GME_XML_ELEMENT" xmi.id="EAID_D95D1677_5CDD_46a9_917A_829F87E32DE8" value="DessertAlias" modelElement="EAID_FD6CE3D5_7F2F_4b6b_9BEC_76AD345F575D"/>
+		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_25C40795_41F8_4815_A1E4_A4D08B93176F" value="gme://test.test/1.5/domain.differentpackage.associations" modelElement="EAID_FD6CE3D5_7F2F_4b6b_9BEC_76AD345F575D"/>
 		<UML:TaggedValue tag="NCI_GME_XML_ELEMENT" xmi.id="EAID_F1F9AF71_91F2_4df8_A97F_B1DD87969DB4" value="UtensilAlias" modelElement="EAID_899CA401_1F3E_4dd8_8BD7_EB829DBA8BC6"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_7371EFC5_BC34_4c77_B03F_9A25551F85B2" value="Pie" modelElement="EAID_9C0FF2F5_3874_4c57_9874_9CF182D92F40"/>
 		<UML:TaggedValue tag="NCI_GME_XML_ELEMENT" xmi.id="EAID_17FADFE9_0ACE_4ee1_B434_F3D6132436B1" value="PieAlias" modelElement="EAID_9C0FF2F5_3874_4c57_9874_9CF182D92F40"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_DDA2DABB_831A_4e1c_909E_447E83A6E283" value="IceCream" modelElement="EAID_C2BE5245_4D22_40bb_8D81_06040A3910F3"/>
 		<UML:TaggedValue tag="NCI_GME_XML_ELEMENT" xmi.id="EAID_167D7321_7519_49c9_A2E4_7179EA403A83" value="IceCreamAlias" modelElement="EAID_C2BE5245_4D22_40bb_8D81_06040A3910F3"/>
+		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_9F01FBE9_73B9_41c3_B44B_3D7EBC9A75F4" value="gme://test.test/1.5/domain.differentpackage.associations" modelElement="EAID_C2BE5245_4D22_40bb_8D81_06040A3910F3"/>
 		<UML:TaggedValue tag="description" xmi.id="EAID_3A54246C_300D_44eb_BC04_B0CFD9C994CC" value="Test Class for Hibernate Validation" modelElement="EAID_854CDD85_9FDB_4d13_BA15_17621CD57F0B"/>
 		<UML:Diagram name="Inheritance" xmi.id="EAID_5CD4AEDA_84C6_40bd_A9A5_E2F53FFAA810" diagramType="ClassDiagram" owner="EAPK_C7B3C196_B60B_4843_ADB9_1F3C04CE9CC9" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
