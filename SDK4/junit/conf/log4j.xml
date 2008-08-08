@@ -81,7 +81,7 @@
 	</logger>
 
 	<root>
-		<priority value="debug" />
+		<priority value="error" />
 		<appender-ref ref="clientLog" />
 	</root>
 </log4j:configuration>
