@@ -1,12 +1,12 @@
 <%@ jet package="gov.nih.nci.codegen.validator.transformer.jet" 
-        class="HibernateValidatorTransformer"
-        skeleton="HibernateValidatorTransformerBase.skeleton" %>
+        class="ValidatorTransformer"
+        skeleton="ValidatorTransformerBase.skeleton" %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none"
 	default-autowire="no">
 
-	<bean name="HibernateValidatorModel" class="gov.nih.nci.codegen.validator.HibernateValidatorModel">
+	<bean name="ValidatorModel" class="gov.nih.nci.codegen.validator.ValidatorModel">
 		<constructor-arg>
 			<map>
 <%String enumValues;
@@ -21,17 +21,17 @@ for(UMLClass klass:transformerUtils.getAllHibernateClasses(model)){
 			addClassConfigEnd = true;
 			if (addClassConfigBegin) { %>			
 				<entry key="<%=transformerUtils.getFQCN(klass)%>">
-					<bean class="gov.nih.nci.codegen.validator.HibernateValidatorClass">
+					<bean class="gov.nih.nci.codegen.validator.ValidatorClass">
 						<constructor-arg value="<%=transformerUtils.getFQCN(klass)%>" />
 						<constructor-arg index="1"> <!-- attribute-level constraints -->
 							<map>
 <%			} %>
 								<entry key="<%=attr.getName()%>">
-									<bean class="gov.nih.nci.codegen.validator.HibernateValidatorAttribute">
+									<bean class="gov.nih.nci.codegen.validator.ValidatorAttribute">
 										<constructor-arg value="<%=attr.getName()%>" />
 										<constructor-arg index="1">
 											<list>
-												<bean class="gov.nih.nci.codegen.validator.HibernateValidatorConstraint">
+												<bean class="gov.nih.nci.codegen.validator.ValidatorConstraint">
 													<constructor-arg value="org.hibernate.validator.Pattern" />
 													<constructor-arg index="1">
 														<map>

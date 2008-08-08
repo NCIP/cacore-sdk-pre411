@@ -1,4 +1,4 @@
-import gov.nih.nci.codegen.transformer.UMLHibernateValidatorJETTransformer;
+import gov.nih.nci.codegen.transformer.UMLValidatorJETTransformer;
 import gov.nih.nci.codegen.Artifact;
 import gov.nih.nci.codegen.artifact.BaseArtifact;
 import gov.nih.nci.codegen.util.TransformerUtils;
@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class CLASS extends UMLHibernateValidatorJETTransformer {
+public class CLASS extends UMLValidatorJETTransformer {
 	
 	public Artifact executeTemplate(UMLModel model, Map<String, Object> configurationParams) throws GenerationException{
 	    initCaDSREnumMap();

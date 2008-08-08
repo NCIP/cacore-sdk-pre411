@@ -71,7 +71,7 @@
 		<fileset dir="${xsd-client.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
-		<fileset dir="${remote-client.lib.dir}">
+		<fileset dir="${thick-client.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${lib.dir}">

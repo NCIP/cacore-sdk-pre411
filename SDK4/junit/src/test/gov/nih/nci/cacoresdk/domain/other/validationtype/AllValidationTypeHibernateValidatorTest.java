@@ -30,7 +30,7 @@ public class AllValidationTypeHibernateValidatorTest extends SDKHibernateValidat
 		instanceValidator = new ClassValidator<AllValidationType>( AllValidationType.class );
 	}
 
-	//The following tests are only valid if the hibernate-validator-Config.xml file  
+	//The following tests are only valid if the validator-Config.xml file  
 	//located within the junit/settings/validator folder is used during code generation
 	
 //	public void testEmail() throws Exception {

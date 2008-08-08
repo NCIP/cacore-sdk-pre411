@@ -34,7 +34,7 @@
 		</property>
 		<property name="serviceURL" value="@CADSR_CONNECTION_URL@"/>
 		<property name="namespacePrefix" value="@NAMESPACE_PREFIX@"/>
-		<property name="enabled" value="@ENABLE_HIBERNATE_VALIDATOR_CFG_TRANSFORMER@"/>
+		<property name="enabled" value="@ENABLE_VALIDATOR_CFG_TRANSFORMER@"/>
 		<property name="name" value="Validator Config File Transformer"/>
 		<property name="transformerUtils" ref="TransformerUtils"></property>			
 	</bean>

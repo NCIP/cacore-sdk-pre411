@@ -28,7 +28,7 @@ public abstract class SDKXSDTestBase extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		useGMETags=Boolean.parseBoolean(System.getProperty("useGMETags"));
-		log.error("useGMETags: " + useGMETags);
+		log.debug("useGMETags: " + useGMETags);
 		namespaceUriPrefix=System.getProperty("namespaceUriPrefix");
 	}
 
@@ -277,16 +277,11 @@ public abstract class SDKXSDTestBase extends TestCase {
 		Document doc = getDoc();
 
 		validateClassElements(klass,klassAlias);
-
-//		System.out.println("Superclass for class " + klass.getSimpleName()
-//				+ ": " + superklassName);
 		
 		String xpath = "/xs:schema/xs:complexType[@name='" + klassAlias + "']" 
 			+ "/xs:complexContent/xs:extension[@base='" + superklassName + "']"
 			+ "/xs:sequence/xs:element[@name='" + rolename + "']"
 			+ "/xs:complexType/xs:sequence/xs:element[@ref='" + associatedKlassAlias + "']";
-
-//		System.out.println("xpath: " + xpath);
 		
 		List<Element> elts = queryXSD(doc, xpath);
 		assertEquals(1, elts.size());
@@ -315,14 +310,38 @@ public abstract class SDKXSDTestBase extends TestCase {
 			+ klassAlias + "']/xs:attribute[@name='"
 			+ attributeName + "']";
 
-//		System.out.println("xpath: " + xpath);
-
 		List<Element> attributeElts = queryXSD(doc, xpath);
 		assertNotNull(attributeElts);
 		assertEquals(1, attributeElts.size());
 
 		Element elt = attributeElts.get(0);
 		assertEquals(elt.getAttributeValue("type").toLowerCase(),"xs:"+attributeType.toLowerCase());
+	}
+	
+	protected void validateAttributeWithRestriction(Class klass,
+			String attributeName,String attributeType,String permissibleValue) throws Exception {
+
+		Document doc = getDoc();
+
+		String xpath = "/xs:schema/xs:complexType[@name='"
+			+ klass.getSimpleName() + "']/xs:attribute[@name='"
+			+ attributeName + "']/xs:simpleType/xs:restriction";
+
+		List<Element> restrictionElts = queryXSD(doc, xpath);
+		assertNotNull(restrictionElts);
+		assertEquals(1, restrictionElts.size());
+
+		Element restrictionElt = restrictionElts.get(0);
+		assertEquals(restrictionElt.getAttributeValue("base").toLowerCase(),"xs:"+attributeType.toLowerCase());
+		
+		List<Element> enumerationElts = restrictionElt.getChildren();
+		assertNotNull(enumerationElts);
+		log.debug("enumerationElts.size(): "+enumerationElts.size());
+
+		Element enumerationElt = locateChild(enumerationElts,permissibleValue);
+		
+		assertNotNull(enumerationElt);
+		assertEquals(enumerationElt.getAttributeValue("value"),permissibleValue);
 	}
 
 	protected void validateSubclassAttributeElement(Class klass,
@@ -357,6 +376,17 @@ public abstract class SDKXSDTestBase extends TestCase {
 			return klass.getSuperclass().getSimpleName();
 
 		return klass.getSuperclass().getPackage().getName() + ":" + klass.getSuperclass().getSimpleName();
-
+	}
+	
+	private Element locateChild(List<Element> eltList, String permissibleValue){
+		for (Element elt:eltList){
+			log.debug("* * * "+elt.getAttributeValue("value")+"; permissibleValue: "+permissibleValue);
+			if (elt.getAttributeValue("value").equals(permissibleValue)){
+				log.debug("Child found for permissible value: " +elt.getAttributeValue("value"));
+				return elt;
+			}
+		}
+		
+		return null;
 	}
 }

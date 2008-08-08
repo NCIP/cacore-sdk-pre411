@@ -268,6 +268,15 @@
 			<equals arg1="${ENABLE_XSD_GENERATION}" arg2="true" casesensitive="false" trim="true" />
 		</and>
 	</condition>
+	<condition property="ENABLE_GENERATE_XSD_WITH_PERMISSIBLE_VALUES" value="true" else="false">
+		<and>
+			<or>
+				<equals arg1="${GENERATE_XSD_WITH_PERMISSIBLE_VALUES}" arg2="true" casesensitive="false" trim="true" />
+				<equals arg1="${GENERATE_XSD_WITH_PERMISSIBLE_VALUES}" arg2="yes" casesensitive="false" trim="true" />
+			</or>
+			<equals arg1="${ENABLE_XSD_GENERATION}" arg2="true" casesensitive="false" trim="true" />
+		</and>
+	</condition>
 	<condition property="ENABLE_GME_TAGS_VALIDATOR" value="true" else="false">
 		<and>
 			<or>
@@ -277,6 +286,12 @@
 			<equals arg1="${ENABLE_XSD_GENERATION}" arg2="true" casesensitive="false" trim="true" />
 			<equals arg1="${ENABLE_GENERATE_XSD_WITH_GME_TAGS}" arg2="true" casesensitive="false" trim="true" />
 		</and>
+	</condition>
+	<condition property="ENABLE_VALIDATOR_CFG_TRANSFORMER" value="true" else="false">
+		<or>
+			<equals arg1="${ENABLE_HIBERNATE_VALIDATOR}" arg2="true" casesensitive="false" trim="true" />
+			<equals arg1="${ENABLE_GENERATE_XSD_WITH_PERMISSIBLE_VALUES}" arg2="true" casesensitive="false" trim="true" />
+		</or>
 	</condition>
 	<condition property="ENABLE_WSDD_GENERATION" value="true" else="false">
 		<or>
@@ -380,6 +395,8 @@
 			<replacefilter token="@GENERATE_CASTOR_MAPPING@" value="${ENABLE_CASTOR_MAPPING_GENERATION}"/>
 			<replacefilter token="@GENERATE_XSD@" value="${ENABLE_XSD_GENERATION}"/>
 			<replacefilter token="@GENERATE_XSD_WITH_GME_TAGS@" value="${ENABLE_GENERATE_XSD_WITH_GME_TAGS}"/>
+			<replacefilter token="@GENERATE_XSD_WITH_PERMISSIBLE_VALUES@" value="${ENABLE_GENERATE_XSD_WITH_PERMISSIBLE_VALUES}"/>
+			<replacefilter token="@ENABLE_VALIDATOR_CFG_TRANSFORMER@" value="${ENABLE_VALIDATOR_CFG_TRANSFORMER}"/>
 			<replacefilter token="@GENERATE_WSDD@" value="${ENABLE_WSDD_GENERATION}"/>
 			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR@" value="${ENABLE_HIBERNATE_VALIDATOR}"/>
 			<replacefilter token="@ENABLE_HIBERNATE_VALIDATOR_START@" value="${ENABLE_HIBERNATE_VALIDATOR_START}"/>
@@ -459,16 +476,16 @@
 	<!--***********************************************************************
 	*** Prepare 
 	*********************************************************************** -->
-	<target name="prepare-condition-hibernate-validator-codegen">
+	<target name="prepare-condition-validator-codegen">
 		<SDKecho message="${ant.project.name}: Checking the condition for codegen validator project build"/>
-		<condition property="prepare-required-hibernate-validator-codegen">
+		<condition property="prepare-required-validator-codegen">
 			<not>
 				<available file="${codegen.validator.dir}/${validator.dist.dir}/${validator.file.output.name}"/>
 			</not>
 		</condition>
 	</target>
 	
-	<target name="prepare-hibernate-validator-codegen" depends="prepare-condition-hibernate-validator-codegen" if="prepare-required-hibernate-validator-codegen">	
+	<target name="prepare-validator-codegen" depends="prepare-condition-validator-codegen" if="prepare-required-validator-codegen">	
 		<SDKecho message="${ant.project.name}: Preparing the codegen validator project"/>
 		<ant antfile="${codegen.validator.dir}\build.xml" target="dist" inheritall="false" inheritrefs="false" />
 	</target>
@@ -525,7 +542,7 @@
 	<!--***********************************************************************
 	*** Runs the Hibernate Validator Code Generator 
 	*********************************************************************** -->
-	<target name="codegen-validator" depends="prepare-hibernate-validator-codegen,init" description="Runs the Hibernate Validator Code Generator">
+	<target name="codegen-validator" depends="prepare-validator-codegen,init" description="Runs the Validator Code Generator">
 		<SDKecho message="${ant.project.name}: Running the Hibernate Validator code generator"/>
 		<java classname="gov.nih.nci.codegen.Generator" failonerror="true" fork="true" >
 			<arg value="${codegen.config.validator.file}" />
