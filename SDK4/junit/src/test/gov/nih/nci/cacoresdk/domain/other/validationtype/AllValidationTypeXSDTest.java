@@ -51,12 +51,14 @@ public class AllValidationTypeXSDTest extends SDKXSDTestBase
 
 		validateClassElements(targetClass);
 
-		validateAttributeWithRestriction(targetClass,"pattern", "String","DEPT");
-		validateAttributeWithRestriction(targetClass,"pattern", "String","BLDG");
-		validateAttributeWithRestriction(targetClass,"pattern", "String","FL");
-		validateAttributeWithRestriction(targetClass,"pattern", "String","RM");
-		validateAttributeWithRestriction(targetClass,"pattern", "String","APT");
-		validateAttributeWithRestriction(targetClass,"pattern", "String","STE");
+		if (usePermissibleValues){
+			validateAttributeWithRestriction(targetClass,"pattern", "String","DEPT");
+			validateAttributeWithRestriction(targetClass,"pattern", "String","BLDG");
+			validateAttributeWithRestriction(targetClass,"pattern", "String","FL");
+			validateAttributeWithRestriction(targetClass,"pattern", "String","RM");
+			validateAttributeWithRestriction(targetClass,"pattern", "String","APT");
+			validateAttributeWithRestriction(targetClass,"pattern", "String","STE");
+		}
 
 	}	
 	

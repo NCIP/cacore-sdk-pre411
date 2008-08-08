@@ -23,12 +23,15 @@ public abstract class SDKXSDTestBase extends TestCase {
 	private String prefix = "xs";
 	
 	protected boolean useGMETags;
+	protected boolean usePermissibleValues;
 	private String namespaceUriPrefix=null;
 
 	protected void setUp() throws Exception {
 		super.setUp();
 		useGMETags=Boolean.parseBoolean(System.getProperty("useGMETags"));
+		usePermissibleValues=Boolean.parseBoolean(System.getProperty("usePermissibleValues"));
 		log.debug("useGMETags: " + useGMETags);
+		log.debug("usePermissibleValues: " + usePermissibleValues);
 		namespaceUriPrefix=System.getProperty("namespaceUriPrefix");
 	}
 
@@ -72,6 +75,7 @@ public abstract class SDKXSDTestBase extends TestCase {
 				filename=filename.replace("://", "_");
 				filename=filename.replace("/", "_");
 			}
+			log.debug("schema filename: "+filename);
 			SAXBuilder builder = new SAXBuilder();
 			ClassPathResource  classPathResource=new ClassPathResource(filename);
 			doc = builder.build(classPathResource.getInputStream());

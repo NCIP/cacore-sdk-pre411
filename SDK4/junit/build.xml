@@ -71,6 +71,9 @@
 		<fileset dir="${xsd-client.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
+		<fileset dir="${remote-client.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
 		<fileset dir="${thick-client.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
@@ -146,6 +149,7 @@
 				<sysproperty key="webservice.url" value="${SERVER_URL}/services/${WEBSERVICE_NAME}" />
 				<sysproperty key="log4j.configuration" value="./conf/log4j.xml"/>
 				<sysproperty key="useGMETags" value="${GENERATE_XSD_WITH_GME_TAGS}"/>
+				<sysproperty key="usePermissibleValues" value="${GENERATE_XSD_WITH_PERMISSIBLE_VALUES}"/>
 				<sysproperty key="namespaceUriPrefix" value="${NAMESPACE_PREFIX}"/>
 
 				<classpath>
