@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-08-05 08:07:50">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-08-08 14:23:39">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -35140,7 +35140,7 @@
 				<UML:DataType xmi.id="eaxmiid5" name="DATE" visibility="private" isRoot="false" isLeaf="false" isAbstract="false"/>
 			</UML:Namespace.ownedElement>
 		</UML:Model>
-		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_05041AC8_5091_47b6_83C5_980009553CB8" value="gme://caCORE.caCORE/3.2/" modelElement="MX_EAID_6318152E_A62D_4c4d_BE2E_1F237D6F09C1"/>
+		<UML:TaggedValue tag="NCI_GME_XML_NAMESPACE" xmi.id="EAID_81113ADD_4975_48f2_A8DA_DAA875A76BCC" value="gme://caCORE.caCORE/3.2/" modelElement="EAID_6A1F7B6A_C113_44b4_85DC_AC4BBBA11077"/>
 		<UML:Diagram name="Many to Many" xmi.id="EAID_E8DE056F_3A0F_4ac7_8A32_8DE289851104" diagramType="ClassDiagram" owner="EAPK_13C2A393_A2C6_4d7c_9441_319ED9A21FBA" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
