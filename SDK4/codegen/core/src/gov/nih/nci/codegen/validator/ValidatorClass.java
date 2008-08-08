@@ -6,18 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class HibernateValidatorClass {
+public class ValidatorClass {
 
 	private String name; 
-	private Map<String,HibernateValidatorAttribute> attributes;
-	private List<HibernateValidatorConstraint> classConstraints;
+	private Map<String,ValidatorAttribute> attributes;
+	private List<ValidatorConstraint> classConstraints;
 	
 	private static final String NL = "\n";
 	private static final String TAB = "\t";
 
-	public HibernateValidatorClass(String name,
-			Map<String, HibernateValidatorAttribute> attributes,
-			List<HibernateValidatorConstraint> classConstraints) {
+	public ValidatorClass(String name,
+			Map<String, ValidatorAttribute> attributes,
+			List<ValidatorConstraint> classConstraints) {
 		this.name = name;
 		this.attributes = attributes;
 		this.classConstraints = classConstraints;
@@ -40,13 +40,13 @@ public class HibernateValidatorClass {
 		return retValue.toString();
 	}
 	
-	public HibernateValidatorAttribute getAttribute(String attributeName) {
+	public ValidatorAttribute getAttribute(String attributeName) {
 		return attributes.get(attributeName);
 	}
 	
 	public String getConstraintAnnotationString(){
 		StringBuilder retValue = new StringBuilder();
-		for(HibernateValidatorConstraint constraint: classConstraints){
+		for(ValidatorConstraint constraint: classConstraints){
 			retValue.append(NL).append(constraint.getAnnotationString());
 		}
 		
@@ -65,7 +65,7 @@ public class HibernateValidatorClass {
 		}
 		
 		//add class-level constraint imports
-		for (HibernateValidatorConstraint classConstraint : classConstraints){
+		for (ValidatorConstraint classConstraint : classConstraints){
 			set.add(classConstraint.getValidatorClassName());
 		}
 		

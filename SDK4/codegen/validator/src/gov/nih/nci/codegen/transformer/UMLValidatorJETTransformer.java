@@ -26,9 +26,9 @@ import org.apache.log4j.Logger;
  * @author Daniel Dumitru
  *
  */
-public abstract class UMLHibernateValidatorJETTransformer implements Transformer
+public abstract class UMLValidatorJETTransformer implements Transformer
 {
-	private static Logger log = Logger.getLogger(UMLHibernateValidatorJETTransformer.class);
+	private static Logger log = Logger.getLogger(UMLValidatorJETTransformer.class);
 	
 	private ArtifactHandler artifactHandler;
 	

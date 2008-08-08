@@ -16,7 +16,7 @@
 		</constructor-arg>
 		<constructor-arg index="2">
 			<list>
-				<ref bean="HibernateValidatorTransformer"/>
+				<ref bean="ValidatorTransformer"/>
 			</list>
 		</constructor-arg>
 	</bean>
@@ -24,18 +24,18 @@
 	<!-- 									 -->
 	<!--  Transformers						 -->
 	<!-- 									 -->
-	<bean name="HibernateValidatorTransformer" class="gov.nih.nci.codegen.validator.transformer.jet.HibernateValidatorTransformer">
+	<bean name="ValidatorTransformer" class="gov.nih.nci.codegen.validator.transformer.jet.ValidatorTransformer">
 		<property name="artifactHandler">
 			<bean class="gov.nih.nci.codegen.handler.FileHandler">
 				<property name="useArtifactSource" value="false"/>
 				<property name="outputDir" value="@VALIDATOR_OUTPUTDIR@"/>
-				<property name="fileName" value="hibernate-validator-Config.xml"/>				
+				<property name="fileName" value="validator-Config.xml"/>				
 			</bean>
 		</property>
 		<property name="serviceURL" value="@CADSR_CONNECTION_URL@"/>
 		<property name="namespacePrefix" value="@NAMESPACE_PREFIX@"/>
-		<property name="enabled" value="@ENABLE_HIBERNATE_VALIDATOR@"/>
-		<property name="name" value="Hibernate Validator Config File Transformer"/>
+		<property name="enabled" value="@ENABLE_HIBERNATE_VALIDATOR_CFG_TRANSFORMER@"/>
+		<property name="name" value="Validator Config File Transformer"/>
 		<property name="transformerUtils" ref="TransformerUtils"></property>			
 	</bean>
 

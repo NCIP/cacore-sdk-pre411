@@ -3,13 +3,13 @@ package gov.nih.nci.codegen.validator;
 import java.util.Iterator;
 import java.util.Map;
 
-public class HibernateValidatorModel {
+public class ValidatorModel {
 
-	private Map<String,HibernateValidatorClass> classes;
+	private Map<String,ValidatorClass> classes;
 	private static final String NL = "\n";
 	private static final String TAB = "\t";
 
-	public HibernateValidatorModel(Map<String,HibernateValidatorClass> classes) {
+	public ValidatorModel(Map<String,ValidatorClass> classes) {
 		this.classes = classes;
 	}
 
@@ -31,7 +31,7 @@ public class HibernateValidatorModel {
 		return retValue.toString();
 	}
 
-	public HibernateValidatorClass getClass(String className) {
+	public ValidatorClass getClass(String className) {
 		return classes.get(className);
 	}
 	

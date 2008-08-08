@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 <beans default-lazy-init="false" default-dependency-check="none" default-autowire="no">
 	
-	<import resource="hibernate-validator-Config.xml"/>
+	<import resource="validator-Config.xml"/>
 	<import resource="PkGenerator-Metadata-Config.xml"/>
 	<!-- 									 -->
 	<!--  Entry point for the Code Generator -->
@@ -62,7 +62,7 @@
 	<bean name="TransformerUtils" class="gov.nih.nci.codegen.util.TransformerUtils">
 		<constructor-arg ref="UMLModelFileProperties"></constructor-arg>
 		<constructor-arg ref="CascadeStyles" index="1"></constructor-arg>
-		<constructor-arg ref="HibernateValidatorModel" index="2"></constructor-arg>
+		<constructor-arg ref="ValidatorModel" index="2"></constructor-arg>
 	</bean>
 
 	<bean name="CascadeStyles" class="java.util.ArrayList">
@@ -258,6 +258,7 @@
 	</bean>
 	
 	<bean name="SchemaTransformer" class="gov.nih.nci.codegen.transformer.SchemaTransformer">
+		<property name="usePermissibleValues" value="@GENERATE_XSD_WITH_PERMISSIBLE_VALUES@" />	
 		<property name="useGMETags" value="@GENERATE_XSD_WITH_GME_TAGS@" />
 		<property name="namespaceUriPrefix" value="@NAMESPACE_PREFIX@" />
 		<property name="artifactHandler">

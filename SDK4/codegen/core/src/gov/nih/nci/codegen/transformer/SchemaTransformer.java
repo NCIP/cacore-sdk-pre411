@@ -55,6 +55,8 @@ public class SchemaTransformer implements Transformer {
 	private String namespaceUriPrefix;
 	
 	private boolean useGMETags = false;
+	
+	private boolean usePermissibleValues = false;
 
 	private boolean enabled = true;
 	
@@ -280,7 +282,14 @@ public class SchemaTransformer implements Transformer {
 						primitiveCollectionAtts.add(attr);
 						continue;
 					}
-					attributeElement.setAttribute("type", type);
+					
+					
+					if (usePermissibleValues){
+						addRestrictionEnumeration(klass,attr,attributeElement,type, w3cNS);
+					} else{
+						attributeElement.setAttribute("type", type);	
+					}
+
 					extension.addContent(attributeElement);
 				}
 			}
@@ -325,7 +334,11 @@ public class SchemaTransformer implements Transformer {
 						continue;
 					}				
 					
-					attributeElement.setAttribute("type", type);
+					if (usePermissibleValues){
+						addRestrictionEnumeration(klass,attr,attributeElement,type, w3cNS);
+					} else{
+						attributeElement.setAttribute("type", type);	
+					}
 					
 					addCaDSRAnnotation(attr, attributeElement, w3cNS);
 					
@@ -467,6 +480,36 @@ public class SchemaTransformer implements Transformer {
 			complexType.addContent(innerSequence);
 			associationElement.addContent(complexType);    
 	}	
+	
+	private void addRestrictionEnumeration(UMLClass klass, UMLAttribute attr, Element attributeElement, String type, Namespace w3cNS){
+		Collection<String> permissibleValues =transformerUtils.getPermissibleValues(klass, attr);
+		log.debug("* * * permissibleValues size: " + permissibleValues.size() + " for class: "+klass.getName()+" and attribute: " +attr.getName());
+		if (!(permissibleValues.isEmpty())){
+			//<xs:simpleType>
+			//	<xs:restriction base="xs:string">
+			//		<xs:enumeration value="Audi" />
+			//		<xs:enumeration value="Golf" />
+			//		<xs:enumeration value="BMW" />
+			//	</xs:restriction>
+			//</xs:simpleType>
+			Element simpleTypeElement = new Element("simpleType", w3cNS);
+			
+			Element restrictionElement = new Element("restriction", w3cNS);
+			restrictionElement.setAttribute("base", "xs:string");
+
+			for(String permissibleValue: permissibleValues){
+				Element enumerationElement = new Element("enumeration", w3cNS);
+				enumerationElement.setAttribute("value", permissibleValue);
+
+				restrictionElement.addContent(enumerationElement);
+			}
+
+			simpleTypeElement.addContent(restrictionElement);
+			attributeElement.addContent(simpleTypeElement);
+		} else{
+			attributeElement.setAttribute("type", type);
+		}
+	}
 
 	private String getName(String type) {
 		String finalType = "xs:";
@@ -668,5 +711,9 @@ public class SchemaTransformer implements Transformer {
 
 	public void setUseGMETags(boolean useGMETags) {
 		this.useGMETags = useGMETags;
+	}
+	
+	public void setUsePermissibleValues(boolean usePermissibleValues) {
+		this.usePermissibleValues = usePermissibleValues;
 	}
 }

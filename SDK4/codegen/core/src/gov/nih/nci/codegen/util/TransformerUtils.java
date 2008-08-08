@@ -2,9 +2,9 @@ package gov.nih.nci.codegen.util;
 
 import gov.nih.nci.codegen.GenerationException;
 import gov.nih.nci.codegen.GeneratorError;
-import gov.nih.nci.codegen.validator.HibernateValidatorAttribute;
-import gov.nih.nci.codegen.validator.HibernateValidatorClass;
-import gov.nih.nci.codegen.validator.HibernateValidatorModel;
+import gov.nih.nci.codegen.validator.ValidatorAttribute;
+import gov.nih.nci.codegen.validator.ValidatorClass;
+import gov.nih.nci.codegen.validator.ValidatorModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -50,7 +50,7 @@ public class TransformerUtils
 	private Set<String> EXCLUDE_NAMESPACES = new HashSet<String>();
 	private String DATABASE_TYPE;
 	private Map<String,String> CASCADE_STYLES = new HashMap<String,String>();
-	private HibernateValidatorModel hvModel;
+	private ValidatorModel vModel;
 	
 	private static final String TV_ID_ATTR_COLUMN = "id-attribute";
 	private static final String TV_MAPPED_ATTR_COLUMN = "mapped-attributes";
@@ -84,7 +84,7 @@ public class TransformerUtils
 	public static final String  PK_GENERATOR_SYSTEMWIDE = "NCI_GENERATOR_SYSTEMWIDE.";
 
 	
-	public TransformerUtils(Properties umlModelFileProperties,List cascadeStyles, HibernateValidatorModel hvModel) {
+	public TransformerUtils(Properties umlModelFileProperties,List cascadeStyles, ValidatorModel vModel) {
 			BASE_PKG_LOGICAL_MODEL = umlModelFileProperties.getProperty("Logical Model") == null ? "" :umlModelFileProperties.getProperty("Logical Model").trim();
 			BASE_PKG_DATA_MODEL = umlModelFileProperties.getProperty("Data Model")==null ? "" : umlModelFileProperties.getProperty("Data Model").trim();
 			
@@ -109,8 +109,8 @@ public class TransformerUtils
 				CASCADE_STYLES.put((String) cascadeStyle, (String)cascadeStyle);
 			}
 			
-			this.hvModel = hvModel;
-			log.debug("HibernateValidatorModel: " + hvModel);
+			this.vModel = vModel;
+			log.debug("ValidatorModel: " + vModel);
 
 		}
 	
@@ -1867,34 +1867,49 @@ public class TransformerUtils
 	
 	public String getHibernateValidatorConstraints(UMLClass klass){
 		
-		HibernateValidatorClass hvClass = hvModel.getClass(getFQCN(klass));
+		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
 		
-		if (hvClass==null) return "";
+		if (vClass==null) return "";
 		
-		return "\t" + hvClass.getConstraintAnnotationString();
+		return "\t" + vClass.getConstraintAnnotationString();
 
 	}
 	
 	public String getHibernateValidatorConstraints(UMLClass klass,UMLAttribute attr){
 		
-		HibernateValidatorClass hvClass = hvModel.getClass(getFQCN(klass));
+		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
 		
-		if (hvClass==null) return "";
+		if (vClass==null) return "";
 		
-		HibernateValidatorAttribute hvAttr =  hvClass.getAttribute(attr.getName());
+		ValidatorAttribute vAttr =  vClass.getAttribute(attr.getName());
 		
-		if (hvAttr==null) return "";
+		if (vAttr==null) return "";
 
-		return "\t" + hvAttr.getConstraintAnnotationString();
+		return "\t" + vAttr.getConstraintAnnotationString();
 	}
+	
+	public Collection<String> getPermissibleValues(UMLClass klass,UMLAttribute attr){
+		
+		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
+		
+		if (vClass==null) return new ArrayList<String>();
+		
+		ValidatorAttribute vAttr =  vClass.getAttribute(attr.getName());
+		
+		if (vAttr==null) return new ArrayList<String>();
+
+		return vAttr.getConstraintCollection();
+	}
+	
+	
 	
 	private Set<String> getHibernateValidatorConstraintImports(UMLClass klass){
 		
-		HibernateValidatorClass hvClass = hvModel.getClass(getFQCN(klass));
+		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
 		
-		if (hvClass==null) return new HashSet<String>();
+		if (vClass==null) return new HashSet<String>();
 		
-		return hvClass.getConstraintImports();
+		return vClass.getConstraintImports();
 	}
 	
 	

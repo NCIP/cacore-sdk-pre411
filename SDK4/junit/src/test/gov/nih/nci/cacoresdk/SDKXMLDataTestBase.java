@@ -257,19 +257,13 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 	throws Exception {
 		
 //		log.debug("Validating Class association from: " + filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
-
 		org.jdom.Document doc = getDocument(filepathPrefix + resultObj.getClass().getSimpleName() + filepathSuffix);
 
-//		String xpath = "" + Class.forName(klassName).getSimpleName();
-//		log.debug("xpath: " + xpath);
-
-//		List<Element> elts = queryXMLData(doc, xpath);
-//		assertEquals(1, elts.size());
 		Element klassElt = doc.getRootElement();
 		
 		List<Element> children = klassElt.getChildren();
 		assertNotNull(children);
-		//assertEquals(1,children.size());
+
 		assertEquals(1,countChildren(children,roleName));
 		Element roleNameElt = locateChild(children,roleName);
 		assertNotNull(roleNameElt);
@@ -277,7 +271,7 @@ public abstract class SDKXMLDataTestBase extends TestCase {
 		
 		children = roleNameElt.getChildren();
 		assertNotNull(children);
-//		assertEquals(1,countChildren(children,associatedKlassName)); // AllDataType.stringCollection > 1; i.e., = 3
+
 		Element associatedKlassElt = locateChild(children,associatedKlassName);
 		assertNotNull(associatedKlassElt);
 	}

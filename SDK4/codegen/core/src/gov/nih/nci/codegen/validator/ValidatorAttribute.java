@@ -1,17 +1,19 @@
 package gov.nih.nci.codegen.validator;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class HibernateValidatorAttribute {
+public class ValidatorAttribute {
 
 	private String name; 
-	private List<HibernateValidatorConstraint> constraints;
+	private List<ValidatorConstraint> constraints;
 	private static final String NL = "\n";
 	private static final String TAB = "\t";
 
-	public HibernateValidatorAttribute(String name, List<HibernateValidatorConstraint> constraints) {
+	public ValidatorAttribute(String name, List<ValidatorConstraint> constraints) {
 		this.name=name;
 		this.constraints = constraints;
 	}
@@ -24,7 +26,7 @@ public class HibernateValidatorAttribute {
 		
 		StringBuilder retValue = new StringBuilder();
 		retValue.append("HVAttribute ( ").append("name=").append(this.name).append(NL);
-		for(HibernateValidatorConstraint constraint: constraints){
+		for(ValidatorConstraint constraint: constraints){
 			retValue.append(constraint.getAnnotationString()).append(NL);
 		}
 
@@ -33,9 +35,18 @@ public class HibernateValidatorAttribute {
 		return retValue.toString();
 	}
 	
+	public Collection<String> getConstraintCollection(){
+		Collection<String> constraintCollection = new ArrayList<String>();
+		for(ValidatorConstraint constraint: constraints){
+			constraintCollection.addAll(constraint.getConstraintValues());
+		}
+		
+		return constraintCollection;
+	}
+	
 	public String getConstraintAnnotationString(){
 		StringBuilder retValue = new StringBuilder();
-		for(HibernateValidatorConstraint constraint: constraints){
+		for(ValidatorConstraint constraint: constraints){
 			retValue.append(NL).append(TAB).append(constraint.getAnnotationString());
 		}
 		
@@ -44,7 +55,7 @@ public class HibernateValidatorAttribute {
 	
 	public Set<String> getConstraintImports(){
 		HashSet<String> set = new HashSet<String>();
-		for(HibernateValidatorConstraint constraint: constraints){
+		for(ValidatorConstraint constraint: constraints){
 			set.add(constraint.getValidatorClassName());
 		}
 		
