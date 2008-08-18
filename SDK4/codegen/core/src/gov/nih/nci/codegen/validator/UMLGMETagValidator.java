@@ -95,7 +95,7 @@ public class UMLGMETagValidator implements Validator
 	private void validatePackages(UMLModel model, GeneratorErrors errors) {
 		Hashtable<String, Collection<UMLClass>> packages = new Hashtable<String, Collection<UMLClass>>();
 		try {
-			setModelNamespace(model,errors);//if set, override default Namespace prefix
+			setModelNamespace(model,transformerUtils.getBasePkgLogicalModel(),errors);//if set, override default Namespace prefix
 			transformerUtils.collectPackages(transformerUtils.getAllClasses(model), packages,namespaceUriPrefix);
 
 			if (packages == null || packages.isEmpty()){
@@ -435,20 +435,39 @@ public class UMLGMETagValidator implements Validator
 		}
 	}
 	
-	private void setModelNamespace(UMLModel model,GeneratorErrors errors){
-		//override deploy.properties NAMESPACE_PREFIX property with GME namespace tag value, if it exists
-		try {
-			String modelNamespacePrefix = transformerUtils.getNamespace(model);
-			if (modelNamespacePrefix != null) {
-				if (!modelNamespacePrefix.endsWith("/"))
-					modelNamespacePrefix=modelNamespacePrefix+"/";
-				this.namespaceUriPrefix = modelNamespacePrefix.replace(" ", "_");
+	private void setModelNamespace(UMLModel model, String basePkgLogicalModel,GeneratorErrors errors){
+			//override deploy.properties NAMESPACE_PREFIX property with GME namespace tag value, if it exists
+
+			StringTokenizer tokenizer = new StringTokenizer(basePkgLogicalModel, ".");
+			UMLPackage pkg=null;
+			if(tokenizer.hasMoreTokens()){
+				pkg = model.getPackage(tokenizer.nextToken());
+				
+				while(pkg!=null && tokenizer.hasMoreTokens()){
+					pkg = pkg.getPackage(tokenizer.nextToken());
+				}
 			}
-		} catch (GenerationException ge) {
-			log.error("ERROR: ", ge);
-			errors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for model: " + model.getName(), ge));
+
+			if (pkg==null){
+				errors.addError(new GeneratorError(getName() + ": Error getting the Logical Model package for model: " + pkg.getName()+". Make sure the LOGICAL_MODEL property in deploy.property is valid."));
+			}
+			
+			if (pkg!=null){
+				log.debug("* * * pkgName: " + pkg.getName());
+				try {
+					String modelNamespacePrefix = transformerUtils.getNamespace(pkg);
+					log.debug("* * * modelNamespacePrefix: " + modelNamespacePrefix);
+					if (modelNamespacePrefix != null) {
+						if (!modelNamespacePrefix.endsWith("/"))
+							modelNamespacePrefix=modelNamespacePrefix+"/";
+						this.namespaceUriPrefix = modelNamespacePrefix.replace(" ", "_");
+					}
+				} catch (GenerationException ge) {
+					log.error("ERROR: ", ge);
+					errors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for model: " + pkg.getName(), ge));
+				}
+			}
 		}
-	}
 
 	public void setEnabled(boolean enabled)
 	{

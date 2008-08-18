@@ -259,6 +259,10 @@ public class TransformerUtils
 		else
 			return path;
 	}
+	
+	public String getBasePkgLogicalModel(){
+		return BASE_PKG_LOGICAL_MODEL;
+	}
 
 	public UMLClass getSuperClass(UMLClass klass) throws GenerationException
 	{

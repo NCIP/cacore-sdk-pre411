@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.jdom.DocType;
@@ -74,7 +75,7 @@ public class XmlMappingTransformer implements Transformer {
 		GeneratorErrors errors = new GeneratorErrors();
 		Collection<UMLClass> classes = null;
 		
-		setModelNamespace(model);
+		setModelNamespace(model,transformerUtils.getBasePkgLogicalModel());
 
 		try {
 			classes = transformerUtils.getAllClasses(model);
@@ -418,18 +419,37 @@ public class XmlMappingTransformer implements Transformer {
 		return type.toLowerCase();
 	}
 	
-	private void setModelNamespace(UMLModel model){
+	private void setModelNamespace(UMLModel model, String basePkgLogicalModel){
 		//override deploy.properties NAMESPACE_PREFIX property with GME namespace tag value, if it exists
-		try {
-			String modelNamespacePrefix = transformerUtils.getNamespace(model);
-			if (modelNamespacePrefix != null) {
-				if (!modelNamespacePrefix.endsWith("/"))
-					modelNamespacePrefix=modelNamespacePrefix+"/";
-				this.namespaceUriPrefix = modelNamespacePrefix.replace(" ", "_");
+
+		StringTokenizer tokenizer = new StringTokenizer(basePkgLogicalModel, ".");
+		UMLPackage pkg=null;
+		if(tokenizer.hasMoreTokens()){
+			pkg = model.getPackage(tokenizer.nextToken());
+			
+			while(pkg!=null && tokenizer.hasMoreTokens()){
+				pkg = pkg.getPackage(tokenizer.nextToken());
 			}
-		} catch (GenerationException ge) {
-			log.error("ERROR: ", ge);
-			generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for model: " + model.getName(), ge));
+		}
+
+		if (pkg==null){
+			generatorErrors.addError(new GeneratorError(getName() + ": Error getting the Logical Model package for model: " + pkg.getName()+". Make sure the LOGICAL_MODEL property in deploy.property is valid."));
+		}
+		
+		if (pkg!=null){
+			log.debug("* * * pkgName: " + pkg.getName());
+			try {
+				String modelNamespacePrefix = transformerUtils.getNamespace(pkg);
+				log.debug("* * * modelNamespacePrefix: " + modelNamespacePrefix);
+				if (modelNamespacePrefix != null) {
+					if (!modelNamespacePrefix.endsWith("/"))
+						modelNamespacePrefix=modelNamespacePrefix+"/";
+					this.namespaceUriPrefix = modelNamespacePrefix.replace(" ", "_");
+				}
+			} catch (GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Namespace value for model: " + pkg.getName(), ge));
+			}
 		}
 	}
 			

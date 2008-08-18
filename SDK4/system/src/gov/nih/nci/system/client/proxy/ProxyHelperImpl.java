@@ -143,7 +143,7 @@ public class ProxyHelperImpl implements ProxyHelper
     		return obj;
 
     	org.springframework.aop.framework.ProxyFactory pf = new org.springframework.aop.framework.ProxyFactory();
-        pf.addAdvice(new BeanProxy(as, this));
+        pf.addAdvice(new BeanProxy(as, this, obj));
         pf.setTarget(obj);
 	    
 		return pf.getProxy();		

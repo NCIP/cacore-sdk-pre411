@@ -44,7 +44,7 @@ public class Path2NestedCriteria{
 			String roleName = null;
 			String sourceRoleName = null;
 			NestedCriteria newCriteria2 = new NestedCriteria();
-			if (!dest.equals(src) && !noInheritent(src, dest)) {
+			if (!dest.equals(src) && !hasInheritent(src, dest)) {
 				roleName = getRoleName(newCriteria, Class.forName(src), Class
 						.forName(dest).newInstance(), classCache);
 				if (roleName == null)
@@ -67,20 +67,64 @@ public class Path2NestedCriteria{
 		}
 		return criteria;
 	}
-
-	private static boolean noInheritent(String sourceName, String targetName) {
+	
+	private static boolean hasInheritent(String sourceName, String targetName) {
+		//return hasInheritent(sourceName, targetName,sourceName,targetName);
 		try {
-			if (Class.forName(sourceName).getSuperclass().getName().equals(
-					targetName)
-					|| Class.forName(targetName).getSuperclass().getName()
-							.equals(sourceName))
-				return true;
+			
+			Class superclass=Class.forName(sourceName).getSuperclass();
+			while (superclass !=null){
+				if (superclass.getName().equals(targetName))
+					return true;
+				superclass=superclass.getSuperclass();
+			}
+			
+			superclass=Class.forName(targetName).getSuperclass();
+			while (superclass !=null){
+				if (superclass.getName().equals(sourceName))
+					return true;
+				superclass=superclass.getSuperclass();
+			}
+			
 			return false;
 		} catch (Exception e) {
 			log.error("Exception: ", e);
 			return false;
 		}
 	}
+//	private static boolean hasInheritent(String sourceName, String targetName, String sourceSuperclassName, String targetSuperclassName) {
+//		try {
+//			if (sourceSuperclassName==null && targetSuperclassName==null)
+//				return false;
+//			
+//			Class sourceSuperClass=null;
+//			Class targetSuperClass=null;
+//			
+//			if (sourceSuperclassName!=null)
+//				sourceSuperClass=Class.forName(sourceSuperclassName).getSuperclass();
+//			if (sourceSuperClass!=null)
+//				sourceSuperclassName=sourceSuperClass.getName();
+//			else
+//				sourceSuperclassName=null;
+//			
+//			if (targetSuperclassName!=null)
+//				targetSuperClass=Class.forName(targetSuperclassName).getSuperclass();
+//			if (targetSuperClass!=null)
+//				targetSuperclassName=targetSuperClass.getName();
+//			else
+//				targetSuperclassName=null;
+//
+//			if (sourceSuperClass!=null && targetName.equals(sourceSuperclassName)
+//					|| (targetSuperClass!=null && sourceName.equals(targetSuperclassName))) {
+//				return true;
+//			} else{
+//				return hasInheritent(sourceName, targetName, sourceSuperclassName,targetSuperclassName);
+//			}
+//		} catch (Exception e) {
+//			log.error("Exception: ", e);
+//			return false;
+//		}
+//	}
 
 	private static String getRoleName(NestedCriteria criteria,
 			Class searchClass, Object criterion, ClassCache classCache)

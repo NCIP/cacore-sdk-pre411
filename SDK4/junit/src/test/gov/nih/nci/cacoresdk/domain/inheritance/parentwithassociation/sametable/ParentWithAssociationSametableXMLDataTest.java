@@ -31,7 +31,7 @@ public class ParentWithAssociationSametableXMLDataTest extends SDKXMLDataTestBas
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(5,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
@@ -66,7 +66,7 @@ public class ParentWithAssociationSametableXMLDataTest extends SDKXMLDataTestBas
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop",searchObject );
 
 		assertNotNull(results);
-		assertEquals(2,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
@@ -272,7 +272,7 @@ public class ParentWithAssociationSametableXMLDataTest extends SDKXMLDataTestBas
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(5,results.size());
 		
 		Wheel wheel;
 		for(Iterator i = results.iterator();i.hasNext();)

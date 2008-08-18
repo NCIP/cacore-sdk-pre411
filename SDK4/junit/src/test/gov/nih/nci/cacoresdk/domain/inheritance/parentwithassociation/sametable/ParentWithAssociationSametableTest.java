@@ -3,6 +3,7 @@ package test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.same
 import java.util.Collection;
 import java.util.Iterator;
 
+import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTopType;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage;
@@ -36,7 +37,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(5,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
@@ -61,7 +62,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop",searchObject );
 
 		assertNotNull(results);
-		assertEquals(2,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
@@ -143,7 +144,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(2,results.size());
+		assertEquals(3,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
@@ -174,7 +175,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(5,results.size());
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
@@ -277,6 +278,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		wheel.setRadius(1);
 		
 		searchObject.setWheel(wheel);
+		searchObject.setCapacity(75);
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop",searchObject );
 
 		assertNotNull(results);
@@ -415,6 +417,39 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 	}
 	
 	/**
+	 * Uses Nested Search Criteria for inheritance as association in search
+	 * Verifies that the results are returned 
+	 * Verifies size of the result set
+	 * Verifies that none of the attribute is null
+	 * 
+	 * @throws ApplicationException
+	 */
+	public void testAssociationNestedSearch5() throws ApplicationException
+	{
+		HardTopType searchObject = new HardTopType();
+		
+		Wheel wheel = new Wheel();
+		wheel.setRadius(1); 
+		
+		searchObject.setWheel(wheel);
+		searchObject.setCapacity(100);
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTopType",searchObject );
+		
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			HardTopType result = (HardTopType)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+			assertEquals(new Integer(5), result.getId());
+			assertEquals(new Integer(100), result.getCapacity());
+			assertEquals(new Integer(890), result.getKeyCode());
+		}
+	}
+	
+	/**
 	 * Uses CQL Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
 	 * Verifies size of the result set
@@ -503,7 +538,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		Collection results = getApplicationService().query(cqlQuery);
 
 		assertNotNull(results);
-		assertEquals(2,results.size());
+		assertEquals(3,results.size());
 		
 		Luggage result = (Luggage)results.iterator().next();
 		assertNotNull(result);
@@ -551,7 +586,7 @@ public class ParentWithAssociationSametableTest extends SDKTestBase
 		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage",searchObject );
 
 		assertNotNull(results);
-		assertEquals(4,results.size());
+		assertEquals(5,results.size());
 		
 		Wheel wheel;
 		for(Iterator i = results.iterator();i.hasNext();)

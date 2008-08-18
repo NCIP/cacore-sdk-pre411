@@ -1,6 +1,7 @@
 package test.gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable;
 
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTop;
+import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.HardTopType;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Luggage;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.SoftTop;
 import gov.nih.nci.cacoresdk.domain.inheritance.parentwithassociation.sametable.Wheel;
@@ -22,6 +23,7 @@ public class ParentWithAssociationSametableWSTest extends SDKWSTestBase
 		Collection<Class> mappedKlasses = new ArrayList<Class>();
 		
 		mappedKlasses.add(HardTop.class);
+		mappedKlasses.add(HardTopType.class);
 		mappedKlasses.add(Luggage.class);
 		mappedKlasses.add(SoftTop.class);
 		mappedKlasses.add(Wheel.class);
@@ -43,7 +45,7 @@ public class ParentWithAssociationSametableWSTest extends SDKWSTestBase
 
 		Object result = getTotalNumberOfRecords(targetClassName, criteria);
 
-		assertEquals(4,result);
+		assertEquals(5,result);
 
 	}
 	
@@ -63,7 +65,7 @@ public class ParentWithAssociationSametableWSTest extends SDKWSTestBase
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
 		assertNotNull(results);
-		assertEquals(4,results.length);
+		assertEquals(5,results.length);
 		
 		for (Object obj : results){
 			Luggage result = (Luggage)obj;
@@ -89,7 +91,7 @@ public class ParentWithAssociationSametableWSTest extends SDKWSTestBase
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
 		assertNotNull(results);
-		assertEquals(2,results.length);
+		assertEquals(3,results.length);
 		
 		for (Object obj : results){
 			HardTop result = (HardTop)obj;
@@ -284,7 +286,7 @@ public class ParentWithAssociationSametableWSTest extends SDKWSTestBase
 		Object[] results = getQueryObjectResults(targetClass, criteria);
 
 		assertNotNull(results);
-		assertEquals(4,results.length);
+		assertEquals(5,results.length);
 		
 		Wheel wheel;
 		for(Object obj : results)

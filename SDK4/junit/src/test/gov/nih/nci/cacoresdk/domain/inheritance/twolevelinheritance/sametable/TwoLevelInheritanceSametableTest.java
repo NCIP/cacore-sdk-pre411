@@ -444,6 +444,22 @@ public class TwoLevelInheritanceSametableTest extends SDKTestBase
 		}
 	}
 	
+	public void testAssociationNestedSearch5() throws ApplicationException
+	{
+		PresidentialGovt searchObject = new PresidentialGovt();
+		Collection results = getApplicationService().search("gov.nih.nci.cacoresdk.domain.inheritance.twolevelinheritance.sametable.Goverment",searchObject );
+
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		
+		for(Iterator i = results.iterator();i.hasNext();)
+		{
+			PresidentialGovt result = (PresidentialGovt)i.next();
+			assertNotNull(result);
+			assertNotNull(result.getId());
+		}
+	}
+	
 	/**
 	 * Uses CQL Criteria for inheritance as association in search
 	 * Verifies that the results are returned 
