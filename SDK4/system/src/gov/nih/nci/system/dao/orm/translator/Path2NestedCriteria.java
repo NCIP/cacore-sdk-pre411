@@ -69,7 +69,6 @@ public class Path2NestedCriteria{
 	}
 	
 	private static boolean hasInheritent(String sourceName, String targetName) {
-		//return hasInheritent(sourceName, targetName,sourceName,targetName);
 		try {
 			
 			Class superclass=Class.forName(sourceName).getSuperclass();
