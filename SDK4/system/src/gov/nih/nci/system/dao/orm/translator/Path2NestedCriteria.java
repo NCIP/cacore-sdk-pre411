@@ -92,39 +92,6 @@ public class Path2NestedCriteria{
 			return false;
 		}
 	}
-//	private static boolean hasInheritent(String sourceName, String targetName, String sourceSuperclassName, String targetSuperclassName) {
-//		try {
-//			if (sourceSuperclassName==null && targetSuperclassName==null)
-//				return false;
-//			
-//			Class sourceSuperClass=null;
-//			Class targetSuperClass=null;
-//			
-//			if (sourceSuperclassName!=null)
-//				sourceSuperClass=Class.forName(sourceSuperclassName).getSuperclass();
-//			if (sourceSuperClass!=null)
-//				sourceSuperclassName=sourceSuperClass.getName();
-//			else
-//				sourceSuperclassName=null;
-//			
-//			if (targetSuperclassName!=null)
-//				targetSuperClass=Class.forName(targetSuperclassName).getSuperclass();
-//			if (targetSuperClass!=null)
-//				targetSuperclassName=targetSuperClass.getName();
-//			else
-//				targetSuperclassName=null;
-//
-//			if (sourceSuperClass!=null && targetName.equals(sourceSuperclassName)
-//					|| (targetSuperClass!=null && sourceName.equals(targetSuperclassName))) {
-//				return true;
-//			} else{
-//				return hasInheritent(sourceName, targetName, sourceSuperclassName,targetSuperclassName);
-//			}
-//		} catch (Exception e) {
-//			log.error("Exception: ", e);
-//			return false;
-//		}
-//	}
 
 	private static String getRoleName(NestedCriteria criteria,
 			Class searchClass, Object criterion, ClassCache classCache)
