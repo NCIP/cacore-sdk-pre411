@@ -17,7 +17,6 @@ import java.util.Map;
 public class CLASS extends UMLValidatorJETTransformer {
 	
 	public Artifact executeTemplate(UMLModel model, Map<String, Object> configurationParams) throws GenerationException{
-	    initCaDSREnumMap();
 		BaseArtifact artifact = new BaseArtifact(transformerUtils);
 		artifact.setContent(generate(model, configurationParams));
 		return artifact;

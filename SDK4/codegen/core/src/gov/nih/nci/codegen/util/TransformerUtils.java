@@ -51,6 +51,7 @@ public class TransformerUtils
 	private String DATABASE_TYPE;
 	private Map<String,String> CASCADE_STYLES = new HashMap<String,String>();
 	private ValidatorModel vModel;
+	private ValidatorModel vModelExtension;
 	
 	private static final String TV_ID_ATTR_COLUMN = "id-attribute";
 	private static final String TV_MAPPED_ATTR_COLUMN = "mapped-attributes";
@@ -84,7 +85,7 @@ public class TransformerUtils
 	public static final String  PK_GENERATOR_SYSTEMWIDE = "NCI_GENERATOR_SYSTEMWIDE.";
 
 	
-	public TransformerUtils(Properties umlModelFileProperties,List cascadeStyles, ValidatorModel vModel) {
+	public TransformerUtils(Properties umlModelFileProperties,List cascadeStyles, ValidatorModel vModel, ValidatorModel vModelExtension) {
 			BASE_PKG_LOGICAL_MODEL = umlModelFileProperties.getProperty("Logical Model") == null ? "" :umlModelFileProperties.getProperty("Logical Model").trim();
 			BASE_PKG_DATA_MODEL = umlModelFileProperties.getProperty("Data Model")==null ? "" : umlModelFileProperties.getProperty("Data Model").trim();
 			
@@ -111,6 +112,9 @@ public class TransformerUtils
 			
 			this.vModel = vModel;
 			log.debug("ValidatorModel: " + vModel);
+			
+			this.vModelExtension = vModelExtension;
+			log.debug("ValidatorModel Extension: " + vModelExtension);
 
 		}
 	
@@ -1591,9 +1595,9 @@ public class TransformerUtils
 		
 		String temp = documentation == null || documentation.trim().length()==0 ? description : documentation; 
 		StringBuilder doc = new StringBuilder();
-		doc.append("	/**");
-		doc.append("\n	* ").append(temp);
-		doc.append("	**/");
+		doc.append("/**");
+		doc.append("\n\t* ").append(temp);
+		doc.append("\n\t**/");
 		return doc.toString();
 
 	}
@@ -1868,52 +1872,136 @@ public class TransformerUtils
 		return attrs;
 	}
 	
-	
 	public String getHibernateValidatorConstraints(UMLClass klass){
 		
 		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
+		ValidatorClass vClassExtension = vModelExtension.getClass(getFQCN(klass));
 		
-		if (vClass==null) return "";
+		String constraintAnnotationString="";
 		
-		return "\t" + vClass.getConstraintAnnotationString();
+		if (vClass != null) 
+			constraintAnnotationString = "\t" + vClass.getConstraintAnnotationString()+"\n";
+		
+		if (vClassExtension != null) 
+			constraintAnnotationString += "\t" + vClassExtension.getConstraintAnnotationString()+"\n";
+		
+		return constraintAnnotationString;
 
 	}
 	
 	public String getHibernateValidatorConstraints(UMLClass klass,UMLAttribute attr){
 		
 		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
+		ValidatorClass vClassExtension = vModelExtension.getClass(getFQCN(klass));
 		
-		if (vClass==null) return "";
+		List<String> cadsrConstraintAnnotations=new ArrayList<String>();
+		List<String> userConstraintAnnotations=new ArrayList<String>();
+		ValidatorAttribute vAttr=null;
+		if (vClass != null) 
+			vAttr=vClass.getAttribute(attr.getName());
 		
-		ValidatorAttribute vAttr =  vClass.getAttribute(attr.getName());
+		if (vAttr!=null)
+			cadsrConstraintAnnotations.addAll(vAttr.getConstraintAnnotations());
 		
-		if (vAttr==null) return "";
+		ValidatorAttribute vAttrExtension=null;
+		if (vClassExtension != null) 
+			vAttrExtension=vClassExtension.getAttribute(attr.getName());
+		
+		if (vAttrExtension!=null)
+			userConstraintAnnotations.addAll(vAttrExtension.getConstraintAnnotations());
+		
+		//remove duplicates - user constraints override caDSR constraints
+		List<String> constraintAnnotations=new ArrayList<String>();
+		for(String cadsrConstraintAnnotation : cadsrConstraintAnnotations){
+			String cadsrConstraintPrefix = cadsrConstraintAnnotation.indexOf("(") > 0 ? cadsrConstraintAnnotation.substring(0, cadsrConstraintAnnotation.indexOf("(")) : cadsrConstraintAnnotation;
+			boolean duplicateConstraint = false;
+			for(String userConstraintAnnotation : userConstraintAnnotations){
+				if (userConstraintAnnotation.startsWith(cadsrConstraintPrefix)){
+					duplicateConstraint = true;
+					break;
+				}
+			}
+			if (!duplicateConstraint)
+				constraintAnnotations.add(cadsrConstraintAnnotation);
+		}
+		
+		constraintAnnotations.addAll(userConstraintAnnotations);
+		
+		//Handle special @Patterns scenario
+		List<String> patternConstraintAnnotations=new ArrayList<String>();
+		for(String constraintAnnotation : constraintAnnotations){
+			if (constraintAnnotation.indexOf("Pattern")>0){
+				patternConstraintAnnotations.add(constraintAnnotation);
+			}
+		}
+		
+		StringBuilder sb;
+		if (!patternConstraintAnnotations.isEmpty()){
+			sb = new StringBuilder();
+			constraintAnnotations.removeAll(patternConstraintAnnotations);
 
-		return "\t" + vAttr.getConstraintAnnotationString();
+			sb.append(patternConstraintAnnotations.remove(0));
+			for (String patternConstraintAnnotation:patternConstraintAnnotations){
+				sb.append(",").append(patternConstraintAnnotation);
+			}
+
+			constraintAnnotations.add("@Patterns({"+sb.toString()+"})");
+		}
+
+		sb = new StringBuilder();
+		for(String constraintAnnotation: constraintAnnotations){
+			sb.append("\n\t").append(constraintAnnotation);
+		}
+		
+		return sb.toString();
 	}
 	
-	public Collection<String> getPermissibleValues(UMLClass klass,UMLAttribute attr){
+	public Collection<String> getXSDRestrictionValues(UMLClass klass,UMLAttribute attr){
 		
 		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
+		ValidatorClass vClassExtension = vModelExtension.getClass(getFQCN(klass));
 		
-		if (vClass==null) return new ArrayList<String>();
+		ArrayList<String> permissibleValues = new ArrayList<String>();
 		
-		ValidatorAttribute vAttr =  vClass.getAttribute(attr.getName());
+		//get user supplied permissible value collection from validator extension file
+		ValidatorAttribute vAttrExtension=null;
+		if (vClassExtension != null)
+			vAttrExtension =  vClassExtension.getAttribute(attr.getName());
 		
-		if (vAttr==null) return new ArrayList<String>();
-
-		return vAttr.getConstraintCollection();
+		if (vAttrExtension != null) 
+			permissibleValues.addAll(vAttrExtension.getXSDRestrictionCollection());
+		
+		//user supplied constraints override caDSR constraints, so only retrieve
+		//caDSR constraints if user did not supply any constraints 
+		if (permissibleValues.isEmpty()){
+			ValidatorAttribute vAttr=null;
+			if (vClass != null)
+				vAttr =  vClass.getAttribute(attr.getName());
+			
+			if (vAttr != null) 
+				permissibleValues.addAll(vAttr.getXSDRestrictionCollection());
+		}
+		
+		return permissibleValues;
 	}
 	
-	
-	
-	private Set<String> getHibernateValidatorConstraintImports(UMLClass klass){
+	private Collection<String> getHibernateValidatorConstraintImports(UMLClass klass){
 		
 		ValidatorClass vClass = vModel.getClass(getFQCN(klass));
+		ValidatorClass vClassExtension = vModelExtension.getClass(getFQCN(klass));
 		
-		if (vClass==null) return new HashSet<String>();
+		Collection<String> constraintImports = new HashSet<String>();
 		
-		return vClass.getConstraintImports();
+		if (vClass != null)
+			constraintImports.addAll(vClass.getConstraintImports());
+		
+		if (vClassExtension != null)
+			constraintImports.addAll(vClassExtension.getConstraintImports());
+		
+		if (constraintImports.contains("org.hibernate.validator.Pattern"))
+			constraintImports.add("org.hibernate.validator.Patterns");
+		
+		return constraintImports;
 	}
 	
 	

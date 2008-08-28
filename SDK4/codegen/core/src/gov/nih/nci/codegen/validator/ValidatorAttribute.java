@@ -35,22 +35,22 @@ public class ValidatorAttribute {
 		return retValue.toString();
 	}
 	
-	public Collection<String> getConstraintCollection(){
+	public Collection<String> getXSDRestrictionCollection(){
 		Collection<String> constraintCollection = new ArrayList<String>();
 		for(ValidatorConstraint constraint: constraints){
-			constraintCollection.addAll(constraint.getConstraintValues());
+			constraintCollection.addAll(constraint.getXSDRestrictionValues());
 		}
 		
 		return constraintCollection;
 	}
 	
-	public String getConstraintAnnotationString(){
-		StringBuilder retValue = new StringBuilder();
+	public List<String> getConstraintAnnotations(){
+		List<String> constraintAnnotations = new ArrayList<String>();
 		for(ValidatorConstraint constraint: constraints){
-			retValue.append(NL).append(TAB).append(constraint.getAnnotationString());
+			constraintAnnotations.add(constraint.getAnnotationString());
 		}
 		
-		return retValue.toString();
+		return constraintAnnotations;
 	}
 	
 	public Set<String> getConstraintImports(){

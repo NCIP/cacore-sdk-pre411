@@ -483,7 +483,7 @@ public class SchemaTransformer implements Transformer {
 	}	
 	
 	private void addRestrictionEnumeration(UMLClass klass, UMLAttribute attr, Element attributeElement, String type, Namespace w3cNS){
-		Collection<String> permissibleValues =transformerUtils.getPermissibleValues(klass, attr);
+		Collection<String> permissibleValues =transformerUtils.getXSDRestrictionValues(klass, attr);
 		log.debug("* * * permissibleValues size: " + permissibleValues.size() + " for class: "+klass.getName()+" and attribute: " +attr.getName());
 		if (!(permissibleValues.isEmpty())){
 			//<xs:simpleType>

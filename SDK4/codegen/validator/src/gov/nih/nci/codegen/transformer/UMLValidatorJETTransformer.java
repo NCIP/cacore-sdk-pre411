@@ -66,6 +66,7 @@ public abstract class UMLValidatorJETTransformer implements Transformer
 		GeneratorErrors errors = new GeneratorErrors();
 		try 
 		{
+			initMapUsingGMENamespace();
 			Artifact artifact = executeTemplate(model, configurationParams);
 			artifactHandler.handleArtifact(artifact);
 		} 
@@ -120,7 +121,7 @@ public abstract class UMLValidatorJETTransformer implements Transformer
 		this.serviceURL = serviceURL;
 	}
 	
-	protected void initCaDSREnumMap() throws GenerationException {
+	protected void initMapUsingGMENamespace() throws GenerationException {
 		try
 		{
 
@@ -135,7 +136,7 @@ public abstract class UMLValidatorJETTransformer implements Transformer
 				appService = ApplicationServiceProvider.getApplicationServiceFromUrl(serviceURL);
 			}
 			
-			Map<String,String>criteriaProps = validateNamespace();
+			Map<String,String>criteriaProps = getCriteriaPropertiesFromNamespace();
 			
 			String projectShortName = criteriaProps.get(PROJECT_SHORT_NAME);
 			String version = criteriaProps.get(PROJECT_VERSION);
@@ -238,12 +239,12 @@ public abstract class UMLValidatorJETTransformer implements Transformer
 			throw new GenerationException("Error retrieving caDSR Permissible Value Enumerations: " + e.getMessage(),e);
 		}
 	}
-	
+		
 	protected String getCaDSREnumPattern(String fqcnAttributeName){
 		return caDSREnumMap.get(fqcnAttributeName);
 	}
 	
-	private Map<String,String> validateNamespace() throws GenerationException {
+	private Map<String,String> getCriteriaPropertiesFromNamespace() throws GenerationException {
 		
 		//Check that the namespacePrefix property has been set
 		if (namespacePrefix == null){
@@ -279,5 +280,4 @@ public abstract class UMLValidatorJETTransformer implements Transformer
 		return criteriaProps;
 		
 	}
-
 }

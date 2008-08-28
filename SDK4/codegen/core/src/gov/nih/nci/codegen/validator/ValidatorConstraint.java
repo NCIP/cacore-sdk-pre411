@@ -1,9 +1,8 @@
 package gov.nih.nci.codegen.validator;
 
-import gov.nih.nci.codegen.util.TransformerUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -19,6 +18,11 @@ public class ValidatorConstraint {
 	public ValidatorConstraint(String validatorClass, Map<String,String> constraintProperties) {
 		this.validatorClassName=validatorClass;
 		this.constraintProperties = constraintProperties;
+	}
+	
+	public ValidatorConstraint(String validatorClass) {
+		this.validatorClassName=validatorClass;
+		this.constraintProperties = new HashMap<String,String>();
 	}
 	
 	public String getValidatorClassName() {
@@ -45,14 +49,15 @@ public class ValidatorConstraint {
 		return retValue.toString();
 	}
 	
-	public Collection<String> getConstraintValues() {
+	public Collection<String> getXSDRestrictionValues() {
 		Collection<String> constraintCollection = new ArrayList<String>();
 		if (constraintProperties != null && !constraintProperties.isEmpty()){
 			Iterator<String> iter = constraintProperties.keySet().iterator();
 			String key=null;
 			while(iter.hasNext()) {
 				key = (String)iter.next();
-				constraintCollection.addAll(getConstraintValues(constraintProperties.get(key)));
+				if (key.equalsIgnoreCase("regex"))
+					constraintCollection.addAll(getConstraintValues(constraintProperties.get(key)));
 			}
 		}
 		return constraintCollection;
@@ -66,6 +71,10 @@ public class ValidatorConstraint {
 		
 		int beginIndex=constraintValueStr.indexOf('(');
 		int endIndex=constraintValueStr.indexOf(')');
+		
+		if ((beginIndex < 0) || (endIndex < 0))
+			return constraintCollection;
+		
 		constraintValueStr=constraintValueStr.substring(beginIndex+1, endIndex);
 		log.debug("* * * constraintValueStr: "+constraintValueStr);
 		
