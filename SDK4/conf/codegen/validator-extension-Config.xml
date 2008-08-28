@@ -6,7 +6,7 @@
 	<bean name="ValidatorModelExtension" class="gov.nih.nci.codegen.validator.ValidatorModel">
 		<constructor-arg>
 			<map>
-			<!-- The following is provided as an example.  Replace with your own contraints -->
+			<!-- The following is provided as an example.  Replace with your own validation contraints -->
 			<!-- 
 				<entry key="gov.nih.nci.cacoresdk.domain.other.validationtype.AllValidationType">
 					<bean class="gov.nih.nci.codegen.validator.ValidatorClass">
