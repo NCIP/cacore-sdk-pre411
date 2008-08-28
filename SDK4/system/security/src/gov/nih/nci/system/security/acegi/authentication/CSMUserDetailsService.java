@@ -35,8 +35,8 @@ public class CSMUserDetailsService implements UserDetailsService {
 	private Boolean cacheProtectionElementsFlag;
 	
 	
-	protected AuthorizationManager authorizationManager;
-	protected AuthenticationManager authenticationManager;
+	private AuthorizationManager authorizationManager;
+	private AuthenticationManager authenticationManager;
 	
 	public AuthorizationManager authorizationManagerInstance(){
 		if(this.authorizationManager!=null){
@@ -46,10 +46,8 @@ public class CSMUserDetailsService implements UserDetailsService {
 				this.authorizationManager = SecurityServiceProvider
 						.getAuthorizationManager(this.csmApplicationContext);
 			} catch (CSConfigurationException e) {
-				e.printStackTrace();
 				throw new DataRetrievalFailureException(e.getMessage());
 			} catch (CSException e) {
-				e.printStackTrace();
 				throw new DataAccessResourceFailureException(e.getMessage());
 			}
 			return this.authorizationManager;
@@ -64,10 +62,8 @@ public class CSMUserDetailsService implements UserDetailsService {
 				this.authenticationManager = SecurityServiceProvider
 						.getAuthenticationManager(this.csmApplicationContext);
 			} catch (CSConfigurationException e) {
-				e.printStackTrace();
 				throw new DataRetrievalFailureException(e.getMessage());
 			} catch (CSException e) {
-				e.printStackTrace();
 				throw new DataAccessResourceFailureException(e.getMessage());
 			}
 			return this.authenticationManager;
@@ -87,7 +83,7 @@ public class CSMUserDetailsService implements UserDetailsService {
 			grantedAuthorities = new GrantedAuthority[1];
 			grantedAuthorities[0] = dummyGrantedAuthority;			
 		}		
-		UserDetails userDetails = new User(csmUser.getLoginName(), csmUser.getPassword(),true, true, true, true, grantedAuthorities);
+		UserDetails userDetails = new User(csmUser.getLoginName(), csmUser.getPassword()==null?"":csmUser.getPassword(),true, true, true, true, grantedAuthorities);
 		return userDetails;
 	}
 
