@@ -1,5 +1,6 @@
 output
 bin
-lib
 release
 Test
+lib
+.settings
