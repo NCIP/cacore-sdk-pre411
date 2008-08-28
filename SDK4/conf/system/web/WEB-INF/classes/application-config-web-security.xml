@@ -12,7 +12,7 @@
 				/http/remoteauthenticationmanager/**=sessionContextIntegrationFilter
 				/services/**=sessionContextIntegrationFilter
 				/home.action/**=sessionContextIntegrationFilter,logoutFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter
-				/http/applicationservice/**=sessionContextIntegrationFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
+				/http/applicationservice/**=sessionContextIntegrationFilter,x509InitializingFilter,x509ProcessingFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/gethtml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/getxml/**=sessionContextIntegrationFilter,logoutFilter,basicProcessingFilter,basicExceptionTranslationFilter,filterInvocationInterceptor
 				/**/*.action/**=sessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
@@ -20,6 +20,12 @@
 				/**=sessionContextIntegrationFilter,logoutFilter
 			</value>
 		</property>
+	</bean>
+
+	<bean id="x509InitializingFilter" class="gov.nih.nci.system.security.acegi.ui.globus.X509InitializationFilter"/>
+
+	<bean id="x509ProcessingFilter" class="org.acegisecurity.ui.x509.X509ProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
 	</bean>
 
 	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
