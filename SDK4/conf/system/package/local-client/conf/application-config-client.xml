@@ -8,9 +8,9 @@
 	<bean id="ServiceInfo" class="java.util.HashMap">
 		<constructor-arg>
 			<map>
-				<entry key="APPLICATION_SERVICE_BEAN" value="ApplicationService" />
+				<entry key="APPLICATION_SERVICE_BEAN" value-ref="ApplicationService" />
 				<!--@SECURITY_START@-->
-				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationProvider"/>
+				<entry key="AUTHENTICATION_SERVICE_BEAN" value-ref="authenticationManager"/>
 				<!--@SECURITY_END@-->
 			</map>
 		</constructor-arg>
@@ -32,17 +32,6 @@
 				@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<idref bean="CLMInterceptor" />@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 			</list>
 		</property>		
-	</bean>
-
-	<bean id="DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="@DB_DRIVER@" />
-		<property name="url" value="@DB_CONNECTION_URL@" />
-		<property name="username" value="@DB_USERNAME@" />
-		<property name="password" value="@DB_PASSWORD@" />
-	</bean>
-
-	<bean id="JDBCTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="DataSource"></property>
 	</bean>
 
 </beans>
