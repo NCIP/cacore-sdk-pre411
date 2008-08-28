@@ -1,4 +1,4 @@
-package gov.nih.nci.system.security.acegi;
+package gov.nih.nci.system.security.acegi.providers;
 
 import java.util.Collection;
 
