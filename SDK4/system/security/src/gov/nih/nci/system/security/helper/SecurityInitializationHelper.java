@@ -3,7 +3,7 @@ package gov.nih.nci.system.security.helper;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.authorization.attributeLevel.UserClassAttributeMapCache;
 import gov.nih.nci.security.authorization.instancelevel.InstanceLevelSecurityHelper;
-import gov.nih.nci.system.security.acegi.GroupNameAuthenticationToken;
+import gov.nih.nci.system.security.acegi.providers.GroupNameAuthenticationToken;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
