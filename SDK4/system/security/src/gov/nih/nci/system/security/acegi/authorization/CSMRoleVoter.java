@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.exceptions.CSException;
-import gov.nih.nci.system.security.acegi.GroupNameAuthenticationToken;
 import gov.nih.nci.system.security.acegi.authentication.CSMUserDetailsService;
+import gov.nih.nci.system.security.acegi.providers.GroupNameAuthenticationToken;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
