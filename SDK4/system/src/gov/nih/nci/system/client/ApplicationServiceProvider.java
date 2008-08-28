@@ -3,24 +3,26 @@ package gov.nih.nci.system.client;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.proxy.ApplicationServiceProxy;
-import gov.nih.nci.system.security.acegi.GroupNameAuthenticationToken;
+import gov.nih.nci.system.security.acegi.providers.GroupNameAuthenticationToken;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collection;
 import java.util.Map;
 
-import org.acegisecurity.AcegiSecurityException;
 import org.acegisecurity.Authentication;
-import org.acegisecurity.providers.AuthenticationProvider;
+import org.acegisecurity.AuthenticationManager;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.providers.rcp.RemoteAuthenticationException;
+import org.acegisecurity.providers.x509.X509AuthenticationToken;
 import org.aopalliance.aop.Advice;
+import org.globus.gsi.GlobusCredential;
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.InputStreamResource;
+
+
 
 public class ApplicationServiceProvider
 {
@@ -95,6 +97,24 @@ public class ApplicationServiceProvider
 		return as;
 	}
 	
+	public static ApplicationService getApplicationService(GlobusCredential cred) throws Exception 
+	{
+		return getApplicationService(DEFAULT_SERVICE, null, cred);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static ApplicationService getApplicationService(String service, String url, GlobusCredential cred) throws Exception {
+		if (url != null && !url.startsWith("https://")) {
+			throw new Exception("Url should be using secured protocol to use Globus Credentials");
+		}		
+		if (cred == null) {
+			throw new Exception("Credentials can not be null");
+		}
+		cred.verify();
+		X509AuthenticationToken auth = new X509AuthenticationToken(cred.getIdentityCertificate()); 
+		return getApplicationService(service, url, auth);
+	}
+
 	@SuppressWarnings("unchecked")
 	private static ApplicationService getApplicationServiceForGroups(String service, String url, Collection<String> groups) throws Exception {
 		if (url != null) {
@@ -103,71 +123,45 @@ public class ApplicationServiceProvider
 		if (groups == null || groups.size() == 0) {
 			throw new Exception("User Groups Collection cannot be empty");
 		}		
-		ApplicationContext context = getApplicationContext(service, null,true);
-		ApplicationService as = null;
-		Map<String, Object> serviceInfoMap = (Map<String, Object>) context.getBean(service);
-		if (serviceInfoMap == null) {
-			as = (ApplicationService) context.getBean("ApplicationService");
-		}else {
-			String serviceName = (String) serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
-			as = (ApplicationService) context.getBean(serviceName);
-		}
 
 		Authentication auth = new GroupNameAuthenticationToken(groups);
-		try {
-			setApplicationService(as, auth);
-		} catch (Exception e) {
-			String message = "Unknown error in authenticating user:";
-			throw new ApplicationException(message, e);
-		}
-		return as;
+		return getApplicationService(service, url, auth);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static ApplicationService getApplicationService(String service, String url, String username, String password) throws Exception
 	{
 		Boolean secured = username!=null && password!=null;
-		ApplicationContext context = getApplicationContext(service, url,secured);
 
-		ApplicationService as = null;
-		AuthenticationProvider ap = null;
-		Map<String,Object> serviceInfoMap = (Map<String, Object>) ctx.getBean(service);
-		if(serviceInfoMap == null)
-		{
-			as = (ApplicationService) context.getBean("ApplicationService");
-			ap = (AuthenticationProvider)context.getBean("AuthenticationProvider");
-		}
-		else
-		{
-			String serviceName = (String)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
-			as = (ApplicationService) context.getBean(serviceName);
-			ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
-		}
-
+		Authentication auth = null;
 		if(secured)
-		{
-			Authentication auth = new UsernamePasswordAuthenticationToken(username,password);
-			try
-			{
-				auth = ap.authenticate(auth);
-				setApplicationService(as, auth);
-			}
-			catch(Exception e)
-			{
-				String message="";
-				if(e instanceof RemoteAuthenticationException || e instanceof AcegiSecurityException)
-					message = "Error authenticating user:";
-				else
-					message = "Unknown error in authenticating user:";
-				throw new ApplicationException(message,e);
-			}
-		}
-		else
-		{
-			setApplicationService(as, null);
+			auth = new UsernamePasswordAuthenticationToken(username,password);
+
+		return getApplicationService(service, url, auth);
+	}
+	
+	private static ApplicationService getApplicationService(String service, String url, Authentication auth) throws Exception
+	{
+		Boolean secured = auth != null;
+		ApplicationContext context = getApplicationContext(service, null,secured);
+		Map<String, Object> serviceInfoMap = (Map<String, Object>) context.getBean(service);
+		ApplicationService as = (ApplicationService) serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+
+		if(!secured)
+			return as;
+		
+		AuthenticationManager am = (AuthenticationManager)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
+
+		try {
+			auth = am.authenticate(auth);
+			setApplicationService(as, auth);
+		} catch (Exception e) {
+			String message = "Error authenticating user:";
+			throw new ApplicationException(message, e);
 		}
 		return as;
 	}
+	
 	
 	private static void setApplicationService(ApplicationService as, Authentication auth) {
 		if(as instanceof org.springframework.aop.framework.Advised)
@@ -197,48 +191,54 @@ public class ApplicationServiceProvider
 		if(serviceInfoMap == null)
 			throw new Exception("Change the configuration file!!!");
 		
-		//Initialized instances found in the configuration
-		//String projectName = (String)serviceInfoMap.get("PROJECT_NAME");
-		String asName = (String)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
-		ApplicationService as = (ApplicationService)ctx.getBean(asName);
-		AuthenticationProvider ap = (AuthenticationProvider)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
-		
-		//Returning initialized instance
-		if((!secured && as!=null && url == null)||(secured && as!=null && ap!=null && url == null)) //Empty URL, return the service. This helps in improving performance
-			return ctx;
-		
-		if(secured && url== null && ap==null)
-			throw new Exception("Change the configuration file!!!");
-		
-		String serviceInfo = (String)serviceInfoMap.get("APPLICATION_SERVICE_CONFIG");;
-		if(url == null)	url = (String)serviceInfoMap.get("APPLICATION_SERVICE_URL");
+		if(url==null)
+		{
+			validateContext(serviceInfoMap,ctx, secured);
+			return ctx;	
+		}
+		else
+		{
+			String serviceInfo = (String)serviceInfoMap.get("APPLICATION_SERVICE_CONFIG");;
+	
+			//URL_KEY must be present if the user is trying to use the url to reach the service
+			if(serviceInfo==null || serviceInfo.indexOf("URL_KEY")<0)
+				throw new Exception("Change the configuration file!!!");
+			
+			serviceInfo = serviceInfo.replace("URL_KEY", url);
+			
+			//Prepare in memory configuration from the information retrieved of the configuration file
+			String xmlFileString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE beans PUBLIC \"-//SPRING//DTD BEAN//EN\" \"http://www.springframework.org/dtd/spring-beans.dtd\"><beans>"+serviceInfo+"</beans>";
+			GenericApplicationContext context = new GenericApplicationContext();
+			XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(context);
+			xmlReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
+			InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(xmlFileString.getBytes()));
+			xmlReader.loadBeanDefinitions(inputStreamResource);
+			context.refresh();
 
-		//URL_KEY must be present if the user is trying to use the url to reach the service
-		if(serviceInfo==null ||(url == null && serviceInfo.indexOf("URL_KEY")>0) || (url!=null && serviceInfo.indexOf("URL_KEY")<0))
-			throw new Exception("Change the configuration file!!!");
-		
-		//Resetting the URL as URL_KEY is absent in the configuration
-		if(serviceInfo.indexOf("URL_KEY") <0 || url == null)
-			url="";
-		
-		serviceInfo = serviceInfo.replace("URL_KEY", url);
-		
-		//Prepare in memory configuration from the information retrieved of the configuration file
-		String xmlFileString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE beans PUBLIC \"-//SPRING//DTD BEAN//EN\" \"http://www.springframework.org/dtd/spring-beans.dtd\"><beans>"+serviceInfo+"</beans>";
-		GenericApplicationContext context = new GenericApplicationContext();
-		XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(context);
-		xmlReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
-		InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(xmlFileString.getBytes()));
-		xmlReader.loadBeanDefinitions(inputStreamResource);
-		context.refresh();
-
-		as = (ApplicationService) context.getBean("ApplicationService");
-		ap = (AuthenticationProvider)context.getBean("AuthenticationProvider");
-		
-		//Make sure the configuration has the required objects present
-		if(as==null || (secured && ap==null))
-			throw new Exception("Change the configuration file!!!");
-
+			Map<String,Object> newServiceInfoMap = (Map<String, Object>) ctx.getBean(service);
+			
+			validateContext(newServiceInfoMap,context,secured);
+			
 			return context;
+		}
+	}
+	
+	private static void validateContext(Map<String,Object> serviceInfoMap,ApplicationContext ctx, Boolean secured) throws Exception
+	{
+		ApplicationService as = null;
+		AuthenticationManager am = null;
+		
+		as = (ApplicationService)serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
+			
+		if(as==null)
+			throw new Exception("Change the configuration file!!!");
+			
+		if(!secured) 
+			return;
+
+		am = (AuthenticationManager)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
+		if(am==null)
+			throw new Exception("Change the configuration file!!!");
+
 	}
 }
