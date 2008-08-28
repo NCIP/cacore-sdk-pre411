@@ -964,6 +964,12 @@
 		<SDKecho message="${ant.project.name}: Completed the system build"/>
 	</target>
 
+	<!--***********************************************************************
+	*** Refreshes Validator constraints in POJO beans and XSD Restrictions in Schema (XSD) files
+	*********************************************************************** -->
+	<target name="refresh-validator-permissible-values" depends="package-codegen-artifacts" description="Refreshes Validator constraints in POJO beans and XSD Restrictions in Schema (XSD) files">
+		<SDKecho message="${ant.project.name}: Completed Refreshing permissible values in validator"/>
+	</target>
 	
 	<!--***********************************************************************
 	*** Dumps the current Code Generator properties  
