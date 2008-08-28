@@ -7,12 +7,62 @@
 	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
 			<list>
-				<ref bean="authenticationProvider"/>
+				<!--@CSM_LOGIN_MODULE_START@-->
+				<ref bean="csmAuthenticationProvider"/>
+				<!--@CSM_LOGIN_MODULE_END@-->
+				<!--@GRID_LOGIN_MODULE_START@-->
+				<ref bean="gridAuthenticationProvider"/>
+				<!--@GRID_LOGIN_MODULE_END@-->
+				<ref bean="x509AuthenticationProvider"/>
+				<bean class="gov.nih.nci.system.security.acegi.authentication.NullGroupNameAuthenticationProvider"/>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="authenticationProvider" class="gov.nih.nci.system.security.acegi.authentication.CSMAuthenticationProvider">
+	<bean id="x509AuthenticationProvider" class="org.acegisecurity.providers.x509.X509AuthenticationProvider">
+		<property name="x509AuthoritiesPopulator">
+			<bean class="gov.nih.nci.system.security.acegi.authentication.CSMX509AuthoritiesPopulator">
+				<property name="userDetailsService" ref="userDetailsService"/>
+			</bean>
+		</property>
+		<property name="x509UserCache">
+			<bean class="org.acegisecurity.providers.x509.cache.EhCacheBasedX509UserCache">
+				<property name="cache">
+					<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+						<property name="cacheManager">
+							<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
+						</property>
+						<property name="timeToLive" value="100000" />
+						<property name="timeToIdle" value="1800" />
+						<property name="cacheName" value="x509UserCache" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="gridAuthenticationProvider" class="gov.nih.nci.system.security.acegi.authentication.GridAuthenticationProvider">
+		<property name="loginModule" value="@CAGRID_LOGIN_MODULE_NAME@"/>
+		<property name="x509AuthenticationProvider">
+			<ref bean="x509AuthenticationProvider"/>
+		</property>
+		<property name="userCache">
+			<bean class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+				<property name="cache">
+					<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+						<property name="cacheManager">
+							<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
+						</property>
+						<property name="timeToLive" value="100000" />
+						<property name="timeToIdle" value="1800" />
+						<property name="cacheName" value="userCache" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="csmAuthenticationProvider" class="gov.nih.nci.system.security.acegi.authentication.CSMAuthenticationProvider">
 		<property name="userDetailsService">
 			<ref bean="userDetailsService"/>
 		</property>
