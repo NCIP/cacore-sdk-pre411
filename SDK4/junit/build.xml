@@ -151,7 +151,9 @@
 				<sysproperty key="useGMETags" value="${GENERATE_XSD_WITH_GME_TAGS}"/>
 				<sysproperty key="usePermissibleValues" value="${GENERATE_XSD_WITH_PERMISSIBLE_VALUES}"/>
 				<sysproperty key="namespaceUriPrefix" value="${NAMESPACE_PREFIX}"/>
-
+				<sysproperty key="enableAttributeLevelSecurity" value="${ENABLE_ATTRIBUTE_LEVEL_SECURITY}"/>
+				<sysproperty key="enableInstanceLevelSecurity" value="${ENABLE_INSTANCE_LEVEL_SECURITY}"/>
+				
 				<classpath>
 					<path refid="@{junitClasspath}" />
 				</classpath>

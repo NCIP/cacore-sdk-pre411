@@ -12,8 +12,13 @@ import junit.framework.TestCase;
  */
 public abstract class SDKSecurityTestBase extends TestCase {
 
+	protected boolean enableAttributeLevelSecurity=false;
+	protected boolean enableInstanceLevelSecurity=false;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
+		enableAttributeLevelSecurity = Boolean.parseBoolean(System.getProperty("enableAttributeLevelSecurity"));
+		enableInstanceLevelSecurity = Boolean.parseBoolean(System.getProperty("enableInstanceLevelSecurity"));
 	}
 
 	protected void tearDown() throws Exception {

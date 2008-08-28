@@ -98,8 +98,13 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result.getId());
 			
 			// user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
 		}
 	}	
 	
@@ -170,9 +175,15 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			
-			// user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
+
 		}
 	}
 	
@@ -229,9 +240,14 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			
-			//user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
 		}
 	}	
 	
@@ -283,9 +299,14 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			
-			//user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
 		}
 	}
 	
@@ -341,9 +362,14 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			
-			//user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
 		}
 	}	
 	
@@ -471,8 +497,16 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			Credit credit = (Credit)i.next();
 			assertNotNull(credit);
 			assertNotNull(credit.getId());
-			assertNull(credit.getAmount());
-			assertNull(credit.getCardNumber());
+			
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(credit.getAmount());
+				assertNull(credit.getCardNumber());
+			} else {
+				assertNotNull(credit.getAmount());
+				assertNotNull(credit.getCardNumber());				
+			}
+
 
 			bank = credit.getIssuingBank();
 			assertNotNull(bank);
@@ -539,9 +573,14 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			
-			//user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
 		}
 	}	
 
@@ -597,9 +636,14 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			
-			//user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
 		}
 	}
 	
@@ -653,9 +697,14 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 			assertNotNull(result);
 			assertNotNull(result.getId());
 			
-			//user2 does not have access to amount and cardNumber attributes
-			assertNull(result.getAmount());
-			assertNull(result.getCardNumber());
+			if (enableAttributeLevelSecurity){
+				// user2 does not have access to amount and cardNumber attributes
+				assertNull(result.getAmount());
+				assertNull(result.getCardNumber());
+			} else {
+				assertNotNull(result.getAmount());
+				assertNotNull(result.getCardNumber());				
+			}
 		}
 	}
 	
@@ -728,8 +777,12 @@ public class AttributeSecurityTest extends SDKSecurityTestBase
 				recordNumber = i-2;
 				assertTrue(buffer.indexOf("name=\"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Credit\" recordNumber=\"" + recordNumber + "\"") > 0);
 				assertTrue(buffer.indexOf("<field name=\"id\">" + i +"</field>") > 0);
-				assertTrue(buffer.indexOf("<field name=\"amount\">-</field>") > 0);
-				assertTrue(buffer.indexOf("<field name=\"cardNumber\">-</field>") > 0);
+				if (enableAttributeLevelSecurity){
+					// user2 does not have access to amount and cardNumber attributes
+					assertTrue(buffer.indexOf("<field name=\"amount\">-</field>") > 0);
+					assertTrue(buffer.indexOf("<field name=\"cardNumber\">-</field>") > 0);
+				}
+				
 			}
 			
 		} catch(Exception e) {

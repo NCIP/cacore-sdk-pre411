@@ -625,12 +625,15 @@ public class ClassSecurityTest extends SDKSecurityTestBase
 			for (int i=1; i<=4; i++ ){
 				assertTrue(buffer.indexOf("name=\"gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank\" recordNumber=\"" + i + "\"") > 0);
 				assertTrue(buffer.indexOf("<field name=\"id\">" + i +"</field>") > 0);
-				assertTrue(buffer.indexOf("<field name=\"name\">Bank" + i +"</field>") > 0);
+				if (enableAttributeLevelSecurity){
+					assertTrue(buffer.indexOf("<field name=\"name\">-</field>") > 0);
+				} else {
+					assertTrue(buffer.indexOf("<field name=\"name\">Bank" + i +"</field>") > 0);
+				}
+				
 			}
 		} catch(Exception e)
 		{
-//			System.out.println("Exception caught: " + e.getMessage());
-//			e.printStackTrace();
 			fail("Exception caught: " + e.getMessage());
 		}
 	}

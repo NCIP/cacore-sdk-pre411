@@ -14,6 +14,7 @@ import test.gov.nih.nci.cacoresdk.SDKSecurityTestBase;
 
 public class InstanceSecurityTest extends SDKSecurityTestBase
 {
+	
 	public static String getTestCaseName()
 	{
 		return "Instance Security Test Case";
@@ -37,16 +38,24 @@ public class InstanceSecurityTest extends SDKSecurityTestBase
 		Collection results = getApplicationService("user2","password").search(Card.class,objList);
 
 		assertNotNull(results);
-		assertEquals(52,results.size()); //Make sure that all cards are returned if not traversed via Deck -> Suit -> Card path
+		
+		if (enableInstanceLevelSecurity)
+			assertEquals(52,results.size()); //Make sure that all cards are returned if not traversed via Deck -> Suit -> Card filter path
+		else 
+			assertEquals(53,results.size()); //Make sure that all cards are returned if not traversed via Deck -> Suit -> Card filter path
 		
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
 			Card result = (Card)i.next();
 			assertNotNull(result);
 			assertNotNull(result.getId());
-			if (result.getId() == 1)
-				assertNotNull(result.getImage());// Only row with id=1 has an image
-			assertNotNull(result.getName());			
+			if (enableAttributeLevelSecurity){//user2 does not have access to image attribute if attribute level security is enabled
+				assertNull(result.getImage());
+			} else{
+//				if (result.getId() == 1)
+//					assertNotNull(result.getImage());// Only row with id=1 has an image
+			}
+			assertNotNull(result.getName());	
 		}
 	}	
 	
@@ -65,28 +74,34 @@ public class InstanceSecurityTest extends SDKSecurityTestBase
 
 		assertNotNull(results);
 		assertEquals(1,results.size());
-		
+
 		for(Iterator i = results.iterator();i.hasNext();)
 		{
 			Deck deck = (Deck)i.next();
 			assertNotNull(deck);
 			assertNotNull(deck.getId());
 			assertEquals(new Integer(1),deck.getId());
+
+			if (enableAttributeLevelSecurity){
+				assertNull(deck.getName());
+			} else{
+				assertNotNull(deck.getName());
+			}
 			
 			for(Iterator j = deck.getSuitCollection().iterator();i.hasNext();){
 				Suit suit = (Suit)j.next();
 				assertNotNull(suit);
 				assertNotNull(suit.getId());
-				
+
 				// Only cards with Name = 'Ace' should be returned
 				assertEquals(1, suit.getCardCollection().size());
-				
+
 				for(Iterator k = suit.getCardCollection().iterator();i.hasNext();){
 					Card card = (Card)k.next();
 					assertNotNull(card);
 					assertNotNull(card.getId());
 					assertNotNull(card.getName());
-					
+
 					// Only cards with Name = 'Ace' should be returned
 					assertEquals(card.getName(),"Ace");
 				}
