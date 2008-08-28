@@ -38,7 +38,7 @@ public class CSMAuthenticationProvider extends AbstractUserDetailsAuthentication
         
     	// 	Use CSM authenticationManager to authenticate User.
         try {
-			this.userDetailsService.authenticationManager.authenticate(userDetails.getUsername(), authentication.getCredentials().toString());
+			this.userDetailsService.authenticationManagerInstance().authenticate(userDetails.getUsername(), authentication.getCredentials().toString());
 		} catch (CSLoginException e) {
 			 throw new BadCredentialsException(messages.getMessage(
 	                    "AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), includeDetailsObject ? userDetails : null);
