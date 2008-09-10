@@ -148,16 +148,20 @@ public class ApplicationServiceProvider
 		ApplicationService as = (ApplicationService) serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
 
 		if(!secured)
-			return as;
-		
-		AuthenticationManager am = (AuthenticationManager)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
-
-		try {
-			auth = am.authenticate(auth);
-			setApplicationService(as, auth);
-		} catch (Exception e) {
-			String message = "Error authenticating user:";
-			throw new ApplicationException(message, e);
+		{
+			setApplicationService(as, null);			
+		}
+		else
+		{
+			AuthenticationManager am = (AuthenticationManager)serviceInfoMap.get("AUTHENTICATION_SERVICE_BEAN");
+	
+			try {
+				auth = am.authenticate(auth);
+				setApplicationService(as, auth);
+			} catch (Exception e) {
+				String message = "Error authenticating user:";
+				throw new ApplicationException(message, e);
+			}
 		}
 		return as;
 	}
