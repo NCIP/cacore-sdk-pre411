@@ -728,6 +728,7 @@
 				<include name="spring*.*"/>
 				<include name="castor*.*"/>
 				<include name="xercesImpl*.*"/>
+				<include name="caGrid*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 		</copy>
@@ -770,6 +771,7 @@
 				<include name="spring*.*"/>
 				<include name="cog-jglobus*.*"/>
 				<include name="cog-axis*.*"/>
+				<include name="caGrid*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 			<fileset dir="${build.jar.dir}" includes="${orm.file}" />
@@ -807,7 +809,6 @@
 				<exclude name="servlet.jar"/>
 				<exclude name="commons-logging*.*"/>
 				<exclude name="xercesImpl*.*"/>
-
 				<exclude name="cog*.*"/>
 			</lib>
 			<lib dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" includes="*.*" />
