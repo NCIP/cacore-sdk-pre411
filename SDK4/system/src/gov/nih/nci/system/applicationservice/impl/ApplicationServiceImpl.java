@@ -1,5 +1,6 @@
 package gov.nih.nci.system.applicationservice.impl;
 
+import gov.nih.nci.cagrid.sdkquery4.processor.ParameterizedHqlQuery;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.proxy.ListProxy;
@@ -8,6 +9,8 @@ import gov.nih.nci.system.dao.DAOException;
 import gov.nih.nci.system.dao.Request;
 import gov.nih.nci.system.dao.Response;
 import gov.nih.nci.system.dao.orm.ORMDAOImpl;
+import gov.nih.nci.system.dao.orm.translator.gridCQL.CQL2ParameterizedHQL;
+import gov.nih.nci.system.dao.orm.translator.gridCQL.RoleNameResolver;
 import gov.nih.nci.system.query.cql.CQLQuery;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import gov.nih.nci.system.query.nestedcriteria.NestedCriteriaPath;
@@ -16,7 +19,6 @@ import gov.nih.nci.system.util.ClassCache;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -303,5 +305,21 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	protected ClassCache getClassCache() {
 		return classCache;
+	}
+
+	public <E> List<E> query(gov.nih.nci.cagrid.cqlquery.CQLQuery cqlQuery) throws ApplicationException
+	{
+		try
+		{
+			CQL2ParameterizedHQL converter = new CQL2ParameterizedHQL(classCache,new RoleNameResolver(classCache),false);
+			ParameterizedHqlQuery query = converter.convertToHql(cqlQuery);
+			HQLCriteria hqlCriteria = new HQLCriteria(query.getHql(), query.getParameters());
+			return query(hqlCriteria);
+		} 
+		catch (Exception e)
+		{
+			log.error(e.getMessage());
+			throw new ApplicationException(e.getMessage());
+		}
 	}
 }
