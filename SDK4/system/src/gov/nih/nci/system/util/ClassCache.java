@@ -44,6 +44,8 @@ public class ClassCache {
 	private Map<String,List<String>> allFieldsCache = new HashMap<String,List<String>>();	
 	private Map<String,List<Field>> nonPrimitiveFieldsCache = new HashMap<String,List<Field>>();
 
+	private Map<String,List<String>> subClassCache = new HashMap<String,List<String>>();	
+	
 	private List<DAO> daoList;
 
 	//TODO :: Redo Original Below 
@@ -586,6 +588,11 @@ public class ClassCache {
 		return fieldGenericType;
 	}
 
+	public List<String> getSubClassNames(String klassName)
+	{
+		return subClassCache.get(klassName);
+	}
+	
 	/**
 	 * initialize with a list of the classes obtained from each DAO class within the System
 	 */
@@ -697,6 +704,29 @@ public class ClassCache {
 
 				} catch(ClassNotFoundException cnfe) {
 					log.error("Exception caught while initializing ClassCache for class: " + klassName, cnfe);
+				}
+			}
+
+			for(String klassName:allClassNames){
+				log.debug("Adding class " + klassName + " to subClassCache List");
+				try
+				{
+					klass = Class.forName(klassName);
+					Class superKlass = klass.getSuperclass();
+					String currentKlassName = klassName;
+					while(!"java.lang.Object".equals(superKlass.getName()))
+					{
+						List<String> subKlassNames = subClassCache.get(currentKlassName);
+						if(subKlassNames == null) subKlassNames = new ArrayList<String>();
+						if(!subKlassNames.contains(currentKlassName))
+							subKlassNames.add(currentKlassName);
+						currentKlassName = superKlass.getName();
+						superKlass = superKlass.getSuperclass();
+					}
+				} 
+				catch (ClassNotFoundException e)
+				{
+					log.error("Exception caught while initializing ClassCache for class: " + klassName, e);
 				}
 			}
 		}
