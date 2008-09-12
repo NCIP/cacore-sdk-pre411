@@ -1350,6 +1350,11 @@ public class TransformerUtils
 		return getTagValue(klass,TV_DISCR_COLUMN,null, 1,1);
 	}
 	
+	public String getRootDiscriminatorValue(UMLClass klass) throws GenerationException
+	{
+		return getTagValue(klass,TV_DISCR_COLUMN,null,0,1);
+	}
+	
 	public String getImplicitDiscriminatorColumn(UMLClass table, UMLClass klass, String roleName) throws GenerationException
 	{
 		log.debug("**** getImplicitDiscriminator: table: " + table.getName() +"; klass: " + klass.getName() +"; roleName: " + roleName);
