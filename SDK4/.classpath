@@ -6,6 +6,9 @@
 	<classpathentry kind="src" path="writable-api/src"/>
 	<classpathentry kind="src" path="grid/grid-remoting/src"/>
 	<classpathentry kind="src" path="grid/grid-jaas/src"/>
+	<classpathentry kind="src" path="output/example/src"/>
+	<classpathentry kind="src" path="output/example/package/local-client/src"/>
+	<classpathentry kind="src" path="output/example/package/local-client/conf"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="grid/grid-jaas/lib/axis.jar"/>
 	<classpathentry kind="lib" path="codegen/core/lib/backport-util-concurrent.jar"/>
@@ -95,6 +98,23 @@
 	<classpathentry kind="lib" path="grid/grid-jaas/lib/xalan.jar"/>
 	<classpathentry kind="lib" path="grid/grid-jaas/lib/xmlsec.jar"/>
 	<classpathentry kind="lib" path="grid/grid-jaas/lib/spring.jar"/>
+	<classpathentry kind="lib" path="system/lib/caGrid-CQL-cql.1.0-1.2.jar"/>
+	<classpathentry kind="lib" path="system/lib/caGrid-sdkQuery4-beans-1.2.jar"/>
+	<classpathentry kind="lib" path="system/lib/caGrid-sdkQuery4-processor-1.2.jar"/>
+	<classpathentry kind="lib" path="system/lib/caGrid-metadata-data-1.2.jar"/>
+	<classpathentry kind="lib" path="system/lib/caGrid-data-common-1.2.jar"/>
+	<classpathentry kind="lib" path="system/lib/caGrid-data-utils-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-syncgts-client-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-syncgts-common-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-syncgts-service-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-syncgts-stubs-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-core-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/mobius_common_client-1.1.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/mobius_tools-1.1.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-gts-client-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-gts-common-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-gts-service-1.2.jar"/>
+	<classpathentry kind="lib" path="grid/grid-jaas/lib/caGrid-gts-stubs-1.2.jar"/>
 	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_5_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
