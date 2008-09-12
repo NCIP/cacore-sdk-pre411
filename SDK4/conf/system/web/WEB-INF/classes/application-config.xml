@@ -50,7 +50,11 @@
 				<constructor-arg>
 					<list>
 						@ENABLE_EMPTY_INTERCEPTOR_START@<bean class="org.hibernate.EmptyInterceptor"/>@ENABLE_EMPTY_INTERCEPTOR_END@
-						@ATTRIBUTE_LEVEL_SECURITY_START@<bean class="gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor"/>@ATTRIBUTE_LEVEL_SECURITY_END@
+						@ATTRIBUTE_LEVEL_SECURITY_START@
+						<bean class="gov.nih.nci.security.authorization.attributeLevel.AttributeSecuritySessionInterceptor">
+							<constructor-arg value="false"/>
+						</bean>
+						@ATTRIBUTE_LEVEL_SECURITY_END@
 						@ENABLE_CLM_LOGGER_CFG_GENERATION_START@<bean class="gov.nih.nci.logging.api.logger.hibernate.ObjectStateInterceptor"/>@ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 					</list>		
 				</constructor-arg>
