@@ -13,6 +13,7 @@ public class GridJAASCallbackHandler implements CallbackHandler
 	private String _userID;
 	private String _password;
 	private String _authenticationServiceURL;
+	private String _dorianServiceURL;
 
 	public GridJAASCallbackHandler(String userID, String password) {
 		super();
@@ -20,30 +21,31 @@ public class GridJAASCallbackHandler implements CallbackHandler
 		_password = password;
 	}
 
-	public GridJAASCallbackHandler(String userID, String password, String authenticationServiceURL) {
+	public GridJAASCallbackHandler(String userID, String password, String authenticationServiceURL, String dorianServiceURL) {
 		super();
 		_userID = userID;
 		_password = password;
 		_authenticationServiceURL = authenticationServiceURL;
+		_dorianServiceURL = dorianServiceURL;
 	}
 	
 	public void handle(Callback[] callbacks) throws IOException,
 			UnsupportedCallbackException {
 
-		for (int i = 0; i < callbacks.length; i++) {
-			if (callbacks[i] instanceof NameCallback) {
-				NameCallback nameCallback = (NameCallback) callbacks[i];
-				nameCallback.setName(_userID);
-			} else if (callbacks[i] instanceof PasswordCallback) {
-				PasswordCallback passwordCallback = (PasswordCallback) callbacks[i];
-				passwordCallback.setPassword(_password.toCharArray());
-			} else if (callbacks[i] instanceof TextInputCallback) {
-				TextInputCallback textCallback = (TextInputCallback) callbacks[i];
-				textCallback.setText(_authenticationServiceURL);
-			} else {
-				throw new UnsupportedCallbackException(callbacks[i],
-						"Error in initializing the CallBack Handler");
-			}
+		if(callbacks.length >=2)
+		{
+			NameCallback nameCallback = (NameCallback) callbacks[0];
+			nameCallback.setName(_userID);
+			PasswordCallback passwordCallback = (PasswordCallback) callbacks[1];
+			passwordCallback.setPassword(_password.toCharArray());
+		}
+
+		if(callbacks.length ==4)
+		{
+			TextInputCallback textCallback = (TextInputCallback) callbacks[2];
+			textCallback.setText(_authenticationServiceURL);
+			TextInputCallback textCallback2 = (TextInputCallback) callbacks[3];
+			textCallback2.setText(_dorianServiceURL);
 		}
 	}
 }

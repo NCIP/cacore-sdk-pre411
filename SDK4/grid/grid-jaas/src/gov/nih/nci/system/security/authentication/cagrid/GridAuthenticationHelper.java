@@ -33,10 +33,10 @@ public class GridAuthenticationHelper
 		return null;
 	}
 
-	public GlobusCredential login(String username, String password,String authenticationServiceURL) throws Exception
+	public GlobusCredential login(String username, String password,String authenticationServiceURL, String dorianServiceURL) throws Exception
 	{
 		Subject subject = new Subject();
-		LoginContext loginContext = new LoginContext(loginModule, subject, new GridJAASCallbackHandler(username, password,authenticationServiceURL));
+		LoginContext loginContext = new LoginContext(loginModule, subject, new GridJAASCallbackHandler(username, password,authenticationServiceURL, dorianServiceURL));
 		loginContext.login();
 		
 		for(Object o: subject.getPrincipals())
@@ -48,4 +48,5 @@ public class GridAuthenticationHelper
 			}
 		}
 		return null;
-	}}
+	}
+}

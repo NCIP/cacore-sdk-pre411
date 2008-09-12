@@ -1,8 +1,5 @@
 package gov.nih.nci.system.security.authentication.cagrid.executor;
 
-import javax.security.auth.login.CredentialNotFoundException;
-import javax.security.auth.login.LoginException;
-
 import gov.nih.nci.cagrid.authentication.bean.BasicAuthenticationCredential;
 import gov.nih.nci.cagrid.authentication.bean.Credential;
 import gov.nih.nci.cagrid.authentication.client.AuthenticationClient;
@@ -10,6 +7,8 @@ import gov.nih.nci.cagrid.authentication.stubs.types.InvalidCredentialFault;
 import gov.nih.nci.cagrid.dorian.client.IFSUserClient;
 import gov.nih.nci.cagrid.dorian.ifs.bean.ProxyLifetime;
 import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
+
+import javax.security.auth.login.CredentialNotFoundException;
 
 import org.globus.gsi.GlobusCredential;
 
@@ -33,7 +32,7 @@ public class GridAuthenticationServiceImpl implements GridAuthenticationService 
 		return authenticate(username,password,authenticationServiceURL,dorianServiceURL,proxyLifetime,delegationPathLength);
 	}
 
-	public GlobusCredential authenticate(String username, String password, String authenticationServiceURL) throws CredentialNotFoundException,Exception 
+	public GlobusCredential authenticate(String username, String password, String authenticationServiceURL, String dorianServiceURL) throws CredentialNotFoundException,Exception 
 	{
 		return authenticate(username,password,authenticationServiceURL,dorianServiceURL,proxyLifetime,delegationPathLength);
 	}

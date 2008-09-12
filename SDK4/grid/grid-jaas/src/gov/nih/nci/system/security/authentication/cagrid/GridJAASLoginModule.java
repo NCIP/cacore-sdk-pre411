@@ -49,11 +49,13 @@ public class GridJAASLoginModule implements  LoginModule
 		String 		userID;
 		char[]		password;
 		String authenticationServiceURL;
+		String dorianServiceURL;
 		
-		Callback[] callbacks = new Callback[3];
+		Callback[] callbacks = new Callback[4];
 		callbacks[0] = new NameCallback("userid: ");
 		callbacks[1] = new PasswordCallback("password: ", false);
 		callbacks[2] = new TextInputCallback("authenticationURL: ");
+		callbacks[3] = new TextInputCallback("dorianServiceURL: ");
 		
 		try
 		{
@@ -61,6 +63,7 @@ public class GridJAASLoginModule implements  LoginModule
 			userID = ((NameCallback) callbacks[0]).getName();
 			char[] tmpPassword = ((PasswordCallback) callbacks[1]).getPassword();
 			authenticationServiceURL = ((TextInputCallback) callbacks[2]).getText();
+			dorianServiceURL = ((TextInputCallback) callbacks[3]).getText();
 			
 			if (tmpPassword == null)
 				tmpPassword = new char[0];
@@ -77,7 +80,7 @@ public class GridJAASLoginModule implements  LoginModule
 			throw new LoginException("Error in Creating the CallBack Handler");
 		}
 	
-		return performAuthentication(userID, password, authenticationServiceURL);
+		return performAuthentication(userID, password, authenticationServiceURL,dorianServiceURL);
 	}
 	
 	
@@ -98,16 +101,16 @@ public class GridJAASLoginModule implements  LoginModule
 	}
 	
 
-	protected boolean performAuthentication(String userID, char[] password, String authenticationServiceURL) throws LoginException
+	protected boolean performAuthentication(String userID, char[] password, String authenticationServiceURL,String dorianServiceURL) throws LoginException
 	{
 		try 
 		{
 			GlobusCredential credential = null;
 			GridAuthenticationService executor = getAuthenticationService();
-			if(authenticationServiceURL == null || authenticationServiceURL.length() == 0)
+			if(authenticationServiceURL == null || authenticationServiceURL.length() == 0 || dorianServiceURL==null || dorianServiceURL.length() == 0)
 				credential = executor.authenticate(userID, new String(password));
 			else
-				credential = executor.authenticate(userID, new String(password), authenticationServiceURL);
+				credential = executor.authenticate(userID, new String(password), authenticationServiceURL,dorianServiceURL);
 			if (credential!=null)
 			{
 				X509AuthenticationToken auth = new X509AuthenticationToken(credential.getIdentityCertificate());
