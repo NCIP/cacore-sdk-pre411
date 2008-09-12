@@ -8,11 +8,14 @@ String fqcn = transformerUtils.getFQCN(klass);
 UMLClass table = transformerUtils.getTable(klass);
 String emptySpace = transformerUtils.getEmptySpace(level);
 String discriminatorColumnName = transformerUtils.findDiscriminatingColumnName(klass);
-if(level == 0){%>
+if(level == 0){
+String discriminatorValue = transformerUtils.getRootDiscriminatorValue(klass);
+String discriminatorValueStr = (discriminatorValue==null) ? "" : "discriminator-value=\""+discriminatorValue+"\"";
+%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="<%=transformerUtils.getFullPackageName(klass)%>" auto-import="false" default-cascade="none">
-	<class name="<%=klass.getName()%>" table="<%=table.getName()%>" lazy="true" polymorphism="<%=polymorphismAttr%>" abstract="<%=abstractModifier%>">
+	<class name="<%=klass.getName()%>" table="<%=table.getName()%>" lazy="true" polymorphism="<%=polymorphismAttr%>" abstract="<%=abstractModifier%>" <%=discriminatorValueStr%>>
 		<cache usage="read-write" />
 		<id name="<%=idAttr.getName()%>" type="<%=transformerUtils.getHibernateDataType(klass,idAttr)%>" column="<%=transformerUtils.getMappedColumnName(table,fqcn+"."+idAttr.getName())%>"><%
 		java.util.HashMap<String,String> pkGeneratorTags=transformerUtils.getPKGeneratorTags(table,fqcn,idAttr);

@@ -205,6 +205,10 @@ public class UMLModelMappingValidator implements Validator
 			{
 				Map<String, String> discriminatorValues = new HashMap<String, String>();
 				
+				String rootDiscriminatorValue = transformerUtils.getRootDiscriminatorValue(klass);
+				if (rootDiscriminatorValue!=null && rootDiscriminatorValue.length()>0)
+					discriminatorValues.put(rootDiscriminatorValue, transformerUtils.getFQCN(klass));
+				
 				for(UMLGeneralization gen:klass.getGeneralizations())
 				{
 					UMLClass subKlass = (UMLClass)gen.getSubtype();
