@@ -53,7 +53,7 @@
 	</category>
 	<category name="CSM.Audit.Logging.ObjectState.Authorization">
 		<level value="INFO" />
-		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="CLM_APPENDER" />
 	</category>
 @ENABLE_CLM_LOGGER_CFG_GENERATION_END@
 
