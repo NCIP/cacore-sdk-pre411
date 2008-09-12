@@ -14,8 +14,8 @@ public class SyncGTS
 	
 	public SyncGTS(File file, Boolean reSync) throws Exception
 	{
-		System.out.println("In Sync GTS");
-/*		try
+
+		try
 		{
 			SyncDescription description = (SyncDescription) Utils.deserializeDocument(file.getAbsolutePath(),SyncDescription.class);
 			gov.nih.nci.cagrid.syncgts.core.SyncGTS instance = gov.nih.nci.cagrid.syncgts.core.SyncGTS.getInstance();
@@ -28,8 +28,7 @@ public class SyncGTS
 		{
 			log.error(e);
 			throw e;
-		}		
-*/		
+		}				
 	}
 
 }
