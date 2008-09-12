@@ -6,9 +6,6 @@
 	<classpathentry kind="src" path="writable-api/src"/>
 	<classpathentry kind="src" path="grid/grid-remoting/src"/>
 	<classpathentry kind="src" path="grid/grid-jaas/src"/>
-	<classpathentry kind="src" path="output/example/src"/>
-	<classpathentry kind="src" path="output/example/package/local-client/src"/>
-	<classpathentry kind="src" path="output/example/package/local-client/conf"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="grid/grid-jaas/lib/axis.jar"/>
 	<classpathentry kind="lib" path="codegen/core/lib/backport-util-concurrent.jar"/>
