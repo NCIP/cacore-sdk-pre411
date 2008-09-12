@@ -508,6 +508,7 @@
 			<replacefilter token="${xml.comment.start}@GRID_LOGIN_MODULE_END@${xml.comment.end}" value="${GRID_LOGIN_MODULE_END}"/>
 			<replacefilter token="${xml.comment.start}@CSM_LOGIN_MODULE_START@${xml.comment.end}" value="${CSM_LOGIN_MODULE_START}"/>
 			<replacefilter token="${xml.comment.start}@CSM_LOGIN_MODULE_END@${xml.comment.end}" value="${CSM_LOGIN_MODULE_END}"/>
+			<replacefilter token="@GRID_JNDI_NAME@" value="${GRID_JNDI_NAME}" />
 		</replace>
 		<copy todir="${output.src.dir}" file="${system.config.security.dir}/${csm.ehcache.file}"/>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
@@ -890,7 +891,7 @@
 			<fileset dir="${system.config.client.grid-jaas.dir}"/>
 		</copy>
 		<copy todir="${package.client.grid-jaas.conf.dir}">
-			<fileset dir="${system.config.grid.loginService.web.classes.dir}" includes="*.*"/>
+			<fileset dir="${system.config.grid.loginService.web.classes.dir}" includes="*.*" excludes="grid-remote*.*"/>
 		</copy>
 		
 	</target>	
