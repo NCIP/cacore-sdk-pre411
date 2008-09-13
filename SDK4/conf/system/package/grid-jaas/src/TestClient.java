@@ -6,11 +6,12 @@ public class TestClient
 	
 	public static void main(String args[]) throws Exception
 	{
-		String username = "dorian";
-		String password = "DorianAdmin$1";
-		GridAuthenticationHelper loginHelper = new GridAuthenticationHelper("@CSM_PROJECT_NAME@");
+		String username = "SDKTestUser";
+		String password = "Psat123!@#";
+		GridAuthenticationHelper loginHelper = new GridAuthenticationHelper("@CAGRID_LOGIN_MODULE_NAME@");
 		GlobusCredential proxy = loginHelper.login(username,password);
 		System.out.println(proxy);
+		System.out.println("Identity:"+proxy.getIdentity());
 	}
 	
 }
