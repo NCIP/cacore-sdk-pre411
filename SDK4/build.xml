@@ -853,7 +853,8 @@
 				<exclude name="cryptix*.*"/>				
 				<exclude name="jce-jdk*.*"/>				
 				<exclude name="puretls*.*"/>
-				<exclude name="xml-api*.*"/>				
+				<exclude name="xml-api*.*"/>
+				<exclude name="jgss*.*"/>
 			</lib>
 			<lib dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" includes="*.jar"/>
 			<fileset dir="${system.config.grid.loginService.dir}">
@@ -903,6 +904,7 @@
 		<copy todir="${package.client.jboss.dir}/server/default/lib">
 			<fileset dir="${grid-jaas.dir}\${grid-jaas.lib.dir}">
 				<include name="cog-jglobus*.*"/>
+				<include name="cog-tomcat*.*"/>
 				<include name="cog-axis*.*"/>
 				<include name="cryptix*.*"/>
 				<include name="jce-jdk*.*"/>
