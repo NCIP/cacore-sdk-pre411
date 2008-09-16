@@ -68,6 +68,9 @@
 
 	<path id="xsd-client-cp">
 		<pathelement path="${remote-client.dir}/conf" />
+		<fileset dir="${grid-jaas.lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
 		<fileset dir="${xsd-client.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
