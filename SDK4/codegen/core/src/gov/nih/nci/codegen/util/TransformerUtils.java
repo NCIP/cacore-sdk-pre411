@@ -31,6 +31,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -44,10 +46,10 @@ public class TransformerUtils
 	private String EXCLUDE_NAME;
 	private String EXCLUDE_NAMESPACE;
 	private String IDENTITY_GENERATOR_TAG;
-	private Set<String> INCLUDE_PACKAGE_NAMES = new HashSet<String>();
-	private Set<String> EXCLUDE_PACKAGE_NAMES = new HashSet<String>();
-	private Set<String> EXCLUDE_NAMES = new HashSet<String>();
-	private Set<String> EXCLUDE_NAMESPACES = new HashSet<String>();
+	private Set<String> INCLUDE_PACKAGE_PATTERNS = new HashSet<String>();
+	private Set<String> EXCLUDE_PACKAGE_PATTERNS = new HashSet<String>();
+	private Set<String> EXCLUDE_CLASS_PATTERNS = new HashSet<String>();
+	private Set<String> EXCLUDE_NAMESPACE_PATTERNS = new HashSet<String>();
 	private String DATABASE_TYPE;
 	private Map<String,String> CASCADE_STYLES = new HashMap<String,String>();
 	private ValidatorModel vModel;
@@ -95,13 +97,13 @@ public class TransformerUtils
 			EXCLUDE_NAMESPACE = umlModelFileProperties.getProperty("Exclude Namespace")==null ? "" : umlModelFileProperties.getProperty("Exclude Namespace").trim();
 			
 			for(String excludeToken:EXCLUDE_PACKAGE.split(","))
-				EXCLUDE_PACKAGE_NAMES.add(excludeToken.trim());
+				EXCLUDE_PACKAGE_PATTERNS.add(excludeToken.trim());
 			for(String includeToken:INCLUDE_PACKAGE.split(","))
-				INCLUDE_PACKAGE_NAMES.add(includeToken.trim());
+				INCLUDE_PACKAGE_PATTERNS.add(includeToken.trim());
 			for(String excludeToken:EXCLUDE_NAME.split(","))
-				EXCLUDE_NAMES.add(excludeToken.trim());
+				EXCLUDE_CLASS_PATTERNS.add(excludeToken.trim());
 			for(String excludeToken:EXCLUDE_NAMESPACE.split(","))
-				EXCLUDE_NAMESPACES.add(excludeToken.trim());
+				EXCLUDE_NAMESPACE_PATTERNS.add(excludeToken.trim());
 			
 			IDENTITY_GENERATOR_TAG = umlModelFileProperties.getProperty("Identity Generator Tag") == null ? "": umlModelFileProperties.getProperty("Identity Generator Tag").trim();
 			DATABASE_TYPE = umlModelFileProperties.getProperty("Database Type") == null ? "": umlModelFileProperties.getProperty("Database Type").trim();
@@ -125,64 +127,52 @@ public class TransformerUtils
 	public boolean isIncluded(UMLClass klass) throws GenerationException
 	{
 		String fqcn = getFQCN(klass);
-		String pkgName = getFullPackageName(klass);
 		
-		return isIncluded(fqcn, pkgName);
+		return isIncluded(fqcn);
 	}
 	
 	public boolean isIncluded(UMLInterface interfaze) throws GenerationException
 	{
 		String fqcn = getFQCN(interfaze);
-		String pkgName = getFullPackageName(interfaze);
 		
-		return isIncluded(fqcn, pkgName);
+		return isIncluded(fqcn);
 	}
 	
-	public boolean isIncluded(String fqcn, String pkgName)
+	public boolean isIncluded(String fqcn)
 	{
 
-		Set<String> FQCN_PACKAGE_NAMES = new HashSet<String>();		
-		for(String packageToken:fqcn.split("\\.")){
-			FQCN_PACKAGE_NAMES.add(packageToken.trim());
+		log.debug("isIncluded fqcn: "+fqcn);
+
+		for (String excludePkgPattern:EXCLUDE_PACKAGE_PATTERNS)
+			if (Pattern.matches(excludePkgPattern, fqcn))
+				return false;
+
+
+		for (String excludeClassPattern:EXCLUDE_CLASS_PATTERNS){
+			if (Pattern.matches(excludeClassPattern, fqcn))
+				return false;
 		}
 
-		if(INCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_PACKAGE_NAMES.contains(pkgName) && !EXCLUDE_NAMES.contains(fqcn))
-			return true;
+		for(String includePkgPattern: INCLUDE_PACKAGE_PATTERNS)
+			if(Pattern.matches(includePkgPattern, fqcn))
+				return true;
 
-		boolean included = false;
-
-		if(pkgName.length()==0)
-			included = true;
-
-		for(String includePkg: INCLUDE_PACKAGE_NAMES)
-			if(includePkg!=null && includePkg.length()>0)
-				included |= (FQCN_PACKAGE_NAMES.contains(includePkg));
-		for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
-			if(excludePkg!=null && excludePkg.length()>0) {
-				included &= !(FQCN_PACKAGE_NAMES.contains(excludePkg));
-			}
-		included &= !EXCLUDE_NAMES.contains(fqcn);
-		
-		return included;
+		return false;
 	}
 	
 	public boolean isIncluded(UMLPackage pkg) throws GenerationException
 	{
-		String pkgName = getFullPackageName(pkg);
-		
-		Set<String> PACKAGE_NAMES = new HashSet<String>();		
-		for(String packageToken:pkgName.split("\\.")){
-			PACKAGE_NAMES.add(packageToken.trim());
-		}
-		
-		boolean included = true;
-		if(pkgName.length()>0)
-			for(String excludePkg: EXCLUDE_PACKAGE_NAMES)
-				if(excludePkg!=null && excludePkg.length()>0){
-					included &= !(PACKAGE_NAMES.contains(excludePkg));
-				}
+		String fullPkgName = getFullPackageName(pkg);
 
-		return included;
+		for(String excludePkgPattern: EXCLUDE_PACKAGE_PATTERNS)
+			if (Pattern.matches(excludePkgPattern, fullPkgName))
+				return false;
+
+		for(String includePkgPattern: INCLUDE_PACKAGE_PATTERNS)
+			if (Pattern.matches(includePkgPattern, fullPkgName))
+				return true;
+		
+		return true;
 	}
 	
 	public boolean isNamespaceIncluded(UMLClass klass, String defaultNamespacePrefix) throws GenerationException
@@ -201,17 +191,12 @@ public class TransformerUtils
 		
 		log.debug("* * * * * pkgNamespace:"+pkgNamespace);
 		
-		Set<String> PACKAGE_NAMESPACES = new HashSet<String>();	
-		PACKAGE_NAMESPACES.add(pkgNamespace.trim());
-		
-		boolean included = true;
-		if(pkgNamespace.length()>0)
-			for(String excludePkgNamespace: EXCLUDE_NAMESPACES)
-				if(excludePkgNamespace!=null && excludePkgNamespace.length()>0){
-					included &= !(PACKAGE_NAMESPACES.contains(excludePkgNamespace));
-				}
+		for(String excludePkgNamespacePattern: EXCLUDE_NAMESPACE_PATTERNS)
+			if(Pattern.matches(excludePkgNamespacePattern,pkgNamespace)){
+				return false;
+			}
 
-		return included;
+		return true;
 	}
 	
 	public String getEmptySpace(Integer count)
@@ -232,6 +217,7 @@ public class TransformerUtils
 		
 		throw new GenerationException("Error getting fully qualified element name.  Supported taggable element types include UMLClass and UMLPackage; element is neither");
 	}
+	
 	public String getFQCN(UMLClass klass)
 	{
 		return removeBasePackage(ModelUtil.getFullName(klass));
@@ -895,7 +881,7 @@ public class TransformerUtils
 			if (isNamespaceIncluded(klass,defaultNamespacePrefix)){
 				log.debug("including package: " + pkgName);
 
-				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(pkgName+"."+getClassName(klass),pkgName)) { 
+				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(pkgName+"."+getClassName(klass))) { 
 					pkgNamespace=getGMENamespace(klass);
 					
 					if (pkgNamespace !=null && (pkgNamespace.endsWith("/") || !pkgNamespace.endsWith(pkgName)))
