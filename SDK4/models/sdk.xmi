@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-08-18 07:50:59">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-09-19 15:20:26">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -35789,6 +35789,7 @@
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_25D6EC2C_D537_4520_BB71_436FFC73C0BE" value="HardTop" modelElement="EAID_175D3CFB_211C_459a_A3C9_6953D471F910"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_F5ACCD62_2BF0_45c0_8536_9500CFF4F0BC" value="HardTopType" modelElement="EAID_81294799_6821_422e_BE36_580BDEB8616C"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_A3246F5C_BAA8_4909_BBED_98962A378AD1" value="SoftTop" modelElement="EAID_F0526971_7156_49e1_AF64_7A6535698C54"/>
+		<UML:TaggedValue tag="discriminator" xmi.id="EAID_02C17C25_B111_4f13_B3F6_5176D9612011" value="Goverment" modelElement="EAID_0E249559_1FE4_4c11_81C1_8E5E2B50EAD1"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_5330ABBC_0543_4f27_BED4_DC78A844F659" value="ParliamantaryGovt" modelElement="EAID_1852F1E9_F317_4c7c_AC18_D5FEB12D9FB0"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_90383BD8_2904_4c17_ADAB_CA5E438E96DD" value="DemocraticGovt" modelElement="EAID_5BADA45A_1766_4847_B60A_55E867A29D2F"/>
 		<UML:TaggedValue tag="discriminator" xmi.id="EAID_97CBB62C_0A98_4295_BC1D_1BEBAD99C72F" value="CommunistGovt" modelElement="EAID_9974BB75_A1C7_45fb_905B_5F6E387FF461"/>
