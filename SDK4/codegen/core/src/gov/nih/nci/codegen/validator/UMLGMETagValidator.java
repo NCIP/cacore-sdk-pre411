@@ -417,7 +417,8 @@ public class UMLGMETagValidator implements Validator
 		try {
 			String tv = transformerUtils.getGmeSourceLocRef(assoc);
 			if (tv !=null){
-				if (!tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) && !tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()))
+				log.debug("tv: "+tv+"; ((UMLClass)(thisEnd.getUMLElement())).getName()): "+((UMLClass)(thisEnd.getUMLElement())).getName());
+				if (!tv.startsWith(((UMLClass)(thisEnd.getUMLElement())).getName()+"/") && !tv.startsWith(((UMLClass)(otherEnd.getUMLElement())).getName()+"/"))
 					errors.addError(new GeneratorError(getName()+": Invalid GME NCI_GME_SOURCE_XML_LOC_REF tag value found on the association between " +thisKlassName+" and "+otherKlassName+": "+tv+".  The class referenced within the tag value does not match either of the association end classes"));
 			}
 		} catch (GenerationException ge) {
@@ -427,7 +428,7 @@ public class UMLGMETagValidator implements Validator
 		try {
 			String tv = transformerUtils.getGmeTargetLocRef(assoc);
 			if (tv !=null){
-				if (!tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) && !tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()))
+				if (!tv.startsWith(((UMLClass)(thisEnd.getUMLElement())).getName()+"/") && !tv.startsWith(((UMLClass)(otherEnd.getUMLElement())).getName()+"/"))
 					errors.addError(new GeneratorError(getName()+": Invalid GME NCI_GME_TARGET_XML_LOC_REF tag value found on the association between " +thisKlassName+" and "+otherKlassName+": "+tv+".  The class referenced within the tag value does not match either of the association end classes"));
 			}
 		} catch (GenerationException ge) {
