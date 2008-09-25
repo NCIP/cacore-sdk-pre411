@@ -153,9 +153,11 @@ public class TransformerUtils
 				return false;
 		}
 
-		for(String includePkgPattern: INCLUDE_PACKAGE_PATTERNS)
+		for(String includePkgPattern: INCLUDE_PACKAGE_PATTERNS){
+			log.debug("includePkgPattern: "+includePkgPattern+"; fqcn: "+fqcn);
 			if(Pattern.matches(includePkgPattern, fqcn))
 				return true;
+		}
 
 		return false;
 	}
@@ -2136,13 +2138,13 @@ public class TransformerUtils
 	private String getGmeLocRef(UMLAssociation assoc,String klassName) throws GenerationException
 	{
 		String tv = getTagValue(assoc,TV_NCI_GME_SOURCE_XML_LOC_REF,null,0,1);
-		if (tv !=null && tv.endsWith("/"+klassName)){
-			return tv.substring(0, tv.lastIndexOf('/'));
+		if (tv !=null && tv.startsWith(klassName+"/")){
+			return tv.substring(tv.lastIndexOf('/')+1);
 		}
 		
 		tv = getTagValue(assoc,TV_NCI_GME_TARGET_XML_LOC_REF,null,0,1);
-		if (tv !=null && tv.endsWith("/"+klassName)){
-			return tv.substring(0, tv.lastIndexOf('/'));
+		if (tv !=null && tv.startsWith(klassName+"/")){
+			return tv.substring(tv.lastIndexOf('/')+1);
 		}
 		
 		return null;
