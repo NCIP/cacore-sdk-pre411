@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-09-19 15:20:26">
+<!DOCTYPE XMI SYSTEM "UML_EA.dtd">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-09-25 17:36:23">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -23925,7 +23926,7 @@
 																								<UML:TaggedValue tag="ea_targetID" value="953"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={4DF76E63-A031-448e-93BE-8966152EC3AE}$XID;$NAM=CustomProperties$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={62F19555-86B0-4490-99C9-7C327D01A2FF}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
-																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="bankAliasRolename/Bank" xmi.id="EAID_C0873C06_8608_495c_8131_28C2EBD38FA1"/>
+																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="Bank/bankAliasRolename" xmi.id="EAID_C0873C06_8608_495c_8131_28C2EBD38FA1"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
 																								<UML:AssociationEnd visibility="public" multiplicity="0..*" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D">
@@ -32837,8 +32838,8 @@
 																								<UML:TaggedValue tag="ea_targetID" value="1135"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B1B93926-C24F-484e-A2A1-EBB20EA917A4}$XID;$NAM=CustomProperties$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={0C091223-ADC1-48b0-92D2-A52DF28A2EE4}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
-																								<UML:TaggedValue tag="NCI_GME_SOURCE_XML_LOC_REF" value="dessertAliasRoleName/Dessert" xmi.id="EAID_02A897B9_21BC_4390_A791_EA83F18C8B34"/>
-																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="utensilAliasRoleName/Utensil" xmi.id="EAID_4F67C89B_ADDA_4238_BE33_A8CA4345032B"/>
+																								<UML:TaggedValue tag="NCI_GME_SOURCE_XML_LOC_REF" value="Dessert/dessertAliasRoleName" xmi.id="EAID_02A897B9_21BC_4390_A791_EA83F18C8B34"/>
+																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="Utensil/utensilAliasRoleName" xmi.id="EAID_4F67C89B_ADDA_4238_BE33_A8CA4345032B"/>
 																								<UML:TaggedValue tag="correlation-table" value="DESSERT_UTENSIL" xmi.id="EAID_F43A3F5D_A09A_4041_9CFC_E1E40CDC9E10"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
