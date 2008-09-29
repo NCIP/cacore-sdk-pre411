@@ -1,7 +1,6 @@
 package gov.nih.nci.codegen.util;
 
 import gov.nih.nci.codegen.GenerationException;
-import gov.nih.nci.codegen.GeneratorError;
 import gov.nih.nci.codegen.validator.ValidatorAttribute;
 import gov.nih.nci.codegen.validator.ValidatorClass;
 import gov.nih.nci.codegen.validator.ValidatorModel;
@@ -141,7 +140,7 @@ public class TransformerUtils
 	public boolean isIncluded(String fqcn)
 	{
 
-		log.debug("isIncluded fqcn: "+fqcn);
+		log.debug("isIncluded(String fqcn) for fqcn: "+fqcn);
 
 		for (String excludePkgPattern:EXCLUDE_PACKAGE_PATTERNS)
 			if (Pattern.matches(excludePkgPattern, fqcn))
@@ -165,7 +164,8 @@ public class TransformerUtils
 	public boolean isIncluded(UMLPackage pkg) throws GenerationException
 	{
 		String fullPkgName = getFullPackageName(pkg);
-
+		log.debug("isIncluded(UMLPackage pkg) for fullPkgName: "+fullPkgName);
+		
 		for(String excludePkgPattern: EXCLUDE_PACKAGE_PATTERNS)
 			if (Pattern.matches(excludePkgPattern, fullPkgName))
 				return false;
