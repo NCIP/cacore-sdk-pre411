@@ -165,7 +165,7 @@ public class TransformerUtils
 	{
 		String fullPkgName = getFullPackageName(pkg);
 		log.debug("isIncluded(UMLPackage pkg) for fullPkgName: "+fullPkgName);
-		
+
 		for(String excludePkgPattern: EXCLUDE_PACKAGE_PATTERNS)
 			if (Pattern.matches(excludePkgPattern, fullPkgName))
 				return false;
@@ -2108,7 +2108,26 @@ public class TransformerUtils
 	
 	public String getXMLAttributeName(UMLAttribute attr)throws GenerationException{
 		try {
-			 return getTagValue(attr,TV_NCI_GME_XML_LOC_REF,null,0,1);
+			  String attributeName = getTagValue(attr,TV_NCI_GME_XML_LOC_REF,null,0,1);
+			  
+			  if (attributeName !=null && attributeName.length()>0 && (attributeName.startsWith("@")))
+				  attributeName=attributeName.substring(1); //remove leading '@' character
+			  
+			  return attributeName;
+		} catch(GenerationException ge) {
+			log.error("ERROR: ", ge);
+			throw new GenerationException("Error getting the GME 'NCI_GME_XML_LOC_REF' tag value for attribute: " + attr.getName(), ge);
+		}
+	}
+	
+	public boolean generateXMLAttributeAsElement(UMLAttribute attr)throws GenerationException{
+		try {
+			  String attributeName = getTagValue(attr,TV_NCI_GME_XML_LOC_REF,null,0,1);
+			  
+			  if (attributeName !=null && attributeName.length()>0 && !(attributeName.startsWith("@")))
+				  return true;
+			  
+			  return false;
 		} catch(GenerationException ge) {
 			log.error("ERROR: ", ge);
 			throw new GenerationException("Error getting the GME 'NCI_GME_XML_LOC_REF' tag value for attribute: " + attr.getName(), ge);

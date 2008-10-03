@@ -129,7 +129,7 @@ public class SchemaTransformer implements Transformer {
 				
 				artifact.createSourceName(pkgName);
 
-				doc = generateRepository(klasses);
+				doc = generateRepository(klasses); 
 
 				XMLOutputter p = new XMLOutputter();
 				p.setFormat(Format.getPrettyFormat());
@@ -143,35 +143,36 @@ public class SchemaTransformer implements Transformer {
 		}
 	}
 
-	private List<Namespace> getAssociatedNamespaces(UMLClass klass, List<UMLPackage> associatedPackages) {
+	private List<Namespace> getAssociatedNamespaces(List<UMLClass> associatedClasses) {
 		List<Namespace> namespaces = new ArrayList<Namespace>();
 
-		for (UMLPackage associatedPackage:associatedPackages) {
-				String associatedURI = getNamespace(associatedPackage);
-				String associatedPackageName=getPackageName(associatedPackage);
-				log.debug("associatedURI: " + associatedURI);
-				log.debug("associatedPackageName: " + associatedPackageName);
-				log.debug("encoded associatedURI: " + encode(associatedURI));
-				log.debug("encoded associatedPackageName: " + encode(associatedPackageName));				
+		for (UMLClass associatedClass:associatedClasses) {
+				String associatedURI = getNamespace(associatedClass);
+				String associatedPackageName=getPackageName(associatedClass);
+				log.error("associatedURI: " + associatedURI);
+				log.error("associatedPackageName: " + associatedPackageName);
+				log.error("encoded associatedURI: " + encode(associatedURI));
+				log.error("encoded associatedPackageName: " + encode(associatedPackageName));				
 				Namespace associatedNamespace = Namespace.getNamespace(encode(associatedPackageName),encode(associatedURI));
 				namespaces.add(associatedNamespace);
 		}
 		return namespaces;
 	}
 
-	private List<Element> getAssociatedNamespaceImports(UMLClass klass, List<UMLPackage> associatedPackages, Namespace w3cNS) {
+	private List<Element> getAssociatedNamespaceImports(List<UMLClass> associatedClasses, Namespace w3cNS) {
 		HashSet<Element> elements = new HashSet<Element>();
 		Vector<String> tmpList = new Vector<String>();
 		
-		for (UMLPackage associatedPackage : associatedPackages){
-			String associatedPackageName=getPackageName(associatedPackage);
+		String associatedPackageName;
+		for (UMLClass associatedClass : associatedClasses){
+			associatedPackageName=getPackageName(associatedClass);
 			
 			if (!tmpList.contains(associatedPackageName)) {
-				String associatedURI = getNamespace(associatedPackage); 
+				String associatedURI = getNamespace(associatedClass); 
 				log.debug("Import associatedURI: " + associatedURI);
 				Element importElement = new Element("import", w3cNS);
 				importElement.setAttribute("namespace",associatedURI);
-				importElement.setAttribute("schemaLocation", associatedPackageName+".xsd");
+				importElement.setAttribute("schemaLocation", getSchemaLocation(associatedURI,associatedPackageName));
 				elements.add(importElement);
 				tmpList.add(associatedPackageName);
 			}
@@ -251,7 +252,7 @@ public class SchemaTransformer implements Transformer {
 		
 		addCaDSRAnnotation(klass, classE2, w3cNS);
 
-		List<UMLPackage> associatedPackages = new ArrayList<UMLPackage>();
+		List<UMLClass> associatedClasses = new ArrayList<UMLClass>();
 		
 		if (superClassName!=null) {
 			log.debug("superClassName: " + superClassName);
@@ -304,7 +305,7 @@ public class SchemaTransformer implements Transformer {
 			for (Iterator i = transformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
 				UMLAssociationEnd otherEnd = transformerUtils.getOtherAssociationEnd(thisEnd);
-				collectAssociatedPackages(thisEnd, otherEnd, associatedPackages);
+				collectAssociatedClasses(thisEnd, otherEnd, associatedClasses);
 				addSequenceAssociationElement(sequence,klass,thisEnd,otherEnd,w3cNS);
 			}
 
@@ -315,13 +316,13 @@ public class SchemaTransformer implements Transformer {
 			List<UMLAttribute> primitiveCollectionAtts = new ArrayList<UMLAttribute>();
 			
 			//Do properties
-			for (Iterator i = klass.getAttributes().iterator(); i.hasNext();) {
+			for (Iterator<UMLAttribute> i = klass.getAttributes().iterator(); i.hasNext();) {
 				UMLAttribute attr = (UMLAttribute) i.next();
 				log.debug("att.getName(): " + attr.getName());
 
 				// Only process non-static attributes
 				log.debug("isStatic: " + transformerUtils.isStatic(attr));
-				if (!transformerUtils.isStatic(attr)){
+				if (!transformerUtils.isStatic(attr) && !(generateAttributeAsElement(attr))){
 
 					Element attributeElement = new Element("attribute", w3cNS);
 					attributeElement.setAttribute("name", getAttributeName(attr));
@@ -353,21 +354,57 @@ public class SchemaTransformer implements Transformer {
 				addSequencePrimitiveCollectionElements(sequence, klass, att, w3cNS);			
 			}
 			
+			//process attributes that should be treated/generated as elements
+			for (Iterator<UMLAttribute> i = klass.getAttributes().iterator(); i.hasNext();) {
+				UMLAttribute attr = (UMLAttribute) i.next();
+				log.debug("att.getName(): " + attr.getName());
+
+				// Only process non-static attributes that should be treated as elements
+				log.debug("isStatic: " + transformerUtils.isStatic(attr));
+				if (!transformerUtils.isStatic(attr) && generateAttributeAsElement(attr)){
+
+					// e.g.:  <xs:element name="title" type="xs:string"/>
+
+					Element elementElement = new Element("element", w3cNS);
+					elementElement.setAttribute("name", getAttributeName(attr));
+
+					String type = getName(transformerUtils.getDataType(attr));
+					log.debug("Attribute type: " + type);
+					
+					if (type.startsWith("xs:collection")) { // handle primitive collections; e.g., collection<string>
+						log.debug("Handling primitive collection type Name: " + type);    
+						primitiveCollectionAtts.add(attr);
+						continue;
+					}				
+					
+					if (usePermissibleValues){
+						addRestrictionEnumeration(klass,attr,elementElement,type, w3cNS);
+					} else{
+						elementElement.setAttribute("type", type);	
+					}
+					
+					addCaDSRAnnotation(attr, elementElement, w3cNS);
+					
+					sequence.addContent(elementElement);
+				}
+			}
+			
+			//process associations
 			for (Iterator i = transformerUtils.getAssociationEnds(klass).iterator(); i.hasNext();) {
 				UMLAssociationEnd thisEnd = (UMLAssociationEnd) i.next();
 				UMLAssociationEnd otherEnd = transformerUtils.getOtherAssociationEnd(thisEnd);
-				collectAssociatedPackages(thisEnd, otherEnd, associatedPackages);
+				collectAssociatedClasses(thisEnd, otherEnd, associatedClasses);
 				addSequenceAssociationElement(sequence,klass,thisEnd,otherEnd,w3cNS);
 			}
 		}
 		
 		//Add namespace declarations
-		for(Namespace rNamespace: getAssociatedNamespaces(klass, associatedPackages)){
+		for(Namespace rNamespace: getAssociatedNamespaces(associatedClasses)){
 			schemaElem.addNamespaceDeclaration(rNamespace);
 		}        
 
 		//Add namespace import elements
-		for (Element namespaceImportElement : getAssociatedNamespaceImports(klass, associatedPackages, w3cNS)){
+		for (Element namespaceImportElement : getAssociatedNamespaceImports(associatedClasses, w3cNS)){
 			schemaElem.addContent(0,namespaceImportElement);
 		}
 	}
@@ -431,15 +468,15 @@ public class SchemaTransformer implements Transformer {
 		}
 	}
 	
-	private void collectAssociatedPackages(UMLAssociationEnd thisEnd, UMLAssociationEnd otherEnd, List<UMLPackage> associatedPackageNames) {
+	private void collectAssociatedClasses(UMLAssociationEnd thisEnd, UMLAssociationEnd otherEnd, List<UMLClass> associatedClassNames) {
 		if (otherEnd.isNavigable()) {
 			String associationPackage = getPackageName(((UMLClass)(otherEnd.getUMLElement())));
 			String thisPackage = getPackageName(((UMLClass)(thisEnd.getUMLElement())));
 			
-			log.debug("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
+			log.error("associationPackage: "+associationPackage+"; thisPackage: "+thisPackage+"; associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
 			
 			if (!associationPackage.equalsIgnoreCase(thisPackage)){
-				associatedPackageNames.add( ((UMLClass)(otherEnd.getUMLElement())).getPackage());
+				associatedClassNames.add( ((UMLClass)(otherEnd.getUMLElement())));
 			}
 		}
 	}
@@ -675,6 +712,19 @@ public class SchemaTransformer implements Transformer {
 		}
 		return attr.getName();
 	}
+	
+	private boolean generateAttributeAsElement(UMLAttribute attr){
+		
+		if (useGMETags){
+			try {
+				return transformerUtils.generateXMLAttributeAsElement(attr);
+			} catch(GenerationException ge) {
+				log.error("ERROR: ", ge);
+				generatorErrors.addError(new GeneratorError(getName() + ": Error getting the GME Attribute (XML Loc Ref) name for attribute: " + attr.getName(), ge));
+			}
+		}
+		return false;
+	}
 
 	private String getRoleName(UMLAssociationEnd assocEnd){
 		if (useGMETags){
@@ -688,6 +738,16 @@ public class SchemaTransformer implements Transformer {
 			}
 		}
 		return assocEnd.getRoleName();
+	}
+	
+	private String getSchemaLocation(String associatedURI, String associatedPackageName){
+		if (useGMETags){
+			String schemaLocation = associatedURI.replace("://", "_");
+			schemaLocation=schemaLocation.replace("/", "_");
+			
+			return schemaLocation+".xsd";
+		}
+		return associatedPackageName+".xsd";
 	}
 
 	/**
