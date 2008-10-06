@@ -149,10 +149,10 @@ public class SchemaTransformer implements Transformer {
 		for (UMLClass associatedClass:associatedClasses) {
 				String associatedURI = getNamespace(associatedClass);
 				String associatedPackageName=getPackageName(associatedClass);
-				log.error("associatedURI: " + associatedURI);
-				log.error("associatedPackageName: " + associatedPackageName);
-				log.error("encoded associatedURI: " + encode(associatedURI));
-				log.error("encoded associatedPackageName: " + encode(associatedPackageName));				
+				log.debug("associatedURI: " + associatedURI);
+				log.debug("associatedPackageName: " + associatedPackageName);
+				log.debug("encoded associatedURI: " + encode(associatedURI));
+				log.debug("encoded associatedPackageName: " + encode(associatedPackageName));				
 				Namespace associatedNamespace = Namespace.getNamespace(encode(associatedPackageName),encode(associatedURI));
 				namespaces.add(associatedNamespace);
 		}
@@ -473,7 +473,7 @@ public class SchemaTransformer implements Transformer {
 			String associationPackage = getPackageName(((UMLClass)(otherEnd.getUMLElement())));
 			String thisPackage = getPackageName(((UMLClass)(thisEnd.getUMLElement())));
 			
-			log.error("associationPackage: "+associationPackage+"; thisPackage: "+thisPackage+"; associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
+			log.debug("associationPackage: "+associationPackage+"; thisPackage: "+thisPackage+"; associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
 			
 			if (!associationPackage.equalsIgnoreCase(thisPackage)){
 				associatedClassNames.add( ((UMLClass)(otherEnd.getUMLElement())));
