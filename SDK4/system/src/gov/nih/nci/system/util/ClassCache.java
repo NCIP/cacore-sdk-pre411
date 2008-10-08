@@ -318,7 +318,7 @@ public class ClassCache {
 			{
 				fields[i].setAccessible(true);
 				fieldType = fields[i].getType().getName();
-
+				
 				if (isSearchable(fieldType))
 				{
 					fieldNames.add(fields[i].getName());    
@@ -486,7 +486,9 @@ public class ClassCache {
 				fieldType.equals("java.lang.Integer") || 
 				fieldType.equals("java.lang.Float") || 
 				fieldType.equals("java.lang.Double") || 
-				fieldType.equals("java.lang.Boolean") || 
+				fieldType.equals("java.lang.Boolean") ||
+				fieldType.equals("java.lang.Character") ||
+				fieldType.equals("java.lang.Long") ||
 				fieldType.equals("java.util.Date")
 		){
 			isSearchable = true;
