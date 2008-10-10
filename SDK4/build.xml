@@ -378,6 +378,24 @@
 		</and>
 	</condition>
 	
+	<condition property="TOMCAT_START" value="${xml.comment.start}" else="">
+		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
+	</condition>
+	<condition property="TOMCAT_END" value="${xml.comment.end}" else="">
+		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
+	</condition>
+	
+	<condition property="JBOSS_START" value="${xml.comment.start}" else="">
+		<not>
+			<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
+		</not>
+	</condition>
+	<condition property="JBOSS_END" value="${xml.comment.end}" else="">
+		<not>
+			<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
+		</not>
+	</condition>
+
 	<!--***********************************************************************
 	*** Prepares the output directory structure
 	*********************************************************************** -->
@@ -417,6 +435,7 @@
 
 		<replace dir="${output.conf.dir}">
 			<replacefilter token="@PROJECT_NAME@" value="${PROJECT_NAME}" />
+			<replacefilter token="@SDK_GRID_LOGIN_SERVICE_NAME@" value="${SDK_GRID_LOGIN_SERVICE_NAME}" />
 			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
 			<replacefilter token="@VALIDATOR_OUTPUTDIR@" value="${output.codegen.config.dir}" />
 			<replacefilter token="@MODEL_FILE@" value="${MODEL_FILE}" />
@@ -509,6 +528,12 @@
 			<replacefilter token="${xml.comment.start}@CSM_LOGIN_MODULE_START@${xml.comment.end}" value="${CSM_LOGIN_MODULE_START}"/>
 			<replacefilter token="${xml.comment.start}@CSM_LOGIN_MODULE_END@${xml.comment.end}" value="${CSM_LOGIN_MODULE_END}"/>
 			<replacefilter token="@GRID_JNDI_NAME@" value="${GRID_JNDI_NAME}" />
+			
+			<replacefilter token="${xml.comment.start}@JBOSS_START@${xml.comment.end}" value="${JBOSS_START}"/>
+			<replacefilter token="${xml.comment.start}@JBOSS_END@${xml.comment.end}" value="${JBOSS_END}"/>
+			<replacefilter token="${xml.comment.start}@TOMCAT_START@${xml.comment.end}" value="${TOMCAT_START}"/>
+			<replacefilter token="${xml.comment.start}@TOMCAT_END@${xml.comment.end}" value="${TOMCAT_END}"/>
+			
 		</replace>
 		<copy todir="${output.src.dir}" file="${system.config.security.dir}/${csm.ehcache.file}"/>
 		<copy tofile="${output.src.dir}/${csm.security.config.file}" file="${system.config.security.dir}/${csm.security.config.original.file}"/>
@@ -623,6 +648,7 @@
 			<and>
 				<not><available file="${grid-jaas.dir}/${grid-jaas.dist.dir}/${grid-jaas.file.output.jaas.name}"/></not>
 				<not><available file="${grid-jaas.dir}/${grid-jaas.dist.dir}/${grid-jaas.file.output.jaas.executor.name}"/></not>
+				<not><available file="${grid-jaas.dir}/${grid-jaas.dist.dir}/${grid-jaas.file.output.jaas.jndibinder.name}"/></not>
 			</and>
 		</condition>
 	</target>
@@ -693,7 +719,7 @@
 		</jar>
 	</target>
 
-	<target name="package-system" depends="prepare,package-remote-client,package-local-client,package-webapp,package-ws-client,package-grid-jaas-client,package-grid-login-service,package-server-lib" description="Packages the system">
+	<target name="package-system" depends="prepare,package-remote-client,package-local-client,package-webapp,package-ws-client,package-grid-jaas-client,package-grid-login-service,package-server" description="Packages the system">
 		<SDKecho message="${ant.project.name}: Packaging the system artifacts"/>
 	</target>	
 
@@ -822,7 +848,7 @@
 
 				<exclude name="cog*.*"/>
 			</lib>
-			<lib dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" includes="*.*" />
+			<lib dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" includes="*.*" excludes="${grid-jaas.file.output.jaas.jndibinder.name}"/>
 			<fileset dir="${build.conf.system.web.dir}">
 				<include name="**/*"/>
 				<exclude name="**/web.xml"/>
@@ -861,9 +887,10 @@
 				<exclude name="jce-jdk*.*"/>				
 				<exclude name="puretls*.*"/>
 				<exclude name="xml-api*.*"/>
+				<exclude name="xercesImpl*.*"/>
 				<exclude name="jgss*.*"/>
 			</lib>
-			<lib dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" includes="*.jar"/>
+			<lib dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" includes="*.jar" excludes="${grid-jaas.file.output.jaas.jndibinder.name}"/>
 			<fileset dir="${system.config.grid.loginService.dir}">
 				<include name="**/*"/>
 				<exclude name="**/web.xml"/>
@@ -893,7 +920,11 @@
 		<SDKecho message="${ant.project.name}: Packaging the Grid JAAS Module"/>
 		<copy todir="${package.client.grid-jaas.lib.dir}">
 			<fileset dir="${grid-jaas.dir}\${grid-jaas.lib.dir}"/>
-			<fileset dir="${grid-jaas.dir}\${grid-jaas.dist.dir}"/>
+			<fileset dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" >
+				<include name="**/*.jar" />
+				<exclude name="${grid-jaas.file.output.jaas.jndibinder.name}"/>
+				<exclude name="xercesImpl*.*"/>
+			</fileset>
 		</copy>
 		<copy todir="${package.client.grid-jaas.dir}">
 			<fileset dir="${system.config.client.grid-jaas.dir}"/>
@@ -904,7 +935,7 @@
 		
 	</target>	
 		
-	<target name="package-server-lib" depends="init">
+	<target name="package-server" depends="init">
 		<SDKecho message="${ant.project.name}: Packaging the server libraries"/>
 		<mkdir dir="${package.client.jboss.dir}/server/default/lib"/>
 		
@@ -927,9 +958,15 @@
 		<mkdir dir="${package.client.tomcat.dir}/common/endorsed"/>
 		<mkdir dir="${package.client.tomcat.dir}/common/lib"/>
 		<mkdir dir="${package.client.tomcat.dir}/server/lib"/>
+		<mkdir dir="${package.client.tomcat.dir}/conf"/>
+		<mkdir dir="${package.client.tomcat.dir}/conf/Catalina"/>
+		<mkdir dir="${package.client.tomcat.dir}/conf/Catalina/localhost"/>
+		
 		<copy todir="${package.client.tomcat.dir}/common/endorsed">
 			<fileset dir="${grid-jaas.dir}\${grid-jaas.lib.dir}">
 				<include name="xalan*.*"/>
+				<include name="xml-apis*.*"/>
+				<include name="xercesImpl*.*"/>
 			</fileset>
 		</copy>
 		<copy todir="${package.client.tomcat.dir}/common/lib">
@@ -947,13 +984,25 @@
 				<include name="ojdbc*.*"/>
 				<include name="mysql*.*"/>
 			</fileset>
+			<fileset dir="${grid-jaas.dir}\${grid-jaas.dist.dir}">
+				<include name="${grid-jaas.file.output.jaas.jndibinder.name}"/>
+			</fileset>
 		</copy>
 	<copy todir="${package.client.tomcat.dir}/server/lib">
 		<fileset dir="${grid-jaas.dir}\${grid-jaas.lib.dir}">
 			<include name="cog-tomcat*.*"/>
 		</fileset>
 	</copy>
-		
+	
+	<copy tofile="${package.client.tomcat.context.dir}/${PROJECT_NAME}.xml" file="${system.config.server.context.dir}/${file.project.Context}"/>
+	<copy tofile="${package.client.tomcat.context.dir}/${SDK_GRID_LOGIN_SERVICE_NAME}.xml" file="${system.config.server.context.dir}/${file.grid.loginService.Context}"/>
+	<copy todir="${package.client.tomcat.serverxml.dir}" >
+		<fileset dir="${system.config.server.serverxml.dir}">
+			<include name="**/server.xml"/>
+			<include name="**/login.config"/>
+		</fileset>
+	</copy>
+	
 	</target>	
 	
 	<!--***********************************************************************
