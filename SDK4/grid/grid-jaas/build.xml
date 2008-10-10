@@ -96,11 +96,22 @@
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 			</manifest>
 			<include name="gov/nih/nci/system/security/authentication/cagrid/executor/**/*"/>
+			<exclude name="gov/nih/nci/system/security/authentication/cagrid/executor/tomcat/*"/>
 			<fileset dir="${src.dir}">
 				<include name="gov/nih/nci/system/security/authentication/cagrid/executor/**/*"/>
+				<exclude name="gov/nih/nci/system/security/authentication/cagrid/executor/tomcat/*"/>
 			</fileset>
 		</jar>
 	
+		<jar destfile="${dist.dir}\${file.output.jaas.jndibinder.name}" basedir="${build.classes.dir}">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+			</manifest>
+			<include name="gov/nih/nci/system/security/authentication/cagrid/executor/tomcat/*"/>
+			<fileset dir="${src.dir}">
+				<include name="gov/nih/nci/system/security/authentication/cagrid/executor/tomcat/*"/>
+			</fileset>
+		</jar>
 	</target>
 	
 </project>
