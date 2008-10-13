@@ -12,14 +12,11 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -209,6 +206,7 @@ public class UMLGMETagValidator implements Validator
 							String otherClassName2 = transformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));	
 
 							String otherEnd2Rolename=getRoleName(otherEnd2,errors);
+							log.debug("otherEnd.getRoleName(): "+ otherEnd.getRoleName()+"; otherEnd2.getRoleName(): "+otherEnd2.getRoleName()+"; otherEnd2Rolename: "+otherEnd2Rolename);
 							if(otherEndRolename!=null && otherEndRolename.equals(otherEnd2Rolename))
 								errors.addError(new GeneratorError(getName() + ": Duplicate GME association between "+thisClassName2 +" and "+ otherClassName2));
 						}
@@ -417,8 +415,7 @@ public class UMLGMETagValidator implements Validator
 		try {
 			String tv = transformerUtils.getGmeSourceLocRef(assoc);
 			if (tv !=null){
-				log.debug("tv: "+tv+"; ((UMLClass)(thisEnd.getUMLElement())).getName()): "+((UMLClass)(thisEnd.getUMLElement())).getName());
-				if (!tv.startsWith(((UMLClass)(thisEnd.getUMLElement())).getName()+"/") && !tv.startsWith(((UMLClass)(otherEnd.getUMLElement())).getName()+"/"))
+				if (!tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) && !tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()))
 					errors.addError(new GeneratorError(getName()+": Invalid GME NCI_GME_SOURCE_XML_LOC_REF tag value found on the association between " +thisKlassName+" and "+otherKlassName+": "+tv+".  The class referenced within the tag value does not match either of the association end classes"));
 			}
 		} catch (GenerationException ge) {
@@ -428,7 +425,7 @@ public class UMLGMETagValidator implements Validator
 		try {
 			String tv = transformerUtils.getGmeTargetLocRef(assoc);
 			if (tv !=null){
-				if (!tv.startsWith(((UMLClass)(thisEnd.getUMLElement())).getName()+"/") && !tv.startsWith(((UMLClass)(otherEnd.getUMLElement())).getName()+"/"))
+				if (!tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) && !tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()))
 					errors.addError(new GeneratorError(getName()+": Invalid GME NCI_GME_TARGET_XML_LOC_REF tag value found on the association between " +thisKlassName+" and "+otherKlassName+": "+tv+".  The class referenced within the tag value does not match either of the association end classes"));
 			}
 		} catch (GenerationException ge) {

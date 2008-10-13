@@ -2156,13 +2156,13 @@ public class TransformerUtils
 	private String getGmeLocRef(UMLAssociation assoc,String klassName) throws GenerationException
 	{
 		String tv = getTagValue(assoc,TV_NCI_GME_SOURCE_XML_LOC_REF,null,0,1);
-		if (tv !=null && tv.startsWith(klassName+"/")){
-			return tv.substring(tv.lastIndexOf('/')+1);
+		if (tv !=null && tv.endsWith("/"+klassName)){
+			return tv.substring(0, tv.lastIndexOf('/'));
 		}
 		
 		tv = getTagValue(assoc,TV_NCI_GME_TARGET_XML_LOC_REF,null,0,1);
-		if (tv !=null && tv.startsWith(klassName+"/")){
-			return tv.substring(tv.lastIndexOf('/')+1);
+		if (tv !=null && tv.endsWith("/"+klassName)){
+			return tv.substring(0, tv.lastIndexOf('/'));
 		}
 		
 		return null;
