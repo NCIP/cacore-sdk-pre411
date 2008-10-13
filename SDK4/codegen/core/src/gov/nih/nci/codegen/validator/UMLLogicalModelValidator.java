@@ -276,7 +276,9 @@ public class UMLLogicalModelValidator implements Validator
 							UMLAssociationEnd thisEnd2 = transformerUtils.getThisEnd(klass, ends2);
 							UMLAssociationEnd otherEnd2 = transformerUtils.getOtherEnd(klass, ends2);
 							String thisClassName2 = transformerUtils.getFQCN(((UMLClass)thisEnd2.getUMLElement()));
-							String otherClassName2 = transformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));				
+							String otherClassName2 = transformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));
+							
+							log.debug("otherEnd.getRoleName(): "+ otherEnd.getRoleName()+"; otherEnd2.getRoleName(): "+otherEnd2.getRoleName());
 							if(otherEnd.getRoleName()!=null && otherEnd.getRoleName().equals(otherEnd2.getRoleName()))
 								errors.addError(new GeneratorError(getName() + ": Duplicate association between "+thisClassName2 +" and "+ otherClassName2));
 						}
