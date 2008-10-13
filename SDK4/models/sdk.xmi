@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-09-29 08:49:19">
+<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="2008-10-13 09:53:18">
 	<XMI.header>
 		<XMI.documentation>
 			<XMI.exporter>Enterprise Architect</XMI.exporter>
@@ -23900,7 +23900,7 @@
 																										<UML:TaggedValue tag="ea_guid" value="{08996FCC-41A9-456b-9B25-8CD3F9966B49}"/>
 																										<UML:TaggedValue tag="ea_localid" value="1545"/>
 																										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="cardNumberGMEAlias" xmi.id="EAID_13D50269_88A1_405b_AC4F_A7B12AF4F0A4"/>
+																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@cardNumberGMEAlias" xmi.id="EAID_13D50269_88A1_405b_AC4F_A7B12AF4F0A4"/>
 																									</UML:ModelElement.taggedValue>
 																								</UML:Attribute>
 																							</UML:Classifier.feature>
@@ -23925,7 +23925,7 @@
 																								<UML:TaggedValue tag="ea_targetID" value="953"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={4DF76E63-A031-448e-93BE-8966152EC3AE}$XID;$NAM=CustomProperties$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={62F19555-86B0-4490-99C9-7C327D01A2FF}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
-																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="Bank/bankAliasRolename" xmi.id="EAID_C0873C06_8608_495c_8131_28C2EBD38FA1"/>
+																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="bankAliasRolename/Bank" xmi.id="EAID_C0873C06_8608_495c_8131_28C2EBD38FA1"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
 																								<UML:AssociationEnd visibility="public" multiplicity="0..*" aggregation="none" isOrdered="false" isNavigable="false" type="EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D">
@@ -24019,7 +24019,7 @@
 																										<UML:TaggedValue tag="ea_guid" value="{99E31C86-7C45-494b-ACCE-CC85B80E2AEF}"/>
 																										<UML:TaggedValue tag="ea_localid" value="1547"/>
 																										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="amountGMEAlias" xmi.id="EAID_A9DBB89F_3DAB_4cee_A099_521CD52166D3"/>
+																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@amountGMEAlias" xmi.id="EAID_A9DBB89F_3DAB_4cee_A099_521CD52166D3"/>
 																									</UML:ModelElement.taggedValue>
 																								</UML:Attribute>
 																								<UML:Attribute name="id" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
@@ -24045,7 +24045,7 @@
 																										<UML:TaggedValue tag="ea_guid" value="{395E299D-DD2E-4a00-BB05-81E4E050340A}"/>
 																										<UML:TaggedValue tag="ea_localid" value="1546"/>
 																										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="idGMEAlias" xmi.id="EAID_5ABCF6E6_CFFA_40fa_AF5F_E2114ED8B836"/>
+																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@idGMEAlias" xmi.id="EAID_5ABCF6E6_CFFA_40fa_AF5F_E2114ED8B836"/>
 																									</UML:ModelElement.taggedValue>
 																								</UML:Attribute>
 																							</UML:Classifier.feature>
@@ -24149,7 +24149,7 @@
 																										<UML:TaggedValue tag="ea_guid" value="{BECA4C83-DC62-4e00-97E7-BA55222262A9}"/>
 																										<UML:TaggedValue tag="ea_localid" value="1548"/>
 																										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="idGMEAlias" xmi.id="EAID_3C66105F_3438_4a1f_B2EA_28218F05118B"/>
+																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@idGMEAlias" xmi.id="EAID_3C66105F_3438_4a1f_B2EA_28218F05118B"/>
 																									</UML:ModelElement.taggedValue>
 																								</UML:Attribute>
 																								<UML:Attribute name="name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
@@ -24175,7 +24175,7 @@
 																										<UML:TaggedValue tag="ea_guid" value="{F608EEC2-588B-438a-843F-D9E89D62D5DC}"/>
 																										<UML:TaggedValue tag="ea_localid" value="1549"/>
 																										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="nameGMEAlias" xmi.id="EAID_5290FB53_B486_42cc_A130_FF9411A2A200"/>
+																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@nameGMEAlias" xmi.id="EAID_5290FB53_B486_42cc_A130_FF9411A2A200"/>
 																									</UML:ModelElement.taggedValue>
 																								</UML:Attribute>
 																							</UML:Classifier.feature>
@@ -32812,7 +32812,7 @@
 																										<UML:TaggedValue tag="ea_guid" value="{C7D52949-47A5-4ad6-88D8-CCECD7302C62}"/>
 																										<UML:TaggedValue tag="ea_localid" value="1785"/>
 																										<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="idAlias" xmi.id="EAID_BEB6385D_C59F_44cb_BBC9_57BEE62CA106"/>
+																										<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@idAlias" xmi.id="EAID_BEB6385D_C59F_44cb_BBC9_57BEE62CA106"/>
 																									</UML:ModelElement.taggedValue>
 																								</UML:Attribute>
 																							</UML:Classifier.feature>
@@ -32837,8 +32837,8 @@
 																								<UML:TaggedValue tag="ea_targetID" value="1135"/>
 																								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={B1B93926-C24F-484e-A2A1-EBB20EA917A4}$XID;$NAM=CustomProperties$NAM;$TYP=connector property$TYP;$VIS=Public$VIS;$DES=@PROP=@NAME=isDerived@ENDNAME;@TYPE=Boolean@ENDTYPE;@VALU=false@ENDVALU;@PRMT=@ENDPRMT;@ENDPROP;$DES;$CLT={0C091223-ADC1-48b0-92D2-A52DF28A2EE4}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 																								<UML:TaggedValue tag="virtualInheritance" value="0"/>
-																								<UML:TaggedValue tag="NCI_GME_SOURCE_XML_LOC_REF" value="Dessert/dessertAliasRoleName" xmi.id="EAID_02A897B9_21BC_4390_A791_EA83F18C8B34"/>
-																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="Utensil/utensilAliasRoleName" xmi.id="EAID_4F67C89B_ADDA_4238_BE33_A8CA4345032B"/>
+																								<UML:TaggedValue tag="NCI_GME_SOURCE_XML_LOC_REF" value="dessertAliasRoleName/Dessert" xmi.id="EAID_02A897B9_21BC_4390_A791_EA83F18C8B34"/>
+																								<UML:TaggedValue tag="NCI_GME_TARGET_XML_LOC_REF" value="utensilAliasRoleName/Utensil" xmi.id="EAID_4F67C89B_ADDA_4238_BE33_A8CA4345032B"/>
 																								<UML:TaggedValue tag="correlation-table" value="DESSERT_UTENSIL" xmi.id="EAID_F43A3F5D_A09A_4041_9CFC_E1E40CDC9E10"/>
 																							</UML:ModelElement.taggedValue>
 																							<UML:Association.connection>
@@ -32975,7 +32975,7 @@
 																												<UML:TaggedValue tag="ea_guid" value="{02B52FD0-C78E-4928-B2BF-6C5A236F896E}"/>
 																												<UML:TaggedValue tag="ea_localid" value="1788"/>
 																												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="idAlias" xmi.id="EAID_A86590F4_789D_45ed_815A_C95749BF3BB3"/>
+																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@idAlias" xmi.id="EAID_A86590F4_789D_45ed_815A_C95749BF3BB3"/>
 																											</UML:ModelElement.taggedValue>
 																										</UML:Attribute>
 																										<UML:Attribute name="name" changeable="none" visibility="private" ownerScope="instance" targetScope="instance">
@@ -32998,7 +32998,7 @@
 																												<UML:TaggedValue tag="ea_guid" value="{2A2B4217-0B9A-4b73-A6A2-0EA0D0ABCF91}"/>
 																												<UML:TaggedValue tag="ea_localid" value="1789"/>
 																												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="nameAlias" xmi.id="EAID_C3D5CEC4_F5D5_4c90_AB7F_056182DE4C42"/>
+																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@nameAlias" xmi.id="EAID_C3D5CEC4_F5D5_4c90_AB7F_056182DE4C42"/>
 																											</UML:ModelElement.taggedValue>
 																										</UML:Attribute>
 																									</UML:Classifier.feature>
@@ -33044,7 +33044,7 @@
 																												<UML:TaggedValue tag="ea_guid" value="{413968F3-1F86-4a1c-99D1-F13DB45BD9E9}"/>
 																												<UML:TaggedValue tag="ea_localid" value="1787"/>
 																												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="fillingAlias" xmi.id="EAID_7980D374_1A26_4f3e_BC91_CD640E1A4EBD"/>
+																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@fillingAlias" xmi.id="EAID_7980D374_1A26_4f3e_BC91_CD640E1A4EBD"/>
 																											</UML:ModelElement.taggedValue>
 																										</UML:Attribute>
 																									</UML:Classifier.feature>
@@ -33090,7 +33090,7 @@
 																												<UML:TaggedValue tag="ea_guid" value="{91256E6B-091F-47c2-B2CF-34312AAF9797}"/>
 																												<UML:TaggedValue tag="ea_localid" value="1786"/>
 																												<UML:TaggedValue tag="styleex" value="volatile=0;"/>
-																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="toppingAlias" xmi.id="EAID_F8F20280_D792_4f7b_8455_C637A51350EC"/>
+																												<UML:TaggedValue tag="NCI_GME_XML_LOC_REF" value="@toppingAlias" xmi.id="EAID_F8F20280_D792_4f7b_8455_C637A51350EC"/>
 																											</UML:ModelElement.taggedValue>
 																										</UML:Attribute>
 																									</UML:Classifier.feature>
