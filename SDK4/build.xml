@@ -553,20 +553,33 @@
 	<!--***********************************************************************
 	*** Cleans the generated directories and files of both the main and child projects
 	*********************************************************************** -->
-	<target name="clean-all" depends="clean" description="Cleans the child projects and generated directories and files">
+	<target name="clean-all" depends="clean,clean-junit" description="Cleans the child projects and generated directories and files">
 		<SDKecho message="${ant.project.name}: Cleaning child projects"/>
 		<delete dir="${output.dir}"/>
 		<ant antfile="${codegen.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${codegen.validator.dir}\build.xml" target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${system.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
+		<ant antfile="${security.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${writable-api.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${grid-remoting.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
 		<ant antfile="${grid-jaas.dir}\build.xml"  target="clean-all" inheritall="false" inheritrefs="false" />
+	</target>
+	
+	<target name="clean-junit" depends="prepare-condition-clean-junit" if="prepare-required-clean-junit">	
+		<SDKecho message="${ant.project.name}: Cleaning junit child project, if it exists"/>
+		<ant antfile="${junit.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
 	</target>
 
 	<!--***********************************************************************
 	*** Prepare 
 	*********************************************************************** -->
+	<target name="prepare-condition-clean-junit">
+		<SDKecho message="${ant.project.name}: Checking the condition for junit project clean"/>
+		<condition property="prepare-required-clean-junit">
+			<available file="${junit.dir}\build.xml"/>
+		</condition>
+	</target>
+	
 	<target name="prepare-condition-validator-codegen">
 		<SDKecho message="${ant.project.name}: Checking the condition for codegen validator project build"/>
 		<condition property="prepare-required-validator-codegen">
@@ -705,12 +718,14 @@
 		<jar destfile="${build.jar.dir}\${bean.file}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<fileset dir="${output.src.dir}" includes="**/*.java" />
 		</jar>
 		<jar destfile="${build.jar.dir}\${orm.file}" basedir="${output.src.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<include name="**/*.hbm.xml"/>
 			<include name="*.cfg.xml"/>
@@ -833,6 +848,7 @@
 		<war destfile="${package.system.dir}\${PROJECT_NAME}.war" webxml="${build.conf.web-inf.dir}\web.xml">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<lib dir="${system.dir}\${system.dist.dir}" includes="*.jar"/>
 			<lib dir="${writable-api.dir}\${writable-api.dist.dir}" includes="*.jar">
@@ -876,6 +892,7 @@
 		<war destfile="${package.system.dir}\${SDK_GRID_LOGIN_SERVICE_NAME}.war" webxml="${system.config.grid.loginService.webinf.dir}\web.xml">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<lib dir="${grid-jaas.dir}\${grid-jaas.lib.dir}" includes="*.jar">
 				<exclude name="${server-exclude-list}"/>
@@ -1002,7 +1019,7 @@
 			<include name="**/login.config"/>
 		</fileset>
 	</copy>
-	
+		
 	</target>	
 	
 	<!--***********************************************************************
