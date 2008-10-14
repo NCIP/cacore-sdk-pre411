@@ -2,6 +2,9 @@
 <project name="System" basedir="." default="dist">
 
 	<description>Build script for building the runtime system</description>
+		
+	<property name="sdk.home" value=".." />
+	<property file="${sdk.home}/conf/deploy.properties" />
 
 	<!--***********************************************************************
 	*** Load the build properties from the file
@@ -94,6 +97,7 @@
 		<jar destfile="${dist.dir}\${file.output.client.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<include name="gov/nih/nci/system/client/**/*"/>
 			<include name="gov/nih/nci/system/applicationservice/*"/>
@@ -110,6 +114,7 @@
 		<jar destfile="${dist.dir}\${file.output.core.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<include name="gov/nih/nci/system/dao/**/*"/>
 			<include name="gov/nih/nci/system/applicationservice/impl/**/*"/>
@@ -126,6 +131,7 @@
 		<jar destfile="${dist.dir}\${file.output.web.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<include name="gov/nih/nci/system/web/**/*"/>
 			<fileset dir="${src.dir}">
@@ -136,6 +142,7 @@
 		<jar destfile="${dist.dir}\${file.output.ws.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<include name="gov/nih/nci/system/webservice/**/*"/>
 			<fileset dir="${src.dir}">

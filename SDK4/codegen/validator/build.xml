@@ -4,6 +4,9 @@
 	<description>Build script for generating a Hibernate Validator config</description> 
 	<description>file artifact, which is used to generate annotations on </description>
 	<description>generated domain POJO beans</description>
+	
+	<property name="sdk.home" value="../.." />
+	<property file="${sdk.home}/conf/deploy.properties" />
 
 	<!--***********************************************************************
 	*** Load the build properties from the file
@@ -99,7 +102,10 @@
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 				<attribute name="Main-Class" value="gov.nih.nci.codegen.Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
+			<fileset dir="${codegen.validator.src.dir}" includes="**/*.java" />
+			<fileset dir="${codegen.validator.templates.src.dir}" includes="**/*.java" />
 		</jar>
 		<copy todir="${dist.dir}">
 			<fileset dir="${lib.dir}" includes="*.jar"/>

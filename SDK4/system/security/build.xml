@@ -2,6 +2,9 @@
 <project name="Security" basedir="." default="dist">
 
 	<description>Build script for building the runtime system</description>
+		
+	<property name="sdk.home" value="../.." />
+	<property file="${sdk.home}/conf/deploy.properties" />
 
 	<!--***********************************************************************
 	*** Load the build properties from the file
@@ -90,6 +93,7 @@
 		<jar destfile="${dist.dir}\${file.output.security.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<include name="gov/nih/nci/system/security/**/*"/>
 			<fileset dir="${src.dir}">
