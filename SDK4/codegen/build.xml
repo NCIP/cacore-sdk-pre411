@@ -2,6 +2,9 @@
 <project name="Codegen" basedir="." default="dist">
 
 	<description>Build script for compiling JET Templates</description>
+		
+	<property name="sdk.home" value=".." />
+	<property file="${sdk.home}/conf/deploy.properties" />
 
 	<!--***********************************************************************
 	*** Load the build properties from the file
@@ -93,7 +96,10 @@
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 				<attribute name="Main-Class" value="gov.nih.nci.codegen.Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
+			<fileset dir="${codegen.core.src.dir}" includes="**/*.java" />
+			<fileset dir="${codegen.templates.src.dir}" includes="**/*.java" />
 		</jar>
 		<copy todir="${dist.dir}">
 			<fileset dir="${lib.dir}" includes="*.jar"/>
