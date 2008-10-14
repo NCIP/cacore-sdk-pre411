@@ -97,10 +97,10 @@
             name="sdk.todo" />
     <historyfile name="" />
   </argo>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Aug 18 15:13:20 GMT 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Oct 07 21:56:55 GMT 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-08-18 22:12:57 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-10-14 15:50:04 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -14249,9 +14249,9 @@
                                                   name = 'cardNumber' visibility = 'private' isSpecification = 'false' ownerScope = 'instance'
                                                   targetScope = 'instance'>
                                                   <UML:StructuralFeature.multiplicity>
-                                                    <UML:Multiplicity xmi.id = 'EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D_fix_2_fix_0_fix_0_fix_0'>
+                                                    <UML:Multiplicity xmi.id = '-64--88-1-105-e020c9:11cd94e8ec1:-8000:000000000000164C'>
                                                       <UML:Multiplicity.range>
-                                                        <UML:MultiplicityRange xmi.id = 'EAID_0F0E92DD_E304_40aa_9ADE_4BEB771EAF2D_fix_2_fix_0_fix_0_fix_0_fix_0_fix_0'
+                                                        <UML:MultiplicityRange xmi.id = '-64--88-1-105-e020c9:11cd94e8ec1:-8000:000000000000164B'
                                                           lower = '1' upper = '1'/>
                                                       </UML:Multiplicity.range>
                                                     </UML:Multiplicity>
@@ -14262,7 +14262,7 @@
                                                   <UML:ModelElement.taggedValue>
                                                     <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001651'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>cardNumberGMEAlias</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>@cardNumberGMEAlias</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                       </UML:TaggedValue.type>
@@ -14315,7 +14315,7 @@
                                                   <UML:ModelElement.taggedValue>
                                                     <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001654'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>idGMEAlias</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>@idGMEAlias</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                       </UML:TaggedValue.type>
@@ -14342,7 +14342,7 @@
                                                   <UML:ModelElement.taggedValue>
                                                     <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001653'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>amountGMEAlias</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>@amountGMEAlias</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                       </UML:TaggedValue.type>
@@ -14400,7 +14400,7 @@
                                                   <UML:ModelElement.taggedValue>
                                                     <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:000000000000164D'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>idGMEAlias</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>@idGMEAlias</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                       </UML:TaggedValue.type>
@@ -14427,7 +14427,7 @@
                                                   <UML:ModelElement.taggedValue>
                                                     <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:000000000000164E'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>nameGMEAlias</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>@nameGMEAlias</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                       </UML:TaggedValue.type>
@@ -19656,7 +19656,7 @@
                                                       <UML:ModelElement.taggedValue>
                                                         <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001644'
                                                           isSpecification = 'false'>
-                                                          <UML:TaggedValue.dataValue>toppingAlias</UML:TaggedValue.dataValue>
+                                                          <UML:TaggedValue.dataValue>@toppingAlias</UML:TaggedValue.dataValue>
                                                           <UML:TaggedValue.type>
                                                             <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                           </UML:TaggedValue.type>
@@ -19697,7 +19697,7 @@
                                                       <UML:ModelElement.taggedValue>
                                                         <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001646'
                                                           isSpecification = 'false'>
-                                                          <UML:TaggedValue.dataValue>fillingAlias</UML:TaggedValue.dataValue>
+                                                          <UML:TaggedValue.dataValue>@fillingAlias</UML:TaggedValue.dataValue>
                                                           <UML:TaggedValue.type>
                                                             <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                           </UML:TaggedValue.type>
@@ -19728,7 +19728,7 @@
                                                       <UML:ModelElement.taggedValue>
                                                         <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001648'
                                                           isSpecification = 'false'>
-                                                          <UML:TaggedValue.dataValue>idAlias</UML:TaggedValue.dataValue>
+                                                          <UML:TaggedValue.dataValue>@idAlias</UML:TaggedValue.dataValue>
                                                           <UML:TaggedValue.type>
                                                             <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                           </UML:TaggedValue.type>
@@ -19744,7 +19744,7 @@
                                                       <UML:ModelElement.taggedValue>
                                                         <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001649'
                                                           isSpecification = 'false'>
-                                                          <UML:TaggedValue.dataValue>nameAlias</UML:TaggedValue.dataValue>
+                                                          <UML:TaggedValue.dataValue>@nameAlias</UML:TaggedValue.dataValue>
                                                           <UML:TaggedValue.type>
                                                             <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                           </UML:TaggedValue.type>
@@ -19820,7 +19820,7 @@
                                                   <UML:ModelElement.taggedValue>
                                                     <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001641'
                                                       isSpecification = 'false'>
-                                                      <UML:TaggedValue.dataValue>idAlias</UML:TaggedValue.dataValue>
+                                                      <UML:TaggedValue.dataValue>@idAlias</UML:TaggedValue.dataValue>
                                                       <UML:TaggedValue.type>
                                                         <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:0000000000001630'/>
                                                       </UML:TaggedValue.type>
