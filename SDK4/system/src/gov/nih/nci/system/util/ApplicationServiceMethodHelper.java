@@ -52,8 +52,10 @@ public class ApplicationServiceMethodHelper {
 		} else if ("query".equals(method.getName())|| "getQueryRowCount".equals(method.getName())) {
 			if (arguments.length == 3) {
 				domainObjectName = (String) arguments[2];
-			} else if (arguments[0] instanceof CQLQuery) {
-				domainObjectName = ((CQLQuery) arguments[0]).getTarget().getName();
+			} else if (arguments[0] instanceof gov.nih.nci.system.query.cql.CQLQuery) {
+				domainObjectName = ((gov.nih.nci.system.query.cql.CQLQuery) arguments[0]).getTarget().getName();
+			} else if (arguments[0] instanceof gov.nih.nci.cagrid.cqlquery.CQLQuery) {
+				domainObjectName = ((gov.nih.nci.cagrid.cqlquery.CQLQuery) arguments[0]).getTarget().getName();
 			} else if (arguments[0] instanceof DetachedCriteria) {
 				CriteriaImpl crit = (CriteriaImpl) ((DetachedCriteria) arguments[0]).getExecutableCriteria(null);
 				domainObjectName = crit.getEntityOrClassName();
