@@ -6,7 +6,7 @@
 	<description>generated domain POJO beans</description>
 	
 	<property name="sdk.home" value="../.." />
-	<property file="${sdk.home}/conf/deploy.properties" />
+	<property file="${sdk.home}/build.properties" prefix="master"/>
 
 	<!--***********************************************************************
 	*** Load the build properties from the file
@@ -102,7 +102,7 @@
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
 				<attribute name="Main-Class" value="gov.nih.nci.codegen.Generator"/>
-				<attribute name="Version" value="${VERSION}"/>
+				<attribute name="Version" value="${master.VERSION}"/>
 			</manifest>
 			<fileset dir="${codegen.validator.src.dir}" includes="**/*.java" />
 			<fileset dir="${codegen.validator.templates.src.dir}" includes="**/*.java" />

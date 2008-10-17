@@ -4,7 +4,7 @@
 	<description>Build script for building the runtime system</description>
 
 	<property name="sdk.home" value="../.." />
-	<property file="${sdk.home}/conf/deploy.properties" />
+	<property file="${sdk.home}/build.properties" prefix="master" />
 		
 	<!--***********************************************************************
 	*** Load the build properties from the file
@@ -86,7 +86,7 @@
 		<jar destfile="${dist.dir}\${file.output.jaas.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
-				<attribute name="Version" value="${VERSION}"/>
+				<attribute name="Version" value="${master.VERSION}"/>
 			</manifest>
 			<include name="**/*"/>
 			<exclude name="gov/nih/nci/system/security/authentication/cagrid/executor/**/*"/>
@@ -98,7 +98,7 @@
 		<jar destfile="${dist.dir}\${file.output.jaas.executor.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
-				<attribute name="Version" value="${VERSION}"/>
+				<attribute name="Version" value="${master.VERSION}"/>
 			</manifest>
 			<include name="gov/nih/nci/system/security/authentication/cagrid/executor/**/*"/>
 			<exclude name="gov/nih/nci/system/security/authentication/cagrid/executor/tomcat/*"/>
@@ -111,7 +111,7 @@
 		<jar destfile="${dist.dir}\${file.output.jaas.jndibinder.name}" basedir="${build.classes.dir}">
 			<manifest>
 				<attribute name="Generated-By" value="caCORE SDK Code Generator"/>
-				<attribute name="Version" value="${VERSION}"/>
+				<attribute name="Version" value="${master.VERSION}"/>
 			</manifest>
 			<include name="gov/nih/nci/system/security/authentication/cagrid/executor/tomcat/*"/>
 			<fileset dir="${src.dir}">
