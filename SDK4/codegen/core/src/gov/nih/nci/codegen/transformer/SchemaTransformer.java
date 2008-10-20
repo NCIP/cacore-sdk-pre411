@@ -426,15 +426,16 @@ public class SchemaTransformer implements Transformer {
 		if (otherEnd.isNavigable()) {
 			log.debug("sequence name: " + sequence.getName());
 			log.debug("otherEnd getRoleName: " + otherEnd.getRoleName());
-			String otherEndType = getClassName((UMLClass)(otherEnd.getUMLElement()));
-			log.debug("otherEnd type: " + otherEndType);
+			String otherEndTypeName = getClassName((UMLClass)(otherEnd.getUMLElement()));
+			log.debug("otherEnd type: " + otherEndTypeName);
 			String thisEndType = getClassName((UMLClass)(thisEnd.getUMLElement()));
 			log.debug("thisEnd type: " + thisEndType);
 
 			Element associationElement = new Element("element", w3cNS);
 			sequence.addContent(associationElement);
 
-			associationElement.setAttribute("name", getRoleName(otherEnd)); //otherEnd.getRoleName()
+			log.debug("otherEndTypeName: "+otherEndTypeName);
+			associationElement.setAttribute("name", getRoleName(otherEnd,otherEndTypeName)); 
 
 			String maxOccurs = transformerUtils.getUpperBound(otherEnd);
 			log.debug("maxOccurs: " + maxOccurs);
@@ -456,7 +457,7 @@ public class SchemaTransformer implements Transformer {
 
 			log.debug("associationPackage.equals(thisPackage): " + associationPackage.equals(thisPackage));
 
-			String type = (associationPackage.equals(thisPackage)) ? otherEndType : associationPackage + ":" + otherEndType;
+			String type = (associationPackage.equals(thisPackage)) ? otherEndTypeName : associationPackage + ":" + otherEndTypeName;
 
 			associatedObjElement.setAttribute("ref", type);
 			associatedObjElement.setAttribute("minOccurs","0");   
@@ -726,10 +727,18 @@ public class SchemaTransformer implements Transformer {
 		return false;
 	}
 
-	private String getRoleName(UMLAssociationEnd assocEnd){
+	private String getRoleName(UMLAssociationEnd assocEnd, String klassName){
 		if (useGMETags){
 			try {
-				String rolename = transformerUtils.getXMLLocRef(assocEnd);
+				String rolename = transformerUtils.getXMLLocRef(assocEnd, klassName);//use GME class name, if available
+				log.debug("rolename:  "+rolename);
+				
+				if (rolename==null){// try non-GME class name
+					klassName = ((UMLClass)(assocEnd.getUMLElement())).getName();
+					rolename = transformerUtils.getXMLLocRef(assocEnd, klassName);
+				}
+				log.error("rolename:  "+rolename);
+				
 				if (rolename!=null)
 					return rolename;
 			} catch(GenerationException ge) {
