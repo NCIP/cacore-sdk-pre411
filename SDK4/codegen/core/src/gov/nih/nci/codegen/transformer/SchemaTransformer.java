@@ -737,7 +737,7 @@ public class SchemaTransformer implements Transformer {
 					klassName = ((UMLClass)(assocEnd.getUMLElement())).getName();
 					rolename = transformerUtils.getXMLLocRef(assocEnd, klassName);
 				}
-				log.error("rolename:  "+rolename);
+				log.debug("rolename:  "+rolename);
 				
 				if (rolename!=null)
 					return rolename;
