@@ -2142,10 +2142,9 @@ public class TransformerUtils
 		return false;
 	}
 	
-	public String getXMLLocRef(UMLAssociationEnd assocEnd)throws GenerationException
+	public String getXMLLocRef(UMLAssociationEnd assocEnd, String klassName)throws GenerationException
 	{
 		try {
-			String klassName = ((UMLClass)(assocEnd.getUMLElement())).getName();
 			return getGmeLocRef(assocEnd.getOwningAssociation(),klassName);
 		} catch(GenerationException ge) {
 			log.error("ERROR: ", ge);

@@ -357,7 +357,10 @@ public class XmlMappingTransformer implements Transformer {
 				Element bind = new Element("bind-xml");
 				bind.setAttribute("name", getClassName((UMLClass)(otherEnd.getUMLElement())) );
 				bind.setAttribute("type", associationPackage + Constant.DOT + otherEndTypeName );
-				bind.setAttribute("location",(otherEndTypeName.equals(getRoleName(otherEnd))) ? otherEndTypeName.toLowerCase(): getRoleName(otherEnd) );                  
+				
+				String roleName = getRoleName(otherEnd,getClassName((UMLClass)(otherEnd.getUMLElement())));
+				log.debug("otherEndTypeName: "+otherEndTypeName+"; roleName: "+roleName);
+				bind.setAttribute("location",(otherEndTypeName.equals(roleName)) ? otherEndTypeName.toLowerCase(): roleName );                  
 				bind.setAttribute("node", "element");
 				field.addContent(bind);
 
@@ -383,7 +386,10 @@ public class XmlMappingTransformer implements Transformer {
 
 				bind.setAttribute("name", getClassName((UMLClass)(otherEnd.getUMLElement())) );
 				bind.setAttribute("type", associationPackage+Constant.DOT + otherEndTypeName);
-				bind.setAttribute("location", (otherEndTypeName.equals(getRoleName(otherEnd))) ? otherEndTypeName.toLowerCase(): getRoleName(otherEnd) );
+				
+				String roleName = getRoleName(otherEnd,getClassName((UMLClass)(otherEnd.getUMLElement())));
+				log.debug("otherEndTypeName: "+otherEndTypeName+"; roleName: "+roleName);
+				bind.setAttribute("location", (otherEndTypeName.equals(roleName)) ? otherEndTypeName.toLowerCase(): roleName );
 				bind.setAttribute("node", "element");
 
 				field.addContent(bind);
@@ -500,10 +506,17 @@ public class XmlMappingTransformer implements Transformer {
 		return attr.getName();
 	}
 
-	private String getRoleName(UMLAssociationEnd assocEnd){
+	private String getRoleName(UMLAssociationEnd assocEnd, String klassName){
 		if (useGMETags){
 			try {
-				String rolename = transformerUtils.getXMLLocRef(assocEnd);
+				String rolename = transformerUtils.getXMLLocRef(assocEnd,klassName);
+				log.debug("rolename using GME classname '"+klassName+"' as a lookup: "+rolename);
+				if (rolename==null){// try non-GME class name
+					klassName = ((UMLClass)(assocEnd.getUMLElement())).getName();
+					rolename = transformerUtils.getXMLLocRef(assocEnd, klassName);
+					log.debug("rolename using original classname'"+klassName+"' as a lookup: "+rolename);
+				}
+				
 				if (rolename!=null)
 					return rolename;
 			} catch(GenerationException ge) {

@@ -169,8 +169,8 @@ public class UMLGMETagValidator implements Validator
 				
 				validateGmeAssociationTags(thisEnd,otherEnd,errors);
 
-				String thisEndRolename = getRoleName(thisEnd,errors);
-				String otherEndRolename = getRoleName(otherEnd,errors);
+				String thisEndRolename = getRoleName(thisEnd,getClassName((UMLClass)thisEnd.getUMLElement(),errors),errors);
+				String otherEndRolename = getRoleName(otherEnd,getClassName((UMLClass)thisEnd.getUMLElement(),errors),errors);
 
 				//For sake of clarity, use the non-GME classnames so the user can easily identify which classes have an invalid association
 				String thisClassName = transformerUtils.getFQCN(((UMLClass)thisEnd.getUMLElement()));
@@ -199,13 +199,12 @@ public class UMLGMETagValidator implements Validator
 						List <UMLAssociationEnd>ends2 = assoc.getAssociationEnds();
 						if(ends!=ends2)
 						{
-							//For sake of clarity, use the non-GME classnames so the user can easily identify which classes have an invalid association
 							UMLAssociationEnd thisEnd2 = transformerUtils.getThisEnd(klass, ends2);
 							UMLAssociationEnd otherEnd2 = transformerUtils.getOtherEnd(klass, ends2);
 							String thisClassName2 = transformerUtils.getFQCN(((UMLClass)thisEnd2.getUMLElement()));
 							String otherClassName2 = transformerUtils.getFQCN(((UMLClass)otherEnd2.getUMLElement()));	
 
-							String otherEnd2Rolename=getRoleName(otherEnd2,errors);
+							String otherEnd2Rolename=getRoleName(otherEnd2,otherClassName2,errors);
 							log.debug("otherEnd.getRoleName(): "+ otherEnd.getRoleName()+"; otherEnd2.getRoleName(): "+otherEnd2.getRoleName()+"; otherEnd2Rolename: "+otherEnd2Rolename);
 							if(otherEndRolename!=null && otherEndRolename.equals(otherEnd2Rolename))
 								errors.addError(new GeneratorError(getName() + ": Duplicate GME association between "+thisClassName2 +" and "+ otherClassName2));
@@ -306,9 +305,15 @@ public class UMLGMETagValidator implements Validator
 		return attr.getName();
 	}
 
-	private String getRoleName(UMLAssociationEnd assocEnd,GeneratorErrors errors){
+	private String getRoleName(UMLAssociationEnd assocEnd, String klassName, GeneratorErrors errors){
 		try {
-			String rolename = transformerUtils.getXMLLocRef(assocEnd);
+			String rolename = transformerUtils.getXMLLocRef(assocEnd,klassName);//try GME class name
+			
+			if (rolename==null){// try non-GME class name
+				klassName = ((UMLClass)(assocEnd.getUMLElement())).getName();
+				rolename = transformerUtils.getXMLLocRef(assocEnd, klassName);
+			}
+			
 			if (rolename!=null)
 				return rolename;
 		} catch(GenerationException ge) {
@@ -415,7 +420,10 @@ public class UMLGMETagValidator implements Validator
 		try {
 			String tv = transformerUtils.getGmeSourceLocRef(assoc);
 			if (tv !=null){
-				if (!tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) && !tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()))
+				if ((tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) || tv.endsWith("/"+getClassName((UMLClass)(thisEnd.getUMLElement()),errors) )) 
+						|| (tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()) || tv.endsWith("/"+getClassName((UMLClass)(otherEnd.getUMLElement()),errors))) )
+					;
+				else
 					errors.addError(new GeneratorError(getName()+": Invalid GME NCI_GME_SOURCE_XML_LOC_REF tag value found on the association between " +thisKlassName+" and "+otherKlassName+": "+tv+".  The class referenced within the tag value does not match either of the association end classes"));
 			}
 		} catch (GenerationException ge) {
@@ -425,8 +433,11 @@ public class UMLGMETagValidator implements Validator
 		try {
 			String tv = transformerUtils.getGmeTargetLocRef(assoc);
 			if (tv !=null){
-				if (!tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) && !tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()))
-					errors.addError(new GeneratorError(getName()+": Invalid GME NCI_GME_TARGET_XML_LOC_REF tag value found on the association between " +thisKlassName+" and "+otherKlassName+": "+tv+".  The class referenced within the tag value does not match either of the association end classes"));
+				if ((tv.endsWith("/"+((UMLClass)(thisEnd.getUMLElement())).getName()) || tv.endsWith("/"+getClassName((UMLClass)(thisEnd.getUMLElement()),errors) )) 
+						|| (tv.endsWith("/"+((UMLClass)(otherEnd.getUMLElement())).getName()) || tv.endsWith("/"+getClassName((UMLClass)(otherEnd.getUMLElement()),errors))) )
+					;
+				else
+					errors.addError(new GeneratorError(getName()+": Invalid GME NCI_GME_SOURCE_XML_LOC_REF tag value found on the association between " +thisKlassName+" and "+otherKlassName+": "+tv+".  The class referenced within the tag value does not match either of the association end classes"));
 			}
 		} catch (GenerationException ge) {
 			errors.addError(new GeneratorError(getName()+": Error getting the GME NCI_GME_TARGET_XML_LOC_REF tag value from the association between " +thisKlassName+" and "+otherKlassName,ge));
