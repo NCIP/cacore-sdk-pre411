@@ -949,7 +949,6 @@
 		<copy todir="${package.client.grid-jaas.conf.dir}">
 			<fileset dir="${system.config.grid.loginService.web.classes.dir}" includes="*.*" excludes="grid-remote*.*"/>
 		</copy>
-		
 	</target>	
 		
 	<target name="package-server" depends="init">
@@ -1062,7 +1061,7 @@
 	<!--***********************************************************************
 	*** Creates release packages for the SDK  
 	*********************************************************************** -->
-	<target name="package-release-contents" depends="clean-all,prepare-codegen,prepare-system,prepare-writable-api" description="Creates release packages">
+	<target name="package-release-contents" depends="clean-all,prepare-codegen,prepare-system,prepare-writable-api,prepare-grid-jaas,prepare-grid-remoting" description="Creates release packages">
 		<ant antfile="${junit.dir}\build.xml"  target="clean" inheritall="false" inheritrefs="false" />
 		<SDKecho message="${ant.project.name}: Creates release packages"/>
 		<mkdir dir="${release.dir}"/>
@@ -1085,6 +1084,12 @@
 				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.dir.src.dir}/**/*"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.dir.build.dir}/**/*"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.src.dir}/**/*"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.build.dir}/**/*"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.src.dir}/**/*"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.build.dir}/**/*"/>
+				<exclude name="${security.dir}/${security.src.dir}/**/*"/>
+				<exclude name="${security.dir}/${security.build.dir}/**/*"/>
 				<exclude name="bin"/>
 				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
 				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
@@ -1094,8 +1099,12 @@
 				<exclude name="${system.dir}/${system.build.dir}"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.src.dir}"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.build.dir}"/>
-				<exclude name="${security.dir.dir}/${security.src.dir}"/>
-				<exclude name="${security.dir.dir}/${security.build.dir}"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.src.dir}"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.build.dir}"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.src.dir}"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.build.dir}"/>			
+				<exclude name="${security.dir}/${security.src.dir}"/>
+				<exclude name="${security.dir}/${security.build.dir}"/>
 				<exclude name="${junit.dir}"/>
 				<exclude name="${junit.dir}/**/*"/>
 			</zipfileset>
@@ -1138,8 +1147,12 @@
 				<exclude name="${system.dir}/${system.build.dir}/**/*"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.src.dir}/**/*"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.build.dir}/**/*"/>
-				<exclude name="${security.dir.dir}/${security.src.dir}/**/*"/>
-				<exclude name="${security.dir.dir}/${security.build.dir}/**/*"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.src.dir}/**/*"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.build.dir}/**/*"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.src.dir}/**/*"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.build.dir}/**/*"/>
+				<exclude name="${security.dir}/${security.src.dir}/**/*"/>
+				<exclude name="${security.dir}/${security.build.dir}/**/*"/>
 				<exclude name="bin"/>
 				<exclude name="${codegen.dir}/${codegen.build.dir}"/>
 				<exclude name="${codegen.dir}/${codegen.codegen.core.dir}"/>
@@ -1149,8 +1162,12 @@
 				<exclude name="${system.dir}/${system.build.dir}"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.src.dir}"/>
 				<exclude name="${writable-api.dir.dir}/${writable-api.build.dir}"/>
-				<exclude name="${security.dir.dir}/${security.src.dir}"/>
-				<exclude name="${security.dir.dir}/${security.build.dir}"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.src.dir}"/>
+				<exclude name="${grid-jaas.dir}/${grid-jaas.build.dir}"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.src.dir}"/>
+				<exclude name="${grid-remoting.dir}/${grid-remoting.build.dir}"/>
+				<exclude name="${security.dir}/${security.src.dir}"/>
+				<exclude name="${security.dir}/${security.build.dir}"/>
 				<exclude name="${junit.dir}"/>
 				<exclude name="${junit.dir}/**/*"/>
 			</tarfileset>
