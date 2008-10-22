@@ -771,7 +771,11 @@
 				<include name="spring*.*"/>
 				<include name="castor*.*"/>
 				<include name="xercesImpl*.*"/>
+				<include name="caGrid-CQL*.*"/>
 				<include name="cog-jglobus*.*"/>
+				<include name="axis*.*"/>
+				<include name="jaxrpc*.*"/>
+				<include name="commons-discovery*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 		</copy>
@@ -813,6 +817,11 @@
 				<include name="ojdbc*.*"/>
 				<include name="spring*.*"/>
 				<include name="cog-jglobus*.*"/>
+				<include name="cog-axis*.*"/>
+				<include name="caGrid*.*"/>
+				<include name="axis*.*"/>
+				<include name="jaxrpc*.*"/>
+				<include name="commons-discovery*.*"/>
 			</fileset>
 			<fileset dir="${build.jar.dir}" includes="${bean.file}" />
 			<fileset dir="${build.jar.dir}" includes="${orm.file}" />
