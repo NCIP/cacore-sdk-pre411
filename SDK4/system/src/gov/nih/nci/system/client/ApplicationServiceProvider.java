@@ -111,7 +111,8 @@ public class ApplicationServiceProvider
 			throw new Exception("Credentials can not be null");
 		}
 		cred.verify();
-		X509AuthenticationToken auth = new X509AuthenticationToken(cred.getIdentityCertificate()); 
+		X509AuthenticationToken auth = new X509AuthenticationToken(cred.getIdentityCertificate());
+		auth.setDetails(cred);
 		return getApplicationService(service, url, auth);
 	}
 
