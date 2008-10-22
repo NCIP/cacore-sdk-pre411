@@ -100,7 +100,7 @@
 <XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Oct 07 21:56:55 GMT 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-10-14 15:50:04 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>0.24(5) revised on $Date: 2008-10-22 15:25:52 $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -19869,7 +19869,7 @@
                                                 </UML:TaggedValue>
                                                 <UML:TaggedValue xmi.id = '-100-40--108-85-e020c9:11ba3f317dd:-8000:000000000000164B'
                                                   isSpecification = 'false'>
-                                                  <UML:TaggedValue.dataValue>dessertAliasRoleName/Dessert</UML:TaggedValue.dataValue>
+                                                  <UML:TaggedValue.dataValue>dessertAliasRoleName/DessertAlias</UML:TaggedValue.dataValue>
                                                   <UML:TaggedValue.type>
                                                     <UML:TagDefinition xmi.idref = '-100-40--108-85-e020c9:11ba3f317dd:-8000:000000000000161F'/>
                                                   </UML:TaggedValue.type>
