@@ -249,7 +249,7 @@ public class UMLGMETagValidator implements Validator
 	private void validateSuperClass(UMLClass klass, GeneratorErrors errors) {
 		try {
 			UMLClass superKlass = transformerUtils.getSuperClass(klass);
-			if(superKlass!=null && !transformerUtils.isIncluded(superKlass))//TODO :: check if GME Exclusion applies?
+			if(superKlass!=null && !transformerUtils.isIncluded(superKlass))
 				errors.addError(new GeneratorError(getName() + ": Parent of the class "+transformerUtils.getFQCN(klass)+" belongs to the not included or excluded package"));
 
 		} catch (GenerationException e) {

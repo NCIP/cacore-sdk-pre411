@@ -882,7 +882,7 @@ public class TransformerUtils
 			if (isNamespaceIncluded(klass,defaultNamespacePrefix)){
 				log.debug("including package: " + pkgName);
 
-				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(pkgName+"."+getClassName(klass))) { 
+				if(!STEREO_TYPE_TABLE.equalsIgnoreCase(klass.getStereotype()) && isIncluded(klass)) { //No longer using GME ClassName; e.g., no longer using isIncluded(pkgName+"."+getClassName(klass))) { 
 					pkgNamespace=getGMENamespace(klass);
 					
 					if (pkgNamespace !=null && (pkgNamespace.endsWith("/") || !pkgNamespace.endsWith(pkgName)))
