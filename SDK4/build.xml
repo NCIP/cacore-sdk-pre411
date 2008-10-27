@@ -405,6 +405,7 @@
 		<mkdir dir="${output.project.dir}"/>
 		<mkdir dir="${output.src.dir}"/>
 		<mkdir dir="${output.conf.dir}"/>
+		<mkdir dir="${output.conf.db.scripts.dir}"/>
 		<mkdir dir="${output.codegen.config.dir}"/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
@@ -430,6 +431,12 @@
 		<copy todir="${output.conf.dir}" overwrite="true">
 			<fileset dir="${conf.dir}">
 				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${output.conf.db.scripts.dir}" overwrite="true">
+			<fileset dir="${models.db.scripts.dir}">
+				<include name="**/*.sql" />
 			</fileset>
 		</copy>
 
