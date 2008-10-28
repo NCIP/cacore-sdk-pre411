@@ -9,11 +9,11 @@
 
 
 --
--- Create schema cacoresdk_ant
+-- Create schema cacoresdk
 --
 
-CREATE DATABASE IF NOT EXISTS cacoresdk_ant2;
-USE cacoresdk_ant2;
+CREATE DATABASE IF NOT EXISTS cacoresdk;
+USE cacoresdk;
 
 --
 -- Definition of table `address`
