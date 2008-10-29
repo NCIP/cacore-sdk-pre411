@@ -4528,7 +4528,6 @@ CREATE TABLE CSM_ROLE_PRIVILEGE (
 	ROLE_PRIVILEGE_ID BIGINT AUTO_INCREMENT  NOT NULL,
 	ROLE_ID BIGINT NOT NULL,
 	PRIVILEGE_ID BIGINT NOT NULL,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
 	PRIMARY KEY(ROLE_PRIVILEGE_ID)
 )Type=InnoDB
 ;
@@ -4539,18 +4538,18 @@ CREATE TABLE CSM_ROLE_PRIVILEGE (
 
 /*!40000 ALTER TABLE `csm_role_privilege` DISABLE KEYS */;
 SET AUTOCOMMIT=0;
-INSERT INTO `csm_role_privilege` (`role_privilege_id`,`role_id`,`privilege_id`,`update_date`) VALUES 
- ('1','2','3','2007-07-17 15:30:00'),
- ('2','1','5','2007-07-17 15:30:00'),
- ('3','1','1','2007-07-17 15:30:00'),
- ('4','1','2','2007-07-17 15:30:01'),
- ('5','1','7','2007-07-17 15:30:01'),
- ('6','1','4','2007-07-17 15:30:01'),
- ('7','1','3','2007-07-17 15:30:01'),
- ('8','1','6','2007-07-17 15:30:01'),
- ('9','3','1','2007-07-17 15:30:01'),
- ('14','5','5','2008-06-30 17:26:22'),
- ('15','6','6','2008-06-30 17:26:41');
+INSERT INTO `csm_role_privilege` (`role_privilege_id`,`role_id`,`privilege_id`) VALUES 
+ ('1','2','3'),
+ ('2','1','5'),
+ ('3','1','1'),
+ ('4','1','2'),
+ ('5','1','7'),
+ ('6','1','4'),
+ ('7','1','3'),
+ ('8','1','6'),
+ ('9','3','1'),
+ ('14','5','5'),
+ ('15','6','6');
 COMMIT;
 /*!40000 ALTER TABLE `csm_role_privilege` ENABLE KEYS */;
 
@@ -4670,7 +4669,6 @@ CREATE TABLE CSM_USER_PE (
 	USER_PROTECTION_ELEMENT_ID BIGINT AUTO_INCREMENT  NOT NULL,
 	PROTECTION_ELEMENT_ID BIGINT NOT NULL,
 	USER_ID BIGINT NOT NULL,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
 	PRIMARY KEY(USER_PROTECTION_ELEMENT_ID)
 )Type=InnoDB
 ;
@@ -4681,9 +4679,9 @@ CREATE TABLE CSM_USER_PE (
 
 /*!40000 ALTER TABLE `csm_user_pe` DISABLE KEYS */;
 SET AUTOCOMMIT=0;
-INSERT INTO `csm_user_pe` (`user_protection_element_id`,`protection_element_id`,`user_id`,`update_date`) VALUES 
- ('3','1','1','2007-07-17 15:30:01'),
- ('7','2','9','2008-04-02 17:08:26'),
- ('8','2','1','2008-04-02 17:08:26');
+INSERT INTO `csm_user_pe` (`user_protection_element_id`,`protection_element_id`,`user_id`) VALUES 
+ ('3','1','1'),
+ ('7','2','9'),
+ ('8','2','1');
 COMMIT;
 /*!40000 ALTER TABLE `csm_user_pe` ENABLE KEYS */;
