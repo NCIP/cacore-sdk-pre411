@@ -25,6 +25,7 @@ import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 import org.jdom.transform.JDOMResult;
 import org.jdom.transform.JDOMSource;
+import org.mmbase.util.Encode;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -281,7 +282,8 @@ public class HTTPQuery extends HttpServlet {
 						"Invalid format: '[' parenthesis does not match number of ']' parenthesis");
 			}
 		} else {
-			throw new Exception("Invalid Syntax: " + query + getQuerySyntax());
+			Encode encoder = new Encode("ESCAPE_XML");
+			throw new Exception("Invalid Syntax: " + encoder.encode(query) + getQuerySyntax());
 		}
 		return valid;
 	}
