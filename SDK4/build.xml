@@ -1109,11 +1109,15 @@
 				<include name="build.properties"/>
 				<include name="README.txt"/>
 				<include name="LICENSE.txt"/>
+				<exclude name="**/CVS"/>
 				<exclude name="**/CVS/*"/>
+				<exclude name="**/build"/>
 				<exclude name="**/build/**/*"/>
-				<exclude name="**/*.class"/>
-				<exclude name="**/*.java"/>
+				<exclude name="**/bin"/>
 				<exclude name="**/bin/**/*"/>
+				<exclude name="**/*.java"/>
+				<exclude name="**/src"/>
+				<exclude name="**/src/**/*"/>
 			</zipfileset>
 		</zip>
 			
@@ -1132,10 +1136,13 @@
 				<include name="build.properties"/>
 				<include name="README.txt"/>
 				<include name="LICENSE.txt"/>
+				<exclude name="**/CVS"/>
 				<exclude name="**/CVS/*"/>
+				<exclude name="**/build"/>
 				<exclude name="**/build/**/*"/>
-				<exclude name="**/dist/**/*"/>
-				<exclude name="**/*.class"/>
+				<exclude name="**/dist"/>
+				<exclude name="**/dist**/*"/>
+				<exclude name="**/bin"/>
 				<exclude name="**/bin/**/*"/>
 			</zipfileset>
 		</zip>
@@ -1155,11 +1162,15 @@
 				<include name="build.properties"/>
 				<include name="README.txt"/>
 				<include name="LICENSE.txt"/>
+				<exclude name="**/CVS"/>
 				<exclude name="**/CVS/*"/>
+				<exclude name="**/build"/>
 				<exclude name="**/build/**/*"/>
-				<exclude name="**/*.class"/>
-				<exclude name="**/*.java"/>
+				<exclude name="**/bin"/>
 				<exclude name="**/bin/**/*"/>
+				<exclude name="**/*.java"/>
+				<exclude name="**/src"/>
+				<exclude name="**/src/**/*"/>
 			</tarfileset>
 		</tar>
 		<tar destfile="${release.src.tar.file}">
@@ -1177,10 +1188,13 @@
 				<include name="build.properties"/>
 				<include name="README.txt"/>
 				<include name="LICENSE.txt"/>
+				<exclude name="**/CVS"/>
 				<exclude name="**/CVS/*"/>
+				<exclude name="**/build"/>
 				<exclude name="**/build/**/*"/>
-				<exclude name="**/dist/**/*"/>
-				<exclude name="**/*.class"/>
+				<exclude name="**/dist"/>
+				<exclude name="**/dist**/*"/>
+				<exclude name="**/bin"/>
 				<exclude name="**/bin/**/*"/>
 			</tarfileset>
 		</tar>
