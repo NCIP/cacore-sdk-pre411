@@ -144,7 +144,7 @@ public class ApplicationServiceProvider
 	private static ApplicationService getApplicationService(String service, String url, Authentication auth) throws Exception
 	{
 		Boolean secured = auth != null;
-		ApplicationContext context = getApplicationContext(service, null,secured);
+		ApplicationContext context = getApplicationContext(service, url, secured);
 		Map<String, Object> serviceInfoMap = (Map<String, Object>) context.getBean(service);
 		ApplicationService as = (ApplicationService) serviceInfoMap.get("APPLICATION_SERVICE_BEAN");
 
