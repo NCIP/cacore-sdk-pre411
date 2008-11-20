@@ -72,7 +72,7 @@
 				&lt;bean id=&quot;@PROJECT_NAME@ApplicationService&quot; class=&quot;org.springframework.aop.framework.ProxyFactoryBean&quot;&gt;
 					&lt;property name=&quot;target&quot;&gt;
 						&lt;bean class=&quot;org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean&quot;&gt;
-							&lt;property name=&quot;serviceUrl&quot; value=&quot;@SERVER_URL@/http/applicationService&quot;/&gt;
+							&lt;property name=&quot;serviceUrl&quot; value=&quot;URL_KEY/http/applicationService&quot;/&gt;
 							&lt;property name=&quot;serviceInterface&quot; value=&quot;@SERVICE_INTERFACE@&quot;/&gt;
 							&lt;property name=&quot;httpInvokerRequestExecutor&quot;&gt;
 							&lt;bean class=&quot;gov.nih.nci.system.springframework.remoting.httpinvoker.GSIHttpInvokerRequestExecutor&quot;/&gt;
