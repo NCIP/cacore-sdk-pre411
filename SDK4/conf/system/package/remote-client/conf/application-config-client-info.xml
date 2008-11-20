@@ -89,7 +89,7 @@
 							&lt;bean class=&quot;org.acegisecurity.providers.rcp.RemoteAuthenticationProvider&quot;&gt;
 								&lt;property name=&quot;remoteAuthenticationManager&quot;&gt;
 									&lt;bean class=&quot;org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean&quot;&gt;
-									    &lt;property name=&quot;serviceUrl&quot; value=&quot;@SERVER_URL@/http/remoteAuthenticationManager&quot;/&gt;
+									    &lt;property name=&quot;serviceUrl&quot; value=&quot;URL_KEY/http/remoteAuthenticationManager&quot;/&gt;
 									    &lt;property name=&quot;serviceInterface&quot; value=&quot;org.acegisecurity.providers.rcp.RemoteAuthenticationManager&quot;/&gt;
 									&lt;/bean&gt;
 								&lt;/property&gt;
