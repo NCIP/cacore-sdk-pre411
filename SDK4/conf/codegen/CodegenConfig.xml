@@ -40,7 +40,7 @@
 	<!-- 									 -->
 	<bean name="UMLModel" factory-bean="UMLModelLoader" factory-method="getUMLModel" singleton="true"/>
 	<bean name="UMLModelLoader" class="gov.nih.nci.codegen.UMLModelLoader" singleton="true">
-		<constructor-arg value="models/@MODEL_FILE@"></constructor-arg>
+		<constructor-arg value="@MODEL_FILE_IN_DIRECTORY@"></constructor-arg>
 		<constructor-arg value="@MODEL_FILE_TYPE@"></constructor-arg>
 	</bean>
 
