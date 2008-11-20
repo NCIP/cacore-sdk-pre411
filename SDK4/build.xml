@@ -6,6 +6,7 @@
 	<!--***********************************************************************
 	*** Load the build properties from the file
 	*********************************************************************** -->
+	<property file="installer.properties"  />
 	<property file="local.properties"  />
 	<property file="conf/deploy.properties"  />
 	<property file="build.properties"  />
@@ -396,6 +397,10 @@
 		</not>
 	</condition>
 
+	<condition property="MODEL_FILE_IN_DIRECTORY" value="${MODEL_FILE_PATH}" else="models/${MODEL_FILE}">
+		<isset property="${MODEL_FILE_PATH}"/>
+	</condition>
+
 	<!--***********************************************************************
 	*** Prepares the output directory structure
 	*********************************************************************** -->
@@ -445,7 +450,7 @@
 			<replacefilter token="@SDK_GRID_LOGIN_SERVICE_NAME@" value="${SDK_GRID_LOGIN_SERVICE_NAME}" />
 			<replacefilter token="@OUTPUTDIR@" value="${output.src.dir}" />
 			<replacefilter token="@VALIDATOR_OUTPUTDIR@" value="${output.codegen.config.dir}" />
-			<replacefilter token="@MODEL_FILE@" value="${MODEL_FILE}" />
+			<replacefilter token="@MODEL_FILE_IN_DIRECTORY@" value="${MODEL_FILE_IN_DIRECTORY}" />
 			<replacefilter token="@MODEL_FILE_TYPE@" value="${MODEL_FILE_TYPE}" />
 			<replacefilter token="@LOGICAL_MODEL@" value="${LOGICAL_MODEL}" />
 			<replacefilter token="@DATA_MODEL@" value="${DATA_MODEL}" />
