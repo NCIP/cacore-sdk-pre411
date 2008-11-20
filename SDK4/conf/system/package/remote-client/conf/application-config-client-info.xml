@@ -99,6 +99,8 @@
 						&lt;/list&gt;
 					&lt;/property&gt;
 				&lt;/bean&gt;
+				
+				&lt;alias alias="ServiceInfo" name="@PROJECT_NAME@ServiceInfo"/&gt;
 			</value>
 		</constructor-arg>
 	</bean>
