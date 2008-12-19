@@ -230,7 +230,7 @@ public class ClassCache {
 		for (int i=0; i<classFields.length;i++)
 		{
 			if(classFields[i].getName().equals(fieldName))
-				return getReturnType(classFields[i].getGenericType().toString());
+				return getReturnType(classFields[i].getType().getName());
 		}
 		
 		throw new Exception("Class " + className + " does not have an association with roleName: "+fieldName);
@@ -425,7 +425,7 @@ public class ClassCache {
 					String roleClassName;
 					String beanName;
 					
-					beanName = getReturnType(field.getGenericType().toString());
+					beanName = getReturnType(field.getType().getName());
 					log.debug("*** Class: " + className + "; fieldName: " + fieldName + "; beanName: " + beanName );
 					roleClassName = locateClass(beanName, packageName);
 					log.debug("roleClassName: " + roleClassName);
@@ -714,16 +714,22 @@ public class ClassCache {
 				try
 				{
 					klass = Class.forName(klassName);
-					Class superKlass = klass.getSuperclass();
+
 					String currentKlassName = klassName;
+					Class superKlass = klass.getSuperclass();
+					String superKlassName = superKlass.getName();
 					while(!"java.lang.Object".equals(superKlass.getName()))
 					{
-						List<String> subKlassNames = subClassCache.get(currentKlassName);
-						if(subKlassNames == null) subKlassNames = new ArrayList<String>();
+						List<String> subKlassNames = subClassCache.get(superKlassName);
+						if(subKlassNames == null) {
+							subKlassNames = new ArrayList<String>();
+							subClassCache.put(superKlassName, subKlassNames);
+						}
 						if(!subKlassNames.contains(currentKlassName))
 							subKlassNames.add(currentKlassName);
 						currentKlassName = superKlass.getName();
 						superKlass = superKlass.getSuperclass();
+						superKlassName = superKlass.getName();
 					}
 				} 
 				catch (ClassNotFoundException e)
