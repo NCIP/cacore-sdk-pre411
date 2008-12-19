@@ -1358,7 +1358,7 @@ public class TransformerUtils
 		String temp = getTagValue(klass,association, TV_LAZY_LOAD,null, 0,1);
 		
 		if (temp != null)
-			throw new GenerationException("Invalid Tag Value found:  The '" + TV_LAZY_LOAD + "' Tag Value which is attached to the association link has been replaced with the '" + TV_NCI_EAGER_LOAD + "' Tag Value.  Also, it's value must now conform to the following pattern:  <fully qualified class name>.<role name>.  Please update your model accordingly" );
+			throw new GenerationException("Invalid Tag Value found:  The '" + TV_LAZY_LOAD + "' Tag Value which is attached to the association link has been replaced with the '" + TV_NCI_EAGER_LOAD + "' Tag Value.  Also, it's value must now conform to the following pattern:  "+TV_NCI_EAGER_LOAD+"#<fully qualified class name>.<role name>.  The value of the tag continues to be 'yes' or 'no'.  Please update your model accordingly" );
 
 		return true;
 	}
