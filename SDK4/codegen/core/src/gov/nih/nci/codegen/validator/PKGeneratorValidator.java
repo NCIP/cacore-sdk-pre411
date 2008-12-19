@@ -80,6 +80,14 @@ public class PKGeneratorValidator implements Validator {
 		String fqcn = transformerUtils.getFQCN(klass);
 		UMLClass table = transformerUtils.getTable(klass);
 		String tableName = table.getName();
+		
+		if (classIdAttr == null) {
+			errors.addError(new GeneratorError("No attribute found that maps to the primary key identifier for class : "+fqcn));
+			return errors;
+		}
+
+		log.debug("* * * table: "+table+"; tableName: "+tableName+"; fqcn: "+fqcn+"; classIdAttr: "+classIdAttr);
+		
 		UMLAttribute tableIdAttribute=transformerUtils.getMappedColumn(table,fqcn+"."+classIdAttr.getName());
 		
 		Map<String, String> inputPkGeneratorParams = transformerUtils.getPKGeneratorTags(table, fqcn, classIdAttr);
