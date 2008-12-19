@@ -33,7 +33,9 @@ public class ApplicationServiceProxy implements MethodInterceptor
 		if (as == null)
 			return invocation.proceed();
 		
-		SecurityContextHolder.clearContext();
+		//Save Authentication object
+		Authentication tempAuth = SecurityContextHolder.getContext().getAuthentication();
+
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
 		Object[] proxyobjects = invocation.getArguments();
@@ -43,7 +45,10 @@ public class ApplicationServiceProxy implements MethodInterceptor
 			i++;
 		}
 		Object value = invocation.proceed();
-		SecurityContextHolder.clearContext();
+		
+		//Restore saved Authentication object
+		SecurityContextHolder.getContext().setAuthentication(tempAuth);
+		
 		value = proxyHelper.convertToProxy(as, value);
 		return value;
 	}
