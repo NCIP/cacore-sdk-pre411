@@ -155,7 +155,11 @@
 		</or>
 	</condition>	
 	
-	<condition property="server-exclude-list" value="log4j*.jar" else="">
+	<condition property="server-exclude-commons-logging" value="commons-logging*.*" else="">
+		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
+	</condition>
+	
+	<condition property="server-exclude-log4j" value="log4j*.*" else="">
 		<equals arg1="${SERVER_TYPE}" arg2="jboss" casesensitive="false" trim="true" />
 	</condition>
 
@@ -868,11 +872,10 @@
 			<lib dir="${build.jar.dir}" includes="${bean.file}" />
 			<lib dir="${build.jar.dir}" includes="${orm.file}" />
 			<lib dir="${system.dir}\${system.lib.dir}" includes="*.jar">
-				<exclude name="${server-exclude-list}"/>
+				<exclude name="${server-exclude-commons-logging}"/>
+				<exclude name="${server-exclude-log4j}"/>
 				<exclude name="servlet.jar"/>
-				<exclude name="commons-logging*.*"/>
 				<exclude name="xercesImpl*.*"/>
-
 				<exclude name="cog*.*"/>
 			</lib>
 			<lib dir="${grid-jaas.dir}\${grid-jaas.dist.dir}" includes="*.*" excludes="${grid-jaas.file.output.jaas.jndibinder.name}"/>
@@ -906,9 +909,8 @@
 				<attribute name="Version" value="${VERSION}"/>
 			</manifest>
 			<lib dir="${grid-jaas.dir}\${grid-jaas.lib.dir}" includes="*.jar">
-				<exclude name="${server-exclude-list}"/>
-				<exclude name="commons-logging*.*"/>				
-
+				<exclude name="${server-exclude-commons-logging}"/>		
+				<exclude name="${server-exclude-log4j}"/>
 				<exclude name="cog-jglobus*.*"/>				
 				<exclude name="cog-tomcat*.*"/>				
 				<exclude name="cryptix*.*"/>				
