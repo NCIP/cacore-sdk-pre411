@@ -206,6 +206,15 @@ public class SdkInstallerLookAndFeel extends PortalLookAndFeel {
     public final static ImageIcon getUndeployIcon() {
         return new javax.swing.ImageIcon(SdkInstallerLookAndFeel.class.getResource("/images/cog_back.png"));
     }
+    
+    public final static ImageIcon getPreviousIcon() {
+        return new javax.swing.ImageIcon(SdkInstallerLookAndFeel.class.getResource("/images/cog_back.png"));
+    }
+    
+
+    public final static ImageIcon getNextIcon() {
+        return new javax.swing.ImageIcon(SdkInstallerLookAndFeel.class.getResource("/images/cog_go.png"));
+    }
 
 
     public final static ImageIcon getUndoIcon() {

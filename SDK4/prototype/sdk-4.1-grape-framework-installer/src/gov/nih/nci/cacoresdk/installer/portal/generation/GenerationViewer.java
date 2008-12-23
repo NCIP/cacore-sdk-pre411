@@ -2,49 +2,29 @@ package gov.nih.nci.cacoresdk.installer.portal.generation;
 
 import gov.nih.nci.cacoresdk.installer.common.DeployPropertiesManager;
 import gov.nih.nci.cacoresdk.installer.common.SdkInstallerLookAndFeel;
-//import gov.nih.nci.cacoresdk.installer.common.IntroduceEnginePropertiesManager;
 import gov.nih.nci.cagrid.common.portal.PortalLookAndFeel;
 import gov.nih.nci.cagrid.common.portal.validation.IconFeedbackPanel;
-//import gov.nih.nci.cagrid.introduce.IntroduceConstants;
-//import gov.nih.nci.cagrid.introduce.beans.extension.ServiceExtensionDescriptionType;
-//import gov.nih.nci.cagrid.introduce.common.CommonTools;
 import gov.nih.nci.cagrid.introduce.common.FileFilters;
 import gov.nih.nci.cagrid.introduce.common.ResourceManager;
-//import gov.nih.nci.cagrid.introduce.extension.ExtensionsLoader;
-//import gov.nih.nci.cagrid.introduce.portal.common.IntroduceLookAndFeel;
-//import gov.nih.nci.cagrid.introduce.portal.modification.extensions.ExtensionsTable;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import org.cagrid.grape.GridApplication;
 
 import com.jgoodies.validation.Severity;
 import com.jgoodies.validation.ValidationResult;
@@ -56,7 +36,7 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
 
 
 /**
- * GenerationViewer
+ * SDK Generation Viewer
  * 
  * @author <A HREF="MAILTO:dumitrud@mail.nih.gov">Dan Dumitru</A>
  * @created November 6, 2008
@@ -73,55 +53,42 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     public static final String WEBSERVICE_NAME = "Project Webservice name";
     public static final String MODEL_FILE_PATH = "Model file absolute path";
     
+    public static final String DB_JNDI_URL = "Database JNDI URL";
     public static final String DB_CONNECTION_URL = "Database Connection URL";
     public static final String DB_USERNAME = "Database Username";
     public static final String DB_PASSWORD = "Database Password";
     public static final String DB_DRIVER = "Database Driver";
     public static final String DB_DIALECT = "Database Dialect";
+    
+    public static final String CSM_DB_JNDI_URL = "CSM Database JNDI URL";
+    public static final String CSM_DB_CONNECTION_URL = "CSM Database Connection URL";
+    public static final String CSM_DB_USERNAME = "CSM Database Username";
+    public static final String CSM_DB_PASSWORD = "CSM Database Password";
+    public static final String CSM_DB_DRIVER = "CSM Database Driver";
+    public static final String CSM_DB_DIALECT = "CSM Database Dialect";
 
     private JPanel mainPanel = null;
     private JPanel buttonPanel = null;
     
     // Buttons
+    private JButton previousButton = null;
+    private JButton nextButton = null;
     private JButton generateButton = null;
     private JButton sdkInstallDirButton = null;
     private JButton modelFilePathButton = null;
     private JButton closeButton = null;
-    private JButton addExtensionButton = null;
-    private JButton removeExtensionButton = null;
-
-    private JComboBox serviceStyleSeletor = null;
-
-    private JPanel extensionsPanel = null;
-
-    private JScrollPane extensionsScrollPane = null;
-
-//    private ExtensionsTable extensionsTable = null;
-
-    private JPanel extensionsTablePanel = null;
-
-    private JLabel upExtensionLabel = null;
-
-    private JLabel downExtensionLabel = null;
-
-    private JPanel extSelectionPanel = null;
-
-    private JPanel serviceStylePanel = null;
 
     private ValidationResultModel validationModel = new DefaultValidationResultModel();
 
 	private JTabbedPane mainTabbedPane = null;
-
-	private JPanel resourceOptionsConfigPanel = null;
+	private int LOGGING_PANEL_INDEX = 5;
+	private int CSM_PANEL_INDEX = 7;
+	private int CAGRID_AUTH_PANEL_INDEX = 8;
 
 	private JCheckBox lifetimeResource = null;
-
 	private JCheckBox persistantResource = null;
-
 	private JCheckBox notificationResource = null;
-
 	private JCheckBox secureResource = null;
-
 	private JCheckBox resourceProperty = null;
 	
 	/*
@@ -136,10 +103,15 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 	
 	// Writable API
 	private JPanel writableApiSettingsPanel = null;
-	//private JPanel loggingSettingsPanel = null;
+	private JPanel writableApiSettingsSubPanel = null;
+	
+	// Common Logging (CLM) 
+	private JPanel clmSettingsPanel = null;
+	private JPanel clmSettingsSubPanel = null;
 	
 	// Security
 	private JPanel securitySettingsPanel = null;
+	private JPanel securitySettingsSubPanel = null;
 	private JPanel csmDbConnectionSettingsPanel = null;
 	private JPanel caGridAuthSettingsPanel = null;
 
@@ -152,6 +124,9 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 	/*	
 	 * caCore SDK Component definitions
 	 */
+	
+	// Common Label Definitions
+	private String blankLine = "---------------------------------------";
     
     // Project Settings Panel Label Definitions
     private JLabel sdkInstallDirLabel = null;
@@ -222,7 +197,6 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     private JLabel dbDialectLabel = null;
     
 	//DB Connection Settings Panel Component Definitions
-
     private JCheckBox  useJndiBasedConnectionCheckBox = null;
     private JTextField dbJndiUrlField = null;
     private JTextField dbConnectionUrlField = null;
@@ -255,6 +229,71 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     private JTextField clmDbPasswordField = null;
     private JTextField clmDbDriverField = null;
     
+    //Security Settings Panel Label Definitions
+    private JLabel enableSecurityLabel = null;
+    private JLabel enableInstanceLevelSecurityLabel = null;
+    private JLabel enableAttributeLevelSecurityLabel = null;
+    private JLabel csmProjectNameLabel = null;
+    private JLabel cacheProtectionElementsLabel = null;
+    
+	//Security Settings Panel Component Definitions
+    private JCheckBox  enableSecurityCheckBox = null;
+    private JCheckBox  enableInstanceLevelSecurityCheckBox = null;
+    private JCheckBox  enableAttributeLevelSecurityCheckBox = null;
+    private JTextField csmProjectNameField = null;
+    private JCheckBox  cacheProtectionElementsCheckBox = null;
+
+    //CSM DB Connection Settings Panel Label Definitions
+    private JLabel csmUseJndiBasedConnectionLabel = null;
+    private JLabel csmDbJndiUrlLabel = null;
+    private JLabel csmDbConnectionUrlLabel = null;
+    private JLabel csmDbUsernameLabel = null;
+    private JLabel csmDbPasswordLabel = null;
+    private JLabel csmDbDriverLabel = null;
+    private JLabel csmDbDialectLabel = null;
+    
+	//CSM DB Connection Settings Panel Component Definitions
+    private JCheckBox  csmUseJndiBasedConnectionCheckBox = null;
+    private JTextField csmDbJndiUrlField = null;
+    private JTextField csmDbConnectionUrlField = null;
+    private JTextField csmDbUsernameField = null;
+    private JTextField csmDbPasswordField = null;
+    private JTextField csmDbDriverField = null;
+    private JTextField csmDbDialectField = null;
+    
+    //caGRID Authentication Settings Panel Label Definitions
+    private JLabel enableCaGridLoginModuleLabel = null;
+    private JLabel caGridLoginModuleNameLabel = null;
+    private JLabel caGridAuthSvcUrlLabel = null;
+    private JLabel caGridDorianSvcUrlLabel = null;
+    private JLabel enableCsmLoginModuleLabel = null;
+    private JLabel sdkGridLoginSvcNameLabel = null;
+    private JLabel sdkGridLoginSvcUrlLabel = null;
+    
+	//caGRID Authentication Settings Panel Component Definitions
+    private JCheckBox  enableCaGridLoginModuleCheckBox = null;
+    private JTextField caGridLoginModuleNameField = null;
+    private JTextField caGridAuthSvcUrlField = null;
+    private JTextField caGridDorianSvcUrlField = null;
+    private JCheckBox  enableCsmLoginModuleCheckBox = null;
+    private JTextField sdkGridLoginSvcNameField = null;
+    private JTextField sdkGridLoginSvcUrlField = null;
+    	
+    //Application Server Settings Panel Label Panel Label Definitions
+    private JLabel serverTypeLabel = null;
+    private JLabel serverUrlLabel = null;
+    
+	//Application Server Settings Panel Label Panel Component Definitions
+    private JComboBox   serverTypeComboBox = null;
+    private JTextField  serverUrlField = null;
+    
+    //Advanced Settings Panel Label Panel Label Definitions
+    private JLabel cachePathLabel = null;
+    
+	//Advanced Settings Panel Label Panel Component Definitions
+    private JTextField  cachePathField = null;
+
+    
     //TODO
     
     public GenerationViewer() {
@@ -284,6 +323,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
         ValidationComponentUtils.setMessageKey(getModelFileField(), MODEL_FILE_PATH);
         ValidationComponentUtils.setMandatory(getModelFileField(), true);
         
+        ValidationComponentUtils.setMessageKey(getDbJndiUrlField(), DB_JNDI_URL);
         ValidationComponentUtils.setMessageKey(getDbConnectionUrlField(), DB_CONNECTION_URL);
         ValidationComponentUtils.setMessageKey(getDbUsernameField(), DB_USERNAME);
         ValidationComponentUtils.setMessageKey(getDbPasswordField(), DB_PASSWORD);
@@ -291,10 +331,27 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
         ValidationComponentUtils.setMessageKey(getDbDialectField(), DB_DIALECT);
 
         //TODO - Add Writable API components
-        validateInput();
+        //TODO - Add Security components
+
+        ValidationComponentUtils.setMessageKey(getCsmDbJndiUrlField(), CSM_DB_JNDI_URL);
+        ValidationComponentUtils.setMessageKey(getCsmDbConnectionUrlField(), CSM_DB_CONNECTION_URL);
+        ValidationComponentUtils.setMessageKey(getCsmDbUsernameField(), CSM_DB_USERNAME);
+        ValidationComponentUtils.setMessageKey(getCsmDbPasswordField(), CSM_DB_PASSWORD);
+        ValidationComponentUtils.setMessageKey(getCsmDbDriverField(), CSM_DB_DRIVER);
+        ValidationComponentUtils.setMessageKey(getCsmDbDialectField(), CSM_DB_DIALECT);
         
+        //TODO - Add caGrid Auth components 
+        //TODO - Add Application Server Components
+        //TODO - Advanced Settings components
+
         toggleDbConnectionFields();
         toggleWritableApiFields();
+        toggleSecurityFields();
+        toggleCsmDbConnectionFields();
+        toggleCaGridLoginFields();
+        toggleCsmLoginFields();
+        
+        validateInput();
         
         updateComponentTreeSeverity();
     }
@@ -364,12 +421,48 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
         	if (!ValidationUtils.isNotBlank(this.getDbDialectField().getText())) {
         		result.add(new SimpleValidationMessage(DB_DIALECT + " must not be blank.", Severity.ERROR, DB_DIALECT));
         	}
+        } else {
+        	if (!ValidationUtils.isNotBlank(this.getDbJndiUrlField().getText())) {
+        		result.add(new SimpleValidationMessage(DB_JNDI_URL + " must not be blank.", Severity.ERROR, DB_JNDI_URL));
+        	}
+        }
+        
+        if (getEnableSecurityCheckBox().isSelected()){
+        	//CSM DB Connection Setting Validation
+        	if (!getCsmUseJndiBasedConnectionCheckBox().isSelected()){
+
+        		if (!ValidationUtils.isNotBlank(this.getCsmDbConnectionUrlField().getText())) {
+        			result.add(new SimpleValidationMessage(CSM_DB_CONNECTION_URL + " must not be blank.", Severity.ERROR, CSM_DB_CONNECTION_URL));
+        		}
+
+        		if (!ValidationUtils.isNotBlank(this.getCsmDbUsernameField().getText())) {
+        			result.add(new SimpleValidationMessage(CSM_DB_USERNAME + " must not be blank.", Severity.ERROR, CSM_DB_USERNAME));
+        		} 
+
+        		if (!ValidationUtils.isNotBlank(this.getCsmDbPasswordField().getText())) {
+        			result.add(new SimpleValidationMessage(CSM_DB_PASSWORD + " must not be blank.", Severity.ERROR, CSM_DB_PASSWORD));
+        		} 
+
+        		if (!ValidationUtils.isNotBlank(this.getCsmDbDriverField().getText())) {
+        			result.add(new SimpleValidationMessage(CSM_DB_DRIVER + " must not be blank.", Severity.ERROR, CSM_DB_DRIVER));
+        		} 
+
+        		if (!ValidationUtils.isNotBlank(this.getCsmDbDialectField().getText())) {
+        			result.add(new SimpleValidationMessage(CSM_DB_DIALECT + " must not be blank.", Severity.ERROR, CSM_DB_DIALECT));
+        		}
+        	} else {
+        		if (!ValidationUtils.isNotBlank(this.getCsmDbJndiUrlField().getText())) {
+        			result.add(new SimpleValidationMessage(CSM_DB_JNDI_URL + " must not be blank.", Severity.ERROR, CSM_DB_JNDI_URL));
+        		}
+        	}
         }
 
         this.validationModel.setResult(result);
 
         updateComponentTreeSeverity();
-        updateGenerationButton();
+        updateGenerateButton();
+        updatePreviousButton();
+        updateNextButton();
     }
 
 
@@ -379,11 +472,27 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     }
 
 
-    private void updateGenerationButton() {
+    private void updateGenerateButton() {
         if (this.validationModel.hasErrors()) {
             this.getGenerateButton().setEnabled(false);
         } else {
             this.getGenerateButton().setEnabled(true);
+        }
+    }
+    
+    private void updatePreviousButton() {
+    	if (mainTabbedPane.getSelectedIndex() <= 0){
+            this.getPreviousButton().setEnabled(false);
+        } else {
+            this.getPreviousButton().setEnabled(true);
+        }
+    }
+    
+    private void updateNextButton() {
+    	if (mainTabbedPane.getSelectedIndex() >= mainTabbedPane.getTabCount()-1){
+            this.getNextButton().setEnabled(false);
+        } else {
+            this.getNextButton().setEnabled(true);
         }
     }
 
@@ -398,12 +507,14 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
             gridBagConstraints111.fill = GridBagConstraints.BOTH;
             gridBagConstraints111.weighty = 1.0;
             gridBagConstraints111.weightx = 1.0;
+            
             GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
             gridBagConstraints1.insets = new java.awt.Insets(5, 5, 5, 5);
             gridBagConstraints1.gridx = 0;
             gridBagConstraints1.gridy = 2;
             gridBagConstraints1.anchor = java.awt.GridBagConstraints.SOUTH;
             gridBagConstraints1.gridheight = 1;
+            
             mainPanel = new JPanel();
             mainPanel.setLayout(new GridBagLayout());
             mainPanel.add(getButtonPanel(), gridBagConstraints1);
@@ -421,12 +532,81 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     private JPanel getButtonPanel() {
         if (buttonPanel == null) {
             buttonPanel = new JPanel();
+            buttonPanel.add(getPreviousButton(), null);
+            buttonPanel.add(getNextButton(), null);
             buttonPanel.add(getGenerateButton(), null);
             buttonPanel.add(getCloseButton(), null);
         }
         return buttonPanel;
     }
 
+    /**
+     * This method initializes the Previous jButton
+     * 
+     * @return javax.swing.JButton
+     */
+    private JButton getPreviousButton() {
+        if (previousButton == null) {
+        	previousButton = new JButton();
+        	previousButton.setText("Previous");
+        	previousButton.setIcon(SdkInstallerLookAndFeel.getPreviousIcon());
+        	previousButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    mainTabbedPane.setSelectedIndex(getPreviousIndex());
+                    validateInput();
+                }
+            });
+        }
+
+        return previousButton;
+    }
+    
+    /**
+     * This method initializes the Previous jButton
+     * 
+     * @return javax.swing.JButton
+     */
+    private JButton getNextButton() {
+        if (nextButton == null) {
+        	nextButton = new JButton();
+        	nextButton.setText("Next");
+        	nextButton.setIcon(SdkInstallerLookAndFeel.getNextIcon());
+        	nextButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                	 mainTabbedPane.setSelectedIndex(getNextIndex());
+                	 validateInput();
+                }
+            });
+        }
+
+        return nextButton;
+    }
+    
+    private int getPreviousIndex(){
+    	int index = mainTabbedPane.getSelectedIndex();
+
+    	while (index >= 0){
+    		--index;
+    		
+    		if (mainTabbedPane.isEnabledAt(index))
+    			return index;
+    	}
+    	
+    	return 0;
+    }
+    
+    private int getNextIndex(){
+    	int index = mainTabbedPane.getSelectedIndex();
+
+    	while (index <= mainTabbedPane.getTabCount()-1){
+    		++index;
+    		
+    		if (mainTabbedPane.isEnabledAt(index))
+    			return index;
+    	}
+    	
+    	return mainTabbedPane.getTabCount() - 1;
+    }
 
     /**
      * This method initializes jButton
@@ -440,36 +620,13 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
             generateButton.setIcon(SdkInstallerLookAndFeel.getGenerateApplicationIcon());
             generateButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                	
                     generateApplication(getSdkInstallDirField().getText(),getInstallerPropsMap()); 
-                
                 }
             });
         }
 
         return generateButton;
     }
-
-
-    /**
-     * This method initializes serviceStyleSeletor
-     * 
-     * @return javax.swing.JComboBox
-     */
-    private JComboBox getServiceStyleSeletor() {
-        if (serviceStyleSeletor == null) {
-            serviceStyleSeletor = new JComboBox();
-            serviceStyleSeletor.addItem("NONE");
-
-//            List extensionDescriptors = ExtensionsLoader.getInstance().getServiceExtensions();
-//            for (int i = 0; i < extensionDescriptors.size(); i++) {
-//                ServiceExtensionDescriptionType ex = (ServiceExtensionDescriptionType) extensionDescriptors.get(i);
-//                serviceStyleSeletor.addItem(ex.getDisplayName());
-//            }
-        }
-        return serviceStyleSeletor;
-    }
-
 
     /**
      * This method initializes projectNameField
@@ -534,6 +691,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			identityGeneratorTagField.setEnabled(true);
 			caDsrConnectionUrlField.setEnabled(true);
 			
+			mainTabbedPane.setEnabledAt(LOGGING_PANEL_INDEX, true); // CLM Panel
 			enableCommonLoggingModuleCheckBox.setEnabled(true);
 			
 			if (enableCommonLoggingModuleCheckBox.isSelected()){
@@ -554,12 +712,76 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			identityGeneratorTagField.setEnabled(false);
 			caDsrConnectionUrlField.setEnabled(false);
 			
+			mainTabbedPane.setEnabledAt(LOGGING_PANEL_INDEX, false); // CLM Panel
+			
 			enableCommonLoggingModuleCheckBox.setEnabled(false);
 			clmProjectName.setEnabled(false);
 			clmDbConnectionUrlField.setEnabled(false);
 			clmDbUsernameField.setEnabled(false);
 			clmDbPasswordField.setEnabled(false);
 			clmDbDriverField.setEnabled(false);
+		}
+    }
+    
+    protected void toggleSecurityFields() {
+		if (enableSecurityCheckBox.isSelected()){
+		    enableInstanceLevelSecurityCheckBox.setEnabled(true);
+		    enableAttributeLevelSecurityCheckBox.setEnabled(true);
+		    csmProjectNameField.setEnabled(true);
+		    cacheProtectionElementsCheckBox.setEnabled(true);
+
+		    mainTabbedPane.setEnabledAt(CSM_PANEL_INDEX, true); // CSM Panel
+		    mainTabbedPane.setEnabledAt(CAGRID_AUTH_PANEL_INDEX, true); // caGrid Auth Panel
+		} else{
+		    enableInstanceLevelSecurityCheckBox.setEnabled(false);
+		    enableAttributeLevelSecurityCheckBox.setEnabled(false);
+		    csmProjectNameField.setEnabled(false);
+		    cacheProtectionElementsCheckBox.setEnabled(false);
+
+		    mainTabbedPane.setEnabledAt(CSM_PANEL_INDEX, false); // CSM Panel
+		    mainTabbedPane.setEnabledAt(CAGRID_AUTH_PANEL_INDEX, false); // caGrid Auth Panel
+		}
+    }
+    
+    protected void toggleCsmDbConnectionFields() {
+		if (csmUseJndiBasedConnectionCheckBox.isSelected()){
+			csmDbJndiUrlField.setEnabled(true);
+			
+			csmDbConnectionUrlField.setEnabled(false);
+			csmDbUsernameField.setEnabled(false);
+			csmDbPasswordField.setEnabled(false);
+			csmDbDriverField.setEnabled(false);
+			csmDbDialectField.setEnabled(false);
+		} else{
+			csmDbJndiUrlField.setEnabled(false);
+			
+			csmDbConnectionUrlField.setEnabled(true);
+			csmDbUsernameField.setEnabled(true);
+			csmDbPasswordField.setEnabled(true);
+			csmDbDriverField.setEnabled(true);
+			csmDbDialectField.setEnabled(true);
+		}
+    }
+    
+    protected void toggleCaGridLoginFields() {
+		if (enableCaGridLoginModuleCheckBox.isSelected()){
+			caGridLoginModuleNameField.setEnabled(true);
+			caGridAuthSvcUrlField.setEnabled(true);
+			caGridDorianSvcUrlField.setEnabled(true);
+		} else{
+			caGridLoginModuleNameField.setEnabled(false);
+			caGridAuthSvcUrlField.setEnabled(false);
+			caGridDorianSvcUrlField.setEnabled(false);
+		}
+    }
+    
+    protected void toggleCsmLoginFields() {
+		if (enableCsmLoginModuleCheckBox.isSelected()){
+			sdkGridLoginSvcNameField.setEnabled(true);
+			sdkGridLoginSvcUrlField.setEnabled(true);
+		} else{
+			sdkGridLoginSvcNameField.setEnabled(false);
+			sdkGridLoginSvcUrlField.setEnabled(false);
 		}
     }
 
@@ -746,9 +968,9 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     }
     
     /**
-     * This method initializes Model File Type Field
+     * This method initializes Model File Type Combo Box
      * 
-     * @return javax.swing.JTextField
+     * @return javax.swing.JComboBox
      */
     private JComboBox getModelFileTypeField() {
         if (modelFileTypeComboBox == null) {
@@ -1219,6 +1441,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
         	useJndiBasedConnectionCheckBox.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					toggleDbConnectionFields();
+					validateInput();
 				}
         	});
 
@@ -1405,6 +1628,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
         	enableWritableApiExtensionCheckBox.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					toggleWritableApiFields();
+					validateInput();
 				}
         	});
 
@@ -1504,7 +1728,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     private JCheckBox getEnableCommonLoggingModuleCheckBox() {
         if (enableCommonLoggingModuleCheckBox == null) {
         	enableCommonLoggingModuleCheckBox = new JCheckBox();
-        	enableCommonLoggingModuleCheckBox.setToolTipText("Enable Common Logging Module Extension?");
+        	enableCommonLoggingModuleCheckBox.setToolTipText("Enable Logging?");
         	enableCommonLoggingModuleCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
         	enableCommonLoggingModuleCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("ENABLE_WRITABLE_API_EXTENSION")));
         	enableCommonLoggingModuleCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -1655,6 +1879,606 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
         return clmDbDriverField;
     }
     
+    /**
+     * This method initializes the Enable Common Logging Module CheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getEnableSecurityCheckBox() {
+        if (enableSecurityCheckBox == null) {
+        	enableSecurityCheckBox = new JCheckBox();
+        	enableSecurityCheckBox.setToolTipText("Enable Security Extension?");
+        	enableSecurityCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	enableSecurityCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("ENABLE_SECURITY")));
+        	enableSecurityCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	enableSecurityCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					toggleSecurityFields();
+					validateInput();
+				}
+        	});
+
+        	enableSecurityCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return enableSecurityCheckBox;
+    }
+    
+    /**
+     * This method initializes the Enable Instance Level Security CheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getEnableInstanceLevelSecurityCheckBox() {
+        if (enableInstanceLevelSecurityCheckBox == null) {
+        	enableInstanceLevelSecurityCheckBox = new JCheckBox();
+        	enableInstanceLevelSecurityCheckBox.setToolTipText("Enable Instance Level Security?");
+        	enableInstanceLevelSecurityCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	enableInstanceLevelSecurityCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("ENABLE_INSTANCE_LEVEL_SECURITY")));
+        	enableInstanceLevelSecurityCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	enableInstanceLevelSecurityCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					toggleSecurityFields();
+					validateInput();
+				}
+        	});
+
+        	enableInstanceLevelSecurityCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return enableInstanceLevelSecurityCheckBox;
+    }
+    
+    /**
+     * This method initializes the Enable Attribute Level Security CheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getEnableAttributeLevelSecurityCheckBox() {
+        if (enableAttributeLevelSecurityCheckBox == null) {
+        	enableAttributeLevelSecurityCheckBox = new JCheckBox();
+        	enableAttributeLevelSecurityCheckBox.setToolTipText("Enable Attribute Level Security?");
+        	enableAttributeLevelSecurityCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	enableAttributeLevelSecurityCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("ENABLE_ATTRIBUTE_LEVEL_SECURITY")));
+        	enableAttributeLevelSecurityCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	enableAttributeLevelSecurityCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					toggleSecurityFields();
+					validateInput();
+				}
+        	});
+
+        	enableAttributeLevelSecurityCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return enableAttributeLevelSecurityCheckBox;
+    }
+    
+    /**
+     * This method initializes the CSM Project Name Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCsmProjectNameField() {
+        if (csmProjectNameField == null) {
+        	csmProjectNameField = new JTextField();
+        	csmProjectNameField.setText(DeployPropertiesManager.getDeployPropertyValue("PROJECT_NAME"));
+        	csmProjectNameField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+            });
+        	csmProjectNameField.addFocusListener(new FocusChangeHandler());
+        }
+        return csmProjectNameField;
+    } 
+    
+    /**
+     * This method initializes the Cache Protection Elements CheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getCacheProtectionElementsCheckBox() {
+        if (cacheProtectionElementsCheckBox == null) {
+        	cacheProtectionElementsCheckBox = new JCheckBox();
+        	cacheProtectionElementsCheckBox.setToolTipText("Cache Protection Elements?");
+        	cacheProtectionElementsCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	cacheProtectionElementsCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("CACHE_PROTECTION_ELEMENTS")));
+        	cacheProtectionElementsCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	cacheProtectionElementsCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					toggleSecurityFields();
+					validateInput();
+				}
+        	});
+
+        	cacheProtectionElementsCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return cacheProtectionElementsCheckBox;
+    }
+
+    /**
+     * This method initializes the CSM Use JNDI Based Connection Check Box
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getCsmUseJndiBasedConnectionCheckBox() {
+        if (csmUseJndiBasedConnectionCheckBox == null) {
+        	csmUseJndiBasedConnectionCheckBox = new JCheckBox();
+        	csmUseJndiBasedConnectionCheckBox.setToolTipText("Use a JNDI-based CSM Databse Connection?");
+        	csmUseJndiBasedConnectionCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	csmUseJndiBasedConnectionCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("USE_JNDI_BASED_CONNECTION")));
+        	csmUseJndiBasedConnectionCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	csmUseJndiBasedConnectionCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					toggleCsmDbConnectionFields();
+					validateInput();
+				}
+        	});
+
+        	csmUseJndiBasedConnectionCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return csmUseJndiBasedConnectionCheckBox;
+    }  
+    
+    /**
+     * This method initializes the CSM Database JNDI URL Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCsmDbJndiUrlField() {
+        if (csmDbJndiUrlField == null) {
+        	csmDbJndiUrlField = new JTextField();
+        	csmDbJndiUrlField.setText(DeployPropertiesManager.getDeployPropertyValue("DB_JNDI_URL"));
+        	csmDbJndiUrlField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+            });
+        	csmDbJndiUrlField.addFocusListener(new FocusChangeHandler());
+        }
+        return csmDbJndiUrlField;
+    }
+    
+    /**
+     * This method initializes the CSM Database Connection URL Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCsmDbConnectionUrlField() {
+        if (csmDbConnectionUrlField == null) {
+        	csmDbConnectionUrlField = new JTextField();
+        	csmDbConnectionUrlField.setText(DeployPropertiesManager.getDeployPropertyValue("DB_CONNECTION_URL"));
+        	csmDbConnectionUrlField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+            });
+        	csmDbConnectionUrlField.addFocusListener(new FocusChangeHandler());
+        }
+        return csmDbConnectionUrlField;
+    }
+    
+    /**
+     * This method initializes the CSM Database Username Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCsmDbUsernameField() {
+        if (csmDbUsernameField == null) {
+        	csmDbUsernameField = new JTextField();
+        	csmDbUsernameField.setText(DeployPropertiesManager.getDeployPropertyValue("DB_USERNAME"));
+        	csmDbUsernameField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+            });
+        	csmDbUsernameField.addFocusListener(new FocusChangeHandler());
+        }
+        return csmDbUsernameField;
+    }
+    
+    /**
+     * This method initializes the CSM Database Password Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCsmDbPasswordField() {
+        if (csmDbPasswordField == null) {
+        	csmDbPasswordField = new JTextField();
+        	csmDbPasswordField.setText(DeployPropertiesManager.getDeployPropertyValue("DB_PASSWORD"));
+        	csmDbPasswordField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+            });
+        	csmDbPasswordField.addFocusListener(new FocusChangeHandler());
+        }
+        return csmDbPasswordField;
+    }
+    
+    /**
+     * This method initializes the CSM Database Driver Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCsmDbDriverField() {
+        if (csmDbDriverField == null) {
+        	csmDbDriverField = new JTextField();
+        	csmDbDriverField.setText(DeployPropertiesManager.getDeployPropertyValue("DB_DRIVER"));
+        	csmDbDriverField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+            });
+        	csmDbDriverField.addFocusListener(new FocusChangeHandler());
+        }
+        return csmDbDriverField;
+    }
+    
+    /**
+     * This method initializes the Database Dialect Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCsmDbDialectField() {
+        if (csmDbDialectField == null) {
+        	csmDbDialectField = new JTextField();
+        	csmDbDialectField.setText(DeployPropertiesManager.getDeployPropertyValue("DB_DIALECT"));
+        	csmDbDialectField.getDocument().addDocumentListener(new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void removeUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+
+                public void insertUpdate(DocumentEvent e) {
+                    validateInput();
+                }
+            });
+        	csmDbDialectField.addFocusListener(new FocusChangeHandler());
+        }
+        return csmDbDialectField;
+    }
+    	
+    /**
+     * This method initializes the caGrid Authentication Service URL Field
+     * 
+     * @return javax.swing.JTextField
+     */    
+    private JTextField getCaGridAuthSvcUrlField() {
+    	if (caGridAuthSvcUrlField == null) {
+    		caGridAuthSvcUrlField = new JTextField();
+    		caGridAuthSvcUrlField.setText(DeployPropertiesManager.getDeployPropertyValue("CAGRID_AUTHENTICATION_SERVICE_URL"));
+    		caGridAuthSvcUrlField.getDocument().addDocumentListener(new DocumentListener() {
+    			public void changedUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void removeUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void insertUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+    		});
+    		caGridAuthSvcUrlField.addFocusListener(new FocusChangeHandler());
+    	}
+    	return caGridAuthSvcUrlField;
+    }
+    
+    /**
+     * This method initializes the caGrid Dorian Service URL Field
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getCaGridDorianSvcUrlField() {
+    	if (caGridDorianSvcUrlField == null) {
+    		caGridDorianSvcUrlField = new JTextField();
+    		caGridDorianSvcUrlField.setText(DeployPropertiesManager.getDeployPropertyValue("CAGRID_DORIAN_SERVICE_URL"));
+    		caGridDorianSvcUrlField.getDocument().addDocumentListener(new DocumentListener() {
+    			public void changedUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void removeUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void insertUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+    		});
+    		caGridDorianSvcUrlField.addFocusListener(new FocusChangeHandler());
+    	}
+    	return caGridDorianSvcUrlField;
+    }
+    
+    /**
+     * This method initializes the SDK Grid Login Service Name Field
+     * 
+     * @return javax.swing.JTextField
+     */    
+    private JTextField getSdkGridLoginSvcNameField() {
+    	if (sdkGridLoginSvcNameField == null) {
+    		sdkGridLoginSvcNameField = new JTextField();
+    		sdkGridLoginSvcNameField.setText(DeployPropertiesManager.getDeployPropertyValue("SDK_GRID_LOGIN_SERVICE_NAME"));
+    		sdkGridLoginSvcNameField.getDocument().addDocumentListener(new DocumentListener() {
+    			public void changedUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void removeUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void insertUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+    		});
+    		sdkGridLoginSvcNameField.addFocusListener(new FocusChangeHandler());
+    	}
+    	return sdkGridLoginSvcNameField;
+    }
+    
+    /**
+     * This method initializes the SDK Grid Login Service URL Field
+     * 
+     * @return javax.swing.JTextField
+     */     
+    private JTextField getSdkGridLoginSvcUrlField() {
+    	if (sdkGridLoginSvcUrlField == null) {
+    		sdkGridLoginSvcUrlField = new JTextField();
+    		
+    		String sdkGridLoginServiceURL = DeployPropertiesManager.getDeployPropertyValue("SDK_GRID_LOGIN_SERVICE_URL");
+    		String sdkGridLoginServiceName = DeployPropertiesManager.getDeployPropertyValue("SDK_GRID_LOGIN_SERVICE_NAME");
+    		sdkGridLoginServiceURL = sdkGridLoginServiceURL.substring(0, sdkGridLoginServiceURL.indexOf('$'))+sdkGridLoginServiceName;
+    		sdkGridLoginSvcUrlField.setText(sdkGridLoginServiceURL);
+    		sdkGridLoginSvcUrlField.getDocument().addDocumentListener(new DocumentListener() {
+    			public void changedUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void removeUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void insertUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+    		});
+    		sdkGridLoginSvcUrlField.addFocusListener(new FocusChangeHandler());
+    	}
+    	return sdkGridLoginSvcUrlField;
+    }
+    
+    /**
+     * This method initializes the Enable caGrid Login Module Check Box
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getEnableCaGridLoginModuleCheckBox() {
+        if (enableCaGridLoginModuleCheckBox == null) {
+        	enableCaGridLoginModuleCheckBox = new JCheckBox();
+        	enableCaGridLoginModuleCheckBox.setToolTipText("Enable Grid Login Module?");
+        	enableCaGridLoginModuleCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	enableCaGridLoginModuleCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("ENABLE_GRID_LOGIN_MODULE")));
+        	enableCaGridLoginModuleCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	enableCaGridLoginModuleCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					toggleCaGridLoginFields();
+					validateInput();
+				}
+        	});
+
+        	enableCaGridLoginModuleCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return enableCaGridLoginModuleCheckBox;
+    }
+    
+    /**
+     * This method initializes the Enable CSM Login Module Check Box
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getEnableCsmLoginModuleCheckBox() {
+        if (enableCsmLoginModuleCheckBox == null) {
+        	enableCsmLoginModuleCheckBox = new JCheckBox();
+        	enableCsmLoginModuleCheckBox.setToolTipText("Enable CSM Login Module?");
+        	enableCsmLoginModuleCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	enableCsmLoginModuleCheckBox.setSelected(Boolean.parseBoolean(DeployPropertiesManager.getDeployPropertyValue("ENABLE_CSM_LOGIN_MODULE")));
+        	enableCsmLoginModuleCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	enableCsmLoginModuleCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					toggleCsmLoginFields();
+					validateInput();
+				}
+        	});
+
+        	enableCsmLoginModuleCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return enableCsmLoginModuleCheckBox;
+    }
+    
+    /**
+     * This method initializes the caGrid Login Module Name Field
+     * 
+     * @return javax.swing.JTextField
+     */         
+    private JTextField getCaGridLoginModuleNameField() {
+    	if (caGridLoginModuleNameField == null) {
+    		caGridLoginModuleNameField = new JTextField();
+    		caGridLoginModuleNameField.setText(DeployPropertiesManager.getDeployPropertyValue("CAGRID_LOGIN_MODULE_NAME"));
+    		caGridLoginModuleNameField.getDocument().addDocumentListener(new DocumentListener() {
+    			public void changedUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void removeUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void insertUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+    		});
+    		caGridLoginModuleNameField.addFocusListener(new FocusChangeHandler());
+    	}
+    	return caGridLoginModuleNameField;
+    }
+   
+    /**
+     * This method initializes the Cache Path Field
+     * 
+     * @return javax.swing.JTextField
+     */         
+    private JTextField getCachePathField() {
+    	if (cachePathField == null) {
+    		cachePathField = new JTextField();
+    		cachePathField.setText(DeployPropertiesManager.getDeployPropertyValue("CACHE_PATH"));
+    		
+    		cachePathField.getDocument().addDocumentListener(new DocumentListener() {
+    			public void changedUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void removeUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void insertUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+    		});
+    		cachePathField.addFocusListener(new FocusChangeHandler());
+    	}
+    	return cachePathField;
+    }
+    
+    /**
+     * This method initializes the Server Type Combo Box
+     * 
+     * @return javax.swing.JTextField
+     */         
+    private JComboBox getServerTypeComboBox() {
+    	if (serverTypeComboBox == null) {
+    		serverTypeComboBox = new JComboBox();
+    		serverTypeComboBox.addItem("jboss");
+    		serverTypeComboBox.addItem("other");
+    		
+    		String serverType = DeployPropertiesManager.getDeployPropertyValue("SERVER_TYPE");
+
+    		if (serverType.equalsIgnoreCase("jboss")){
+    				serverTypeComboBox.setSelectedItem("jboss");
+    		} else{
+    			serverTypeComboBox.setSelectedItem("other");
+    		}
+    		
+//    		serverTypeField.getDocument().addDocumentListener(new DocumentListener() {
+//    			public void changedUpdate(DocumentEvent e) {
+//    				validateInput();
+//    			}
+//
+//    			public void removeUpdate(DocumentEvent e) {
+//    				validateInput();
+//    			}
+//
+//    			public void insertUpdate(DocumentEvent e) {
+//    				validateInput();
+//    			}
+//    		});
+    		serverTypeComboBox.addFocusListener(new FocusChangeHandler());
+    	}
+    	return serverTypeComboBox;
+    }
+    
+    /**
+     * This method initializes the Server URL Field
+     * 
+     * @return javax.swing.JTextField
+     */         
+    private JTextField getServerUrlField() {
+    	if (serverUrlField == null) {
+    		serverUrlField = new JTextField();
+    		
+    		String projectName = DeployPropertiesManager.getDeployPropertyValue("PROJECT_NAME");
+    		String serverUrl = DeployPropertiesManager.getDeployPropertyValue("SERVER_URL");
+    		serverUrl = serverUrl.substring(0, serverUrl.indexOf('$'))+projectName;
+    		serverUrlField.setText(serverUrl);
+    		
+    		serverUrlField.getDocument().addDocumentListener(new DocumentListener() {
+    			public void changedUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void removeUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+
+    			public void insertUpdate(DocumentEvent e) {
+    				validateInput();
+    			}
+    		});
+    		serverUrlField.addFocusListener(new FocusChangeHandler());
+    	}
+    	return serverUrlField;
+    }
+    
     //TODO
     
     /**
@@ -1676,235 +2500,6 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
         return closeButton;
     }
 
-
-    /**
-     * This method initializes extensionsPanel
-     * 
-     * @return javax.swing.JPanel
-     */
-    private JPanel getExtensionsPanel() {
-        if (extensionsPanel == null) {
-            GridBagConstraints gridBagConstraints13 = new GridBagConstraints();
-            gridBagConstraints13.gridx = 0;
-            gridBagConstraints13.fill = java.awt.GridBagConstraints.BOTH;
-            gridBagConstraints13.weightx = 1.0D;
-            gridBagConstraints13.weighty = 0.0D;
-            gridBagConstraints13.gridy = 0;
-            GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
-            gridBagConstraints20.gridx = 0;
-            gridBagConstraints20.fill = java.awt.GridBagConstraints.BOTH;
-            gridBagConstraints20.gridwidth = 3;
-            gridBagConstraints20.weightx = 1.0D;
-            gridBagConstraints20.weighty = 1.0D;
-            gridBagConstraints20.insets = new java.awt.Insets(5, 2, 5, 2);
-            gridBagConstraints20.gridy = 1;
-            GridBagConstraints gridBagConstraints19 = new GridBagConstraints();
-            gridBagConstraints19.gridx = 0;
-            gridBagConstraints19.fill = java.awt.GridBagConstraints.BOTH;
-            gridBagConstraints19.gridheight = 2;
-            gridBagConstraints19.weightx = 1.0D;
-            gridBagConstraints19.weighty = 1.0D;
-            gridBagConstraints19.gridy = 2;
-            extensionsPanel = new JPanel();
-            extensionsPanel.setLayout(new GridBagLayout());
-            extensionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Service Extensions",
-                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
-                javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
-            extensionsPanel.add(getExtSelectionPanel(), gridBagConstraints13);
-//            extensionsPanel.add(getExtensionsTable(), gridBagConstraints19);
-            extensionsPanel.add(getExtensionsTableionsTablePanel(), gridBagConstraints20);
-        }
-        return extensionsPanel;
-    }
-
-
-    /**
-     * This method initializes addExtensionButton
-     * 
-     * @return javax.swing.JButton
-     */
-    private JButton getAddExtensionButton() {
-        if (addExtensionButton == null) {
-            addExtensionButton = new JButton();
-            addExtensionButton.setText("Add");
-            addExtensionButton.setIcon(PortalLookAndFeel.getAddIcon());
-            addExtensionButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    if (!((String) getServiceStyleSeletor().getSelectedItem()).equals("NONE")) {
-//                        getExtensionsTable().addRow((String) getServiceStyleSeletor().getSelectedItem());
-                    }
-                }
-            });
-        }
-        return addExtensionButton;
-    }
-
-
-    /**
-     * This method initializes removeExtensionButton
-     * 
-     * @return javax.swing.JButton
-     */
-    private JButton getRemoveExtensionButton() {
-        if (removeExtensionButton == null) {
-            removeExtensionButton = new JButton();
-            removeExtensionButton.setText("Remove");
-            removeExtensionButton.setIcon(PortalLookAndFeel.getRemoveIcon());
-            removeExtensionButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    try {
-//                        getExtensionsTable().removeSelectedRow();
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
-
-            });
-        }
-        return removeExtensionButton;
-    }
-
-
-    /**
-     * This method initializes extensionsScrollPane
-     * 
-     * @return javax.swing.JScrollPane
-     */
-    private JScrollPane getExtensionsScrollPane() {
-        if (extensionsScrollPane == null) {
-            extensionsScrollPane = new JScrollPane();
-//            extensionsScrollPane.setViewportView(getExtensionsTable());
-        }
-        return extensionsScrollPane;
-    }
-
-
-    /**
-     * This method initializes extensionsTable
-     * 
-     * @return javax.swing.JTable
-     */
-//    private ExtensionsTable getExtensionsTable() {
-//        if (extensionsTable == null) {
-//            extensionsTable = new ExtensionsTable();
-//        }
-//        return extensionsTable;
-//    }
-
-
-    /**
-     * This method initializes jPanel
-     * 
-     * @return javax.swing.JPanel
-     */
-    private JPanel getExtensionsTableionsTablePanel() {
-        if (extensionsTablePanel == null) {
-            GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
-            gridBagConstraints21.gridx = 1;
-            gridBagConstraints21.anchor = java.awt.GridBagConstraints.SOUTHWEST;
-            gridBagConstraints21.fill = java.awt.GridBagConstraints.NONE;
-            gridBagConstraints21.gridy = 0;
-            GridBagConstraints gridBagConstraints14 = new GridBagConstraints();
-            gridBagConstraints14.gridx = 1;
-            gridBagConstraints14.anchor = java.awt.GridBagConstraints.NORTHWEST;
-            gridBagConstraints14.gridy = 1;
-            downExtensionLabel = new JLabel();
-            downExtensionLabel.setToolTipText("moves the selected extension down "
-                + "in the list so that it will be executed after the preceding extensions");
-            downExtensionLabel.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-                    try {
-//                        getExtensionsTable().moveSelectedRowDown();
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-//            downExtensionLabel.setIcon(IntroduceLookAndFeel.getDownIcon());
-            upExtensionLabel = new JLabel();
-            upExtensionLabel.setToolTipText("moves the selected extension "
-                + "higher in the list so that it will be executed before the following extensions");
-            upExtensionLabel.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-                    try {
-//                        getExtensionsTable().moveSelectedRowUp();
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-//            upExtensionLabel.setIcon(IntroduceLookAndFeel.getUpIcon());
-            GridBagConstraints gridBagConstraints18 = new GridBagConstraints();
-            gridBagConstraints18.fill = java.awt.GridBagConstraints.BOTH;
-            gridBagConstraints18.gridy = 0;
-            gridBagConstraints18.weightx = 1.0;
-            gridBagConstraints18.weighty = 1.0;
-            gridBagConstraints18.gridheight = 2;
-            gridBagConstraints18.gridx = 0;
-            extensionsTablePanel = new JPanel();
-            extensionsTablePanel.setLayout(new GridBagLayout());
-            extensionsTablePanel.add(getExtensionsScrollPane(), gridBagConstraints18);
-            extensionsTablePanel.add(upExtensionLabel, gridBagConstraints21);
-            extensionsTablePanel.add(downExtensionLabel, gridBagConstraints14);
-        }
-        return extensionsTablePanel;
-    }
-
-
-    /**
-     * This method initializes extSelectionPanel
-     * 
-     * @return javax.swing.JPanel
-     */
-    private JPanel getExtSelectionPanel() {
-        if (extSelectionPanel == null) {
-            GridBagConstraints gridBagConstraints22 = new GridBagConstraints();
-            gridBagConstraints22.gridy = 0;
-            gridBagConstraints22.insets = new java.awt.Insets(2, 2, 2, 2);
-            gridBagConstraints22.gridx = 1;
-            GridBagConstraints gridBagConstraints16 = new GridBagConstraints();
-            gridBagConstraints16.gridy = 0;
-            gridBagConstraints16.insets = new java.awt.Insets(2, 2, 2, 2);
-            gridBagConstraints16.gridx = 2;
-            GridBagConstraints gridBagConstraints15 = new GridBagConstraints();
-            gridBagConstraints15.fill = java.awt.GridBagConstraints.HORIZONTAL;
-            gridBagConstraints15.gridx = 0;
-            gridBagConstraints15.gridy = 0;
-            gridBagConstraints15.insets = new java.awt.Insets(2, 2, 2, 2);
-            gridBagConstraints15.weightx = 1.0;
-            extSelectionPanel = new JPanel();
-            extSelectionPanel.setLayout(new GridBagLayout());
-            extSelectionPanel.add(getServiceStyleSeletor(), gridBagConstraints15);
-            extSelectionPanel.add(getRemoveExtensionButton(), gridBagConstraints16);
-            extSelectionPanel.add(getAddExtensionButton(), gridBagConstraints22);
-        }
-        return extSelectionPanel;
-    }
-
-
-    /**
-     * This method initializes jPanel
-     * 
-     * @return javax.swing.JPanel
-     */
-    private JPanel getServiceStylePanel() {
-        if (serviceStylePanel == null) {
-            GridBagConstraints gridBagConstraints17 = new GridBagConstraints();
-            gridBagConstraints17.gridx = 0;
-            gridBagConstraints17.fill = java.awt.GridBagConstraints.BOTH;
-            gridBagConstraints17.weightx = 1.0D;
-            gridBagConstraints17.weighty = 1.0D;
-            gridBagConstraints17.gridy = 0;
-            serviceStylePanel = new JPanel();
-            serviceStylePanel.setLayout(new GridBagLayout());
-            serviceStylePanel.add(getExtensionsPanel(), gridBagConstraints17);
-        }
-        return serviceStylePanel;
-    }
-
-
 	/**
 	 * This method initializes mainTabbedPane	
 	 * 	
@@ -1919,7 +2514,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			mainTabbedPane.addTab("DB", null, new IconFeedbackPanel(this.validationModel, getDbConnectionSettingsPanel()), null);
 			
 			mainTabbedPane.addTab("Writable API", null, new IconFeedbackPanel(this.validationModel, getWritableApiSettingsPanel()), null);
-//			mainTabbedPane.addTab("Logging", null, new IconFeedbackPanel(this.validationModel, getClmSettingsPanel()), null);
+			mainTabbedPane.addTab("Logging", null, new IconFeedbackPanel(this.validationModel, getClmSettingsPanel()), null);
 			
 			mainTabbedPane.addTab("Security", null, new IconFeedbackPanel(this.validationModel, getSecuritySettingsPanel()), null);
 			mainTabbedPane.addTab("CSM DB", null, new IconFeedbackPanel(this.validationModel, getCsmDbConnectionSettingsPanel()), null);
@@ -1933,38 +2528,12 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 	}
 	
 	/**
-	 * This method initializes securitySettingsPanel	
+	 * This method initializes securitySettingsSubPanel	
 	 * 	
 	 * @return javax.swing.JPanel	
 	 */
-	private JPanel getSecuritySettingsPanel() {
-		if (securitySettingsPanel == null) {
-			GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
-			gridBagConstraints23.gridx = 0;
-			gridBagConstraints23.fill = GridBagConstraints.BOTH;
-			gridBagConstraints23.gridy = 0;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.weightx = 1.0D;
-			gridBagConstraints.weighty = 1.0D;
-			gridBagConstraints.gridy = 0;
-			securitySettingsPanel = new JPanel();
-			securitySettingsPanel.setLayout(new GridBagLayout());
-//			securitySettingsPanel.add(getServiceStylePanel(), gridBagConstraints);
-//			securitySettingsPanel.add(getResourceOptionsConfigPanel(), gridBagConstraints23);
-		}
-		return securitySettingsPanel;
-	}
-	
-	/**
-	 * This method initializes writableApiSettingsPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getWritableApiSettingsPanel() {
-		if (writableApiSettingsPanel == null) {
-
+	private JPanel getSecuritySettingsSubPanel() {
+		if (securitySettingsSubPanel == null) {
 			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
 			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
 			gridBagConstraints10.gridy = 1;
@@ -2029,120 +2598,217 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints41.weighty = 1.0D;
 			gridBagConstraints41.gridx = 1;
 
-			GridBagConstraints gridBagConstraints50 = new GridBagConstraints();
-			gridBagConstraints50.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints50.gridy = 5;
-			gridBagConstraints50.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints50.gridx = 0;
-
-			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
-			gridBagConstraints51.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints51.gridy = 5;
-			gridBagConstraints51.weightx = 1.0;
-			gridBagConstraints51.gridwidth = 2;
-			gridBagConstraints51.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints51.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints51.weighty = 1.0D;
-			gridBagConstraints51.gridx = 1;
-
-			GridBagConstraints gridBagConstraints60 = new GridBagConstraints();
-			gridBagConstraints60.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints60.gridy = 6;
-			gridBagConstraints60.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints60.gridx = 0;
-
-			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
-			gridBagConstraints61.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints61.gridy = 6;
-			gridBagConstraints61.weightx = 1.0;
-			gridBagConstraints61.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints61.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints61.gridwidth = 2;
-			gridBagConstraints61.weighty = 1.0D;
-			gridBagConstraints61.gridx = 1;
-
-			GridBagConstraints gridBagConstraints70 = new GridBagConstraints();
-			gridBagConstraints70.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints70.gridy = 7;
-			gridBagConstraints70.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints70.gridx = 0;
-
-			GridBagConstraints gridBagConstraints71 = new GridBagConstraints();
-			gridBagConstraints71.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints71.gridy = 7;
-			gridBagConstraints71.weightx = 1.0;
-			gridBagConstraints71.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints71.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints71.gridwidth = 2;
-			gridBagConstraints71.weighty = 1.0D;
-			gridBagConstraints71.gridx = 1;
-
-			GridBagConstraints gridBagConstraints80 = new GridBagConstraints();
-			gridBagConstraints80.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints80.gridy = 8;
-			gridBagConstraints80.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints80.gridx = 0;
-
-			GridBagConstraints gridBagConstraints81 = new GridBagConstraints();
-			gridBagConstraints81.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints81.gridy = 8;
-			gridBagConstraints81.weightx = 1.0;
-			gridBagConstraints81.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints81.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints81.gridwidth = 2;
-			gridBagConstraints81.weighty = 1.0D;
-			gridBagConstraints81.gridx = 1;
-
-			GridBagConstraints gridBagConstraints90 = new GridBagConstraints();
-			gridBagConstraints90.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints90.gridy = 9;
-			gridBagConstraints90.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints90.gridx = 0;
-
-			GridBagConstraints gridBagConstraints91 = new GridBagConstraints();
-			gridBagConstraints91.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints91.gridy = 9;
-			gridBagConstraints91.weightx = 1.0;
-			gridBagConstraints91.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints91.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints91.gridwidth = 2;
-			gridBagConstraints91.weighty = 1.0D;
-			gridBagConstraints91.gridx = 1;
-
-			GridBagConstraints gridBagConstraints100 = new GridBagConstraints();
-			gridBagConstraints100.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints100.gridy = 10;
-			gridBagConstraints100.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints100.gridx = 0;
-
-			GridBagConstraints gridBagConstraints101 = new GridBagConstraints();
-			gridBagConstraints101.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints101.gridy = 10;
-			gridBagConstraints101.weightx = 1.0;
-			gridBagConstraints101.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints101.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints101.gridwidth = 2;
-			gridBagConstraints101.weighty = 1.0D;
-			gridBagConstraints101.gridx = 1;
-
-//			GridBagConstraints gridBagConstraints110 = new GridBagConstraints();
-//			gridBagConstraints110.anchor = java.awt.GridBagConstraints.WEST;
-//			gridBagConstraints110.gridy = 11;
-//			gridBagConstraints110.insets = new java.awt.Insets(2, 2, 2, 2);
-//			gridBagConstraints110.gridx = 0;
+//			GridBagConstraints gridBagConstraints50 = new GridBagConstraints();
+//			gridBagConstraints50.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints50.gridy = 5;
+//			gridBagConstraints50.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints50.gridx = 0;
 //
-//			GridBagConstraints gridBagConstraints111 = new GridBagConstraints();
-//			gridBagConstraints111.fill = java.awt.GridBagConstraints.HORIZONTAL;
-//			gridBagConstraints111.gridy = 11;
-//			gridBagConstraints111.weightx = 1.0;
-//			gridBagConstraints111.anchor = java.awt.GridBagConstraints.WEST;
-//			gridBagConstraints111.insets = new java.awt.Insets(2, 2, 2, 2);
-//			gridBagConstraints111.gridwidth = 2;
-//			gridBagConstraints111.weighty = 1.0D;
-//			gridBagConstraints111.gridx = 1;
+//			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
+//			gridBagConstraints51.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//			gridBagConstraints51.gridy = 5;
+//			gridBagConstraints51.weightx = 1.0;
+//			gridBagConstraints51.gridwidth = 2;
+//			gridBagConstraints51.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints51.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints51.weighty = 1.0D;
+//			gridBagConstraints51.gridx = 1;
+		    
+//		    enableSecurityLabel = new JLabel();
+//		    enableSecurityLabel.setText("Enable Security Extension?");
+		    
+		    enableInstanceLevelSecurityLabel = new JLabel();
+		    enableInstanceLevelSecurityLabel.setText("Enable Instance Level Security?");
+		    
+		    enableAttributeLevelSecurityLabel = new JLabel();
+		    enableAttributeLevelSecurityLabel.setText("Enable Attribute Level Security?");
+
+		    csmProjectNameLabel = new JLabel();
+		    csmProjectNameLabel.setText("Enter CSM Project Name:");
+
+		    cacheProtectionElementsLabel = new JLabel();
+		    cacheProtectionElementsLabel.setText("Cache Protection Elements?");
+
+		    securitySettingsSubPanel = new JPanel();
+		    securitySettingsSubPanel.setLayout(new GridBagLayout());
+		    securitySettingsSubPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Security Options",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+
+//			securitySettingsSubPanel.add(enableSecurityLabel, gridBagConstraints10);
+//			securitySettingsSubPanel.add(getEnableSecurityCheckBox(), gridBagConstraints11);
+		    securitySettingsSubPanel.add(enableInstanceLevelSecurityLabel, gridBagConstraints10);
+		    securitySettingsSubPanel.add(getEnableInstanceLevelSecurityCheckBox(), gridBagConstraints11);
+		    securitySettingsSubPanel.add(enableAttributeLevelSecurityLabel, gridBagConstraints20);
+		    securitySettingsSubPanel.add(getEnableAttributeLevelSecurityCheckBox(), gridBagConstraints21);
+		    securitySettingsSubPanel.add(csmProjectNameLabel, gridBagConstraints30);
+		    securitySettingsSubPanel.add(getCsmProjectNameField(), gridBagConstraints31);
+		    securitySettingsSubPanel.add(cacheProtectionElementsLabel, gridBagConstraints40);
+		    securitySettingsSubPanel.add(getCacheProtectionElementsCheckBox(), gridBagConstraints41);
+
+		    securitySettingsSubPanel.validate();
+		}
+		return securitySettingsSubPanel;
+	}
+	
+	/**
+	 * This method initializes securitySettingsPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getSecuritySettingsPanel() {
+		if (securitySettingsPanel == null) {
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 2;
+			gridBagConstraints20.gridx = 0;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridwidth = 3;
+			gridBagConstraints20.weighty = 1.0D;
+			gridBagConstraints20.weightx = 1.0D;  
+	    
+		    enableSecurityLabel = new JLabel();
+		    enableSecurityLabel.setText("Enable Security Extension?");
+
+			securitySettingsPanel = new JPanel();
+			securitySettingsPanel.setLayout(new GridBagLayout());
+			securitySettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define Security Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+
+			securitySettingsPanel.add(enableSecurityLabel, gridBagConstraints10);
+			securitySettingsPanel.add(getEnableSecurityCheckBox(), gridBagConstraints11);
+			securitySettingsPanel.add(getSecuritySettingsSubPanel(), gridBagConstraints20);
+
+			securitySettingsPanel.validate();
+		}
+		return securitySettingsPanel;
+	}
+	
+	/**
+	 * This method initializes writableApiSettingsPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getWritableApiSettingsPanel() {
+		if (writableApiSettingsPanel == null) {
+
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 2;
+			gridBagConstraints20.gridx = 0;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridwidth = 3;
+			gridBagConstraints20.weighty = 1.0D;
+			gridBagConstraints20.weightx = 1.0D;  
 
 		    enableWritableApiExtensionLabel = new JLabel();
 		    enableWritableApiExtensionLabel.setText("Enable Writable API Extension?");
+		    
+			writableApiSettingsPanel = new JPanel();
+			writableApiSettingsPanel.setLayout(new GridBagLayout());
+			writableApiSettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define Writable API Module Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+
+			writableApiSettingsPanel.add(enableWritableApiExtensionLabel, gridBagConstraints10);
+			writableApiSettingsPanel.add(getEnableWritableApiExtensionCheckBox(), gridBagConstraints11);
+			writableApiSettingsPanel.add(getWritableApiSettingsSubPanel(), gridBagConstraints20);
+
+			writableApiSettingsPanel.validate();
+		}
+		return writableApiSettingsPanel;
+	}
+	
+	/**
+	 * This method initializes writableApiSettingsPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getWritableApiSettingsSubPanel() {
+		if (writableApiSettingsSubPanel == null) {
+
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 2;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridx = 0;            
+
+			GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+			gridBagConstraints21.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints21.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints21.gridy = 2;
+			gridBagConstraints21.gridx = 1;
+			gridBagConstraints21.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints21.gridwidth = 2;
+			gridBagConstraints21.weighty = 1.0D;
+			gridBagConstraints21.weightx = 1.0D;  
+
+			GridBagConstraints gridBagConstraints30 = new GridBagConstraints();
+			gridBagConstraints30.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints30.gridy = 3;
+			gridBagConstraints30.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints30.gridx = 0;
+
+			GridBagConstraints gridBagConstraints31 = new GridBagConstraints();
+			gridBagConstraints31.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints31.gridy = 3;
+			gridBagConstraints31.weightx = 1.0;
+			gridBagConstraints31.gridwidth = 2;
+			gridBagConstraints31.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints31.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints31.weighty = 1.0D;
+			gridBagConstraints31.gridx = 1;
 
 		    databaseTypeLabel = new JLabel();
 		    databaseTypeLabel.setText("Enter Database Type:");
@@ -2152,80 +2818,227 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 
 		    caDsrConnectionUrlLabel = new JLabel();
 		    caDsrConnectionUrlLabel.setText("Enter caDSR Connection URL:");
-
-		    enableCommonLoggingModuleLabel = new JLabel();
-		    enableCommonLoggingModuleLabel.setText("Enable Common Logging Module?");
-
-		    clmProjectNameLabel = new JLabel();
-		    clmProjectNameLabel.setText("Enter CLM Project Name:");
-
-		    clmDbConnectionUrlLabel = new JLabel();
-		    clmDbConnectionUrlLabel.setText("Enter CLM Database Connection URL:");
-
-		    clmDbUsernameLabel = new JLabel();
-		    clmDbUsernameLabel.setText("Enter CLM Database Username:");
-
-		    clmDbPasswordLabel = new JLabel();
-		    clmDbPasswordLabel.setText("Enter CLM Database Password:");
-
-		    clmDbDriverLabel = new JLabel();
-		    clmDbDriverLabel.setText("Enter CLM Database Driver:");
 		    
-			writableApiSettingsPanel = new JPanel();
-			writableApiSettingsPanel.setLayout(new GridBagLayout());
-			writableApiSettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define Writable API and Common Logging Module Properties",
+			writableApiSettingsSubPanel = new JPanel();
+			writableApiSettingsSubPanel.setLayout(new GridBagLayout());
+			writableApiSettingsSubPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Writable API Options",
 					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
 
-			writableApiSettingsPanel.add(enableWritableApiExtensionLabel, gridBagConstraints10);
-			writableApiSettingsPanel.add(getEnableWritableApiExtensionCheckBox(), gridBagConstraints11);
-			writableApiSettingsPanel.add(databaseTypeLabel, gridBagConstraints20);
-			writableApiSettingsPanel.add(getDatabaseTypeField(), gridBagConstraints21);
-			writableApiSettingsPanel.add(identityGeneratorTagLabel, gridBagConstraints30);
-			writableApiSettingsPanel.add(getIdentityGeneratorTagField(), gridBagConstraints31);
-			writableApiSettingsPanel.add(caDsrConnectionUrlLabel, gridBagConstraints40);
-			writableApiSettingsPanel.add(getCaDsrConnectionUrlField(), gridBagConstraints41);
-			writableApiSettingsPanel.add(enableCommonLoggingModuleLabel, gridBagConstraints50);
-			writableApiSettingsPanel.add(getEnableCommonLoggingModuleCheckBox(), gridBagConstraints51);
-			writableApiSettingsPanel.add(clmProjectNameLabel, gridBagConstraints60);
-			writableApiSettingsPanel.add(getClmProjectName(), gridBagConstraints61);
-			writableApiSettingsPanel.add(clmDbConnectionUrlLabel, gridBagConstraints70);
-			writableApiSettingsPanel.add(getClmDbConnectionUrlField(), gridBagConstraints71);
-			writableApiSettingsPanel.add(clmDbUsernameLabel, gridBagConstraints80);
-			writableApiSettingsPanel.add(getClmDbUsernameField(), gridBagConstraints81);   
-			writableApiSettingsPanel.add(clmDbPasswordLabel, gridBagConstraints90);
-			writableApiSettingsPanel.add(getClmDbPasswordField(), gridBagConstraints91);
-			writableApiSettingsPanel.add(clmDbDriverLabel, gridBagConstraints100);
-			writableApiSettingsPanel.add(getClmDbDriverField(), gridBagConstraints101);
+			writableApiSettingsSubPanel.add(databaseTypeLabel, gridBagConstraints10);
+			writableApiSettingsSubPanel.add(getDatabaseTypeField(), gridBagConstraints11);
+			writableApiSettingsSubPanel.add(identityGeneratorTagLabel, gridBagConstraints20);
+			writableApiSettingsSubPanel.add(getIdentityGeneratorTagField(), gridBagConstraints21);
+			writableApiSettingsSubPanel.add(caDsrConnectionUrlLabel, gridBagConstraints30);
+			writableApiSettingsSubPanel.add(getCaDsrConnectionUrlField(), gridBagConstraints31);
 
-			writableApiSettingsPanel.validate();
+			writableApiSettingsSubPanel.validate();
 		}
-		return writableApiSettingsPanel;
+		return writableApiSettingsSubPanel;
 	}
-
+	
 	/**
-	 * This method initializes appServerSettingsPanel	
+	 * This method initializes writableApiSettingsPanel	
 	 * 	
 	 * @return javax.swing.JPanel	
 	 */
-	private JPanel getAppServerSettingsPanel() {
-		if (appServerSettingsPanel == null) {
-			GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
-			gridBagConstraints23.gridx = 0;
-			gridBagConstraints23.fill = GridBagConstraints.BOTH;
-			gridBagConstraints23.gridy = 0;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.weightx = 1.0D;
-			gridBagConstraints.weighty = 1.0D;
-			gridBagConstraints.gridy = 0;
-			appServerSettingsPanel = new JPanel();
-			appServerSettingsPanel.setLayout(new GridBagLayout());
-			appServerSettingsPanel.add(getServiceStylePanel(), gridBagConstraints);
-			appServerSettingsPanel.add(getResourceOptionsConfigPanel(), gridBagConstraints23);
+	private JPanel getClmSettingsPanel() {
+		if (clmSettingsPanel == null) {
+
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+//			gridBagConstraints11.weighty = 1.0D;  // so that the CLM sub panel has priority
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+			
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 2;
+			gridBagConstraints20.gridx = 0;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridwidth = 3;
+//			gridBagConstraints20.weighty = 1.0D;
+			gridBagConstraints20.weightx = 1.0D;  
+			
+			GridBagConstraints gridBagConstraints30 = new GridBagConstraints();
+			gridBagConstraints30.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints30.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints30.gridy = 2;
+			gridBagConstraints30.gridx = 0;
+			gridBagConstraints30.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints30.gridwidth = 3;
+			gridBagConstraints30.weighty = 1.0D;
+			gridBagConstraints30.weightx = 1.0D;
+
+		    enableCommonLoggingModuleLabel = new JLabel();
+		    enableCommonLoggingModuleLabel.setText("Enable Logging?");
+		    
+		    clmSettingsPanel = new JPanel();
+			clmSettingsPanel.setLayout(new GridBagLayout());
+			clmSettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define Logging Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+
+			clmSettingsPanel.add(enableCommonLoggingModuleLabel, gridBagConstraints10);
+			clmSettingsPanel.add(getEnableCommonLoggingModuleCheckBox(), gridBagConstraints11);
+			clmSettingsPanel.add(getLoggingSettingsSubPanel(), gridBagConstraints20);
+
+			clmSettingsPanel.validate();
 		}
-		return appServerSettingsPanel;
+		return clmSettingsPanel;
+	}
+	
+	
+	/**
+	 * This method initializes clmSettingsSubPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getLoggingSettingsSubPanel() {
+		if (clmSettingsSubPanel == null) {
+
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 5;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.gridy = 5;
+			gridBagConstraints11.weightx = 1.0;
+			gridBagConstraints11.gridwidth = 2;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.gridx = 1;
+
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 6;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridx = 0;
+
+			GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+			gridBagConstraints21.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints21.gridy = 6;
+			gridBagConstraints21.weightx = 1.0;
+			gridBagConstraints21.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints21.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints21.gridwidth = 2;
+			gridBagConstraints21.weighty = 1.0D;
+			gridBagConstraints21.gridx = 1;
+
+			GridBagConstraints gridBagConstraints30 = new GridBagConstraints();
+			gridBagConstraints30.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints30.gridy = 7;
+			gridBagConstraints30.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints30.gridx = 0;
+
+			GridBagConstraints gridBagConstraints31 = new GridBagConstraints();
+			gridBagConstraints31.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints31.gridy = 7;
+			gridBagConstraints31.weightx = 1.0;
+			gridBagConstraints31.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints31.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints31.gridwidth = 2;
+			gridBagConstraints31.weighty = 1.0D;
+			gridBagConstraints31.gridx = 1;
+
+			GridBagConstraints gridBagConstraints40 = new GridBagConstraints();
+			gridBagConstraints40.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints40.gridy = 8;
+			gridBagConstraints40.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints40.gridx = 0;
+
+			GridBagConstraints gridBagConstraints41 = new GridBagConstraints();
+			gridBagConstraints41.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints41.gridy = 8;
+			gridBagConstraints41.weightx = 1.0;
+			gridBagConstraints41.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints41.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints41.gridwidth = 2;
+			gridBagConstraints41.weighty = 1.0D;
+			gridBagConstraints41.gridx = 1;
+
+			GridBagConstraints gridBagConstraints50 = new GridBagConstraints();
+			gridBagConstraints50.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints50.gridy = 9;
+			gridBagConstraints50.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints50.gridx = 0;
+
+			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
+			gridBagConstraints51.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints51.gridy = 9;
+			gridBagConstraints51.weightx = 1.0;
+			gridBagConstraints51.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints51.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints51.gridwidth = 2;
+			gridBagConstraints51.weighty = 1.0D;
+			gridBagConstraints51.gridx = 1;
+
+			GridBagConstraints gridBagConstraints60 = new GridBagConstraints();
+			gridBagConstraints60.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints60.gridy = 10;
+			gridBagConstraints60.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints60.gridx = 0;
+
+			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
+			gridBagConstraints61.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints61.gridy = 10;
+			gridBagConstraints61.weightx = 1.0;
+			gridBagConstraints61.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints61.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints61.gridwidth = 2;
+			gridBagConstraints61.weighty = 1.0D;
+			gridBagConstraints61.gridx = 1;
+
+		    clmProjectNameLabel = new JLabel();
+		    clmProjectNameLabel.setText("Enter Logging Project Name:");
+
+		    clmDbConnectionUrlLabel = new JLabel();
+		    clmDbConnectionUrlLabel.setText("Enter Logging Database Connection URL:");
+
+		    clmDbUsernameLabel = new JLabel();
+		    clmDbUsernameLabel.setText("Enter Logging Database Username:");
+
+		    clmDbPasswordLabel = new JLabel();
+		    clmDbPasswordLabel.setText("Enter Logging Database Password:");
+
+		    clmDbDriverLabel = new JLabel();
+		    clmDbDriverLabel.setText("Enter Logging Database Driver:");
+		    
+		    clmSettingsSubPanel = new JPanel();
+		    clmSettingsSubPanel.setLayout(new GridBagLayout());
+		    clmSettingsSubPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Logging Database Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+
+		    clmSettingsSubPanel.add(clmProjectNameLabel, gridBagConstraints10);
+		    clmSettingsSubPanel.add(getClmProjectName(), gridBagConstraints11);
+		    clmSettingsSubPanel.add(clmDbConnectionUrlLabel, gridBagConstraints20);
+		    clmSettingsSubPanel.add(getClmDbConnectionUrlField(), gridBagConstraints21);
+		    clmSettingsSubPanel.add(clmDbUsernameLabel, gridBagConstraints30);
+		    clmSettingsSubPanel.add(getClmDbUsernameField(), gridBagConstraints31);   
+		    clmSettingsSubPanel.add(clmDbPasswordLabel, gridBagConstraints40);
+		    clmSettingsSubPanel.add(getClmDbPasswordField(), gridBagConstraints41);
+		    clmSettingsSubPanel.add(clmDbDriverLabel, gridBagConstraints50);
+		    clmSettingsSubPanel.add(getClmDbDriverField(), gridBagConstraints51);
+
+		    clmSettingsSubPanel.validate();
+		}
+		return clmSettingsSubPanel;
 	}
 	
     /**
@@ -2942,7 +3755,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 		    dbConnectionSettingsPanel.add(getUseJndiBasedConnectionCheckBox(), gridBagConstraints11);
 		    dbConnectionSettingsPanel.add(dbJndiUrlLabel, gridBagConstraints20);
 		    dbConnectionSettingsPanel.add(getDbJndiUrlField(), gridBagConstraints21);
-		    dbConnectionSettingsPanel.add(new JLabel(), gridBagConstraints30);//Blank spacer line
+		    dbConnectionSettingsPanel.add(new JLabel(blankLine), gridBagConstraints30);//blank spacer line
 		    dbConnectionSettingsPanel.add(dbConnectionUrlLabel, gridBagConstraints40);
 		    dbConnectionSettingsPanel.add(getDbConnectionUrlField(), gridBagConstraints41);
 		    dbConnectionSettingsPanel.add(dbUsernameLabel, gridBagConstraints50);
@@ -2966,20 +3779,171 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 	 */
 	private JPanel getCsmDbConnectionSettingsPanel() {
 		if (csmDbConnectionSettingsPanel == null) {
-			GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
-			gridBagConstraints23.gridx = 0;
-			gridBagConstraints23.fill = GridBagConstraints.BOTH;
-			gridBagConstraints23.gridy = 0;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.weightx = 1.0D;
-			gridBagConstraints.weighty = 1.0D;
-			gridBagConstraints.gridy = 0;
-			csmDbConnectionSettingsPanel = new JPanel();
-			csmDbConnectionSettingsPanel.setLayout(new GridBagLayout());
-			csmDbConnectionSettingsPanel.add(getServiceStylePanel(), gridBagConstraints);
-			csmDbConnectionSettingsPanel.add(getResourceOptionsConfigPanel(), gridBagConstraints23);
+			
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 2;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridx = 0;            
+
+			GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+			gridBagConstraints21.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints21.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints21.gridy = 2;
+			gridBagConstraints21.gridx = 1;
+			gridBagConstraints21.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints21.gridwidth = 2;
+			gridBagConstraints21.weighty = 1.0D;
+			gridBagConstraints21.weightx = 1.0D;  
+
+			GridBagConstraints gridBagConstraints30 = new GridBagConstraints();
+			gridBagConstraints30.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints30.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints30.gridy = 3;
+			gridBagConstraints30.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints30.gridx = 0;
+			gridBagConstraints30.gridwidth = 3;
+
+			GridBagConstraints gridBagConstraints40 = new GridBagConstraints();
+			gridBagConstraints40.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints40.gridy = 4;
+			gridBagConstraints40.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints40.gridx = 0;
+
+			GridBagConstraints gridBagConstraints41 = new GridBagConstraints();
+			gridBagConstraints41.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints41.gridy = 4;
+			gridBagConstraints41.weightx = 1.0;
+			gridBagConstraints41.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints41.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints41.gridwidth = 2;
+			gridBagConstraints41.weighty = 1.0D;
+			gridBagConstraints41.gridx = 1;
+
+			GridBagConstraints gridBagConstraints50 = new GridBagConstraints();
+			gridBagConstraints50.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints50.gridy = 5;
+			gridBagConstraints50.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints50.gridx = 0;
+
+			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
+			gridBagConstraints51.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints51.gridy = 5;
+			gridBagConstraints51.weightx = 1.0;
+			gridBagConstraints51.gridwidth = 2;
+			gridBagConstraints51.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints51.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints51.weighty = 1.0D;
+			gridBagConstraints51.gridx = 1;
+
+			GridBagConstraints gridBagConstraints60 = new GridBagConstraints();
+			gridBagConstraints60.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints60.gridy = 6;
+			gridBagConstraints60.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints60.gridx = 0;
+
+			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
+			gridBagConstraints61.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints61.gridy = 6;
+			gridBagConstraints61.weightx = 1.0;
+			gridBagConstraints61.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints61.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints61.gridwidth = 2;
+			gridBagConstraints61.weighty = 1.0D;
+			gridBagConstraints61.gridx = 1;
+
+			GridBagConstraints gridBagConstraints70 = new GridBagConstraints();
+			gridBagConstraints70.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints70.gridy = 7;
+			gridBagConstraints70.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints70.gridx = 0;
+
+			GridBagConstraints gridBagConstraints71 = new GridBagConstraints();
+			gridBagConstraints71.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints71.gridy = 7;
+			gridBagConstraints71.weightx = 1.0;
+			gridBagConstraints71.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints71.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints71.gridwidth = 2;
+			gridBagConstraints71.weighty = 1.0D;
+			gridBagConstraints71.gridx = 1;
+
+			GridBagConstraints gridBagConstraints80 = new GridBagConstraints();
+			gridBagConstraints80.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints80.gridy = 8;
+			gridBagConstraints80.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints80.gridx = 0;
+
+			GridBagConstraints gridBagConstraints81 = new GridBagConstraints();
+			gridBagConstraints81.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints81.gridy = 8;
+			gridBagConstraints81.weightx = 1.0;
+			gridBagConstraints81.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints81.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints81.gridwidth = 2;
+			gridBagConstraints81.weighty = 1.0D;
+			gridBagConstraints81.gridx = 1;
+
+		    csmUseJndiBasedConnectionLabel = new JLabel();
+			csmUseJndiBasedConnectionLabel.setText("Use a JNDI-based CSM Database Connection?");
+
+		    csmDbJndiUrlLabel = new JLabel();
+		    csmDbJndiUrlLabel.setText("Enter CSM Database JNDI URL:");
+
+		    csmDbConnectionUrlLabel = new JLabel();
+		    csmDbConnectionUrlLabel.setText("Enter CSM Database connection URL:");
+		    
+		    csmDbUsernameLabel = new JLabel();
+		    csmDbUsernameLabel.setText("Enter CSM Database username:");
+
+		    csmDbPasswordLabel = new JLabel();
+		    csmDbPasswordLabel.setText("Enter CSM Database password:");
+
+		    csmDbDriverLabel = new JLabel();
+		    csmDbDriverLabel.setText("Enter CSM Database driver:");
+
+		    csmDbDialectLabel = new JLabel();
+		    csmDbDialectLabel.setText("Enter CSM Database dialect");
+
+		    csmDbConnectionSettingsPanel = new JPanel();
+		    csmDbConnectionSettingsPanel.setLayout(new GridBagLayout());
+		    csmDbConnectionSettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define Common Security Module (CSM) Database Connection Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+			
+		    csmDbConnectionSettingsPanel.add(csmUseJndiBasedConnectionLabel, gridBagConstraints10);
+		    csmDbConnectionSettingsPanel.add(getCsmUseJndiBasedConnectionCheckBox(), gridBagConstraints11);
+		    csmDbConnectionSettingsPanel.add(csmDbJndiUrlLabel, gridBagConstraints20);
+		    csmDbConnectionSettingsPanel.add(getCsmDbJndiUrlField(), gridBagConstraints21);
+		    csmDbConnectionSettingsPanel.add(new JLabel(blankLine), gridBagConstraints30);//blank spacer line
+		    csmDbConnectionSettingsPanel.add(csmDbConnectionUrlLabel, gridBagConstraints40);
+		    csmDbConnectionSettingsPanel.add(getCsmDbConnectionUrlField(), gridBagConstraints41);
+		    csmDbConnectionSettingsPanel.add(csmDbUsernameLabel, gridBagConstraints50);
+		    csmDbConnectionSettingsPanel.add(getCsmDbUsernameField(), gridBagConstraints51);
+		    csmDbConnectionSettingsPanel.add(csmDbPasswordLabel, gridBagConstraints60);
+		    csmDbConnectionSettingsPanel.add(getCsmDbPasswordField(), gridBagConstraints61);
+		    csmDbConnectionSettingsPanel.add(csmDbDriverLabel, gridBagConstraints70);
+		    csmDbConnectionSettingsPanel.add(getCsmDbDriverField(), gridBagConstraints71);
+		    csmDbConnectionSettingsPanel.add(csmDbDialectLabel, gridBagConstraints80);
+		    csmDbConnectionSettingsPanel.add(getCsmDbDialectField(), gridBagConstraints81);   
+			
+		    csmDbConnectionSettingsPanel.validate();
 		}
 		return csmDbConnectionSettingsPanel;
 	}
@@ -3016,24 +3980,341 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 	 */
 	private JPanel getCaGridAuthSettingsPanel() {
 		if (caGridAuthSettingsPanel == null) {
-			GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
-			gridBagConstraints23.gridx = 0;
-			gridBagConstraints23.fill = GridBagConstraints.BOTH;
-			gridBagConstraints23.gridy = 0;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.weightx = 1.0D;
-			gridBagConstraints.weighty = 1.0D;
-			gridBagConstraints.gridy = 0;
-			caGridAuthSettingsPanel = new JPanel();
-			caGridAuthSettingsPanel.setLayout(new GridBagLayout());
-			caGridAuthSettingsPanel.add(getServiceStylePanel(), gridBagConstraints);
-			caGridAuthSettingsPanel.add(getResourceOptionsConfigPanel(), gridBagConstraints23);
+		
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 2;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridx = 0;            
+
+			GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+			gridBagConstraints21.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints21.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints21.gridy = 2;
+			gridBagConstraints21.gridx = 1;
+			gridBagConstraints21.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints21.gridwidth = 2;
+			gridBagConstraints21.weighty = 1.0D;
+			gridBagConstraints21.weightx = 1.0D;  
+
+			GridBagConstraints gridBagConstraints30 = new GridBagConstraints();
+			gridBagConstraints30.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints30.gridy = 3;
+			gridBagConstraints30.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints30.gridx = 0;
+
+			GridBagConstraints gridBagConstraints31 = new GridBagConstraints();
+			gridBagConstraints31.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints31.gridy = 3;
+			gridBagConstraints31.weightx = 1.0;
+			gridBagConstraints31.gridwidth = 2;
+			gridBagConstraints31.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints31.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints31.weighty = 1.0D;
+			gridBagConstraints31.gridx = 1;
+
+			GridBagConstraints gridBagConstraints40 = new GridBagConstraints();
+			gridBagConstraints40.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints40.gridy = 4;
+			gridBagConstraints40.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints40.gridx = 0;
+
+			GridBagConstraints gridBagConstraints41 = new GridBagConstraints();
+			gridBagConstraints41.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints41.gridy = 4;
+			gridBagConstraints41.weightx = 1.0;
+			gridBagConstraints41.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints41.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints41.gridwidth = 2;
+			gridBagConstraints41.weighty = 1.0D;
+			gridBagConstraints41.gridx = 1;
+
+			GridBagConstraints gridBagConstraints50 = new GridBagConstraints();
+			gridBagConstraints50.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints50.gridy = 5;
+			gridBagConstraints50.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints50.gridx = 0;
+
+			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
+			gridBagConstraints51.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints51.gridy = 5;
+			gridBagConstraints51.weightx = 1.0;
+			gridBagConstraints51.gridwidth = 2;
+			gridBagConstraints51.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints51.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints51.weighty = 1.0D;
+			gridBagConstraints51.gridx = 1;
+
+			GridBagConstraints gridBagConstraints60 = new GridBagConstraints();
+			gridBagConstraints60.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints60.gridy = 6;
+			gridBagConstraints60.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints60.gridx = 0;
+
+			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
+			gridBagConstraints61.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints61.gridy = 6;
+			gridBagConstraints61.weightx = 1.0;
+			gridBagConstraints61.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints61.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints61.gridwidth = 2;
+			gridBagConstraints61.weighty = 1.0D;
+			gridBagConstraints61.gridx = 1;
+
+			GridBagConstraints gridBagConstraints70 = new GridBagConstraints();
+			gridBagConstraints70.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints70.gridy = 7;
+			gridBagConstraints70.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints70.gridx = 0;
+
+			GridBagConstraints gridBagConstraints71 = new GridBagConstraints();
+			gridBagConstraints71.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints71.gridy = 7;
+			gridBagConstraints71.weightx = 1.0;
+			gridBagConstraints71.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints71.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints71.gridwidth = 2;
+			gridBagConstraints71.weighty = 1.0D;
+			gridBagConstraints71.gridx = 1;
+
+			GridBagConstraints gridBagConstraints80 = new GridBagConstraints();
+			gridBagConstraints80.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints80.gridy = 8;
+			gridBagConstraints80.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints80.gridx = 0;
+
+			GridBagConstraints gridBagConstraints81 = new GridBagConstraints();
+			gridBagConstraints81.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints81.gridy = 8;
+			gridBagConstraints81.weightx = 1.0;
+			gridBagConstraints81.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints81.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints81.gridwidth = 2;
+			gridBagConstraints81.weighty = 1.0D;
+			gridBagConstraints81.gridx = 1;
+
+			enableCaGridLoginModuleLabel = new JLabel();
+			enableCaGridLoginModuleLabel.setText("Enable caGrid Login Module?");
+
+			caGridLoginModuleNameLabel = new JLabel();
+			caGridLoginModuleNameLabel.setText("Enter caGrid Login Module Name:");
+
+			caGridAuthSvcUrlLabel = new JLabel();
+			caGridAuthSvcUrlLabel.setText("Enter caGrid Authentication Service URL:");
+		    
+			caGridDorianSvcUrlLabel = new JLabel();
+			caGridDorianSvcUrlLabel.setText("Enter caGrid Dorian Service URL:");
+
+			enableCsmLoginModuleLabel = new JLabel();
+			enableCsmLoginModuleLabel.setText("Enable CSM Login Module?");
+
+			sdkGridLoginSvcNameLabel = new JLabel();
+			sdkGridLoginSvcNameLabel.setText("Enter SDK Grid Login Service Name:");
+
+			sdkGridLoginSvcUrlLabel = new JLabel();
+			sdkGridLoginSvcUrlLabel.setText("Enter SDK Grid Login Service URL:");
+
+		    caGridAuthSettingsPanel = new JPanel();
+		    caGridAuthSettingsPanel.setLayout(new GridBagLayout());
+		    caGridAuthSettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define caGrid Authentication Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+		    
+		    caGridAuthSettingsPanel.add(enableCaGridLoginModuleLabel, gridBagConstraints10);
+		    caGridAuthSettingsPanel.add(getEnableCaGridLoginModuleCheckBox(), gridBagConstraints11);
+		    caGridAuthSettingsPanel.add(caGridLoginModuleNameLabel, gridBagConstraints20);
+		    caGridAuthSettingsPanel.add(getCaGridLoginModuleNameField(), gridBagConstraints21);
+		    caGridAuthSettingsPanel.add(caGridAuthSvcUrlLabel, gridBagConstraints30);
+		    caGridAuthSettingsPanel.add(getCaGridAuthSvcUrlField(), gridBagConstraints31);
+		    caGridAuthSettingsPanel.add(caGridDorianSvcUrlLabel, gridBagConstraints40);
+		    caGridAuthSettingsPanel.add(getCaGridDorianSvcUrlField(), gridBagConstraints41);
+		    
+		    caGridAuthSettingsPanel.add(new JLabel(blankLine), gridBagConstraints50);//blank spacer line
+		    
+		    caGridAuthSettingsPanel.add(enableCsmLoginModuleLabel, gridBagConstraints60);
+		    caGridAuthSettingsPanel.add(getEnableCsmLoginModuleCheckBox(), gridBagConstraints61);
+		    caGridAuthSettingsPanel.add(sdkGridLoginSvcNameLabel, gridBagConstraints70);
+		    caGridAuthSettingsPanel.add(getSdkGridLoginSvcNameField(), gridBagConstraints71);
+		    caGridAuthSettingsPanel.add(sdkGridLoginSvcUrlLabel, gridBagConstraints80);
+		    caGridAuthSettingsPanel.add(getSdkGridLoginSvcUrlField(), gridBagConstraints81);
+			
+		    caGridAuthSettingsPanel.validate();
 		}
 		return caGridAuthSettingsPanel;
 	}
 
+	/**
+	 * This method initializes appServerSettingsPanel	
+	 * 	
+	 * @return javax.swing.JPanel	
+	 */
+	private JPanel getAppServerSettingsPanel() {
+		if (appServerSettingsPanel == null) {
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+
+			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
+			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints20.gridy = 2;
+			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.gridx = 0;            
+
+			GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
+			gridBagConstraints21.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints21.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints21.gridy = 2;
+			gridBagConstraints21.gridx = 1;
+			gridBagConstraints21.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints21.gridwidth = 2;
+			gridBagConstraints21.weighty = 1.0D;
+			gridBagConstraints21.weightx = 1.0D;  
+
+//			GridBagConstraints gridBagConstraints30 = new GridBagConstraints();
+//			gridBagConstraints30.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints30.gridy = 3;
+//			gridBagConstraints30.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints30.gridx = 0;
+//
+//			GridBagConstraints gridBagConstraints31 = new GridBagConstraints();
+//			gridBagConstraints31.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//			gridBagConstraints31.gridy = 3;
+//			gridBagConstraints31.weightx = 1.0;
+//			gridBagConstraints31.gridwidth = 2;
+//			gridBagConstraints31.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints31.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints31.weighty = 1.0D;
+//			gridBagConstraints31.gridx = 1;
+//
+//			GridBagConstraints gridBagConstraints40 = new GridBagConstraints();
+//			gridBagConstraints40.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints40.gridy = 4;
+//			gridBagConstraints40.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints40.gridx = 0;
+//
+//			GridBagConstraints gridBagConstraints41 = new GridBagConstraints();
+//			gridBagConstraints41.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//			gridBagConstraints41.gridy = 4;
+//			gridBagConstraints41.weightx = 1.0;
+//			gridBagConstraints41.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints41.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints41.gridwidth = 2;
+//			gridBagConstraints41.weighty = 1.0D;
+//			gridBagConstraints41.gridx = 1;
+//
+//			GridBagConstraints gridBagConstraints50 = new GridBagConstraints();
+//			gridBagConstraints50.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints50.gridy = 5;
+//			gridBagConstraints50.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints50.gridx = 0;
+//
+//			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
+//			gridBagConstraints51.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//			gridBagConstraints51.gridy = 5;
+//			gridBagConstraints51.weightx = 1.0;
+//			gridBagConstraints51.gridwidth = 2;
+//			gridBagConstraints51.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints51.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints51.weighty = 1.0D;
+//			gridBagConstraints51.gridx = 1;
+//
+//			GridBagConstraints gridBagConstraints60 = new GridBagConstraints();
+//			gridBagConstraints60.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints60.gridy = 6;
+//			gridBagConstraints60.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints60.gridx = 0;
+//
+//			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
+//			gridBagConstraints61.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//			gridBagConstraints61.gridy = 6;
+//			gridBagConstraints61.weightx = 1.0;
+//			gridBagConstraints61.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints61.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints61.gridwidth = 2;
+//			gridBagConstraints61.weighty = 1.0D;
+//			gridBagConstraints61.gridx = 1;
+//
+//			GridBagConstraints gridBagConstraints70 = new GridBagConstraints();
+//			gridBagConstraints70.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints70.gridy = 7;
+//			gridBagConstraints70.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints70.gridx = 0;
+//
+//			GridBagConstraints gridBagConstraints71 = new GridBagConstraints();
+//			gridBagConstraints71.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//			gridBagConstraints71.gridy = 7;
+//			gridBagConstraints71.weightx = 1.0;
+//			gridBagConstraints71.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints71.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints71.gridwidth = 2;
+//			gridBagConstraints71.weighty = 1.0D;
+//			gridBagConstraints71.gridx = 1;
+//
+//			GridBagConstraints gridBagConstraints80 = new GridBagConstraints();
+//			gridBagConstraints80.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints80.gridy = 8;
+//			gridBagConstraints80.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints80.gridx = 0;
+//
+//			GridBagConstraints gridBagConstraints81 = new GridBagConstraints();
+//			gridBagConstraints81.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//			gridBagConstraints81.gridy = 8;
+//			gridBagConstraints81.weightx = 1.0;
+//			gridBagConstraints81.anchor = java.awt.GridBagConstraints.WEST;
+//			gridBagConstraints81.insets = new java.awt.Insets(2, 2, 2, 2);
+//			gridBagConstraints81.gridwidth = 2;
+//			gridBagConstraints81.weighty = 1.0D;
+//			gridBagConstraints81.gridx = 1;
+				
+			serverTypeLabel = new JLabel();
+			serverTypeLabel.setText("Select Server Type:");
+
+			serverUrlLabel = new JLabel();
+			serverUrlLabel.setText("Enter Server URL:");
+
+			appServerSettingsPanel = new JPanel();
+			appServerSettingsPanel.setLayout(new GridBagLayout());
+			appServerSettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define Application Server Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+		    
+			appServerSettingsPanel.add(serverTypeLabel, gridBagConstraints10);
+			appServerSettingsPanel.add(getServerTypeComboBox(), gridBagConstraints11);
+			appServerSettingsPanel.add(serverUrlLabel, gridBagConstraints20);
+			appServerSettingsPanel.add(getServerUrlField(), gridBagConstraints21);
+			
+			appServerSettingsPanel.validate();
+		}
+		return appServerSettingsPanel;
+	}
 	
 	/**
 	 * This method initializes advancedSettingsPanel	
@@ -3042,63 +4323,39 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 	 */
 	private JPanel getAdvancedSettingsPanel() {
 		if (advancedSettingsPanel == null) {
-			GridBagConstraints gridBagConstraints23 = new GridBagConstraints();
-			gridBagConstraints23.gridx = 0;
-			gridBagConstraints23.fill = GridBagConstraints.BOTH;
-			gridBagConstraints23.gridy = 0;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 1;
-			gridBagConstraints.fill = GridBagConstraints.BOTH;
-			gridBagConstraints.weightx = 1.0D;
-			gridBagConstraints.weighty = 1.0D;
-			gridBagConstraints.gridy = 0;
+			GridBagConstraints gridBagConstraints10 = new GridBagConstraints();
+			gridBagConstraints10.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints10.gridy = 1;
+			gridBagConstraints10.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints10.gridx = 0;
+
+			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
+			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
+			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
+			gridBagConstraints11.gridx = 1;
+			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.gridy = 1;
+			gridBagConstraints11.weighty = 1.0D;
+			gridBagConstraints11.weightx = 1.0D;  
+			gridBagConstraints11.gridwidth = 2;
+
+			cachePathLabel = new JLabel();
+			cachePathLabel.setText("Enter EHCache Path:");
+
 			advancedSettingsPanel = new JPanel();
 			advancedSettingsPanel.setLayout(new GridBagLayout());
-			advancedSettingsPanel.add(getServiceStylePanel(), gridBagConstraints);
-			advancedSettingsPanel.add(getResourceOptionsConfigPanel(), gridBagConstraints23);
+			advancedSettingsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Define Advanced Properties",
+					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
+		    
+			advancedSettingsPanel.add(cachePathLabel, gridBagConstraints10);
+			advancedSettingsPanel.add(getCachePathField(), gridBagConstraints11);
+			
+			advancedSettingsPanel.validate();
+
 		}
 		return advancedSettingsPanel;
 	}
-
-	/**
-	 * This method initializes resourceOptionsConfigPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getResourceOptionsConfigPanel() {
-		if (resourceOptionsConfigPanel == null) {
-			GridBagConstraints gridBagConstraints201 = new GridBagConstraints();
-			gridBagConstraints201.gridwidth = 2;
-			gridBagConstraints201.gridy = 2;
-			gridBagConstraints201.gridx = 0;
-			GridBagConstraints gridBagConstraints61 = new GridBagConstraints();
-			gridBagConstraints61.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints61.gridy = 1;
-			gridBagConstraints61.gridx = 1;
-			GridBagConstraints gridBagConstraints181 = new GridBagConstraints();
-			gridBagConstraints181.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints181.gridy = 0;
-			gridBagConstraints181.gridx = 1;
-			GridBagConstraints gridBagConstraints171 = new GridBagConstraints();
-			gridBagConstraints171.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints171.gridy = 1;
-			gridBagConstraints171.gridx = 0;
-			GridBagConstraints gridBagConstraints51 = new GridBagConstraints();
-			gridBagConstraints51.anchor = GridBagConstraints.NORTHWEST;
-			gridBagConstraints51.gridy = 0;
-			gridBagConstraints51.gridx = 0;
-			resourceOptionsConfigPanel = new JPanel();
-			resourceOptionsConfigPanel.setLayout(new GridBagLayout());
-			resourceOptionsConfigPanel.setBorder(BorderFactory.createTitledBorder(null, "Resource Framework Options", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, SdkInstallerLookAndFeel.getPanelLabelColor()));//BlueViolet-Test
-			resourceOptionsConfigPanel.add(getLifetimeResource(), gridBagConstraints51);
-			resourceOptionsConfigPanel.add(getPersistantResource(), gridBagConstraints171);
-			resourceOptionsConfigPanel.add(getNotificationResource(), gridBagConstraints181);
-			resourceOptionsConfigPanel.add(getSecureResource(), gridBagConstraints61);
-			resourceOptionsConfigPanel.add(getResourceProperty(), gridBagConstraints201);
-		}
-		return resourceOptionsConfigPanel;
-	}
-
 
 	/**
 	 * This method initializes lifetimeResource	
@@ -3260,20 +4517,55 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 		installerPropsMap.put("DB_DRIVER", getDbDriverField().getText());
 		installerPropsMap.put("DB_DIALECT", getDbDialectField().getText());
 		
-		// Writable API and Common Logging Module DB Connection properties
+		// Writable API properties
 		installerPropsMap.put("ENABLE_WRITABLE_API_EXTENSION", Boolean.valueOf(enableWritableApiExtensionCheckBox.isSelected()).toString() );
 		installerPropsMap.put("DATABASE_TYPE", getDatabaseTypeField().getText());
 		installerPropsMap.put("IDENTITY_GENERATOR_TAG", getIdentityGeneratorTagField().getText());
 		installerPropsMap.put("CADSR_CONNECTION_URL", getCaDsrConnectionUrlField().getText());
 		
+		// Common Logging Module DB Connection properties
 		installerPropsMap.put("ENABLE_COMMON_LOGGING_MODULE", Boolean.valueOf(enableCommonLoggingModuleCheckBox.isSelected()).toString() );
-
 		installerPropsMap.put("CLM_PROJECT_NAME", getClmProjectName().getText());		
 		installerPropsMap.put("CLM_DB_CONNECTION_URL", getClmDbConnectionUrlField().getText());
 		installerPropsMap.put("CLM_DB_USERNAME", getClmDbUsernameField().getText());
 		installerPropsMap.put("CLM_DB_PASSWORD", getClmDbPasswordField().getText());
 		installerPropsMap.put("CLM_DB_DRIVER", getClmDbDriverField().getText());
 		
+		// Security properties
+		installerPropsMap.put("ENABLE_SECURITY", Boolean.valueOf(enableSecurityCheckBox.isSelected()).toString() );
+		installerPropsMap.put("ENABLE_INSTANCE_LEVEL_SECURITY", Boolean.valueOf(enableInstanceLevelSecurityCheckBox.isSelected()).toString() );
+		installerPropsMap.put("ENABLE_ATTRIBUTE_LEVEL_SECURITY", Boolean.valueOf(enableAttributeLevelSecurityCheckBox.isSelected()).toString() );
+		installerPropsMap.put("CSM_PROJECT_NAME", getCsmProjectNameField().getText());
+		installerPropsMap.put("CACHE_PROTECTION_ELEMENTS", Boolean.valueOf(cacheProtectionElementsCheckBox.isSelected()).toString() );
+		
+		// CSM DB Connection properties
+		installerPropsMap.put("CSM_USE_JNDI_BASED_CONNECTION", Boolean.valueOf(csmUseJndiBasedConnectionCheckBox.isSelected()).toString() );
+		installerPropsMap.put("CSM_DB_JNDI_URL", getCsmDbJndiUrlField().getText());
+		installerPropsMap.put("CSM_DB_CONNECTION_URL", getCsmDbConnectionUrlField().getText());
+		installerPropsMap.put("CSM_DB_USERNAME", getCsmDbUsernameField().getText());
+		installerPropsMap.put("CSM_DB_PASSWORD", getCsmDbPasswordField().getText());
+		installerPropsMap.put("CSM_DB_DRIVER", getCsmDbDriverField().getText());
+		installerPropsMap.put("CSM_DB_DIALECT", getCsmDbDialectField().getText());
+		
+		// caGrid Authentication properties
+		installerPropsMap.put("ENABLE_GRID_LOGIN_MODULE", Boolean.valueOf(enableCaGridLoginModuleCheckBox.isSelected()).toString() );
+		installerPropsMap.put("CAGRID_LOGIN_MODULE_NAME", getCaGridLoginModuleNameField().getText());
+		installerPropsMap.put("CAGRID_AUTHENTICATION_SERVICE_URL", getCaGridAuthSvcUrlField().getText());
+		installerPropsMap.put("CAGRID_DORIAN_SERVICE_URL", getCaGridDorianSvcUrlField().getText());
+		
+		installerPropsMap.put("ENABLE_CSM_LOGIN_MODULE", Boolean.valueOf(enableCsmLoginModuleCheckBox.isSelected()).toString() );
+		installerPropsMap.put("SDK_GRID_LOGIN_SERVICE_NAME", getSdkGridLoginSvcNameField().getText());
+		installerPropsMap.put("SDK_GRID_LOGIN_SERVICE_URL", getSdkGridLoginSvcUrlField().getText());
+		
+		// Application Server Properties
+		installerPropsMap.put("SERVER_TYPE", getServerTypeComboBox().getSelectedItem().toString());
+		installerPropsMap.put("SERVER_URL", getServerUrlField().getText());
+
+		// Advanced Settings properties	
+		installerPropsMap.put("CACHE_PATH", getCachePathField().getText());
+		
+	    // TODO
+
 		return installerPropsMap;
 	}
 } 
