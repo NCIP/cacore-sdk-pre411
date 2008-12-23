@@ -1775,31 +1775,30 @@ COMMIT;
 /*!40000 ALTER TABLE `INTEGER_PRIMITIVE_KEY` ENABLE KEYS */;
 
 --
--- Definition of table `keychain`
+-- Definition of table `KEYCHAIN`
 --
 
-DROP TABLE IF EXISTS `keychain`;
-CREATE TABLE `keychain` (
+DROP TABLE IF EXISTS `KEYCHAIN`;
+CREATE TABLE `KEYCHAIN` (
   `ID` int(8) NOT NULL,
   `NAME` varchar(50) default NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `keychain`
+-- Dumping data for table `KEYCHAIN`
 --
 
-/*!40000 ALTER TABLE `keychain` DISABLE KEYS */;
+/*!40000 ALTER TABLE `KEYCHAIN` DISABLE KEYS */;
 SET AUTOCOMMIT=0;
-INSERT INTO `keychain` (`ID`,`NAME`) VALUES 
+INSERT INTO `KEYCHAIN` (`ID`,`NAME`) VALUES 
  (1,'Keychain_Name1'),
  (2,'Keychain_Name2'),
  (3,'Keychain_Name3'),
  (4,'Keychain_Name4'),
  (5,'Keychain_Name5');
 COMMIT;
-/*!40000 ALTER TABLE `keychain` ENABLE KEYS */;
-
+/*!40000 ALTER TABLE `KEYCHAIN` ENABLE KEYS */;
 
 --
 -- Definition of table `LATCH_KEY`
