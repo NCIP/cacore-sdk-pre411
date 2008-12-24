@@ -16,13 +16,13 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="false">
+	<bean id="Interceptor" class="gov.nih.nci.system.client.proxy.ApplicationServiceProxy" singleton="true">
 		<property name="proxyFactory">
-			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="false"/>
+			<bean class="gov.nih.nci.system.client.proxy.ProxyHelperImpl" singleton="true"/>
 		</property>
 	</bean>
 
-	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="true">
 		<property name="target" ref="ApplicationServiceImpl" />
 		<property name="interfaces" value="@SERVICE_INTERFACE@" />
 		<property name="interceptorNames">
