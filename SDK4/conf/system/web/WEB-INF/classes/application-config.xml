@@ -103,7 +103,7 @@
 		</property>
 	</bean>
 
-	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="false">
+	<bean id="ApplicationService" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="true">
 		<property name="target" ref="ApplicationServiceImpl" />
 		<property name="interfaces" value="@SERVICE_INTERFACE@" />
 		<property name="interceptorNames">
