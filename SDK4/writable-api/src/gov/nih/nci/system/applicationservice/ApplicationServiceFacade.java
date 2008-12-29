@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.beans.BeanUtils;
+
 
 @Deprecated
 public class ApplicationServiceFacade implements WritableApplicationService {
@@ -23,12 +23,6 @@ public class ApplicationServiceFacade implements WritableApplicationService {
 	
 	public ApplicationServiceFacade(WritableApplicationService appService){
 		this.appService = appService;
-		
-//		try {
-//			appService = (WritableApplicationService) ApplicationServiceProvider.getApplicationService();
-//		} catch (Exception e) {
-//			throw new RuntimeException("error loading application service", e);
-//		}
 	}
 	
 	protected ApplicationService getApplicationService() {
@@ -346,7 +340,6 @@ public class ApplicationServiceFacade implements WritableApplicationService {
 		Object result;
 		SDKQueryResult queryResult = appService.executeQuery(sdkQuery);
 		result=queryResult.getObjectResult();
-		BeanUtils.copyProperties(result, obj);			 
 		return result;
 	}
 
@@ -356,7 +349,6 @@ public class ApplicationServiceFacade implements WritableApplicationService {
 		Object result;
 		SDKQueryResult queryResult =  appService.executeQuery(sdkQuery);
 		result=queryResult.getObjectResult();
-		BeanUtils.copyProperties(result, obj);			 
 		return result;
 	}
 
