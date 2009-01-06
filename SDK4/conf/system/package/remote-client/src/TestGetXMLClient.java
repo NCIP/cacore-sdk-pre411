@@ -33,6 +33,7 @@ public class TestGetXMLClient extends TestClient
 		{
 			e.printStackTrace();
 		}
+		System.exit(0);
 	}
 	
 	public void testXML() throws Exception

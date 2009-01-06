@@ -37,6 +37,7 @@ public class TestXMLClient extends TestClient
 		{
 			e.printStackTrace();
 		}
+		System.exit(0);
 	}
 
 	public void testXMLUtility() throws Exception

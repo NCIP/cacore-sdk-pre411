@@ -24,6 +24,7 @@ public class TestClient
 		{
 			e.printStackTrace();
 		}
+		System.exit(0);
 	}
 	
 	public void testSearch() throws Exception
