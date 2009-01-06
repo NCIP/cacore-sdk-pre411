@@ -230,7 +230,7 @@ public class ClassCache {
 		for (int i=0; i<classFields.length;i++)
 		{
 			if(classFields[i].getName().equals(fieldName))
-				return getReturnType(classFields[i].getType().getName());
+				return getReturnType(classFields[i].getGenericType().toString());
 		}
 		
 		throw new Exception("Class " + className + " does not have an association with roleName: "+fieldName);
@@ -425,7 +425,7 @@ public class ClassCache {
 					String roleClassName;
 					String beanName;
 					
-					beanName = getReturnType(field.getType().getName());
+					beanName = getReturnType(field.getGenericType().toString());
 					log.debug("*** Class: " + className + "; fieldName: " + fieldName + "; beanName: " + beanName );
 					roleClassName = locateClass(beanName, packageName);
 					log.debug("roleClassName: " + roleClassName);
@@ -581,6 +581,10 @@ public class ClassCache {
 	
 	public String getReturnType(String fieldGenericType){
 		log.debug("fieldGenericType: " + fieldGenericType);
+		
+		if(fieldGenericType.startsWith("class "))
+			fieldGenericType = fieldGenericType.substring(6).trim();
+		
 		int begin = fieldGenericType.indexOf('<');
 		int end = fieldGenericType.indexOf('>'); 
 
