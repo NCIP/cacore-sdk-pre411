@@ -27,7 +27,7 @@
     
 	caCORE SDK 4.1.1
 
-    --  15 January 2009
+    --  12 January 2009
 	
     caCORE SDK 4.1 
 
