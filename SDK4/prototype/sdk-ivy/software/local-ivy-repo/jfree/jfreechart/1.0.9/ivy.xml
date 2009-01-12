@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl"
+                 href="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-xsl/ivy.xsl"?>
+<ivy-module version="1.3"            
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"       
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
+
+  <info organisation="jfree" 
+        module="jfreechart"
+        revision="1.0.9"/>
+        
+  <configurations>
+    <conf name="master"/>
+    <conf name="compile"/>
+    <conf name="runtime"/>
+  </configurations>
+  
+  <publications>
+    <artifact name="jfreechart" type="jar" conf="master, compile, runtime" />
+    <artifact name="jfreechart-experimental" type="jar" conf="master" />
+    <artifact name="jfreechart-swt" type="jar" conf="master" />
+    <artifact name="gnujaxp" type="jar" conf="master" />
+    <artifact name="swtgraphics2d" type="jar" conf="master" />
+    
+  </publications>
+  
+  <dependencies>               
+	  <dependency org="jfree"
+		  name="jcommons"
+		  rev="1.0.12"
+		  force="true"
+		  conf="master"/>
+	  <dependency org="itext"
+		  name="itext"
+		  rev="2.0.6"
+		  force="true"
+		  conf="master"/>
+  </dependencies>
+  
+</ivy-module>

@@ -41,6 +41,7 @@
 	<classpathentry kind="lib" path="software/target/bda-utils/umlgraph-4.8.jar"/>
 	<classpathentry kind="lib" path="software/target/bda-utils/xmlconfig-0.1.9.jar"/>
 	<classpathentry kind="lib" path="software/target/lib/ivy-2.0.0-beta2.jar"/>
+	<classpathentry kind="lib" path="test.java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl"
+                 href="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-xsl/ivy.xsl"?>
+<ivy-module version="1.3"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="mmbase" module="mmbase" revision="1.8.4" />
+	<configurations>
+		<conf name="compile"/>
+		<conf name="runtime" extends="compile" />
+	</configurations>
+	<publications>
+		<artifact name="mmbase" type="jar" conf="compile" />
+	</publications>
+	<dependencies>
+	</dependencies>
+</ivy-module>

@@ -1,0 +1,34 @@
+9
+
+dir
+721
+http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/junit
+http://gforge.nci.nih.gov/svnroot/commonlibrary
+
+
+
+2008-07-11T21:04:28.189919Z
+586
+kascice
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b791c72a-1b1d-4b3f-9613-408e9afd1e81
+
+addons
+dir
+
+junit
+dir
+

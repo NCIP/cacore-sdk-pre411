@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/commonlibrary/!svn/ver/244/trunk/ivy-repo/globus/ws-addressing/1.0
+END
+ivy.xml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/commonlibrary/!svn/ver/244/trunk/ivy-repo/globus/ws-addressing/1.0/ivy.xml
+END
+addressing-1.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/commonlibrary/!svn/ver/74/trunk/ivy-repo/globus/ws-addressing/1.0/addressing-1.0.jar
+END

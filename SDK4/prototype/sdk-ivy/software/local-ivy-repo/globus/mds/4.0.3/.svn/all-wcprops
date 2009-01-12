@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svnroot/commonlibrary/!svn/ver/244/trunk/ivy-repo/globus/mds/4.0.3
+END
+globus_wsrf_servicegroup-4.0.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/commonlibrary/!svn/ver/136/trunk/ivy-repo/globus/mds/4.0.3/globus_wsrf_servicegroup-4.0.3.jar
+END
+globus_wsrf_servicegroup_stubs-4.0.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svnroot/commonlibrary/!svn/ver/136/trunk/ivy-repo/globus/mds/4.0.3/globus_wsrf_servicegroup_stubs-4.0.3.jar
+END
+ivy.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svnroot/commonlibrary/!svn/ver/244/trunk/ivy-repo/globus/mds/4.0.3/ivy.xml
+END
+globus_wsrf_mds_aggregator-4.0.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svnroot/commonlibrary/!svn/ver/136/trunk/ivy-repo/globus/mds/4.0.3/globus_wsrf_mds_aggregator-4.0.3.jar
+END
+globus_wsrf_mds_aggregator_stubs-4.0.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svnroot/commonlibrary/!svn/ver/136/trunk/ivy-repo/globus/mds/4.0.3/globus_wsrf_mds_aggregator_stubs-4.0.3.jar
+END

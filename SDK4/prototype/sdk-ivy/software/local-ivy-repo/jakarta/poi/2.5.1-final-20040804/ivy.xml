@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl"
+                 href="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-xsl/ivy.xsl"?>
+<ivy-module version="1.3"            
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"       
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
+            
+  <!-- moved over to apache after 3.0.x -->            
+  <info organisation="jakarta"
+        module="poi"
+        revision="2.5.1-final-20040804"/>
+  
+  <configurations>
+    <conf name="master"/>
+    <conf name="compile"/>
+    <conf name="runtime"/>
+  </configurations>
+  
+  <publications>
+    <artifact name="poi" 
+              type="jar" 
+              conf="master, compile, runtime"/>
+  </publications>
+  
+  <dependencies>
+    <!-- ibiblio lists no dependencies and saw no substantive documentation
+         on poi site..... looking through cda though, the following
+         are shown as deps: xalan and commons-logging.  also the
+         class org.apache.poi.generator.FieldIterator is missing...? 
+         CommonsLogger and RecordGenerator use the above, and apparently
+         aren't used, so no deps are necessary -->
+  </dependencies>
+</ivy-module>

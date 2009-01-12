@@ -1,0 +1,55 @@
+9
+
+dir
+721
+http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/jboss
+http://gforge.nci.nih.gov/svnroot/commonlibrary
+
+
+
+2008-08-07T13:34:40.841846Z
+622
+hreinhart
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+b791c72a-1b1d-4b3f-9613-408e9afd1e81
+
+j2ee
+dir
+
+jbossall-client
+dir
+
+javax.servlet.jsp
+dir
+
+jboss-aop-client
+dir
+
+jboss-aspect-client
+dir
+
+jboss-ejb3x
+dir
+
+javax.servlet
+dir
+
+jboss-annotations-ejb3
+dir
+
+jboss-ejb3-client
+dir
+
