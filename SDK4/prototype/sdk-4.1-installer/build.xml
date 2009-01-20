@@ -1,0 +1,132 @@
+<!-- ======================================================================= -->
+<!-- caGrid Analytical Utilities build file                                  -->
+<!-- ======================================================================= -->
+<project name="configure_project" basedir="." default="usage">
+	<!-- Define the environment variable -->
+	<property environment="env"/>
+	<property name="skeleton.dir" location="${basedir}/skeleton"/>
+	<property name="skeleton.destination.dir.default" location="${user.home}/caGridServiceSkeleton"/>
+
+		<!--
+	<taskdef name="createSkeleton" classname="gov.nih.nci.cagrid.introduce.creator.SkeletonCreator">
+		<classpath>
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${extensions.lib.dir}">
+				<include name="*.jar"/>
+				<exclude name="${jars.prefixname}*.jar"/>
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.globus.location}/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+	</taskdef>
+	<taskdef name="postCreateSkeleton" classname="gov.nih.nci.cagrid.introduce.creator.SkeletonPostCreator">
+		<classpath>
+			<fileset dir="${build.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${extensions.lib.dir}">
+				<include name="*.jar"/>
+				<exclude name="${jars.prefixname}*.jar"/>
+			</fileset>
+			<fileset dir="${ant.library.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${ext.globus.location}/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</classpath>
+	</taskdef>
+	-->
+	<target name="usage">
+		<echo message="Not to be called directly.  This file contains utilities to be used to configure the SDK Installer project generation directory."/>
+	</target>
+	<target name="configureProject" description="Configure a project generation directory"
+		depends="checkInputProps, copySkeleton"> </target>
+	<target name="postCreateService" description="Will post create an anaytical skeleton deployment">
+		<postCreateSkeleton/>
+	</target>
+<!--
+	<target name="setActivePath">
+		<property name="active.skeleton.destination.dir" value="${skeleton.destination.dir}"/>
+	</target>
+-->
+	<target name="copySkeleton" depends="prepareSkeleton">
+		<copy todir="${skeleton.destination.dir}">
+			<fileset dir="${skeleton.dir}">
+				<include name="**\*"/>
+			</fileset>
+		</copy>
+		<!-- create the propertites files for this project-->
+<!--
+		<propertyfile file="${skeleton.destination.dir}/introduce.properties"
+			comment="Service introduce properties">
+			<entry key="skeleton.service.name" value="${skeleton.service.name}"/>
+			<entry key="skeleton.timestamp" value="0"/>
+			<entry key="skeleton.namespace.domain" value="${skeleton.namespace.domain}"/>
+			<entry key="skeleton.services.list" value="${skeleton.service.name}"/>
+			<entry key="skeleton.extensions" value="${skeleton.extensions}"/>
+			<entry key="skeleton.resource.options" value="${skeleton.resource.options}"/>
+		</propertyfile> 
+-->
+		<!-- call our creation ant task -->
+<!--		<createSkeleton/> -->
+		<!-- do replacements on the basic service files -->
+<!-- 			
+		<replace file="${skeleton.destination.dir}/namespace2package.mappings" token=":" value="\:"/>
+		<replace file="${skeleton.destination.dir}/namespace2package.mappings" token="\\:" value="\:"/>
+-->		
+	</target>
+	<target name="checkLoadPropertiesFile" if="introduce.properties">
+		<property file="${introduce.properties}"/>
+	</target>
+	<target name="checkInputProps" depends="checkLoadPropertiesFile">
+		<condition property="noInputNeeded">
+			<and>
+				<isset property="skeleton.destination.dir"/>
+			</and>
+		</condition>
+	</target>
+	<target name="prepareSkeleton" unless="noInputNeeded">
+		<input
+			message="Please enter the destination for your service skeleton    [${skeleton.destination.dir.default}]:"
+			addproperty="skeleton.destination.dir"
+			defaultvalue="${skeleton.destination.dir.default}"/>
+		<input
+			message="Please enter the name for this service (no spaces)    [${skeleton.service.name.default}]:"
+			addproperty="skeleton.service.name" defaultvalue="${skeleton.service.name.default}"/>
+		<input
+			message="Please enter the package you would like to use for this service's source.    [${skeleton.package.default}]:"
+			addproperty="skeleton.package" defaultvalue="${skeleton.package.default}"/>
+		<input
+			message="Please enter the package directory you would like to use for this service's    source. (this should match the package name above)    [${skeleton.package.dir.default}]:"
+			addproperty="skeleton.package.dir" defaultvalue="${skeleton.package.dir.default}"/>
+		<input
+			message="Please enter the namespace domain of the introduce.    [${skeleton.namespace.domain.default}]:"
+			addproperty="skeleton.namespace.domain"
+			defaultvalue="${skeleton.namespace.domain.default}"/>
+		<input
+			message="Please enter any service extensions (separate by commas).    [${skeleton.extensions.default}]:"
+			addproperty="skeleton.extensions" defaultvalue="${skeleton.extensions.default}"/>
+		<input
+			message="Please enter any resource options (separate by commas).    [${skeleton.resource.options.default}]:"
+			addproperty="skeleton.resource.options" defaultvalue="${skeleton.resource.options.default}"/>
+	</target>
+</project>

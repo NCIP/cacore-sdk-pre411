@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SDK Installer" basedir="." default="build-system">
+
+	<description>Build script for caCORE SDK</description>
+
+	<!--***********************************************************************
+	*** Load the build properties from the file
+	*********************************************************************** -->
+	<property file="installer.properties"  />
+	
+	<target name="build-system" depends="clean-all" description="Generates a complete system">
+		<ant antfile="${SDK_INSTALL_DIR}/build.xml" target="build-system" inheritall="false" inheritrefs="false">
+			<property file="installer.properties"/>
+		</ant>
+	</target>
+	
+	<target name="clean-all"  description="Cleans the child projects and generated directories and files">
+		<delete dir="${output.dir}"/>
+		<ant antfile="${SDK_INSTALL_DIR}/build.xml" target="clean-all" inheritall="false" inheritrefs="false">
+			<property file="installer.properties"/>
+		</ant>
+	</target>
+
+</project>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="caGridEnvironmentInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key=""  value=""/>
+				<entry key="Training" value="https://dorian.training.cagrid.org:8443/wsrf/services/cagrid/Dorian"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<!-- Note: 	if you change the keys within this map, make sure to   		-->
+	<!--       	synchronize the changes within the following maps as well:  -->
+	<!--  																	-->
+	<!-- 		*  databaseDriverInfo 				 						-->
+	<!--  		*  databaseDialectInfo										-->
+	<bean id="databaseTypeInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="MySQL" value="mysql"/>
+				<entry key="Oracle"  value="oracle"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="databaseDriverInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="MySQL" value="org.gjt.mm.mysql.Driver"/>
+				<entry key="Oracle"  value="oracle.jdbc.driver.OracleDriver"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="databaseDialectInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="MySQL" value="org.hibernate.dialect.MySQLDialect"/>
+				<entry key="Oracle"  value="org.hibernate.dialect.OracleDialect"/>
+			</map>
+		</constructor-arg>
+	</bean>
+		
+	<bean id="databaseConnectionUrlInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="MySQL" value="jdbc:mysql://&lt;&lt;hostname&gt;&gt;:&lt;&lt;port&gt;&gt;/&lt;&lt;schema&gt;&gt;"/>
+				<entry key="Oracle"  value="jdbc:oracle:thin:@&lt;&lt;hostname&gt;&gt;:&lt;&lt;port&gt;&gt;:&lt;&lt;schema&gt;&gt;"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="modelFileTypeInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key=""  value=""/>
+				<entry key="ArgoUML" value="ARGO"/>
+				<entry key="Enterprise Architect" value="EA"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="authLoginModuleTypeInfo" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="CSM Login" value=""/>
+				<entry key="caGrid Login"  value=""/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+</beans>
