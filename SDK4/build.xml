@@ -402,7 +402,7 @@
 	</condition>
 
 	<condition property="MODEL_FILE_IN_DIRECTORY" value="${MODEL_FILE_PATH}" else="models/${MODEL_FILE}">
-		<isset property="${MODEL_FILE_PATH}"/>
+		<isset property="MODEL_FILE_PATH"/>
 	</condition>
 
 	<!--***********************************************************************
