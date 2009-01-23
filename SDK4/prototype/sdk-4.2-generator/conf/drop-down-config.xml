@@ -61,13 +61,4 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="caGridAuthLoginModuleTypeInfo" class="java.util.HashMap">
-		<constructor-arg>
-			<map>
-				<entry key="CSM Login Module" value="CSM"/>
-				<entry key="caGrid Login Module"  value="caGrid"/>
-			</map>
-		</constructor-arg>
-	</bean>
-	
 </beans>

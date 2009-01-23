@@ -102,7 +102,6 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     
     // Maps containing drop-down list configuration information
     private Map<String,String> caGridEnvironmentOptionsMap = null;
-    private Map<String,String> caGridAuthLoginModuleOptionsMap = null;
     private Map<String,String> databaseTypeOptionsMap = null;
     private Map<String,String> databaseDriverOptionsMap = null;
     private Map<String,String> databaseDialectOptionsMap = null;
@@ -312,7 +311,8 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     private JTextField csmDbDialectField = null;
     
     //caGRID Authentication Settings Panel Label Definitions
-    private JLabel caGridAuthLoginModuleLabel = null;
+    private JLabel enableCaGridLoginModuleLabel = null;
+    //private JLabel caGridAuthLoginModuleLabel = null;
     private JLabel caGridEnvironmentLabel = null;
     private JLabel caGridLoginModuleNameLabel = null;
     private JLabel caGridAuthSvcUrlLabel = null;
@@ -321,7 +321,8 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     private JLabel sdkGridLoginSvcUrlLabel = null;
     
 	//caGRID Authentication Settings Panel Component Definitions
-    private JComboBox  caGridAuthLoginModuleComboBox = null;
+    private JCheckBox enableCaGridLoginModuleCheckBox = null;
+    //private JComboBox  caGridAuthLoginModuleComboBox = null;
     private JComboBox  caGridEnvironmentComboBox = null;
     private JTextField caGridLoginModuleNameField = null;
     private JTextField caGridAuthSvcUrlField = null;
@@ -519,15 +520,6 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			caGridEnvironmentOptionsMap = (Map<String,String>)ObjectFactory.getObject("caGridEnvironmentInfo");
 		} catch (Exception e) {
 			System.out.println("ERROR:  Unable to load the caGrid Environment drop-down information");
-			e.printStackTrace();
-		}
-		
-    	//caGrid Auth Login Module Options Drop-down
-		// TODO :: use List instead?  No mapping is currently being used
-		try {
-			caGridAuthLoginModuleOptionsMap = (Map<String,String>)ObjectFactory.getObject("caGridAuthLoginModuleTypeInfo");
-		} catch (Exception e) {
-			System.out.println("ERROR:  Unable to load the caGrid Authentication Login Module drop-down information");
 			e.printStackTrace();
 		}
 		
@@ -1153,7 +1145,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     }
     
     protected void toggleCaGridLoginFields() {
-		if (caGridAuthLoginModuleComboBox.getSelectedItem().toString().equalsIgnoreCase("caGrid Login Module")){
+		if (enableCaGridLoginModuleCheckBox.isSelected()){
 			caGridEnvironmentComboBox.setEnabled(true);
 			caGridAuthSvcUrlField.setEnabled(true);
 			sdkGridLoginSvcNameField.setEnabled(true);
@@ -2428,7 +2420,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 		if (enableInstanceLevelSecurityCheckBox.isSelected()){
 			JOptionPane.showMessageDialog(
 					this,
-					"Instance level Security requires that the CSM tables be present in the same schema as the model tables.  "
+					"Instance Level Security requires that the CSM tables be present in the same schema as the model tables.  "
 					+ "Make sure this is the case.");
 		}
     }
@@ -2875,37 +2867,28 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     }
     
     /**
-     * This method initializes the caGrid Environment Combo Box
+     * This method initializes the Validate Logical Model Check Box
      * 
-     * @return javax.swing.JTextField
-     */         
-    private JComboBox getCaGridAuthLoginModuleComboBox() {
-    	if (caGridAuthLoginModuleComboBox == null) {
-    		caGridAuthLoginModuleComboBox = new JComboBox();
-    		
-        	if (caGridAuthLoginModuleOptionsMap!=null){
-            	Iterator<String> iter = caGridAuthLoginModuleOptionsMap.keySet().iterator();
-            	
-            	while (iter.hasNext()){
-            		caGridAuthLoginModuleComboBox.addItem((String)iter.next());
-            	}
-        	}
-        	
-        	if ("caGrid Login".equalsIgnoreCase(deployPropsMgr.getDeployPropertyValue("CAGRID_AUTH_LOGIN_MODULE_TYPE")))
-        		caGridAuthLoginModuleComboBox.setSelectedItem("caGrid Login");
-        	else
-        		caGridAuthLoginModuleComboBox.setSelectedItem("CSM Login");
-
-        	caGridAuthLoginModuleComboBox.addActionListener(new ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getEnableCaGridLoginModuleCheckBox() {
+        if (enableCaGridLoginModuleCheckBox == null) {
+        	enableCaGridLoginModuleCheckBox = new JCheckBox();
+        	enableCaGridLoginModuleCheckBox.setToolTipText("Enable caGrid Authorization Login Module?");
+        	enableCaGridLoginModuleCheckBox.setHorizontalAlignment(SwingConstants.LEADING);
+        	enableCaGridLoginModuleCheckBox.setSelected(Boolean.parseBoolean(deployPropsMgr.getDeployPropertyValue("ENABLE_GRID_LOGIN_MODULE")));
+        	enableCaGridLoginModuleCheckBox.setHorizontalTextPosition(SwingConstants.LEFT);
+			
+        	enableCaGridLoginModuleCheckBox.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
                 	toggleCaGridLoginFields();
                     validateInput();
-                }
-            });
+				}
+        	});
 
-    		
-    	}
-    	return caGridAuthLoginModuleComboBox;
+        	enableCaGridLoginModuleCheckBox.addFocusListener(new FocusChangeHandler());
+        }
+        return enableCaGridLoginModuleCheckBox;
     }
     
     /**
@@ -3204,7 +3187,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints11.gridx = 1;
 			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints11.gridy = 1;
-			gridBagConstraints11.weighty = 1.0D;
+			//gridBagConstraints11.weighty = 1.0D;
 			gridBagConstraints11.weightx = 1.0D;  
 			gridBagConstraints11.gridwidth = 2;
 
@@ -3215,7 +3198,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints20.gridx = 0;
 			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints20.gridwidth = 3;
-			gridBagConstraints20.weighty = 1.0D;
+			//gridBagConstraints20.weighty = 1.0D;
 			gridBagConstraints20.weightx = 1.0D;  
 	    
 		    enableSecurityLabel = new JLabel();
@@ -3256,7 +3239,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints11.gridx = 1;
 			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints11.gridy = 1;
-			gridBagConstraints11.weighty = 1.0D;
+			//gridBagConstraints11.weighty = 0.5D; //Non-standard 1.0 setting
 			gridBagConstraints11.weightx = 1.0D;  
 			gridBagConstraints11.gridwidth = 2;
 
@@ -3267,7 +3250,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints20.gridx = 0;
 			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints20.gridwidth = 3;
-			gridBagConstraints20.weighty = 1.0D;
+			//gridBagConstraints20.weighty = 1.0D; //Non-standard 1.0 setting
 			gridBagConstraints20.weightx = 1.0D;  
 
 		    enableWritableApiExtensionLabel = new JLabel();
@@ -3370,7 +3353,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints11.gridx = 1;
 			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints11.gridy = 1;
-			gridBagConstraints11.weighty = 1.0D;  // so that the CLM sub panel has priority
+			//gridBagConstraints11.weighty = 1.0D;  // so that the CLM sub panel has priority
 			gridBagConstraints11.weightx = 1.0D;  
 			gridBagConstraints11.gridwidth = 2;
 			
@@ -3381,18 +3364,8 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints20.gridx = 0;
 			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints20.gridwidth = 3;
-			gridBagConstraints20.weighty = 1.0D;
+			//gridBagConstraints20.weighty = 1.0D;
 			gridBagConstraints20.weightx = 1.0D;  
-			
-			GridBagConstraints gridBagConstraints30 = new GridBagConstraints();
-			gridBagConstraints30.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			gridBagConstraints30.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints30.gridy = 2;
-			gridBagConstraints30.gridx = 0;
-			gridBagConstraints30.insets = new java.awt.Insets(2, 2, 2, 2);
-			gridBagConstraints30.gridwidth = 3;
-			gridBagConstraints30.weighty = 1.0D;
-			gridBagConstraints30.weightx = 1.0D;
 
 		    enableCommonLoggingModuleLabel = new JLabel();
 		    enableCommonLoggingModuleLabel.setText("Enable Logging?");
@@ -4499,9 +4472,9 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
 			gridBagConstraints11.gridx = 1;
-			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.insets = new java.awt.Insets(20, 2, 20, 2);
 			gridBagConstraints11.gridy = 1;
-			gridBagConstraints11.weighty = 1.0D;
+			//gridBagConstraints11.weighty = 1.0D;
 			gridBagConstraints11.weightx = 1.0D;  
 			gridBagConstraints11.gridwidth = 2;
 			
@@ -4517,7 +4490,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints21.gridx = 1;
 			gridBagConstraints21.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints21.gridy = 2;
-			gridBagConstraints21.weighty = 1.0D;
+			//gridBagConstraints21.weighty = 1.0D;
 			gridBagConstraints21.weightx = 1.0D;  
 			gridBagConstraints21.gridwidth = 2;
 			
@@ -4540,7 +4513,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			GridBagConstraints gridBagConstraints50 = new GridBagConstraints();
 			gridBagConstraints50.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			gridBagConstraints50.anchor = java.awt.GridBagConstraints.WEST;
-			gridBagConstraints50.gridy = 4;
+			gridBagConstraints50.gridy = 5;
 			gridBagConstraints50.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints50.gridx = 0;
 			gridBagConstraints50.gridwidth = 3;
@@ -4778,7 +4751,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints11.gridx = 1;
 			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints11.gridy = 1;
-			gridBagConstraints11.weighty = 1.0D;
+			//gridBagConstraints11.weighty = 1.0D;
 			gridBagConstraints11.weightx = 1.0D;  
 			gridBagConstraints11.gridwidth = 2;
         
@@ -4789,11 +4762,11 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints20.gridx = 0;
 			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints20.gridwidth = 3;
-			gridBagConstraints20.weighty = 1.0D;
+			//gridBagConstraints20.weighty = 1.0D;
 			gridBagConstraints20.weightx = 1.0D;  
 
-			caGridAuthLoginModuleLabel = new JLabel();
-			caGridAuthLoginModuleLabel.setText("Select Login Module Type:");
+			enableCaGridLoginModuleLabel = new JLabel();
+			enableCaGridLoginModuleLabel.setText("Enable caGrid Login Module?");
 
 		    caGridAuthSettingsPanel = new JPanel();
 		    caGridAuthSettingsPanel.setLayout(new GridBagLayout());
@@ -4801,8 +4774,8 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 					javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
 					javax.swing.border.TitledBorder.DEFAULT_POSITION, null, PortalLookAndFeel.getPanelLabelColor()));
 		    
-		    caGridAuthSettingsPanel.add(caGridAuthLoginModuleLabel, gridBagConstraints10);
-		    caGridAuthSettingsPanel.add(getCaGridAuthLoginModuleComboBox(), gridBagConstraints11);
+		    caGridAuthSettingsPanel.add(enableCaGridLoginModuleLabel, gridBagConstraints10);
+		    caGridAuthSettingsPanel.add(getEnableCaGridLoginModuleCheckBox(), gridBagConstraints11);
 		    caGridAuthSettingsPanel.add(getCaGridAuthLoginModuleSettingsSubPanel(), gridBagConstraints20);
 			
 		    caGridAuthSettingsPanel.validate();
@@ -4991,16 +4964,16 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints11.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			gridBagConstraints11.anchor = java.awt.GridBagConstraints.WEST;
 			gridBagConstraints11.gridx = 1;
-			gridBagConstraints11.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints11.insets = new java.awt.Insets(10, 2, 10, 2);
 			gridBagConstraints11.gridy = 1;
-			gridBagConstraints11.weighty = 1.0D;
+			//gridBagConstraints11.weighty = 1.0D;
 			gridBagConstraints11.weightx = 1.0D;  
 			gridBagConstraints11.gridwidth = 2;
 
 			GridBagConstraints gridBagConstraints20 = new GridBagConstraints();
 			gridBagConstraints20.anchor = java.awt.GridBagConstraints.WEST;
 			gridBagConstraints20.gridy = 2;
-			gridBagConstraints20.insets = new java.awt.Insets(2, 2, 2, 2);
+			gridBagConstraints20.insets = new java.awt.Insets(10, 2, 10, 2);
 			gridBagConstraints20.gridx = 0;            
 
 			GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
@@ -5010,7 +4983,7 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			gridBagConstraints21.gridx = 1;
 			gridBagConstraints21.insets = new java.awt.Insets(2, 2, 2, 2);
 			gridBagConstraints21.gridwidth = 2;
-			gridBagConstraints21.weighty = 1.0D;
+			//gridBagConstraints21.weighty = 1.0D;
 			gridBagConstraints21.weightx = 1.0D;  
 	
 			serverTypeLabel = new JLabel();
@@ -5151,10 +5124,8 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 		generatorPropsMap.put("CSM_DB_DIALECT", getCsmDbDialectField().getText());
 		
 		// caGrid Authentication properties
-		String cagridAuthLoginModuleType = getCaGridAuthLoginModuleComboBox().getSelectedItem().toString();
-		generatorPropsMap.put("CAGRID_AUTH_LOGIN_MODULE_TYPE", cagridAuthLoginModuleType);
-		generatorPropsMap.put("ENABLE_GRID_LOGIN_MODULE", Boolean.valueOf(cagridAuthLoginModuleType.equalsIgnoreCase("caGrid Login Module")).toString() );
-		generatorPropsMap.put("ENABLE_CSM_LOGIN_MODULE", Boolean.valueOf(!cagridAuthLoginModuleType.equalsIgnoreCase("caGrid Login Module")).toString() );
+		generatorPropsMap.put("ENABLE_GRID_LOGIN_MODULE", Boolean.valueOf(enableCaGridLoginModuleCheckBox.isSelected()).toString() );
+		generatorPropsMap.put("ENABLE_CSM_LOGIN_MODULE", Boolean.valueOf(!enableCaGridLoginModuleCheckBox.isSelected()).toString() );
 		generatorPropsMap.put("CAGRID_LOGIN_MODULE_NAME", getCaGridLoginModuleNameField().getText());
 		generatorPropsMap.put("CAGRID_AUTHENTICATION_SERVICE_URL", getCaGridAuthSvcUrlField().getText());
 		generatorPropsMap.put("CAGRID_DORIAN_SERVICE_URL", getCaGridDorianSvcUrlField().getText());
