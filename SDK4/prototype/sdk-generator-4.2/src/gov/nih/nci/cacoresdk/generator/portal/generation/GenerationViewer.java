@@ -694,9 +694,14 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
     				result.add(new SimpleValidationMessage(CLM_PROJECT_NAME + " must not be blank.", Severity.ERROR, CLM_PROJECT_NAME));
     			}
 
-    			if (!ValidationUtils.isNotBlank(this.getClmDbConnectionUrlField().getText())) {
+    			String clmDbConnectionUrlField = this.getClmDbConnectionUrlField().getText();
+    			if (!ValidationUtils.isNotBlank(clmDbConnectionUrlField)) {
     				result.add(new SimpleValidationMessage(CLM_DB_CONNECTION_URL + " must not be blank.", Severity.ERROR, CLM_DB_CONNECTION_URL));
     			}
+    			
+        		if (clmDbConnectionUrlField.indexOf('<') > 1 || clmDbConnectionUrlField.indexOf('>') > 1) {
+        			result.add(new SimpleValidationMessage(CLM_DB_CONNECTION_URL + " information is incomplete.  Make sure hostname, port and schema information is correct.", Severity.ERROR, CLM_DB_CONNECTION_URL));
+        		}
 
     			if (!ValidationUtils.isNotBlank(this.getClmDbUsernameField().getText())) {
     				result.add(new SimpleValidationMessage(CLM_DB_USERNAME + " must not be blank.", Severity.ERROR, CLM_DB_USERNAME));
