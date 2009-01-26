@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="caCore SDK Generator" basedir="." default="build-system">
 
-	<description>Build script for caCORE SDK</description>
+	<description>Build script for caCORE SDK Generator</description>
 
 	<!--***********************************************************************
 	*** Load the build properties from the file
