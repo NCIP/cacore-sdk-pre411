@@ -1,34 +1,0 @@
-9
-
-dir
-721
-http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-repo/jfree
-http://gforge.nci.nih.gov/svnroot/commonlibrary
-
-
-
-2008-07-10T03:11:10.706591Z
-579
-narram
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-b791c72a-1b1d-4b3f-9613-408e9afd1e81
-
-jcommons
-dir
-
-jfreechart
-dir
-
