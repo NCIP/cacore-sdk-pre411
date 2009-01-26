@@ -367,15 +367,17 @@ public class GenerationViewer extends GenerationViewerBaseComponent {
 			return;
 		}
         
-        //initialize properties from existing project properties file, if it exists
-        File projectDir = new File(projectDirPath);
-        if (projectDir.exists()){
-        	String generatorPropsPath = projectDirPath+File.separator+GENERATOR_PROPERTIES_FILE;
-        	
-        	File generatorProps = new File(generatorPropsPath);
-        	if (generatorProps.exists())
-        		deployPropsMgr = new DeployPropertiesManager(generatorPropsPath);
-        } 
+		if (projectDirPath!=null){
+			//initialize properties from existing project properties file, if it exists
+			File projectDir = new File(projectDirPath);
+			if (projectDir.exists()){
+				String generatorPropsPath = projectDirPath+File.separator+GENERATOR_PROPERTIES_FILE;
+
+				File generatorProps = new File(generatorPropsPath);
+				if (generatorProps.exists())
+					deployPropsMgr = new DeployPropertiesManager(generatorPropsPath);
+			} 
+		}
         
         //if project properties file does not exist, use default generator template properties
         if (deployPropsMgr==null){
