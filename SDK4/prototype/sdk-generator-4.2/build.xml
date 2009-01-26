@@ -1,0 +1,144 @@
+<!-- ======================================================================= -->
+<!-- caCore Sdk Generator Portal build file                                  -->
+<!-- ======================================================================= -->
+<project name="SDK Generator" basedir="." default="run">
+	
+	<!--***********************************************************************
+	*** Define the Environment Variable
+	*********************************************************************** -->
+	<property environment="env"/>
+	
+	<!--***********************************************************************
+	*** Load the build properties from the file
+	*********************************************************************** -->
+	<property file="build.properties" />
+	
+	<!--***********************************************************************
+	*** CLASSPATH AND UNIX-STYLE BASEDIR PROPERTIES
+	*********************************************************************** -->
+	<path id="runtime">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${dist.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="compiletime">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- set basedir.url = basedir as unix style pathname, regardless of platform -->
+	<path id="basedir.path">
+		<pathelement path="${basedir}" />
+	</path>
+
+	<pathconvert targetos="unix" property="basedir.unix" refid="basedir.path" />
+
+	<macrodef name="SDKecho">
+		<attribute name="message" default="..." />
+		<sequential>
+			<echo>*****************************************************************</echo>
+			<echo>***  @{message}</echo>
+			<echo>*****************************************************************</echo>
+		</sequential>
+	</macrodef>
+	
+	<!--***********************************************************************
+	*** Prepares the directory structure
+	*********************************************************************** -->
+	<target name="init" >
+		<SDKecho message="${ant.project.name}: Preparing directories"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+	</target>
+
+	<!--***********************************************************************
+	*** Cleans the generated directories and files
+	*********************************************************************** -->
+	<target name="clean" description="Cleans the generated directories and files">
+		<SDKecho message="${ant.project.name}: Cleaning directories and files"/>
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<!--***********************************************************************
+	*** Compiles the classes
+	*********************************************************************** -->
+	<target name="compile" depends="clean,init" description="Compiles the generated beans">
+		<SDKecho message="${ant.project.name}: Compiling the generated beans"/>
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="true">
+			<include name="**/*.java"/>
+			<classpath refid="compiletime"/>
+		</javac>
+	</target>
+
+	<!--***********************************************************************
+	*** Runs the Generator 
+	*********************************************************************** -->
+	<target name="run" depends="prepare-generator-files" description="Runs the Generator ">
+		<SDKecho message="${ant.project.name}: Running the SDK Generator"/>
+		<java classname="gov.nih.nci.cacoresdk.generator.portal.SdkGeneratorPortal" fork="true">
+			<classpath refid="runtime" />
+		</java>
+	</target>
+	
+	<!--***********************************************************************
+	*** Packages the Generator core files 
+	*********************************************************************** -->
+	<target name="prepare-generator-files" depends="compile" description="Packages the Generator runtime files">
+		<SDKecho message="${ant.project.name}: Packaging the Generator runtime files"/>
+		<jar destfile="${dist.dir}\${generator.jar.file}" basedir="${build.dir}">
+			<manifest>
+				<attribute name="Generated-By" value="caCORE SDK Generator"/>
+				<attribute name="Version" value="${VERSION}"/>
+				<attribute name="Main-Class" value="gov.nih.nci.cacoresdk.generator.portal.SdkGeneratorPortal" />
+			</manifest>
+			<fileset dir="${build.dir}" includes="**/*.java" />
+			<fileset dir="${src.dir}" includes="**/*" />
+			<fileset dir="${conf.dir}" includes="**/*" />
+		</jar>
+	</target>
+
+	<!--***********************************************************************
+	*** Usage 
+	*********************************************************************** -->
+	<target name="usage">
+		<echo message="Not to be called directly.  This file contains utilities to be used to configure the SDK Generator project generation directory."/>
+	</target>
+	
+	<!--***********************************************************************
+	*** Configure the project generation directory 
+	*********************************************************************** -->	
+	<target name="configureProject" description="Configure a project generation directory"
+		depends="checkInputProps, copySkeleton"> </target>
+	
+	<!--***********************************************************************
+	*** Configure the project generation directory 
+	*********************************************************************** -->
+	<target name="copySkeleton" depends="prepareSkeleton">
+		<delete file="${skeleton.destination.dir}/build.xml"/>
+		<copy todir="${skeleton.destination.dir}">
+			<fileset dir="${skeleton.dir}">
+				<include name="**\*"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="checkInputProps">
+		<condition property="noInputNeeded">
+			<and>
+				<isset property="skeleton.destination.dir"/>
+			</and>
+		</condition>
+	</target>
+	<target name="prepareSkeleton" unless="noInputNeeded">
+		<input
+			message="Please enter the destination directory where your project should be generated: [${skeleton.destination.dir.default}]:"
+			addproperty="skeleton.destination.dir"
+			defaultvalue="${skeleton.destination.dir.default}"/>
+	</target>
+</project>
