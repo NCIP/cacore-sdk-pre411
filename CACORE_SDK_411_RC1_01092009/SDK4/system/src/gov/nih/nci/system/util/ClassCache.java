@@ -430,11 +430,11 @@ public class ClassCache {
 					roleClassName = locateClass(beanName, packageName);
 					log.debug("roleClassName: " + roleClassName);
 					if(roleClassName != null){
-						roleNames.add(roleClassName);
+						roleNames.add(fieldName + " (" + roleClassName+")");
 					}                   
 				} else if(!type.startsWith("java")) {
 					if(type.startsWith(packageName)) {
-						roleNames.add(type);
+						roleNames.add(fieldName + " (" + type+")");
 					} else {
 						int counter = 0;
 						for(int x=0; x<packageName.length(); x++){
@@ -445,7 +445,7 @@ public class ClassCache {
 						String pkg = packageName.substring(0, packageName.lastIndexOf("."));
 						for(int x=counter; x>1; x--){
 							if(type.startsWith(pkg)){
-								roleNames.add(type);
+								roleNames.add(fieldName + " (" + type+")");
 								break;
 							}
 							pkg = pkg.substring(0, pkg.lastIndexOf("."));

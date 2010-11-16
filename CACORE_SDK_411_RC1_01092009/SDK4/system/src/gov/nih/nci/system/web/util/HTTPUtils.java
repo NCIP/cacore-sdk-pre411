@@ -1,7 +1,12 @@
 package gov.nih.nci.system.web.util;
 
+import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.ApplicationService;
 import gov.nih.nci.system.client.proxy.ListProxy;
+import gov.nih.nci.system.dao.orm.HibernateConfigurationHolder;
+import gov.nih.nci.system.dao.orm.translator.NestedCriteria2HQL;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
+import gov.nih.nci.system.query.nestedcriteria.NestedCriteria;
 import gov.nih.nci.system.util.ClassCache;
 import gov.nih.nci.system.util.SystemConstant;
 
@@ -46,6 +51,7 @@ public class HTTPUtils implements Serializable{
 
 	private ApplicationService applicationService;
 	private ClassCache classCache;
+	private HibernateConfigurationHolder configurationHolder;
 
 	private String query;
 	private String startIndex = "0";
@@ -64,6 +70,7 @@ public class HTTPUtils implements Serializable{
 		WebApplicationContext ctx =  WebApplicationContextUtils.getWebApplicationContext(context);
 		this.classCache = (ClassCache)ctx.getBean("ClassCache");
 		this.applicationService = (ApplicationService)ctx.getBean("ApplicationServiceImpl");
+		this.configurationHolder  = (HibernateConfigurationHolder) ctx.getBean("HibernateConfigHolder");
 		
 		Properties systemProperties = (Properties) ctx.getBean("WebSystemProperties");
 		
@@ -291,12 +298,6 @@ public class HTTPUtils implements Serializable{
 	 */
 	private String getSearchClassNames(String searchClasses, String packageName){
 		String path = "";
-
-		/**
-    if(packageName != null && !(targetClassName.indexOf(SystemConstant.DOT)>0) && (targetClassName.indexOf(",")<0)){
-        targetClassName = packageName +SystemConstant.DOT+targetClassName;
-    }
-		 **/
 		String delimiter = null;
 		if(searchClasses.indexOf(SystemConstant.FORWARD_SLASH)>0){
 			delimiter = SystemConstant.FORWARD_SLASH_STR;
@@ -844,7 +845,7 @@ public class HTTPUtils implements Serializable{
 				counter = Integer.parseInt(resultCounter);
 			}
 			if (roleName != null){
-				results = applicationService.getAssociation(criteria, roleName);
+				results = getAssociation(criteria, roleName);
 			} else {
 				results = applicationService.search(searchPath, criteria);
 			}
@@ -1050,7 +1051,56 @@ public class HTTPUtils implements Serializable{
 		recordNum++;
 		out.println("</TR>");
 	}
+	
+	public <E> List<E> getAssociation(Object source, String associationName) throws ApplicationException {
+		String assocType = "";
+		try{
+			assocType = classCache.getAssociationType(source.getClass(),associationName);
+		}catch(Exception e)
+		{
+			throw new ApplicationException(e);
+		}
+		String hql = "";
+		boolean isCollection = classCache.isCollection(source.getClass().getName(), associationName);
+		if(isCollection)
+			//hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where dest in elements(src."+associationName+") and src=?";
+			hql = "select dest from "+source.getClass().getName()+" as src inner join src."+associationName+" dest";
+		else
+			hql = "select dest from "+assocType+" as dest,"+source.getClass().getName()+" as src where src."+associationName+".id=dest.id";
 
+	
+		NestedCriteria nestedCriteria = new NestedCriteria();
+		nestedCriteria.setSourceObjectName(source.getClass().getName());
+		nestedCriteria.setTargetObjectName(source.getClass().getName());
+		
+		List sourceObjectList = new ArrayList();
+		sourceObjectList.add(source);
+		nestedCriteria.setSourceObjectList(sourceObjectList);
+		
+		String srcAlias = "src";
+		NestedCriteria2HQL criteria2hql = new NestedCriteria2HQL(nestedCriteria, configurationHolder.getConfiguration(), false,srcAlias);
+		
+		HQLCriteria hqlCriteria=null;
+		try {
+			hqlCriteria = criteria2hql.translate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		int beginIndex = hqlCriteria.getHqlString().lastIndexOf("where");
+		if (beginIndex > 0){
+			if (isCollection)
+				hql += " where ";
+			else
+				hql += " and ";
+			
+			hql += hqlCriteria.getHqlString().substring(beginIndex + 6);	
+		}
+		
+		hqlCriteria.setHqlString(hql);
+		
+		return applicationService.query(hqlCriteria);
+	}
 
 }
 

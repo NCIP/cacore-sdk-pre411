@@ -28,12 +28,22 @@ public class NestedCriteria2HQL
 	private static Logger log = Logger.getLogger(NestedCriteria2HQL.class);
 
 	private List paramList = new ArrayList();
+	
+	private String srcAlias;
 
-	public NestedCriteria2HQL(NestedCriteria crit, Configuration cfg,boolean caseSensitive)
+	public NestedCriteria2HQL(NestedCriteria crit, Configuration cfg, boolean caseSensitive)
 	{
 		this.criteria = crit;
 		this.cfg = cfg;
 		this.caseSensitive = caseSensitive;
+	}
+	
+	public NestedCriteria2HQL(NestedCriteria crit, Configuration cfg, boolean caseSensitive, String srcAlias)
+	{
+		this.criteria = crit;
+		this.cfg = cfg;
+		this.caseSensitive = caseSensitive;
+		this.srcAlias = srcAlias;
 	}
 	
 	public HQLCriteria translate() throws Exception
@@ -610,7 +620,9 @@ public class NestedCriteria2HQL
 
 	private String getObjectCriterion(Object obj, Configuration cfg, boolean skipAssociations) throws Exception
 	{
-		String srcAlias = getAlias(obj.getClass().getName(),1);
+		String srcAlias=this.srcAlias;
+		if (this.srcAlias == null)
+			srcAlias = getAlias(obj.getClass().getName(), 1);
 		
 		StringBuffer hql = new StringBuffer();
 		HashMap associationCritMap = null;

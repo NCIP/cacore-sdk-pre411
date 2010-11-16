@@ -59,7 +59,18 @@ public class Result extends BaseActionSupport {
 		   	log.debug("selectedSearchDomain: "+ selectedSearchDomain);
 		   	   	
 		   	if(selectedSearchDomain != null && !selectedSearchDomain.equals("Please choose"))
-		   	{ query +=selectedSearchDomain + "&";
+		   	{ 
+		   		String rolename=null;
+		   		if (!selectedSearchDomain.equalsIgnoreCase(className)){
+		   			rolename = getRolename(selectedSearchDomain);
+		   			selectedSearchDomain = removeRolename(selectedSearchDomain);
+		   		}
+		   		
+		   		query +=selectedSearchDomain + "&";
+		   		
+		   		if (rolename != null && rolename.length() > 0){
+		   			query += "rolename="+rolename + "&";
+		   		}
 		   	
 			   	if(className != null && !className.equals("Please choose"))
 			   	{   query += className;	
@@ -160,6 +171,16 @@ public class Result extends BaseActionSupport {
 		this.selectedDomain = selectedDomain;
 	}
 	
+	private String getRolename(String selectedSearchDomain){
+		return selectedSearchDomain.substring(0,selectedSearchDomain.indexOf(" "));
+	}
+
+	private String removeRolename(String selectedSearchDomain){
+		int beginIndex = selectedSearchDomain.indexOf("(")+1;
+		int endIndex = selectedSearchDomain.indexOf(")");
+		
+		return selectedSearchDomain.substring(beginIndex, endIndex);
+	}	
 }
 
 
