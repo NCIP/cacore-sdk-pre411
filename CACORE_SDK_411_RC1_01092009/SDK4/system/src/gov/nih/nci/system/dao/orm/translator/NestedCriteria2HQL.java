@@ -22,13 +22,13 @@ public class NestedCriteria2HQL
 
 	private NestedCriteria criteria;
 	private Configuration cfg;
-	private boolean caseSensitive;	
+	private boolean caseSensitive;
 	private HQLCriteria hqlCriteria;
 
 	private static Logger log = Logger.getLogger(NestedCriteria2HQL.class);
 
 	private List paramList = new ArrayList();
-	
+
 	private String srcAlias;
 
 	public NestedCriteria2HQL(NestedCriteria crit, Configuration cfg, boolean caseSensitive)
@@ -37,7 +37,7 @@ public class NestedCriteria2HQL
 		this.cfg = cfg;
 		this.caseSensitive = caseSensitive;
 	}
-	
+
 	public NestedCriteria2HQL(NestedCriteria crit, Configuration cfg, boolean caseSensitive, String srcAlias)
 	{
 		this.criteria = crit;
@@ -45,13 +45,13 @@ public class NestedCriteria2HQL
 		this.caseSensitive = caseSensitive;
 		this.srcAlias = srcAlias;
 	}
-	
+
 	public HQLCriteria translate() throws Exception
 	{
 		StringBuffer hql = new StringBuffer();
 
 		processNestedCriteria( hql, criteria);
-		
+
 		hqlCriteria = prepareQuery(hql);
 		log.debug("HQL Query :"+hqlCriteria.getHqlString());
 		return hqlCriteria;
@@ -66,49 +66,49 @@ public class NestedCriteria2HQL
 			solveScenario2(hql, criteria);
 		} else if (condition3(criteria)){
 			log.debug("Processing Scenario3:  nested criteria!=null");
-			solveScenario3(hql, criteria);			
+			solveScenario3(hql, criteria);
 		} else {
 			//should never happen
 			log.error("Unexpected NestedCriteria condition found for criteria: " + criteria);
 			throw new Exception("Unexpected NestedCriteria condition found for criteria: " + criteria);
 		}
 	}
-	
+
 	private boolean condition1(NestedCriteria criteria){
-		
+
 		if (criteria.getSourceName().equals(criteria.getTargetObjectName()) &&
 		criteria.getInternalNestedCriteria() == null)
 			return true;
 		return false;
 	}
-	
+
 	private boolean condition2(NestedCriteria criteria){
-		
+
 		if (!criteria.getSourceName().equals(criteria.getTargetObjectName()) &&
 		criteria.getInternalNestedCriteria() == null)
 			return true;
 		return false;
-	}	
-	
+	}
+
 	private boolean condition3(NestedCriteria criteria){
-		
+
 		if (criteria.getInternalNestedCriteria() != null)
 			return true;
 		return false;
 	}
-	
-	
+
+
 	//Single Object with query by example
 	private void solveScenario1(StringBuffer hql, NestedCriteria criteria) throws Exception {
-		
+
 		Collection sourceObjectList = criteria.getSourceObjectList();
-		
+
 		if (sourceObjectList == null){
 			log.error("Scenario1: Source object list is unexpectedly null");
 			throw new Exception("Source Object List is unexpectedly null");
 		}
-		
-		String targetObjectName = criteria.getTargetObjectName();		
+
+		String targetObjectName = criteria.getTargetObjectName();
 		String destAlias = getAlias(targetObjectName,1);
 
 		if (sourceObjectList.size() == 1 ){
@@ -118,7 +118,7 @@ public class NestedCriteria2HQL
 			log.debug("Scenario1: Single object HQL sub-select: " + select);
 		} else {
 			log.debug("Scenario1: Processing multiple objects in source object list");
-			
+
 			hql.append("select " + destAlias + " from " + targetObjectName + " " + destAlias + " where ");
 			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
 			{
@@ -129,31 +129,31 @@ public class NestedCriteria2HQL
 			}
 		}
 	}
-	
+
 	//Getting association for the query by example
 	private void solveScenario2(StringBuffer hql, NestedCriteria criteria) throws Exception {
-		
+
 		Collection sourceObjectList = criteria.getSourceObjectList();
-		
+
 		if (sourceObjectList == null){
 			log.error("Scenario2: Source object list is unexpectedly null");
 			throw new Exception("Scenario2: Source Object List is unexpectedly null");
 		}
-		
+
 		String targetObjectName = criteria.getTargetObjectName();
 		String sourceObjectName = criteria.getSourceName();
 		String srcAlias = getAlias(criteria.getSourceName(),1);
 		String destAlias = getAlias(targetObjectName,1);
-		
+
 		log.debug("Scenario2: targetObjectName: " + targetObjectName);
-		log.debug("Scenario2: sourceObjectName: " + sourceObjectName);		
+		log.debug("Scenario2: sourceObjectName: " + sourceObjectName);
 		log.debug("Scenario2: srcAlias: " + srcAlias);
 		log.debug("Scenario2: destAlias: " + destAlias);
-	
+
 
 		if (sourceObjectList.size() == 1 ){
 			log.debug("Scenario2: Processing single object in source object list");
-			
+
 			StringBuffer selectBuffer = new StringBuffer();
 			String roleName = criteria.getRoleName();
 			if(roleName==null)
@@ -162,7 +162,7 @@ public class NestedCriteria2HQL
 						.append(targetObjectName).append(" ").append(destAlias)
 						.append(", ").append(sourceObjectName).append(" ")
 						.append(srcAlias).append(" where ");
-				
+
 				log.debug("Scenario2: roleName: " + roleName);
 				selectBuffer.append(destAlias).append("=").append(srcAlias);
 
@@ -225,7 +225,7 @@ public class NestedCriteria2HQL
 							.append(" inner join ").append(srcAlias).append(".").append(roleName).append(" ").append(destAlias).append(" where ")
 							.append(srcAlias).append(" in (")
 							.append(getObjectCriterion(sourceObjectList.iterator().next(), cfg, false)).append(")");
-							
+
 						}
 					}
 					else //Target is not collection
@@ -259,12 +259,12 @@ public class NestedCriteria2HQL
 						}
 					}
 				}
-			
-			log.debug("Scenario2: single object HQL sub-select: " + selectBuffer.toString());	
-			
+
+			log.debug("Scenario2: single object HQL sub-select: " + selectBuffer.toString());
+
 			hql.append(selectBuffer.toString());
 
-		} 
+		}
 		else //More than one example objects present
 		{
 			log.debug("Scenario2: Processing multiple objects in source object list");
@@ -304,7 +304,7 @@ public class NestedCriteria2HQL
 						hql.append(" and ");
 					}
 				}
-			
+
 			for (Iterator i = sourceObjectList.iterator(); i.hasNext();)
 			{
 				Object obj = i.next();
@@ -314,24 +314,24 @@ public class NestedCriteria2HQL
 			}
 		}
 	}
-	
+
 	//Traversing the path of the nested search criteria
 	private void solveScenario3(StringBuffer hql, NestedCriteria criteria) throws Exception {
-		
+
 		String targetObjectName = criteria.getTargetObjectName();
 		String sourceObjectName = criteria.getSourceName();
 		String srcAlias = getAlias(criteria.getSourceName(),2);
 		String destAlias = getAlias(targetObjectName,1);
-		
+
 		log.debug("Scenario3: targetObjectName: " + targetObjectName);
-		log.debug("Scenario3: sourceObjectName: " + sourceObjectName);		
+		log.debug("Scenario3: sourceObjectName: " + sourceObjectName);
 		log.debug("Scenario3: srcAlias: " + srcAlias);
 		log.debug("Scenario3: destAlias: " + destAlias);
-		
-		
+
+
 		String roleName = criteria.getRoleName();
 		log.debug("Scenario2: roleName: " + roleName);
-				
+
 		if (roleName == null){
 			hql.append("select ").append(destAlias).append(" from ")
 			.append(targetObjectName).append(" ").append(destAlias)
@@ -340,11 +340,11 @@ public class NestedCriteria2HQL
 			hql.append(destAlias).append(".id").append("=").append(srcAlias).append(".id");
 			StringBuffer internalNestedCriteriaBuffer = new StringBuffer();
 			processNestedCriteria(internalNestedCriteriaBuffer, criteria.getInternalNestedCriteria());
-			
+
 			hql.append(" and ").append(srcAlias).append(" in (")
 				.append(internalNestedCriteriaBuffer).append(")");
-		} 
-		else 
+		}
+		else
 		{
 			if (criteria.isTargetCollection())
 			{
@@ -380,66 +380,87 @@ public class NestedCriteria2HQL
 				hql.append(destAlias).append(".id").append("=").append(srcAlias).append(".").append(roleName).append(".id");
 				hql.append(" and ");
 			}
-				
+
 			StringBuffer internalNestedCriteriaBuffer = new StringBuffer();
 			processNestedCriteria(internalNestedCriteriaBuffer, criteria.getInternalNestedCriteria());
-			
+
 			hql.append(srcAlias).append(" in (")
 				.append(internalNestedCriteriaBuffer).append(")");
 		}
-			
-		
+
+
 		log.debug("Scenario3: HQL select: " + hql.toString());
 	}
 
-	public static String getCountQuery(String hql)
-	{
+	public static String getCountQuery(String hql) {
 		String upperHQL = hql.toUpperCase();
 		String modifiedHQL = "";
-		
 		int firstSelectIndex = upperHQL.indexOf("SELECT");
 		int firstFromIndex = upperHQL.indexOf("FROM");
-		
-        if((firstSelectIndex >= 0) && (firstSelectIndex<firstFromIndex))
-        {
-            String projections = hql.substring(firstSelectIndex+"SELECT".length(),firstFromIndex);
-            String[] tokens = projections.split(",");
-            modifiedHQL = hql.substring(0, firstSelectIndex+"SELECT".length())+" count("+tokens[0].trim()+") " + hql.substring( firstFromIndex);
-        }
-        else
-        {
-              modifiedHQL = hql.substring(0, firstFromIndex)+" select count(*) " + hql.substring(firstFromIndex);
-        }
-		
+		if ((firstSelectIndex >= 0) && (firstSelectIndex < firstFromIndex)) {
+			String projections = hql.substring(
+					firstSelectIndex + "SELECT".length(), firstFromIndex);
+			String[] tokens = projections.split(",");
+			//Make sure token is of format distinct(tokencol)
+			//This would create an error using with count(distinct(tokencol))
+			//This block of code is to format it to count(distinct tokencol)
+			String token = tokens[0].trim();
+			String tokenUpperCase = token.toUpperCase();
+			if(tokenUpperCase.indexOf("DISTINCT") != -1)
+			{
+				if(tokenUpperCase.indexOf("DISTINCT")+8 == token.indexOf("("))
+					token = token.substring(0, tokenUpperCase.indexOf("DISTINCT")+8) + " "
+							+ token.substring(tokenUpperCase.indexOf("DISTINCT")+9, token.length());
+			}
+
+			if(token.indexOf("(") != -1)
+			{
+				token = token.substring(0, token.indexOf("(")) + token.substring(token.indexOf("(")+1, token.length());
+			}
+			if(token.indexOf(")") != -1)
+			{
+				token = token.substring(0, token.indexOf(")")) + token.substring(token.indexOf(")")+1, token.length());
+			}
+
+			modifiedHQL = hql
+					.substring(0, firstSelectIndex + "SELECT".length())
+					+ " count("
+					+ token
+					+ ") "
+					+ hql.substring(firstFromIndex);
+		} else {
+			modifiedHQL = hql.substring(0, firstFromIndex)
+					+ " select count(*) " + hql.substring(firstFromIndex);
+		}
 		return modifiedHQL;
 	}
-	
+
 	private boolean distinctRequired()
 	{
 		boolean distinct = true;
 		boolean containsCLOB =checkClobAttribute(criteria.getTargetObjectName());
 		boolean condition1 = condition1(criteria);
-		
+
 		if(condition1 || containsCLOB)
 			distinct = false;
-		
+
 		return distinct;
 	}
-	
+
 	private boolean inRequired()
 	{
 		boolean condition2 = condition2(criteria);
 		boolean condition3 = condition3(criteria);
-		
+
 		boolean condition1 = false;
-		
-		// Verify if it is condition1() and it contains one object in the list with no associations 
+
+		// Verify if it is condition1() and it contains one object in the list with no associations
 		if(condition1(criteria))
 		{
 			condition1 = true;
-			
+
 			List objects = criteria.getSourceObjectList();
-			
+
 			if(objects == null)
 			{
 				condition1 = false;
@@ -469,7 +490,7 @@ public class NestedCriteria2HQL
 		}
 		return condition1 || condition2 || condition3;
 	}
-	
+
 	private HQLCriteria prepareQuery(StringBuffer hql)
 	{
 		//Check if the target contains any CLOB. If yes then do a subselect with distinct else do plain distinct
@@ -499,10 +520,10 @@ public class NestedCriteria2HQL
 			normalQ = originalQ.replaceFirst("select "+destalias, "select distinct ("+destalias+") ");
 			countQ = originalQ.replaceFirst("select "+destalias, "select count(distinct "+destalias+".id) ");
 		}
-		
+
 		log.debug("****** NormalQ: " + normalQ);
 		log.debug("****** CountQ: " + countQ);
-		
+
 		HQLCriteria hCriteria = new HQLCriteria(normalQ, countQ, paramList);
 		return hCriteria;
 	}
@@ -519,13 +540,13 @@ public class NestedCriteria2HQL
 				if (prop.getType().getName().equals("text"))
 					return true;
 		}
-		
+
 		return false;
 	}
 
 
 
-	private String getObjectAttributeCriterion(String sourceAlias, Object obj, Configuration cfg) throws Exception 
+	private String getObjectAttributeCriterion(String sourceAlias, Object obj, Configuration cfg) throws Exception
 	{
 		StringBuffer whereClause = new StringBuffer();
 		HashMap criterionMap = getObjAttrCriterion(obj, cfg);
@@ -564,7 +585,7 @@ public class NestedCriteria2HQL
 		HashMap criterions = new HashMap();
 		String objClassName = obj.getClass().getName();
 		PersistentClass pclass = getPersistentClass(objClassName);
-		
+
 		if (pclass != null){
 			setAttrCriterion(obj, pclass, criterions);
 
@@ -583,8 +604,8 @@ public class NestedCriteria2HQL
 				if (idField.get(obj) != null)
 					criterions.put(identifier, idField.get(obj));
 			} catch (Exception e) {
-				// Do nothing - when dealing with implicit queries, pclass would be the concrete subclass of obj, 
-				// and the identifier field might be in a subclass of obj				
+				// Do nothing - when dealing with implicit queries, pclass would be the concrete subclass of obj,
+				// and the identifier field might be in a subclass of obj
 			}
 		}
 
@@ -623,7 +644,7 @@ public class NestedCriteria2HQL
 		String srcAlias=this.srcAlias;
 		if (this.srcAlias == null)
 			srcAlias = getAlias(obj.getClass().getName(), 1);
-		
+
 		StringBuffer hql = new StringBuffer();
 		HashMap associationCritMap = null;
 		if(!skipAssociations)
@@ -732,7 +753,7 @@ public class NestedCriteria2HQL
 		PersistentClass pclass = getPersistentClass(objClassName);
 		if (pclass != null){
 			setAssocCriterion(obj, pclass, criterions);
-			
+
 			pclass = pclass.getSuperclass();
 			while (pclass != null)
 			{
@@ -770,14 +791,14 @@ public class NestedCriteria2HQL
 	public void setCaseSensitive(boolean caseSensitive) {
 		this.caseSensitive = caseSensitive;
 	}
-	
-	
+
+
 	private Field getDeclaredField(Class klass, String fieldName) throws NoSuchFieldException {
-		
+
 		Field field = null;
-		
+
 		do {
-			
+
 			try {
 				field = klass.getDeclaredField(fieldName);
 			} catch (NoSuchFieldException e) {
@@ -785,18 +806,18 @@ public class NestedCriteria2HQL
 				klass = klass.getSuperclass();
 			}
 		} while (!klass.getName().equals("java.lang.Object" ) && field == null);
-		
+
 		if (field == null)
 			throw new NoSuchFieldException("fieldName: " + fieldName);
-		
+
 		return field;
 	}
-	
+
 	private PersistentClass getPersistentClass(String objClassName){
 		PersistentClass pclass = cfg.getClassMapping(objClassName);
-		
+
 		if (pclass == null) {//might be dealing with an implicit class.  Check to see if we have a persistent subclass mapping we can use instead
-			
+
 			Iterator iter = cfg.getClassMappings();
 			Class objClass = null;
 			try {
@@ -805,11 +826,11 @@ public class NestedCriteria2HQL
 				log.error("Class not found for " + objClassName);
 				return null;
 			}
-			
+
 			while (iter.hasNext()){
 				pclass = (PersistentClass)iter.next();
-				
-				try { 
+
+				try {
 					(pclass.getMappedClass()).asSubclass(objClass);
 					log.debug("Searching for persistent subclass of " + objClassName +"; found " + pclass.getClassName());
 					return pclass;
@@ -819,10 +840,10 @@ public class NestedCriteria2HQL
 
 			}// while
 		}
-		
+
 		return pclass;
 	}
-	
+
 	private boolean isObjectEmpty(Object obj)
 	{
 		Class klass = obj.getClass();
@@ -851,7 +872,7 @@ public class NestedCriteria2HQL
 		}
 		return true;
 	}
-	
+
 	private boolean isObjectAssociationEmpty(Object obj) throws Exception
 	{
 		Class klass = obj.getClass();
@@ -871,7 +892,7 @@ public class NestedCriteria2HQL
 								return false;
 					    	if(!(value instanceof Integer || value instanceof Float || value instanceof Double
 					    			|| value instanceof Character || value instanceof Long || value instanceof Boolean
-					    			|| value instanceof Byte ||  value instanceof Short  
+					    			|| value instanceof Byte ||  value instanceof Short
 					    			|| value instanceof String || value instanceof Date))
 							return false;
 						}
@@ -885,5 +906,5 @@ public class NestedCriteria2HQL
 			klass = klass.getSuperclass();
 		}
 		return true;
-	}	
+	}
 }
