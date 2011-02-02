@@ -157,9 +157,9 @@
 	3.0 Bug Fixes Since Last Release
 ================================================================
 
+    -- [#27529] Error related to SDK generated system when resultset size is larger than resultCountPerQuery
     -- [#30086] Multiple association problem with domain model browser
     -- [#30088] Tree Browser generated incorrect RESTful query and wrong results returned
-    -- [#27529] Error related to SDK generated system when resultset size is larger than resultCountPerQuery
 
 ================================================================
 	4.0 Known Issues
