@@ -89,23 +89,25 @@
 		<servlet-name>AxisServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
-		
-    
-    <servlet-mapping>
-        <servlet-name>AxisServlet</servlet-name>
-        <url-pattern>*.jws</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-    	<servlet-name>GetXML</servlet-name>
-    	<url-pattern>/GetXML</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-    	<servlet-name>GetHTML</servlet-name>
-      	<url-pattern>/GetHTML</url-pattern>
-    </servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>AxisServlet</servlet-name>
+		<url-pattern>*.jws</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet-mapping>
+		<servlet-name>GetXML</servlet-name>
+		<url-pattern>/GetXML</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet-mapping>
+		<servlet-name>GetHTML</servlet-name>
+		<url-pattern>/GetHTML</url-pattern>
+	</servlet-mapping>
+	
+	
 	<mime-mapping>
 		<extension>wsdl</extension>
 		<mime-type>text/xml</mime-type>

@@ -176,7 +176,7 @@ public class HTTPQuery extends HttpServlet {
 
 			out.println("<pre class=\"autoOverflow\">");
 			out.println("<br><br><font size=4 color=red>");
-
+			msg = org.apache.commons.lang.StringEscapeUtils.escapeHtml(msg);
 			msg = ex.getMessage();
 			Throwable tempEx = ex.getCause();
 			while (tempEx != null) {

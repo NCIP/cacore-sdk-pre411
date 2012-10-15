@@ -1,11 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="sx" uri="/struts-dojo-tags" %>
 <%@ page import="gov.nih.nci.system.web.util.JSPUtils,
 				 java.lang.reflect.*,
 				 java.util.*" %> 
 			 
 <link href="styleSheet.css" type="text/css" rel="stylesheet" />
-<% 
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.2.custom.min.js"></script>
+<%
 JSPUtils jspUtils= null;
 List fieldNames=new ArrayList();
 List domainNames=new ArrayList();
@@ -31,7 +34,7 @@ if(className != null)
 	if(fieldNames != null && fieldNames.size() > 0)
 	{ 	
 %>
-<s:form method="post" action="Result.action" target="_blank" name="form1" theme="simple">
+<form method="post" target="_blank" action="Result.action" name="Result" id="Result">
 	<table summary="" cellpadding="3" cellspacing="0" border="0" align="center">
 		<tr>
 			<td class="formTitle" height="20" colspan="3"><s:property value="fullyQualClassName" /></td>
@@ -142,7 +145,6 @@ if(className != null)
 		</tr>
 	</table>
 	<s:hidden name="selectedDomain" />
-</s:form>
-
+</form>	
 <%		}
 	}%> 
