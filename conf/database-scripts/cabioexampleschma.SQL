@@ -1,3 +1,11 @@
+/*L
+   Copyright Ekagra Software Technologies Ltd.
+   Copyright SAIC
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cacore-sdk/LICENSE.txt for details.
+L*/
+
 CREATE TABLE CHROMOSOME ( 
 	CHROMOSOME_ID NUMERIC(10) NOT NULL,
 	CHROMOSOME_NUMBER VARCHAR(50) NOT NULL,
