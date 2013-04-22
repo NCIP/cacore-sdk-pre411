@@ -1,3 +1,11 @@
+/*L
+ *  Copyright Ekagra Software Technologies Ltd.
+ *  Copyright SAIC
+ *
+ *  Distributed under the OSI-approved BSD 3-Clause License.
+ *  See http://ncip.github.com/cacore-sdk/LICENSE.txt for details.
+ */
+
 import java.net.URL;
 import org.apache.axis.AxisFault;
 import org.apache.axis.client.Call;

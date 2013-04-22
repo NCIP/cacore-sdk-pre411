@@ -1,3 +1,11 @@
+/*L
+   Copyright Ekagra Software Technologies Ltd.
+   Copyright SAIC
+
+   Distributed under the OSI-approved BSD 3-Clause License.
+   See http://ncip.github.com/cacore-sdk/LICENSE.txt for details.
+L*/
+
 insert into csm_protection_element(PROTECTION_ELEMENT_ID, PROTECTION_ELEMENT_NAME,PROTECTION_ELEMENT_DESCRIPTION,OBJECT_ID,APPLICATION_ID,UPDATE_DATE)
 values(3, 'gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank','gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank','gov.nih.nci.cacoresdk.domain.inheritance.childwithassociation.Bank',2,sysdate);
 select CSM_PROTECTIO_PROTECTION_E_SEQ.nextval from dual;
