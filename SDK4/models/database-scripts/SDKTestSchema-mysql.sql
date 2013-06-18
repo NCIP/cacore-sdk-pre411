@@ -3,7 +3,7 @@
    Copyright SAIC
 
    Distributed under the OSI-approved BSD 3-Clause License.
-   See http://ncip.github.com/cacore-sdk/LICENSE.txt for details.
+   See http://ncip.github.com/cacore-sdk-pre411/LICENSE.txt for details.
 L*/
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
