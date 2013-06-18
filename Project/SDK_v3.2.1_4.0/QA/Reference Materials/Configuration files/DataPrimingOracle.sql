@@ -3,7 +3,7 @@
    Copyright SAIC
 
    Distributed under the OSI-approved BSD 3-Clause License.
-   See http://ncip.github.com/cacore-sdk/LICENSE.txt for details.
+   See http://ncip.github.com/cacore-sdk-pre411/LICENSE.txt for details.
 L*/
 
 insert into csm_application(APPLICATION_ID, APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,UPDATE_DATE)
